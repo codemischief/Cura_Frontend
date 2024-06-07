@@ -190,15 +190,18 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         className="flex justify-center items-center"
       >
         <>
-          <Draggable>
+          <Draggable handle="div.move">
             <div className="flex justify-center items-center">
               <FormikProvider value={values}>
                 <Form className="space-y-4" onSubmit={handleSubmit}>
                   <div className="w-[778px] h-auto bg-white rounded-lg">
+                    <div className="move cursor-move">
+
                     <ModalHeader
                       onClose={handleClose}
                       title={editData.id ? "Edit Prospect" : "New Prospect"}
-                    />
+                      />
+                    </div>
                     <div className="h-auto w-full mt-[5px] ">
                       <div className="flex gap-[48px] justify-center items-start">
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
@@ -240,7 +243,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleCountrySelect}
                             >
                               <option value="" className="inputFieldValue" hidden>
-                                select Country
+                                Select Country
                               </option>
                               {countryData.length > 0 &&
                                 countryData.map((editData) => {
@@ -487,7 +490,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
           onSubmit={handleConfirm}
           title={`${editData?.id ? 'Save Prospect' : 'Add Prospect'}`}
           description={
-            <div>
+            <div className="flex flex-col items-center justify-center">
               <p className="">Prospect: {values.personname}</p>
               <Typography
                 sx={{

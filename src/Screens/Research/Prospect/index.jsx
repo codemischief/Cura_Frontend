@@ -207,7 +207,7 @@ const PropectusPage = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "New Prospect updated successfully"
+      ? "Changes Saved Successfully"
       : "New Prospect created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
