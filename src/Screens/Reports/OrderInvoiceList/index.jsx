@@ -17,6 +17,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetData,
 } from "../../../Redux/slice/reporting/OrderInvoiceSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -122,6 +123,10 @@ const OrderInvoiceList = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
+    dispatch(setInitialState());
+    dispatch(resetData());
+  }, []);
+  useEffect(() => {
     if (startDate && endDate) {
       let obj = {
         user_id: 1234,
@@ -222,12 +227,12 @@ const OrderInvoiceList = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadInvoiceDataXls(obj)).then((response) => {
-      const tableData = response.data;
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "RrderInvoiceList.xlsx");
-      dispatch(setStatus("success"));
+      // const tableData = response.data;
+      // const worksheet = XLSX.utils.json_to_sheet(tableData);
+      // const workbook = XLSX.utils.book_new();
+      // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      // XLSX.writeFile(workbook, "OrderInvoiceList.xlsx");
+      // dispatch(setStatus("success"));
     });
   };
 

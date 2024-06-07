@@ -16,6 +16,8 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetData,
+  setInitialState,
 } from "../../../Redux/slice/reporting/OrderReceiptSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -120,6 +122,11 @@ const OrderReceiptList = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
+  useEffect(() => {
+    dispatch(setInitialState());
+    dispatch(resetData());
+  }, []);
+
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
@@ -232,35 +239,8 @@ const OrderReceiptList = () => {
 
   const handleShow = () => {
     if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "id",
-          "type",
-          "recddate",
-          "fy",
-          "monthyear",
-          "amount",
-          "entityname",
-          "paymentmode",
-          "clientid",
-          "clientname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname"
-        ],
-        sort_by: ["id"],
-        order: "desc",
-        filters: [],
-        search_key: "",
-        pg_no: 1,
-        pg_size: 15,
-      };
-      dispatch(getOrderReceiptData(obj));
+      dispatch(setInitialState());
+
       setShowTable(true);
     } else {
       // setError((prev) => ({
@@ -270,6 +250,7 @@ const OrderReceiptList = () => {
       // }));
     }
   };
+
   return (
     <Container>
 
