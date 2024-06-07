@@ -23,6 +23,7 @@ import AlertModal, {
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
+import { getCountries } from "../../../Redux/slice/commonApis";
 
 const PropectusPage = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const PropectusPage = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.prospect);
+  const { countryData } = useSelector((state) => state.commonApi);
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -122,6 +124,13 @@ const PropectusPage = () => {
   };
 
   useEffect(() => {
+    if (countryData.length === 0) {
+      dispatch(getCountries());
+    }
+  }, []);
+
+  console.log("countriesData", countryData);
+  useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
 
@@ -186,7 +195,7 @@ const PropectusPage = () => {
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Prospect Deleted Successfully");
       setPromptType(alertVariant.success);
-      fetchData()
+      fetchData();
     } catch (error) {
       if (error.response) {
         setDeleteError(error.response.data.detail);
@@ -212,8 +221,7 @@ const PropectusPage = () => {
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
-    fetchData()
-    
+    fetchData();
   };
 
   const openCancel = () => {

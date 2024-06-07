@@ -1,10 +1,8 @@
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import useAuth from "../context/JwtContext";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 const accessToken = localStorage.getItem("accessToken");
 const userId = JSON.parse(localStorage.getItem("user"))?.id;
-console.log('userId', userId)
 // customHeaderMethods
 export const moduleMethods = Object.freeze({
   get: "get",

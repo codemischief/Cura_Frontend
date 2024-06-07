@@ -29,7 +29,7 @@ const CustomDeleteModal = ({
                   <div className="text-[16px] font-semibold">Delete</div>
                 </div>
                 <div className="absolute top-[-0.5rem] right-[-3.75rem]">
-                  <CrossIcon bgColor="#EBEBEB" onClick={handleDialogClose} />
+                  <CrossIcon bgColor="bg-[#EBEBEB]" onClick={handleDialogClose} />
                 </div>
               </div>
               <div className="flex justify-center items-center">
