@@ -57,6 +57,8 @@ import friends  from "./slice/Research/FriendsSlice";
 import StatisticsReport from "./slice/reporting/Statistics/StatisticsReport";
 import ServiceTaxPaidByVendor from "./slice/reporting/Statistics/ServiceTaxPaidByVendor";
 import TenantEmail from "./slice/reporting/Contacts/TenantEmail";
+import OwnerMailId from "./slice/reporting/Contacts/OwnerMailId";
+import ClientContactsDetails from "./slice/reporting/Contacts/ClientContactsDetails";
 
 export const store = configureStore({
   reducer: {
@@ -112,6 +114,8 @@ export const store = configureStore({
     statisticsReport:StatisticsReport,
     serviceTaxPaidByVendor:ServiceTaxPaidByVendor,
     tenantEmail: TenantEmail,
+    ownerMailId:OwnerMailId,
+    clientContactsDetails:ClientContactsDetails,
   },
   // Add the RTK Query API middleware
 });

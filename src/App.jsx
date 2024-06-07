@@ -119,6 +119,8 @@ import VendorPaymentPeriodView from "./Screens/Reports/VendorReport/VendorPaymen
 import StatisticsReport from "./Screens/Reports/Statistics/StatisticsReport/index.jsx";
 import ServiceTaxPaidByVendor from "./Screens/Reports/Statistics/ServiceTaxPaidByVendor/index.jsx";
 import TenantEmail from "./Screens/Reports/Contacts/TenantEmail/index.jsx";
+import OwnerMailId from "./Screens/Reports/Contacts/OwnerMailId/index.jsx";
+import ClientContactDetails from "./Screens/Reports/Contacts/ClientContactsDetails/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -457,6 +459,18 @@ const App = () => {
               <Route
                 path="reports/tenantEmail"
                 element={<TenantEmail />}
+              />
+              <Route
+                path="reports/tenantEmail"
+                element={<TenantEmail />}
+              />
+              <Route
+                path="reports/ownerMailId"
+                element={<OwnerMailId />}
+              />
+              <Route
+                path="reports/clientContactDetails"
+                element={<ClientContactDetails />}
               />
             </Route>
 
