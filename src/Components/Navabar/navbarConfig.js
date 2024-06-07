@@ -305,9 +305,9 @@ export const navMenuConfig = [
         {
           subheader: "Contacts",
           items: [
-            { title: "All Owner Email Ids", path: "" },
-            { title: "All Tenants Email Ids", path: "" },
-            { title: "Client Contacts", path: "" },
+            { title: "All Owner Email Ids", path: PATH_DASHBOARD.report.contact.ownerMailId },
+            { title: "All Tenants Email Ids", path: PATH_DASHBOARD.report.contact.tenantEmail },
+            { title: "Client Contacts", path: PATH_DASHBOARD.report.contact.clientContactDetails },
             { title: "Owners Phone No's", path: "" },
             { title: "Clients Phone No's", path: "" },
           ],
@@ -367,7 +367,7 @@ export const navMenuConfig = [
           subheader: "Service Tax Reports",
           items: [
             { title: "Agency Repair Service Receipts", path: "" },
-            { title: "Service Tax Paid by Vendor", path: "" },
+            { title: "Service Tax Paid by Vendor", path: PATH_DASHBOARD.report.serviceTaxReport.serviceTaxPaidByVendor },
           ],
         },
         {

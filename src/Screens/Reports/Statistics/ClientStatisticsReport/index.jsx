@@ -186,8 +186,8 @@ const ClientStatistics = () => {
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
-              heading={"Statistics Report"}
-              path={["Reports", "Statistics", "Statistics Report"]}
+              heading={"Client Statistics Report"}
+              path={["Reports", "Statistics", "Client Statistics Report"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
 

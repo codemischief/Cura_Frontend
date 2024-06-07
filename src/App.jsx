@@ -477,10 +477,6 @@ const App = () => {
                 element={<TenantEmail />}
               />
               <Route
-                path="reports/tenantEmail"
-                element={<TenantEmail />}
-              />
-              <Route
                 path="reports/ownerMailId"
                 element={<OwnerMailId />}
               />

@@ -121,7 +121,8 @@ export const PATH_DASHBOARD = {
 
     },
     statistics: {
-      clientStatistics: path(ROOTS.report , "/clientStatistics")
+      clientStatistics: path(ROOTS.report , "/clientStatistics"),
+      statisticsReport: path(ROOTS.report , "/statisticsReport"),
     },
     vendorReport:{
       vendorStatement : path(ROOTS.report, "/vendorstatement")
@@ -130,6 +131,14 @@ export const PATH_DASHBOARD = {
       tdsPaidByVendor: path(ROOTS.report , "/tdspaidbyvendor"),
       tdsPaidByGovernment: path(ROOTS.report , "/tdsPaidToGovernment"),
       vendorPaymentPeriod: path(ROOTS.report , "/vendorpaymentsummary"),
+    },
+    serviceTaxReport: {
+      serviceTaxPaidByVendor: path(ROOTS.report, "/serviceTaxPaidByVendor"),
+    },
+    contact: {
+      ownerMailId: path(ROOTS.report, "/ownerMailId"),
+      tenantEmail: path(ROOTS.report, "/tenantEmail"),
+      clientContactDetails: path(ROOTS.report, "/clientContactDetails"),
     }
   },
 };
