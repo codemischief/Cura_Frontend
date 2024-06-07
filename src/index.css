@@ -104,8 +104,33 @@ input[type="number"] {
   line-height: 150%;
 }
 
+.select-dropdown {
+  position: relative;
+}
 
+.select-dropdown select {
+  width: 100%;
+  height: auto;
+}
+.select-dropdown select option {
+  max-height: 150px;
+  overflow-y: auto;
+}
 
+.select-dropdown select::-webkit-scrollbar {
+  width: 12px;
+}
+
+.select-dropdown select::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.select-dropdown select::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.select-dropdown select::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 /* .no-scrollbar::-webkit-scrollbar {
   display: none;
 } */
