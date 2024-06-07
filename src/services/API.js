@@ -969,12 +969,20 @@ const getLLTenant = async (data) => {
 
   return response;
 };
+
+const getDepartmentTypeAdmin = async (data) => {
+  const response = await fetch(
+    `${env_URL_SERVER}getDepartmentTypeAdmin`,
+    METHOD_POST(data)
+  );
+
+  return response;
+};
 const download = async (data, filename) => {
   const response = await fetch(
     `${env_URL_SERVER}download/${filename}`,
     METHOD_POST(data)
   );
-
   console.log(response);
   return response;
 };
@@ -1150,6 +1158,7 @@ export const APIService = {
   deleteLLTenant,
   getLLTenant,
   download,
+  getDepartmentTypeAdmin,
   resetPassword,
   changePassword
 };

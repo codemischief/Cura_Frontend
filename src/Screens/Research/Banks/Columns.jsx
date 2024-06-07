@@ -23,7 +23,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width: "10%",
+        width: "5%",
       },
       align: "center",
       sorting: false,
@@ -43,8 +43,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 2,
       filterComponent: TextFilterField,
-      title: "Name Of Agent",
-      field: "nameofagent",
+      title: "Name",
+      field: "name",
       sorting: true,
     //   width : '1000px',
       align: "left",
@@ -52,14 +52,14 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '13%'
       },
     },
     {
       id: 3,
       filterComponent: TextFilterField,
-      title: "Agency Name",
-      field: "agencyname",
+      title: "Email ID",
+      field: "emailid",
       align: "left",
     //   width : '20%',
       filterDisabled: false,
@@ -67,7 +67,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '13%'
         
       },
     },
@@ -75,8 +75,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       id: 4,
       filterComponent: TextFilterField,
 
-      title: "Email ID",
-      field: "emailid",
+      title: "Phone Number",
+      field: "phoneno",
       align: "left",
       filterDisabled: false,
       sorting: true,
@@ -84,13 +84,13 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '13%'
       },
     },
     {
       id: 5,
-      title: "Phone Number",
-      field: "phoneno",
+      title: "Website",
+      field: "website",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
@@ -99,13 +99,13 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '13%'
       },
     },
     {
       id: 6,
-      title: "Whatsapp Number",
-      field: "phoneno2",
+      title: "Contact",
+      field: "contact",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
@@ -114,52 +114,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 6,
-      title: "Localities Dealing",
-      field: "localitiesdealing",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 7,
-      title: "Name Of Partners",
-      field: "nameofpartners",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 8,
-      title: "Registered",
-      field: "registered",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
+        width : '13%'
       },
     },
     {
@@ -174,19 +129,19 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '13%'
       },
     },
     {
       id: 10,
-      title: "Action",
+      title: "",
       field: "action",
       sorting: false,
       align: "left",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '5%'
         // maxWidth: "18.25rem",
       },
       render: (rowData) => {

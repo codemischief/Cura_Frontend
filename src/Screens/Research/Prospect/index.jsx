@@ -155,16 +155,14 @@ const PropectusPage = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "id",
         "personname",
         "suburb",
         "city",
-        "state",
-        "country",
         "propertylocation",
         "possibleservices",
+        "id",
       ],
-      colmap: { ...colMap, state: "State", country: "Country", city: "City" },
+      colmap: { ...colMap, city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),

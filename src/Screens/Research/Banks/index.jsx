@@ -1,36 +1,40 @@
-import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import SimpleTable from "../../../Components/common/table/CustomTable";
-import connectionDataColumn from "./Columns";
-import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { PlusOutlined } from "@ant-design/icons";
+
+import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
+import SimpleTable from "../../../Components/common/table/CustomTable";
+import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
+import { APIService } from "../../../services/API";
 import {
-  deleteAgents,
-  getAgentData,
+  deleteBanksAndBranches,
+  downloadBanksAndBranchesDataXls,
+  getBanksAndBranches,
   setCountPerPage,
   setPageNumber,
-  setSorting
-} from "../../../Redux/slice/Research/AgentSlice";
-import { PlusOutlined } from "@ant-design/icons";
-import EmployerForm from "./EmployerForm";
+  setSorting,
+} from "../../../Redux/slice/Research/BanksAndBranchesSlice";
+
+import getColumns from "./Columns";
 import AlertModal, {
   alertVariant,
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
-
+import errorHandler from "../../../Components/common/ErrorHandler";
+import EmployerForm from "./EmployerForm"
 const ResearchBanks = () => {
   const dispatch = useDispatch();
   const {
-    AgentData,
+    BankAndBranchesData,
     status,
     totalCount,
     sorting,
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.agent);
+  } = useSelector((state) => state.banksandbranches);
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -41,18 +45,27 @@ const ResearchBanks = () => {
   const [isDeleteDialogue, setIsDeleteDialogue] = useState(null);
   const [deleteError, setDeleteError] = useState("");
 
-  const handleEdit = (data) => {
-    setEditData({ ...data });
-    setOpenForm(true);
+  const handleEdit = async (data) => {
+    try {
+      let dataItem = {
+        user_id: 1234,
+        table_name: "get_research_banksandbranches_view",
+        item_id: data.id,
+      };
+      const response = await APIService.getItembyId(dataItem);
+      let updatedaresponse = await response.json();
+      setEditData(updatedaresponse?.data);
+      setOpenForm(true);
+    } catch (error) {
+      errorHandler(error, "Failed to fetch Please try again later");
+    }
   };
+
   const handleDelete = (data) => {
     setIsDeleteDialogue(data.id);
   };
 
-  const columns = useMemo(
-    () => connectionDataColumn(handleEdit, handleDelete),
-    []
-  );
+  const columns = useMemo(() => getColumns(handleEdit, handleDelete), []);
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -66,39 +79,26 @@ const ResearchBanks = () => {
     dispatch(setPageNumber(1));
   };
 
-  const handleRefresh = () => {
-    if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "id",
-          "type",
-          "paymentdate",
-          "monthyear",
-          "fy",
-          "amount",
-          "entityname",
-          "mode_of_payment",
-          "clientid",
-          "clientname",
-          "vendorname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname",
-        ],
-        sort_by: ["id"],
+  const fetchData = () => {
+    let obj = {
+      user_id: 1234,
 
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-      };
-      // dispatch(getOrderPaymentData(obj));
-    }
+      rows: [
+        "id",
+        "name",
+        "emailid",
+        "phoneno",
+        "website",
+        "contact"
+      ],
+      filters: formatedFilterData(filter),
+      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
+      order: sorting.sort_order,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      search_key: searchInput,
+    };
+    dispatch(getBanksAndBranches(obj));
   };
 
   const handleSearch = () => {
@@ -124,27 +124,7 @@ const ResearchBanks = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    const obj = {
-      user_id: 1234,
-      rows: [
-        "id",
-        "nameofagent",
-        "agencyname",
-        "emailid",
-        "phoneno",
-        "phoneno2",
-        "localitiesdealing",
-        "nameofpartners",
-        "registered"
-      ],
-      filters: formatedFilterData(filter),
-      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
-      order: sorting.sort_order,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      search_key: searchInput,
-    };
-    dispatch(getAgentData(obj));
+    fetchData();
   }, [
     filter,
     countPerPage,
@@ -163,35 +143,32 @@ const ResearchBanks = () => {
   };
 
   const downloadExcel = async () => {
+    const colMap = columns?.slice(1, -1)?.reduce((acc, column) => {
+      if (column.field) {
+        acc[column.field] = column.title;
+      }
+      return acc;
+    }, {});
+
     let obj = {
       user_id: 1234,
       rows: [
         "id",
-        "type",
-        "paymentdate",
-        "monthyear",
-        "fy",
-        "amount",
-        "entityname",
-        "mode_of_payment",
-        "clientid",
-        "clientname",
-        "vendorname",
-        "orderid",
-        "orderdescription",
-        "serviceid",
-        "service",
-        "lobname",
+        "name",
+        "emailid",
+        "phoneno",
+        "website",
+        "contact"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
       search_key: search,
-      pg_no: 1,
-      pg_size: 15,
+      pg_no: 0,
+      pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    // dispatch(downloadPaymentDataXls(obj));
+    dispatch(downloadBanksAndBranchesDataXls(obj));
   };
 
   const handleFormOpen = () => {
@@ -199,13 +176,14 @@ const ResearchBanks = () => {
     setEditData({});
   };
 
-  const deleteAgents = async () => {
+  const deleteBanksAndBranches = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
-      await dispatch(deleteAgents(data));
+      await dispatch(deleteBanksAndBranches(data));
       setIsDeleteDialogue(null);
-      SetOpenSubmissionPrompt("Prospect Deleted Successfully");
+      SetOpenSubmissionPrompt("Banks And Branch Deleted Successfully");
       setPromptType(alertVariant.success);
+      fetchData()
     } catch (error) {
       if (error.response) {
         setDeleteError(error.response.data.detail);
@@ -226,17 +204,19 @@ const ResearchBanks = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "New Prospect updated successfully"
-      : "New Prospect created successfully";
+      ? "Bank And Branch updated successfully"
+      : "New Bank And Branch created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
+    fetchData()
+    
   };
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no new Prospect updated."
-      : "Process cancelled, no new Prospect created.";
+      ? "Process cancelled, no new Bank And Branch updated."
+      : "Process cancelled, no new Bank And Branch created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
@@ -267,7 +247,7 @@ const ResearchBanks = () => {
               onKeyDown={handleSearchEnterKey}
             />
             <button
-              className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg"
+              className="bg-[#004DD7] text-white h-[36px] w-[340px] rounded-lg"
               onClick={handleFormOpen}
             >
               <div className="flex items-center justify-center gap-4">
@@ -278,10 +258,9 @@ const ResearchBanks = () => {
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">
-          {console.log(AgentData)}
           <SimpleTable
             columns={columns}
-            data={AgentData}
+            data={BankAndBranchesData}
             pageNo={pageNo}
             isLoading={status === "loading"}
             totalCount={totalCount}
@@ -290,7 +269,7 @@ const ResearchBanks = () => {
             height="calc(100vh - 15rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
-            handleRefresh={handleRefresh}
+            handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
             handleEdit={handleEdit}
@@ -310,8 +289,9 @@ const ResearchBanks = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteAgents}
+          handleDelete={deleteBanksAndBranches}
           deleteError={deleteError}
+          text={'Banks And Branches'}
         />
       )}
     </div>
