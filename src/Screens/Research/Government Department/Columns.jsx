@@ -136,10 +136,10 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       },
     {
       id: 8,
-      title: "",
+      title: "Edit",
       field: "action",
       sorting: false,
-      align: "left",
+      align: "center",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",

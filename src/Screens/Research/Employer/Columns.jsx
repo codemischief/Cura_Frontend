@@ -48,7 +48,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '23%'
+        width : '15%'
       },
     },
     {
@@ -63,7 +63,23 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '22%'
+        width : '15%'
+        
+      },
+    },
+    {
+      id: 3,
+      filterComponent: TextFilterField,
+      title: "Suburb",
+      field: "suburb",
+      align: "left",
+    //   width : '18%',
+      filterDisabled: false,
+      sorting: true,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        width : '15%'
         
       },
     },
@@ -80,7 +96,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '22%'
+        width : '15%'
       },
     },
     {
@@ -95,7 +111,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '18%'
+        width : '15%'
       },
     },
     {
@@ -110,15 +126,15 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '5%'
+        width : '15%'
       },
     },
     {
       id: 8,
-      title: "",
+      title: "Edit",
       field: "action",
       sorting: false,
-      align: "left",
+      align: "center",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",

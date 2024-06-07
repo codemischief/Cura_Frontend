@@ -39,7 +39,7 @@ const CustomDeleteModal = ({
                 {deleteError}
               </span>
               <div className="mt-4 w-full text-center">
-                <p>Are you sure you want to delete this {text}</p>
+                <p>Are you sure you want to delete this {text}?</p>
               </div>
               <div className="my-5 flex justify-center items-center gap-[10px]">
                 <button

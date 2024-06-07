@@ -15,7 +15,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus
-} from "../../../../Redux/slice/reporting/Statistics/ClientStatistics"
+} from "../../../../Redux/slice/reporting/Contacts/OwnerMailId";
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
 import DatePicker from "react-datepicker";
@@ -25,7 +25,7 @@ import * as XLSX from "xlsx";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import Container from "../../../../Components/common/Container";
 
-const ClientStatistics = () => {
+const OwnerMailId = () => {
   const dispatch = useDispatch();
   const {
     data,
@@ -36,7 +36,7 @@ const ClientStatistics = () => {
     countPerPage,
     pageNo,
     filter
-  } = useSelector((state) => state.clientStatistics)
+  } = useSelector((state) => state.ownerMailId);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -74,7 +74,9 @@ const ClientStatistics = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: ["total","name"],
+      rows: [
+        "email"
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -109,7 +111,9 @@ const ClientStatistics = () => {
 
     let obj = {
       user_id: 1234,
-      rows: ["total","name"],
+      rows:[
+        "email"
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -143,13 +147,14 @@ const ClientStatistics = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: ["name","total"],
+      rows:[
+        "email"
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
       colmap: {
-        "name": "Client Type",
-        "total": "No. of Records",
+        "email": "Email 1",
       },
       search_key: search,
       pg_no: 0,
@@ -186,8 +191,8 @@ const ClientStatistics = () => {
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
-              heading={"Client Statistics Report"}
-              path={["Reports", "Statistics", "Client Statistics Report"]}
+              heading={"All Owner Mail Ids"}
+              path={["Reports", "Contacts", "All Owner Mail Ids"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
 
@@ -244,4 +249,4 @@ const ClientStatistics = () => {
   );
 };
 
-export default ClientStatistics;
+export default OwnerMailId;

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Logo from "../../assets/logo.jpg";
 import { APIService } from "../../services/API";
+import AuthLayout from "../../Components/common/AuthLayout";
 
 const RequestResetPassword = () => {
   const [userName, setUserName] = useState("");
@@ -29,12 +29,7 @@ const RequestResetPassword = () => {
   };
 
   return (
-    <div className="flex w-screen h-screen  py-[20px] justify-center bg-[#F5F5F5]">
-      <img
-        className="w-[140px] h-[64px]  absolute left-5 "
-        src={Logo}
-        alt="company Logo"
-      />
+    <AuthLayout>
       <div className="w-3/5  h-[712px] bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
         <div className="w-[400px] flex flex-col justify-between items-stretch h-full p-8">
           {onSubmit ? (
@@ -110,7 +105,7 @@ const RequestResetPassword = () => {
           )}
         </div>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 

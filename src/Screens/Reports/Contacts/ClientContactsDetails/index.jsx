@@ -15,7 +15,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus
-} from "../../../../Redux/slice/reporting/Statistics/ClientStatistics"
+} from "../../../../Redux/slice/reporting/Contacts/ClientContactsDetails";
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
 import DatePicker from "react-datepicker";
@@ -25,7 +25,7 @@ import * as XLSX from "xlsx";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import Container from "../../../../Components/common/Container";
 
-const ClientStatistics = () => {
+const ClientContactDetails = () => {
   const dispatch = useDispatch();
   const {
     data,
@@ -36,7 +36,7 @@ const ClientStatistics = () => {
     countPerPage,
     pageNo,
     filter
-  } = useSelector((state) => state.clientStatistics)
+  } = useSelector((state) => state.clientContactsDetails);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -74,7 +74,9 @@ const ClientStatistics = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: ["total","name"],
+      rows:  [
+        "employername","localcontact1name","localcontact1address","localcontact1details","localcontact2name","localcontact2address","localcontact2details"
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -109,7 +111,9 @@ const ClientStatistics = () => {
 
     let obj = {
       user_id: 1234,
-      rows: ["total","name"],
+      rows: [
+        "employername","localcontact1name","localcontact1address","localcontact1details","localcontact2name","localcontact2address","localcontact2details"
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -143,13 +147,20 @@ const ClientStatistics = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: ["name","total"],
+      rows: [
+        "employername","localcontact1name","localcontact1address","localcontact1details","localcontact2name","localcontact2address","localcontact2details"
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
       colmap: {
-        "name": "Client Type",
-        "total": "No. of Records",
+        "employername": "Employer Name",
+        "localcontact1name": "Contact 1 Name",
+        "localcontact1address": "Contact 1 Address",
+        "localcontact1details": "Contact 1 Details",
+        "localcontact2name": "Contact 2 Name",
+        "localcontact2address": "Contact 2 Address",
+        "localcontact2details": "Contact 2 Details",
       },
       search_key: search,
       pg_no: 0,
@@ -186,8 +197,8 @@ const ClientStatistics = () => {
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
-              heading={"Client Statistics Report"}
-              path={["Reports", "Statistics", "Client Statistics Report"]}
+              heading={"Client Contact Details"}
+              path={["Reports", "Contacts", "Client Contact Details"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
 
@@ -244,4 +255,4 @@ const ClientStatistics = () => {
   );
 };
 
-export default ClientStatistics;
+export default ClientContactDetails;

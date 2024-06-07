@@ -3,12 +3,11 @@ import axios from "axios";
 import FileSaver from "file-saver";
 import {
   env_URL_SERVER,
-  updatedOrderPaymentDD
-} from "../../../../helper";
+  TenantEmail,
+} from "../../../helper";
 
 const initialState = {
-  orderPaymentDDView: [],
-  totalAmount: {},
+  data: [],
   status: "",
   filter: {},
   countPerPage: 15,
@@ -22,15 +21,16 @@ const initialState = {
   },
 };
 
-export const orderPaymentDD = createSlice({
-  name: "orderPaymentDD",
+export const pmaSlice = createSlice({
+  name: "ownerMailId",
   initialState,
   reducers: {
-    setorderPaymentDDView: (state, { payload }) => {
-      const { data } = payload;
-      state.orderPaymentDDView = updatedOrderPaymentDD(data.data),
+    setData: (state, { payload }) => {
+      const { data, year, month } = payload;
+      state.data = TenantEmail(data.data, year, month);
+      console.log(payload.data)
+      console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
-      state.totalAmount = payload.data.total;
     },
     setStatus: (state, { payload }) => {
       state.status = payload;
@@ -55,7 +55,7 @@ export const orderPaymentDD = createSlice({
         sort_order: "",
       };
     },
-    setorderPaymentDDViewFilters: (state, { payload }) => {
+    setFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
@@ -67,41 +67,40 @@ export const orderPaymentDD = createSlice({
 // reducer
 // Action creators are generated for each case reducer function
 export const {
-  setorderPaymentDDView,
+  setData,
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setorderPaymentDDViewFilters,
+  setFilters,
   setInitialState,
   setSorting,
-} = orderPaymentDD.actions;
+} = pmaSlice.actions;
 
-export const getorderPaymentDDView =
-  (payloadObj) => async (dispatch) => {
+export const getData =
+  (payloadObj, year, month) => async (dispatch) => {
+    console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportOrderPaymentDD`,
+        `${env_URL_SERVER}reportOwnerAllMailIDs`,
         payloadObj
       );
-
-      dispatch(setorderPaymentDDView({ data: response.data}));
+        
+      dispatch(setData({ data: response.data, year, month }));
       dispatch(setStatus("success"));
     } catch (err) {
       dispatch(setStatus("error"));
     }
   };
 
-export const downloadorderPaymentDDReport =
-  (payloadObj) => async (dispatch) => {
-    
+export const downloadDataXls =
+  (payloadObj, year, month) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportOrderPaymentDD`,
+        `${env_URL_SERVER}reportOwnerAllMailIDs`,
         payloadObj
       );
-      
       if ((response.data.filename, payloadObj.user_id)) {
         await dispatch(
           downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
@@ -115,25 +114,24 @@ export const downloadorderPaymentDDReport =
       dispatch(setStatus("error"));
     }
   };
-
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
-  try {
-    const response = await axios.post(
-      `${env_URL_SERVER}download/${filename}`,
-      {
-        filename: filename,
-        user_id: userId,
-      },
-      {
-        responseType: "blob",
-      }
-    );
-    const blob = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    FileSaver.saveAs(blob, "Order-payment-with-DD.xlsx");
-  } catch (error) {
-    console.log("error", error);
-  }
-};
-export default orderPaymentDD.reducer;
+  export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${env_URL_SERVER}download/${filename}`,
+        {
+          filename: filename,
+          user_id: userId,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      FileSaver.saveAs(blob, "OwnerMailId.xlsx");
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+export default pmaSlice.reducer;

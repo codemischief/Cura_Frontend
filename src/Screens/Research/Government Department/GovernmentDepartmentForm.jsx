@@ -497,7 +497,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="contactemail"
                               value={formik.values.contactemail}
                               onChange={handleChange}
@@ -607,10 +607,10 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title={`${editData?.id ? 'Save Department' : 'Add Department'}`}
+          title={`${editData?.id ? 'Save Government Department' : 'Add Government Department'}`}
           description={
             <div>
-              <p className="">Department Name: {values.departmentname}</p>
+              <p className="">Government Department Name: {values.departmentname}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
