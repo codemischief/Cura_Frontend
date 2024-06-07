@@ -49,7 +49,7 @@ const validationSchema = Yup.object().shape({
 //   "addressline2": "Suite 101",
 //   "suburb": "Downtown"
 // }
-const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
+const OwnerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   const [countryData, setCountryData] = useState({
     arr: [],
@@ -224,7 +224,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
                     <ModalHeader
                       onClose={handleClose}
-                      title={editData.id ? "Edit Employer" : "New Employer"}
+                      title={editData.id ? "Edit Owner" : "New Owner"}
                     />
                     </div>
                     <div className="h-auto w-full mt-[5px] ">
@@ -759,7 +759,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   // );
 };
 
-EmployerForm.propTypes = {
+OwnerForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   editData: PropTypes.shape({
@@ -774,4 +774,4 @@ EmployerForm.propTypes = {
   }),
   openSucess: PropTypes.func.isRequired,
 };
-export default EmployerForm;
+export default OwnerForm;
