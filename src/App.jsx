@@ -121,6 +121,8 @@ import ServiceTaxPaidByVendor from "./Screens/Reports/Statistics/ServiceTaxPaidB
 import TenantEmail from "./Screens/Reports/Contacts/TenantEmail/index.jsx";
 import ResetPassword from "./Screens/Login/ResetPassword.jsx";
 import RequestResetPassword from "./Screens/Login/RequestResetPassword.jsx";
+import OwnerMailId from "./Screens/Reports/Contacts/OwnerMailId/index.jsx";
+import ClientContactDetails from "./Screens/Reports/Contacts/ClientContactsDetails/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -473,6 +475,18 @@ const App = () => {
               <Route
                 path="reports/tenantEmail"
                 element={<TenantEmail />}
+              />
+              <Route
+                path="reports/tenantEmail"
+                element={<TenantEmail />}
+              />
+              <Route
+                path="reports/ownerMailId"
+                element={<OwnerMailId />}
+              />
+              <Route
+                path="reports/clientContactDetails"
+                element={<ClientContactDetails />}
               />
             </Route>
 
