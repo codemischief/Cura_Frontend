@@ -43,22 +43,22 @@ import OrderReceiptToServiceTaxReducer from "./slice/reporting/TallyReports/Orde
 import employer from "./slice/Research/EmployerSlice";
 import governmentdepartment from "./slice/Research/GovernmentDepartmentSlice";
 import agent from "./slice/Research/AgentSlice";
-import owner  from "./slice/Research/OwnerSlice";
-import serviceapartment  from "./slice/Research/ServiceApartmentSlice";
+import owner from "./slice/Research/OwnerSlice";
+import serviceapartment from "./slice/Research/ServiceApartmentSlice";
 import ClientStatistics from "./slice/reporting/Statistics/ClientStatistics";
 // import GovernmentDepartment from "../Screens/Research/Government Department/GovernmentDepartment";
 import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement";
-import TdsPaidByVendorReducer from "./slice/reporting/Group9/TdsByVendorSlice"
+import TdsPaidByVendorReducer from "./slice/reporting/Group9/TdsByVendorSlice";
 import TdsToGovtReducer from "./slice/reporting/Group9/tdsPaidToGovt";
-import VendorPaymentPeriodReducer from "./slice/reporting/Group9/VendorPaymentPeriodSlice"
-import friends  from "./slice/Research/FriendsSlice";
+import VendorPaymentPeriodReducer from "./slice/reporting/Group9/VendorPaymentPeriodSlice";
+import friends from "./slice/Research/FriendsSlice";
 import StatisticsReport from "./slice/reporting/Statistics/StatisticsReport";
 import ServiceTaxPaidByVendor from "./slice/reporting/Statistics/ServiceTaxPaidByVendor";
 import TenantEmail from "./slice/reporting/Contacts/TenantEmail";
 import OwnerMailId from "./slice/reporting/Contacts/OwnerMailId";
 import ClientContactsDetails from "./slice/reporting/Contacts/ClientContactsDetails";
 import banksandbranches from "./slice/Research/BanksAndBranchesSlice";
-
+import commonApiReducer from "./slice/commonApis";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -92,13 +92,13 @@ export const store = configureStore({
     clientTraceReport: ClientTraceReport,
     orderTraceReport: OrderTraceReport,
     vendorTraceReport: VendorTraceReport,
-    serviceapartment : serviceapartment,
+    serviceapartment: serviceapartment,
     employer: employer,
     governmentdepartment: governmentdepartment,
     agent: agent,
-    owner : owner,
-    friends : friends,
-    banksandbranches : banksandbranches,
+    owner: owner,
+    friends: friends,
+    banksandbranches: banksandbranches,
     clientStatistics: ClientStatistics,
     clientReceiptReport: ClientReceiptReportReducer,
     orderPaymentDDReport: OrderPaymentDDReportReducer,
@@ -108,14 +108,15 @@ export const store = configureStore({
     orderPaymentWithoutTds: OrderPaymentWithoutTdsReducer,
     orderReceiptToServiceTax: OrderReceiptToServiceTaxReducer,
     vendorStatement: VendorStatementReducer,
-    tdspaidByVendor:TdsPaidByVendorReducer,
+    tdspaidByVendor: TdsPaidByVendorReducer,
     tdsToGovt: TdsToGovtReducer,
-    vendorPaymentPeriod:VendorPaymentPeriodReducer,
-    statisticsReport:StatisticsReport,
-    serviceTaxPaidByVendor:ServiceTaxPaidByVendor,
+    vendorPaymentPeriod: VendorPaymentPeriodReducer,
+    statisticsReport: StatisticsReport,
+    serviceTaxPaidByVendor: ServiceTaxPaidByVendor,
     tenantEmail: TenantEmail,
-    ownerMailId:OwnerMailId,
-    clientContactsDetails:ClientContactsDetails,
+    ownerMailId: OwnerMailId,
+    clientContactsDetails: ClientContactsDetails,
+    commonApi: commonApiReducer,
   },
   // Add the RTK Query API middleware
 });
