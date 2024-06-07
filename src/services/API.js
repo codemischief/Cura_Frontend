@@ -14,6 +14,15 @@ const METHOD_POST = (data) => ({
     Authorization: `Bearer ${accessToken}`,
   },
 });
+const METHOD_POST_WITH_TOKEN = (data, token) => ({
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `bearer ${token}`,
+  },
+  body: JSON.stringify(data),
+});
+
 const DOWNLOAD_POST = (data) => ({
   method: "POST",
   body: JSON.stringify(data),
@@ -960,6 +969,7 @@ const getLLTenant = async (data) => {
 
   return response;
 };
+
 const getDepartmentTypeAdmin = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getDepartmentTypeAdmin`,
@@ -968,11 +978,46 @@ const getDepartmentTypeAdmin = async (data) => {
 
   return response;
 };
-const download = async (data,filename) => {
-  const response = await fetch(`${env_URL_SERVER}download/${filename}`,METHOD_POST(data));
-
+const download = async (data, filename) => {
+  const response = await fetch(
+    `${env_URL_SERVER}download/${filename}`,
+    METHOD_POST(data)
+  );
   console.log(response);
   return response;
+};
+
+const responseInterceptor = async (response) => {
+  if (!response.ok) {
+    // Handle HTTP errors
+    const statusCode = response.status;
+    if (statusCode === 400) {
+      throw new Error("Bad Request: The request was invalid.");
+    } else if (statusCode === 401) {
+      throw new Error(
+        "Unauthorized: Authentication failed or credentials are missing."
+      );
+    } else if (statusCode === 403) {
+      throw new Error("Forbidden: Access token expired");
+    } else if (statusCode === 404) {
+      throw new Error("Not Found: The resource was not found.");
+    } else {
+      throw new Error(`HTTP Error: ${statusCode}`);
+    }
+  }
+  let updatedResponse = await response.json();
+  return { data: updatedResponse, status: 200 };
+};
+const resetPassword = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}token`, METHOD_POST(data));
+  return responseInterceptor(response);
+};
+const changePassword = async (data, token) => {
+  const response = await fetch(
+    `${env_URL_SERVER}reset`,
+    METHOD_POST_WITH_TOKEN(data, token)
+  );
+  return responseInterceptor(response);
 };
 export const APIService = {
   getCountries,
@@ -1113,5 +1158,7 @@ export const APIService = {
   deleteLLTenant,
   getLLTenant,
   download,
-  getDepartmentTypeAdmin
+  getDepartmentTypeAdmin,
+  resetPassword,
+  changePassword
 };
