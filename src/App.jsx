@@ -160,7 +160,7 @@ const App = () => {
                 path="/admin/manageemployees"
                 element={<ManageEmployees />}
               />
-              <Route path="/admin/managebuilder" element={<ManageBuilder />} />
+              <Route path="/manage/managebuilder" element={<ManageBuilder />} />
               <Route
                 path="/manage/manageprojectinfo"
                 element={<ManageProjectInfo />}
@@ -254,11 +254,11 @@ const App = () => {
                 element={<ManageVendorPayment />}
               />
               <Route
-                path="admin/managebuilder/projects/:buildername"
+                path="manage/managebuilder/projects/:buildername"
                 element={<ManageBuilderProject />}
               />
               <Route
-                path="admin/managebuilder/contacts/:buildername"
+                path="/manage/managebuilder/contacts/:buildername"
                 element={<ManageBuilderContact />}
               />
 

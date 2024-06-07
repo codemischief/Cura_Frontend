@@ -77,7 +77,7 @@ export const navMenuConfig = [
           items: [
             {
               title: "Manage Builder",
-              path: PATH_DASHBOARD.manage.bankStatement,
+              path: PATH_DASHBOARD.manage.manageBuilder.root,
             },
             {
               title: "Manage Project",
