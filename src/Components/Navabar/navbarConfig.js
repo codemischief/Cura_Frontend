@@ -212,7 +212,7 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.list.orderInvoiceList,
             },
             {
-              title: "Vendor Payment List",
+              title: "Vendor Invoice List",
               path: PATH_DASHBOARD.report.list.vendorPayment,
             },
             {
