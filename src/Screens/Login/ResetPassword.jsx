@@ -1,203 +1,193 @@
-import { useState } from "react";
-import Logo from "../../assets/logo.jpg";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import * as Yup from "yup";
+import { useState } from "react";
+import { Form, FormikProvider, useFormik } from "formik";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { APIService } from "../../services/API";
+import AuthLayout from "../../Components/common/AuthLayout";
+import { handleError } from "../../utils/ErrorHandler";
+
+const passwordValidationSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is required"),
+});
 
 const ResetPassword = () => {
+  const navigate = useNavigate();
   const [openEyeIconPass, setOpenEyeIcon] = useState(false);
   const [confirmPasswordEye, setConfirmPasswordEye] = useState(false);
-  const [form, setForm] = useState({
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState({});
   const [backToLogin, setBackToLogin] = useState(false);
+  const [apiError, setApiError] = useState("");
   const url = window.location.href;
   const token = url.match(/reset\/(.+)/)[1];
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    // Clear the error message for the corresponding field if condition is met
-    if (errors[name]) {
-      setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
-    }
-    setForm({ ...form, [name]: value });
-  };
-  const handleBlur = async (e) => {
-    const { name, value } = e.target;
-    try {
-      if (
-        name === "password" ||
-        (name === "confirmPassword" && value !== form.password)
-      ) {
-        await Yup.reach(passwordValidationSchema, name).validate(value);
+  const formik = useFormik({
+    initialValues: {
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: passwordValidationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true);
+      try {
+        const response = await APIService.changePassword(
+          { password: values.password },
+          token
+        );
+        if (response.status === 200) {
+          setBackToLogin(true);
+        }
+        toast.success("Login success");
+      } catch (error) {
+        handleError(error);
+        setApiError(error.message);
+      } finally {
+        setSubmitting(false);
       }
-      setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
-    } catch (err) {
-      console.log("err", err);
-      setErrors((prevErrors) => ({ ...prevErrors, [name]: err.message }));
-    }
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await passwordValidationSchema.validate(form, { abortEarly: false });
-
-      const response = await APIService.changePassword(
-        { password: form.password },
-        token
-      );
-      if (response.status === 200) {
-        setBackToLogin(true);
-      }
-    } catch (err) {
-      if (err.inner) {
-        const validationErrors = {};
-        err.inner.forEach((error) => {
-          validationErrors[error.path] = error.message;
-        });
-        setErrors(validationErrors);
-      } else {
-        setErrors({
-          backendErr: err.message || "An unexpected error occurred",
-        });
-      }
-    }
-  };
-
-  const passwordValidationSchema = Yup.object().shape({
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
+    },
   });
 
-  console.log("errors", errors);
+  const { handleChange, values, errors, touched, handleSubmit, handleBlur } =
+    formik;
   return (
-    <div className="flex w-screen h-screen py-[20px] justify-center bg-[#F5F5F5]">
-      <img
-        className="w-[140px] h-[64px] absolute left-5"
-        src={Logo}
-        alt="company Logo"
-      />
+    <AuthLayout>
       <div className="w-3/5 h-[712px] bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
         {!backToLogin ? (
           <div className="w-[400px] mt-[35px]">
             <div className="text-center text-[21px] mb-[150px]">
               Reset your password
             </div>
-            <form className="space-y-[15px]" onSubmit={handleSubmit}>
-              <div className="space-y-[12px]">
-                <div className="space-y-[2px]">
-                  <div className="text-[#505050] text-[18px]">New Password</div>
-                  <div className="m-[0px] p-[0px] relative">
-                    <input
-                      className={`border-[1px] w-[400px] h-[48px] text-[#505050] px-3 text-[12px] ${
-                        errors?.password
-                          ? "border-[#FF0000]"
-                          : "border-[#C6C6C6]"
-                      }`}
-                      name="password"
-                      type={openEyeIconPass ? "text" : "password"}
-                      value={form.password}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      autoComplete="off"
-                    />
-                    {openEyeIconPass ? (
-                      <span className="w-[20px] h-[20px] absolute right-[10px] top-[10px]">
-                        <Visibility
-                          className="cursor-pointer"
-                          onClick={() => setOpenEyeIcon(false)}
-                        />
-                      </span>
-                    ) : (
-                      <span className="w-[20px] h-[20px] absolute right-[10px] top-[10px]">
-                        <VisibilityOff
-                          className="cursor-pointer"
-                          onClick={() => setOpenEyeIcon(true)}
-                        />
-                      </span>
+            <FormikProvider value={values}>
+              <Form
+                className="space-y-[15px]"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                }}
+              >
+                <div className="space-y-[12px]">
+                  <div className="space-y-[2px]">
+                    <div className="text-[#505050] text-[18px]">
+                      New Password
+                    </div>
+                    <div className="m-[0px] p-[0px] relative">
+                      <input
+                        className={`border-[1px] w-[400px] h-[48px] text-[#505050] px-3 text-[12px] ${
+                          errors?.password && touched.password
+                            ? "border-[#FF0000]"
+                            : "border-[#C6C6C6]"
+                        }`}
+                        name="password"
+                        type={openEyeIconPass ? "text" : "password"}
+                        onChange={handleChange}
+                        value={values.password}
+                        onBlur={handleBlur}
+                        autoComplete="off"
+                      />
+                      {openEyeIconPass ? (
+                        <span className="w-[20px] h-[20px] absolute right-[10px] top-[10px]">
+                          <Visibility
+                            className="cursor-pointer"
+                            onClick={() => setOpenEyeIcon(false)}
+                          />
+                        </span>
+                      ) : (
+                        <span className="w-[20px] h-[20px] absolute right-[10px] top-[10px]">
+                          <VisibilityOff
+                            className="cursor-pointer"
+                            onClick={() => setOpenEyeIcon(true)}
+                          />
+                        </span>
+                      )}
+                    </div>
+
+                    {touched.password && errors.password && (
+                      <div className="text-[12px] text-[#CD0000]">
+                        {errors?.password}
+                      </div>
                     )}
                   </div>
-
-                  <div className="text-[12px] text-[#CD0000]">
-                    {errors?.password}
-                  </div>
                 </div>
-              </div>
-              <div className="space-y-[12px]">
-                <div className="space-y-[2px]">
-                  <div className="text-[#505050] text-[18px]">
-                    Confirm Password
-                  </div>
-                  <div className="m-[0px] p-[0px] relative">
-                    <input
-                      className={`border-[1px] w-[400px] h-[48px] text-[#505050] px-3 text-[12px] ${
-                        errors.confirmPassword
-                          ? "border-[#FF0000]"
-                          : "border-[#C6C6C6]"
-                      }`}
-                      name="confirmPassword"
-                      type={confirmPasswordEye ? "text" : "password"}
-                      value={form.confirmPassword}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      autoComplete="off"
-                    />
-                    {confirmPasswordEye ? (
-                      <span className="w-[20px] h-[20px] absolute right-[10px] top-[10px]">
-                        <Visibility
-                          className="cursor-pointer"
-                          onClick={() => setConfirmPasswordEye(false)}
-                        />
-                      </span>
-                    ) : (
-                      <span className="w-[20px] h-[20px] absolute right-[10px] top-[10px]">
-                        <VisibilityOff
-                          className="cursor-pointer"
-                          onClick={() => setConfirmPasswordEye(true)}
-                        />
-                      </span>
+                <div className="space-y-[12px]">
+                  <div className="space-y-[2px]">
+                    <div className="text-[#505050] text-[18px]">
+                      Confirm Password
+                    </div>
+                    <div className="m-[0px] p-[0px] relative">
+                      <input
+                        className={`border-[1px] w-[400px] h-[48px] text-[#505050] px-3 text-[12px] ${
+                          errors.confirmPassword && touched.confirmPassword
+                            ? "border-[#FF0000]"
+                            : "border-[#C6C6C6]"
+                        }`}
+                        name="confirmPassword"
+                        type={confirmPasswordEye ? "text" : "password"}
+                        onChange={handleChange}
+                        value={values.confirmPassword}
+                        onBlur={handleBlur}
+                        autoComplete="off"
+                      />
+                      {confirmPasswordEye ? (
+                        <span className="w-[20px] h-[20px] absolute right-[10px] top-[10px]">
+                          <Visibility
+                            className="cursor-pointer"
+                            onClick={() => setConfirmPasswordEye(false)}
+                          />
+                        </span>
+                      ) : (
+                        <span className="w-[20px] h-[20px] absolute right-[10px] top-[10px]">
+                          <VisibilityOff
+                            className="cursor-pointer"
+                            onClick={() => setConfirmPasswordEye(true)}
+                          />
+                        </span>
+                      )}
+                    </div>
+
+                    {touched.confirmPassword && errors.confirmPassword && (
+                      <div className="text-[12px] text-[#CD0000]">
+                        {errors?.confirmPassword}
+                      </div>
                     )}
                   </div>
+                </div>
+                <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div>
 
-                  <div className="text-[12px] text-[#CD0000]">
-                    {errors?.confirmPassword}
+                {/* error message */}
+                {((touched?.password && errors?.password) ||
+                  (touched.confirmPassword && errors.confirmPassword)) && (
+                  <div
+                    id="inputError"
+                    className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px]"
+                  >
+                    {errors?.password} {errors.confirmPassword}
                   </div>
+                )}
+                {apiError && (
+                  <div
+                    id="inputError"
+                    className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px]"
+                  >
+                    {apiError}
+                  </div>
+                )}
+                <div className="flex flex-col items-center justify-center gap-[10px]">
+                  <button
+                    disabled={formik.isSubmitting}
+                    className="bg-[#004DD7] w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer"
+                    type="submit"
+                  >
+                    {formik.isSubmitting ? "Reseting..." : "Reset"}
+                  </button>
                 </div>
-              </div>
-              <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div>
-
-              {/* error message */}
-              {(errors?.password || errors.confirmPassword) && (
-                <div
-                  id="inputError"
-                  className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px]"
-                >
-                  {errors?.password} {errors.confirmPassword}
-                </div>
-              )}
-              {errors?.backendErr && (
-                <div
-                  id="inputError"
-                  className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px]"
-                >
-                  {errors?.backendErr}
-                </div>
-              )}
-              <div className="flex flex-col items-center justify-center gap-[10px]">
-                <button
-                  className="bg-[#004DD7] w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer"
-                  type="submit"
-                >
-                  Reset
-                </button>
-              </div>
-            </form>
+              </Form>
+            </FormikProvider>
           </div>
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-[124px]">
@@ -233,14 +223,16 @@ const ResetPassword = () => {
             <button
               className="bg-[#004DD7] w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer"
               type="submit"
-              onClick={() => {}}
+              onClick={() => {
+                navigate("/login");
+              }}
             >
               Back to Login
             </button>
           </div>
         )}
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 
