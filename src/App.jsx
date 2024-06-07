@@ -119,6 +119,8 @@ import VendorPaymentPeriodView from "./Screens/Reports/VendorReport/VendorPaymen
 import StatisticsReport from "./Screens/Reports/Statistics/StatisticsReport/index.jsx";
 import ServiceTaxPaidByVendor from "./Screens/Reports/Statistics/ServiceTaxPaidByVendor/index.jsx";
 import TenantEmail from "./Screens/Reports/Contacts/TenantEmail/index.jsx";
+import ResetPassword from "./Screens/Login/ResetPassword.jsx";
+import RequestResetPassword from "./Screens/Login/RequestResetPassword.jsx";
 import OwnerMailId from "./Screens/Reports/Contacts/OwnerMailId/index.jsx";
 import ClientContactDetails from "./Screens/Reports/Contacts/ClientContactsDetails/index.jsx";
 
@@ -141,6 +143,8 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/user" element={<Userscreen />} />
             <Route path="/unauthorized" element={<UnAuthorized />} />
+            <Route path="/reset/:token" element={<ResetPassword />} />
+            <Route path="/reset" element={<RequestResetPassword />} />
 
             {/* <Route element={<RequireAuth />}> */}
             <Route
@@ -177,19 +181,31 @@ const App = () => {
               <Route path="/admin/payments" element={<Payments />} />
 
               <Route path="/research/prospect" element={<PropectusPage />} />
-              <Route path="/research/employer" element={<ResearchEmployer/>}/>
+              <Route path="/research/employer" element={<ResearchEmployer />} />
               <Route path="/research/owner" element={<ResearchOwner />} />
-              <Route path="/research/educational" element={<ResearchEducational />} />
-              <Route path="/research/architect" element={<ResearchArchitect />} />
+              <Route
+                path="/research/educational"
+                element={<ResearchEducational />}
+              />
+              <Route
+                path="/research/architect"
+                element={<ResearchArchitect />}
+              />
               <Route path="/research/mandals" element={<ResearchMandals />} />
               <Route
                 path="/research/professionals"
                 element={<ResearchProfessionals />}
               />
-              <Route path="/research/businessgroup" element={<ResearchBusinessGroup />} />
+              <Route
+                path="/research/businessgroup"
+                element={<ResearchBusinessGroup />}
+              />
               <Route path="/research/banks" element={<ResearchBanks />} />
               <Route path="/research/friends" element={<ResearchFriends />} />
-              <Route path="/research/serviceapartment" element={<ResearchServiceApartments />} />
+              <Route
+                path="/research/serviceapartment"
+                element={<ResearchServiceApartments />}
+              />
               <Route path="/research/agent" element={<ResearchAgent />} />
               {/* <Route path="/reasearch/employer" element={<Employer />} /> */}
               <Route

@@ -10,9 +10,9 @@ import { APIService } from "../../../services/API";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 
 import {
-  addEmployerData,
-  editEmployerData
-} from "../../../Redux/slice/Research/EmployerSlice"
+  addAgents,
+  editAgents
+} from "../../../Redux/slice/Research/AgentSlice"
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
@@ -23,39 +23,9 @@ const validationSchema = Yup.object().shape({
   // state: Yup.string().required("State is required"),
   // city: Yup.string().required("City is required"),
 });
-// {
-//   "user_id": 1234,
-//   "country": 5,
-//   "onsiteopportunity": true,
-//   "city": "Pune",
-//   "state": "Maharashtra",
-//   "admincontactmail": "admin@example.com",
-//   "zip": "10001",
-//   "hc": "Healthcare",
-//   "website": "www.example.com",
-//   "admincontactphone": "1234567890",
-//   "contactname1": "Jane Smith",
-//   "contactmail1": "jane@example.com",
-//   "contactphone1": "2345678901",
-//   "contactname2": "Michael Johnson",
-//   "contactmail2": "michael@example.com",
-//   "contactphone2": "3456789012",
-//   "hrcontactname": "Emily Brown",
-//   "hrcontactmail": "hr@example.com",
-//   "hrcontactphone": "4567890123",
-//   "admincontactname": "Admin Name",
-//   "employername": "Example Corp",
-//   "industry": "Technology",
-//   "addressline1": "123 Main St",
-//   "addressline2": "Suite 101",
-//   "suburb": "Downtown"
-// }
 const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
-  const [countryData, setCountryData] = useState({
-    arr: [],
-    obj: {},
-  });
+  const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -76,13 +46,8 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
-    const resultConverted = await result?.reduce((acc, current) => {
-      acc[current.id] = current.name;
-      return acc;
-    }, {});
-
+    setCountryData(result)
     setLoading(false);
-    setCountryData({ arr: result, obj: resultConverted });
   };
 
   const fetchCityData = async (id) => {
@@ -94,8 +59,15 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   useEffect(() => {
     fetchCountryData();
-    fetchStateData(5);
-    fetchCityData("Maharashtra");
+    if(editData?.id) {
+      // then its update wala case
+      fetchStateData(editData?.countryid)
+      fetchCityData(editData?.state)
+    }else {
+      // then its add wala case
+      fetchStateData(5);
+     fetchCityData("Maharashtra");
+    }
   }, []);
 
   const fetchStateData = async (id) => {
@@ -130,7 +102,8 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
       localitiesdealing : editData.localitiesdealing ? editData.localitiesdealing : null,
       agencyname : editData.agencyname ? editData.agencyname : null,
       phoneno2 : editData.phoneno2 ? editData.phoneno2 : null,
-      registered : editData.registered ? editData.registered : null
+      registered : editData.registered ? editData.registered : false,
+      reraregistrationnumber : editData.reraregistrationnumber ? editData.reraregistrationnumber : null,
       // employername : editData?.employername ? editData.employername : "",
       // adressline1 : editData?.addressline1 ? editData.addressline1 : "",
       // adressline2 : editData?.addressline2 ? editData.addressline2 : "",
@@ -210,7 +183,17 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    setFieldValue(e.target.name, e.target.value);
+    // console.log(e.target)
+    // setFieldValue(e.target.name, e.target.value);
+    const { type, name, value, checked } = e.target;
+    // const fieldValue = type === 'checkbox' ? checked : value;
+    console.log(name, checked);
+    if(type == 'checkbox') {
+      setFieldValue(name,checked)
+    }else {
+
+      setFieldValue(name, value);
+    }
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
@@ -409,9 +392,9 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
                       <div className="w-full h-20  flex items-center justify-center">
                          <div className="flex items-center">
                             <input 
-                             type="checkbox" checked={false}
+                             type="checkbox" checked={formik.values.registered}
                                 className='mr-3 h-4 w-4'
-                                name="onsiteopportunity"
+                                name="registered"
                                 onBlur={handleBlur}
                                 onChange={handleChange}/>
                               <label className="inputFieldLabel">
@@ -456,13 +439,13 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Update" : "Save"}
+          btnTitle={editData?.id ? "Save" : "Add"}
           onClose={() => {
             setOpenConfimation(false);
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Real Estate Agent"
+          title={`${editData?.id ? 'Save' : 'Add'} Real Estate Agent`}
           description={
             <div>
               <p className="">Agent: {values.nameofagent}</p>
@@ -476,7 +459,7 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this Real Estate Agent?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Real Estate Agent?
               </Typography>
             </div>
           }

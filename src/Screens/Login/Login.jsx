@@ -158,7 +158,7 @@ const Login = () => {
               <div className="flex flex-col items-center justify-center gap-2.5">
                 <Link
                   className="text-blue-700 text-lg cursor-pointer"
-                  to="/forgot-password"
+                  to="/reset"
                 >
                   Forgot Password
                 </Link>
@@ -171,7 +171,11 @@ const Login = () => {
                       : "bg-blue-700"
                   }`}
                 >
-                  {isSubmitting ? <CircularProgress sx={{color:"white"}}/> : "Login"}
+                  {isSubmitting ? (
+                    <CircularProgress sx={{ color: "white" }} />
+                  ) : (
+                    "Login"
+                  )}
                 </button>
               </div>
             </Form>
