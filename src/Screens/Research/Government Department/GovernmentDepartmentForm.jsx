@@ -296,6 +296,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               defaultValue="Select Country"
                               onChange={handleCountrySelect}
                               onBlur={handleBlur}
+                              style={{bottom : 'auto'}}
                             >
                               <option value="" className="inputValidationError" hidden>
                                 Select Country
@@ -497,7 +498,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="contactemail"
                               value={formik.values.contactemail}
                               onChange={handleChange}

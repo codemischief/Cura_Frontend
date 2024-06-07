@@ -137,17 +137,14 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
     try {
       const data = {
         user_id: 1234,
-        personname: values.personname,
-        suburb: values.suburb,
-        city: values.city,
-        state: values.state,
-        phoneno: values.phoneNumber,
-        email1: values.email,
-        country: Number(values.countryId),
-        propertylocation: values.propertylocation,
-        possibleservices: values.possibleservices,
-        createdby: 1234,
-        isdeleted: false,
+        nameofagent: values.nameofagent,
+        agencyname: values.agencyname,
+        emailid : values.emailid,
+        phoneno: values.phoneno,
+        phoneno2: values.phoneno2,
+        localitiesdealing: values.localitiesdealing,
+        "nameofpartners": "Jane Smith, Michael Johnson",
+        "registered": "registered"
       };
 
       if (editData?.id) {
