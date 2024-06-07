@@ -17,10 +17,10 @@ import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
 const validationSchema = Yup.object().shape({
-  departmentname : Yup.string().required('Department Name Is Required'),
-  countryId: Yup.string().required("Country Name is required"),
-  state: Yup.string().required("State is required"),
-  city: Yup.string().required("City is required"),
+  departmentname : Yup.string().required('Enter Department Name'),
+  countryId: Yup.string().required("Select Country"),
+  state: Yup.string().required("Select State"),
+  city: Yup.string().required("Select City"),
 });
 const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
