@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { env_URL_SERVER, updatedEmployerData } from "../../helper";
-
+import FileSaver from "file-saver";
 const initialState = {
   EmployerData: [],
   formSubmissionStatus: "",

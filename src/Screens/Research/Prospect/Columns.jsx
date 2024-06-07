@@ -7,7 +7,8 @@ import {
   TextFilterField,
 } from "./CustomFilterField";
 import { Create, Delete } from "@mui/icons-material";
-
+import DeleteButton from "../../../Components/common/buttons/deleteButton";
+import EditButton from "../../../Components/common/buttons/EditButton";
 export default function getColumns(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
 
@@ -20,7 +21,7 @@ export default function getColumns(handleEdit, handleDelete) {
         justifyContent: "center",
         minWidth: "50px",
       },
-      align: "left",
+      align: "center",
       sorting: false,
       field: "srNo",
 
@@ -137,14 +138,22 @@ export default function getColumns(handleEdit, handleDelete) {
       render: (rowData) => {
         return (
           <div className="flex gap-2 justify-start">
-            <Create
+            <EditButton
+              handleEdit={handleEdit}
+              rowData={rowData}
+            />
+            <DeleteButton
+              handleDelete={handleDelete}
+              rowData={rowData}
+            />
+            {/* <Create
               sx={{ width: "20px", height: "20px" }}
               onClick={() => handleEdit(rowData)}
             />
             <Delete
               sx={{ width: "20px", height: "20px" }}
               onClick={() => handleDelete(rowData)}
-            />
+            /> */}
           </div>
         );
       },

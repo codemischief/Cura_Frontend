@@ -20,17 +20,14 @@ const validationSchema = Yup.object().shape({
   state: Yup.string().required("State is required"),
   city: Yup.string().required("City is required"),
   personname: Yup.string().required("Person Name is required"),
-  suburb: Yup.string().required("suburbis required"),
+  suburb: Yup.string().required("suburb is required"),
   propertylocation: Yup.string().required("Location is required"),
   possibleservices: Yup.string().required("posiible services is required"),
 });
 
 const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
-  const [countryData, setCountryData] = useState({
-    arr: [],
-    obj: {},
-  });
+  const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -51,13 +48,14 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
-    const resultConverted = await result?.reduce((acc, current) => {
-      acc[current.id] = current.name;
-      return acc;
-    }, {});
+    setCountryData(result)
+    // const resultConverted = await result?.reduce((acc, current) => {
+    //   acc[current.id] = current.name;
+    //   return acc;
+    // }, {});
 
-    setLoading(false);
-    setCountryData({ arr: result, obj: resultConverted });
+    // setLoading(false);
+    // setCountryData({ arr: result, obj: resultConverted });
   };
 
   const fetchCityData = async (id) => {
@@ -69,8 +67,16 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   useEffect(() => {
     fetchCountryData();
-    fetchStateData(5);
-    fetchCityData("Maharashtra");
+    if(editData?.id ) {
+      // we are editing
+      // console.log(editData)
+      fetchStateData(editData?.country)
+      fetchCityData(editData?.state)
+    }else {
+      fetchStateData(5);
+      fetchCityData("Maharashtra");
+    }
+    
   }, []);
 
   const fetchStateData = async (id) => {
@@ -122,11 +128,10 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         country: Number(values.countryId),
         propertylocation: values.propertylocation,
         possibleservices: values.possibleservices,
-        createdby: 1234,
-        isdeleted: false,
       };
 
       if (editData?.id) {
+        data.id = editData?.id
         await dispatch(editProspectData(data));
         openSucess();
       } else {
@@ -161,14 +166,17 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const handleChange = (e) => {
     setFieldValue(e.target.name, e.target.value);
   };
-  const handleCountrySelect = (country) => {
-    setFieldValue("countryId", country?.id);
-    setFieldValue("state", "");
-    setFieldValue("city", "");
-    fetchStateData(country?.id);
+  const handleCountrySelect = (e) => {
+    setFieldValue("countryId", e.target.value);
+    setFieldValue("city", null);
+    setFieldValue("state", null);
+    setCityData([])
+    fetchStateData(e.target.value);
   };
 
   const handleState = (e) => {
+    console.log(e.target.name)
+    console.log(e.target.value)
     setFieldValue(e.target.name, e.target.value);
     fetchCity(e.target.value);
   };
@@ -182,15 +190,18 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         className="flex justify-center items-center"
       >
         <>
-          <Draggable>
+          <Draggable handle="div.move">
             <div className="flex justify-center items-center">
               <FormikProvider value={values}>
                 <Form className="space-y-4" onSubmit={handleSubmit}>
                   <div className="w-[778px] h-auto bg-white rounded-lg">
+                    <div className="move cursor-move">
+
                     <ModalHeader
                       onClose={handleClose}
                       title={editData.id ? "Edit Prospect" : "New Prospect"}
-                    />
+                      />
+                    </div>
                     <div className="h-auto w-full mt-[5px] ">
                       <div className="flex gap-[48px] justify-center items-start">
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
@@ -223,12 +234,29 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <span className="requiredError">*</span>
                             </div>
 
-                            <CustomSelect
-                              isLoading={loading}
-                              value={countryData?.obj[formik.values.countryId]}
-                              onSelect={handleCountrySelect}
-                              options={countryData?.arr}
-                            />
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
+                              name="countryId"
+                              value={formik.values.countryId}
+                              defaultValue="Select Country"
+                              onChange={handleCountrySelect}
+                            >
+                              <option value="" className="inputFieldValue" hidden>
+                                Select Country
+                              </option>
+                              {countryData.length > 0 &&
+                                countryData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.id}
+                                      key={editData.id}
+                                    >
+                                      {editData.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
                             <div className="inputValidationError">
                               {errors.countryId && (
                                 <div>{errors.countryId}</div>
@@ -240,7 +268,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 State Name
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                               <span className="requiredError">*</span>
                             </div>
                             <select
                               // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -250,8 +278,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               defaultValue="Select State"
                               onChange={handleState}
                             >
-                              <option value="" className="inputFieldValue">
-                                select state
+                              <option value="" className="inputFieldValue" hidden>
+                                Select State
                               </option>
                               {stateData.length > 0 &&
                                 stateData.map((editData) => {
@@ -279,7 +307,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 City Name
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span> 
                             </div>
 
                             <select
@@ -287,12 +315,12 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               className="selectBoxField inputFieldValue"
                               name="city"
                               value={formik.values.city}
-                              defaultValue="Select State"
+                              defaultValue="Select City"
                               onChange={handleChange}
                               onBlur={handleBlur}
                             >
-                              <option value="" className="inputValidationError">
-                                select city
+                              <option value="" className="inputValidationError hidden">
+                                Select City
                               </option>
                               {cityData.length > 0 &&
                                 cityData.map((editData) => {
@@ -300,7 +328,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                     <option
                                       value={editData.city}
                                       key={editData.city}
-                                      selected
+                
                                     >
                                       {editData.city}
                                     </option>
@@ -318,7 +346,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">Suburb</label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span>
                             </div>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -340,7 +368,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <label className="inputFieldLabel">
                               Property Location
                             </label>
-                            {/* <span className="requiredError">*</span> */}
+                             <span className="requiredError">*</span>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
@@ -366,7 +394,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 Possible Services
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span> 
                             </div>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -460,9 +488,9 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Prospect"
+          title={`${editData?.id ? 'Save Prospect' : 'Add Prospect'}`}
           description={
-            <div>
+            <div className="flex flex-col items-center justify-center">
               <p className="">Prospect: {values.personname}</p>
               <Typography
                 sx={{
@@ -474,7 +502,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this Prospect?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Prospect?
               </Typography>
             </div>
           }

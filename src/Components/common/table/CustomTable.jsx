@@ -23,7 +23,7 @@ const SimpleTable = ({
         style={{ height: height }}
       >
         <table style={{ width: "-webkit-fill-available" }}>
-          <thead className="h-[115px] sticky top-0 z-100 bg-white">
+          <thead className="h-[115px] sticky top-0 z-100 bg-white ">
             <tr className="h-[56px]">
               {columns.map((column, index) => (
                 <th

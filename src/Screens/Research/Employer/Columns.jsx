@@ -7,7 +7,8 @@ import {
   TextFilterField,
 } from "./CustomFilterField";
 import { Create, Delete } from "@mui/icons-material";
-
+import DeleteButton from "../../../Components/common/buttons/deleteButton";
+import EditButton from "../../../Components/common/buttons/EditButton";
 export default function connectionDataColumn(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
 
@@ -85,7 +86,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 5,
       title: "Onsite Oppurtunity",
-      field: "onsiteopportunity",
+      field: "onsiteopportunitytext",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
@@ -122,19 +123,28 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         width : '5%'
-        // maxWidth: "18.25rem",
       },
       render: (rowData) => {
         return (
-          <div className="flex gap-2 justify-start">
-            <Create
-              sx={{ width: "20px", height: "20px" }}
+          <div className="flex gap-2 justify-start ">
+            {/* <Create
+              sx={{ width: "20px", height: "20px", color : '#c6c6c6', cursor : 'pointer'}}
+
               onClick={() => handleEdit(rowData)}
+            /> */}
+            <EditButton
+              handleEdit={handleEdit}
+              rowData={rowData}
             />
-            <Delete
-              sx={{ width: "20px", height: "20px" }}
+            <DeleteButton
+                 handleDelete={handleDelete}
+                 rowData={rowData}
+            />
+            {/* <Delete
+
+              sx={{ width: "20px", height: "20px", color : '#c6c6c6' , cursor : 'pointer'}}
               onClick={() => handleDelete(rowData)}
-            />
+            /> */}
           </div>
         );
       },

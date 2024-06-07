@@ -47,14 +47,15 @@ import owner  from "./slice/Research/OwnerSlice";
 import serviceapartment  from "./slice/Research/ServiceApartmentSlice";
 import ClientStatistics from "./slice/reporting/Statistics/ClientStatistics";
 // import GovernmentDepartment from "../Screens/Research/Government Department/GovernmentDepartment";
-
 import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement";
-
 import TdsPaidByVendorReducer from "./slice/reporting/Group9/TdsByVendorSlice"
 import TdsToGovtReducer from "./slice/reporting/Group9/tdsPaidToGovt";
 import VendorPaymentPeriodReducer from "./slice/reporting/Group9/VendorPaymentPeriodSlice"
 import friends  from "./slice/Research/FriendsSlice";
 import StatisticsReport from "./slice/reporting/Statistics/StatisticsReport";
+import ServiceTaxPaidByVendor from "./slice/reporting/Statistics/ServiceTaxPaidByVendor";
+import TenantEmail from "./slice/reporting/Contacts/TenantEmail";
+import banksandbranches from "./slice/Research/BanksAndBranchesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -95,6 +96,7 @@ export const store = configureStore({
     agent: agent,
     owner : owner,
     friends : friends,
+    banksandbranches : banksandbranches,
     clientStatistics: ClientStatistics,
     clientReceiptReport: ClientReceiptReportReducer,
     orderPaymentDDReport: OrderPaymentDDReportReducer,
@@ -108,6 +110,8 @@ export const store = configureStore({
     tdsToGovt: TdsToGovtReducer,
     vendorPaymentPeriod:VendorPaymentPeriodReducer,
     statisticsReport:StatisticsReport,
+    serviceTaxPaidByVendor:ServiceTaxPaidByVendor,
+    tenantEmail: TenantEmail,
   },
   // Add the RTK Query API middleware
 });

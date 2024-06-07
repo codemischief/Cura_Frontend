@@ -1,15 +1,15 @@
 import { useDispatch } from "react-redux";
-import { FilterField } from "../../../Components/common/table/FilterField";
+import { FilterField } from "../../../../Components/common/table/FilterField";
+// import { setPmaClientReportFilters, setPageNumber } from "../../../Redux/slice/reporting/DuplicateClientReports";
+import { setFilters , setPageNumber } from "../../../../Redux/slice/reporting/Contacts/TenantEmail";
 import { useSelector } from "react-redux";
-// import { setFilters, setPageNumber } from "../../../Redux/slice/Research/ProspectSlice";
-// import { setFilters, setPageNumber } from "../../../Redux/slice/Research/EmployerSlice";
-import {setFilters , setPageNumber} from "../../../Redux/slice/Research/BanksAndBranchesSlice"
+
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.banksandbranches);
+  const { filter } = useSelector((state) => state.tenantEmail);
 
   const handleFilterChange = (filters) => {
-    dispatch(setFilters({...filters}))
+    dispatch(setFilters({...filters}));
     dispatch(setPageNumber(1))
   };
 

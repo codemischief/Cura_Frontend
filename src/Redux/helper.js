@@ -382,4 +382,24 @@ export const updatedFriendsData = (data) => {
     ...ele,
   }));
 }
+export const serviceTaxPaidByVendor = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+    servicetaxamount: billing.servicetaxamount ? floorDecimal(billing.servicetaxamount) : "0.00",
+    amount: billing.amount
+      ? floorDecimal(billing.amount)
+      : "0.00",
+      paymentdate: billing.paymentdate ? formatDate(billing.paymentdate) : "",
+  }));
+}
+export const TenantEmail = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
+export const updatedBanksAndBranchesData = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
