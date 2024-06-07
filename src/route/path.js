@@ -19,11 +19,6 @@ export const PATH_DASHBOARD = {
   admin: {
     manageUsers: path(ROOTS.admin, "/manageuser"),
     manageEmployees: path(ROOTS.admin, "/manageemployees"),
-    manageBuilder: {
-      root: path(ROOTS.admin, "/manageBuilder"),
-      contact: "/managebuilder/projects/:buildername",
-      projects: "/managebuilder/contacts/:buildername",
-    },
     country: path(ROOTS.admin, "/country"),
     state: path(ROOTS.admin, "/state"),
     city: path(ROOTS.admin, "/city"),
@@ -55,11 +50,16 @@ export const PATH_DASHBOARD = {
     ),
   },
   manage: {
+    manageBuilder: {
+      root: path(ROOTS.manage, "/manageBuilder"),
+      contact: "/managebuilder/projects/:buildername",
+      projects: "/managebuilder/contacts/:buildername",
+    },
     bankStatement: path(ROOTS.manage, "/bankstatement"),
     projectManagementInfo: path(ROOTS.manage, "/manageprojectinfo"),
       manageOrder: path(ROOTS.manage, "/manageOrder"),
-    clientInfo: path(ROOTS.manage, "/manageclientinfo"),
-    clientProperty: path(ROOTS.manage, "/manageclientproperty"),
+      clientInfo: path(ROOTS.manage, "/manageclientinfo"),
+      clientProperty: path(ROOTS.manage, "/manageclientproperty"),
     clientReceipt: path(ROOTS.manage, "/manageclientreceipt"),
     llAgreement: path(ROOTS.manage, "/managellagreement"),
     pmaAgreement: path(ROOTS.manage, "/managepmaagreement"),

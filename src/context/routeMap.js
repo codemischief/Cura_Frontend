@@ -4,7 +4,7 @@ export const routeMapObj = Object.freeze({
   User: PATH_DASHBOARD.user,
   // admin
   Payment: PATH_DASHBOARD.admin.payments,
-  BuilderInfo: PATH_DASHBOARD.admin.manageBuilder.root,
+  BuilderInfo: PATH_DASHBOARD.manage.manageBuilder.root,
   LOB: PATH_DASHBOARD.admin.LOB,
   Locality: PATH_DASHBOARD.admin.locality,
   Country: PATH_DASHBOARD.admin.country,

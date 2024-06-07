@@ -297,34 +297,32 @@ export const StatisticsReport = (data) => {
 export const vendorStatementReport = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    invoicedate_orderpaymentdate: formatDate(ele.invoicedate_orderpaymentdate),
-    invoiceamount_orderpaymentamount: floorDecimal(
-      ele.invoiceamount_orderpaymentamount
-    ),
+    invoicedate_orderpaymentdate: formatDate(ele.invoicedate_orderpaymentdate)?formatDate(ele.invoicedate_orderpaymentdate):"",
+    invoiceamount_orderpaymentamount: floorDecimal(ele.invoiceamount_orderpaymentamount)?floorDecimal(ele.invoiceamount_orderpaymentamount):"0.00",
   }));
 };
 
 export const tdsPaidByVendorReport = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    tds: floorDecimal(ele.tds),
-    amount: floorDecimal(ele.amount),
-    paymentdate: formatDate(ele.paymentdate),
+    tds: floorDecimal(ele.tds)?floorDecimal(ele.tds):"0.00",
+    amount: floorDecimal(ele.amount)?floorDecimal(ele.amount):"0.00",
+    paymentdate: formatDate(ele.paymentdate)?formatDate(ele.paymentdate):"",
   }));
 };
 
 export const vendorPaymentPeriodReport = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    servicetaxamount: floorDecimal(ele.servicetaxamount),
-    amount: floorDecimal(ele.amount),
-    tds: floorDecimal(ele.tds),
+    servicetaxamount: floorDecimal(ele.servicetaxamount)?floorDecimal(ele.servicetaxamount): "0.00",
+    amount: floorDecimal(ele.amount)?floorDecimal(ele.amount):"0.00",
+    tds: floorDecimal(ele.tds)?floorDecimal(ele.tds):"0.00",
   }));
 };
 export const tdsPaidGovtFormat = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    amount: floorDecimal(ele.amount),
+    amount: floorDecimal(ele.amount)?floorDecimal(ele.amount):"0.00",
   }));
 };
 
@@ -332,8 +330,8 @@ export const tdsPaidGovtFormat = (data) => {
 export const clientReceiptFormatData = (data)=>{
   return data.map((ele, index) => ({
     ...ele,
-    date: formatDate(ele.date),
-    ledgeramount:floorDecimal(ele.ledgeramount)
+    date: formatDate(ele.date)?formatDate(ele.date):"",
+    ledgeramount:floorDecimal(ele.ledgeramount)?floorDecimal(ele.ledgeramount):"0.00"
 
   }));
 }
@@ -372,7 +370,7 @@ export const updatedServiceApartmentData = (data) => {
 export const receiptToInvoice = (data)=>{
   return data.map((ele, index) => ({
     ...ele,
-    date: formatDate(ele.date),
+    date: formatDate(ele.date)?formatDate(ele.date):"",
    
 
   }));

@@ -77,7 +77,7 @@ export const navMenuConfig = [
           items: [
             {
               title: "Manage Builder",
-              path: PATH_DASHBOARD.manage.bankStatement,
+              path: PATH_DASHBOARD.manage.manageBuilder.root,
             },
             {
               title: "Manage Project",
@@ -212,7 +212,7 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.list.orderInvoiceList,
             },
             {
-              title: "Vendor Payment List",
+              title: "Vendor Invoice List",
               path: PATH_DASHBOARD.report.list.vendorPayment,
             },
             {
