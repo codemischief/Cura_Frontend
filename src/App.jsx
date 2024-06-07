@@ -105,6 +105,10 @@ import VendorStatementView from "./Screens/Reports/VendorReport/VendorStatement/
 import TdsPaidToGovernement from "./Screens/Reports/VendorReport/TdsPaidToGovernment/index.jsx";
 import TdsPaidByVendorView from "./Screens/Reports/VendorReport/TDSPaidByvendor/index.jsx";
 import VendorPaymentPeriodView from "./Screens/Reports/VendorReport/VendorPaymentPeriod/index.jsx";
+import OrderStaticsView from "./Screens/Reports/Statistics/OrderStatisticsReport/index.jsx";
+import ActiveLLAgreementView from "./Screens/Reports/ActiveLlAgreement/index.jsx";
+import OrderAnalysis from "./Screens/Reports/OrderAnalysis/index.jsx";
+import LLlistReport from "./Screens/Reports/LLlist/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -427,6 +431,23 @@ const App = () => {
                 path="reports/vendorpaymentsummary"
                 element={<VendorPaymentPeriodView />}
               />
+              <Route 
+                path="/reports/orderStaticsView"
+                element={<OrderStaticsView/>}
+              />
+               <Route 
+                path="/reports/activellagreement"
+                element={<ActiveLLAgreementView/>}
+              />
+               <Route 
+                path="/reports/orderanalysis"
+                element={<OrderAnalysis/>}
+              />
+               <Route 
+                path="/reports/Lllist"
+                element={<LLlistReport/>}
+              />
+
             </Route>
 
             <Route path="/*" element={<NotFound />} />

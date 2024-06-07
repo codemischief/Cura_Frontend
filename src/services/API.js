@@ -960,6 +960,14 @@ const getLLTenant = async (data) => {
 
   return response;
 };
+const getPaymentStatusAdmin = async(data)=>{
+  const response = await fetch(
+    `${env_URL_SERVER}getPaymentStatusAdmin`,
+    METHOD_POST(data)
+  );
+
+  return response;
+}
 const download = async (data,filename) => {
   const response = await fetch(`${env_URL_SERVER}download/${filename}`,METHOD_POST(data));
 
@@ -1105,4 +1113,5 @@ export const APIService = {
   deleteLLTenant,
   getLLTenant,
   download,
+  getPaymentStatusAdmin
 };

@@ -318,42 +318,55 @@ export const tdsPaidGovtFormat = (data) => {
   }));
 };
 
-
-export const clientReceiptFormatData = (data)=>{
+export const clientReceiptFormatData = (data) => {
   return data.map((ele, index) => ({
     ...ele,
     date: formatDate(ele.date),
-    ledgeramount:floorDecimal(ele.ledgeramount)
-
+    ledgeramount: floorDecimal(ele.ledgeramount),
   }));
-}
+};
 export const updatedEmployerData = (data) => {
-  console.log(data)
+  console.log(data);
   return data.map((billing, index) => ({
     ...billing,
   }));
-}
+};
 export const updatedGovernmentDepartmentData = (data) => {
-  console.log(data)
+  console.log(data);
   return data.map((billing, index) => ({
     ...billing,
   }));
-}
+};
 export const updatedAgentData = (data) => {
   return data.map((billing, index) => ({
     ...billing,
   }));
-}
+};
 
-export const receiptToInvoice = (data)=>{
+export const receiptToInvoice = (data) => {
   return data.map((ele, index) => ({
     ...ele,
     date: formatDate(ele.date),
-   
+  }));
+};
 
+export const activeLLAgreement = (data) => {
+  return data.map((ele, index) => ({
+    ...ele,
+    start_date: formatDate(ele.startdate),
+    actualenddate: formatDate(ele.actualenddate),
+    rentamount: floorDecimal(ele.rentamount),
+    depositamount: floorDecimal(ele.depositamount),
+  }));
+};
+
+export const orderAnalysisFromat = (data)=>{
+  return data.map((ele, index) => ({
+    ...ele,
+    totalorderpayment: formatDate(ele.totalorderpayment),
+    totalinvoiceamt: floorDecimal(ele.totalinvoiceamt),
+    totalorderreceipt: floorDecimal(ele.totalorderreceipt),
   }));
 }
-
-
 
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

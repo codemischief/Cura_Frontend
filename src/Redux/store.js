@@ -44,13 +44,14 @@ import employer from "./slice/Research/EmployerSlice";
 import governmentdepartment from "./slice/Research/GovernmentDepartmentSlice";
 import agent from "./slice/Research/AgentSlice";
 import ClientStatistics from "./slice/reporting/Statistics/ClientStatistics";
-// import GovernmentDepartment from "../Screens/Research/Government Department/GovernmentDepartment";
-
+import ActiveLLAgreementReducer from "./slice/reporting/ActiveLLAgreement/ActiveLLAgreement"
 import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement";
-
+import orderStatisticsReportReducer from "./slice/reporting/Statistics/OrderStatisticsReport/OrderStatisticsReport"
 import TdsPaidByVendorReducer from "./slice/reporting/Group9/TdsByVendorSlice"
 import TdsToGovtReducer from "./slice/reporting/Group9/tdsPaidToGovt";
 import VendorPaymentPeriodReducer from "./slice/reporting/Group9/VendorPaymentPeriodSlice"
+import OrderAnalysisReducer from "./slice/reporting/OrderAnalysis/OrderAnalysis";
+import LllistReducer from "./slice/reporting/LLlist/LllistSlice"
 
 export const store = configureStore({
   reducer: {
@@ -107,7 +108,12 @@ export const store = configureStore({
     vendorStatement: VendorStatementReducer,
     tdspaidByVendor:TdsPaidByVendorReducer,
     tdsToGovt: TdsToGovtReducer,
-    vendorPaymentPeriod:VendorPaymentPeriodReducer
+    vendorPaymentPeriod:VendorPaymentPeriodReducer,
+    orderStatisticsReport:orderStatisticsReportReducer,
+    activeLLAgreement:ActiveLLAgreementReducer,
+    orderAnalysis:OrderAnalysisReducer,
+    LLlist:LllistReducer
+
   },
   // Add the RTK Query API middleware
 });

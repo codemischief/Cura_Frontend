@@ -29,7 +29,7 @@ const SimpleTableWithFooter = ({
       className={`w-full text-[12px] h-[${height}] overflow-x-auto `}
       style={{ height: `${height}` }}
     >
-      <table className="table-auto w-full">
+      <table style={{width:"-webkit-fill-available"}}>
         <thead className="h-[115px] sticky top-0 z-100 bg-white">
           <tr className="h-[56px] w-full ">
             {columns.map((column, index) => (
