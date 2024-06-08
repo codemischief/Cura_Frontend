@@ -233,7 +233,6 @@ export const bankTransferReconsiliation = (data) => {
   }));
 };
 export const clientOrderReceiptMismatchDetails = (data) => {
-  console.log(data);
   return data.map((billing, index) => ({
     ...billing,
     diff: billing.diff ? floorDecimal(billing.diff) : "0.00",
@@ -241,7 +240,6 @@ export const clientOrderReceiptMismatchDetails = (data) => {
   }));
 };
 export const bankReceiptReconciliation = (data) => {
-  console.log(data);
   return data.map((billing, index) => ({
     ...billing,
     bankst_cr: billing.bankst_cr ? floorDecimal(billing.bankst_cr) : "0.00",

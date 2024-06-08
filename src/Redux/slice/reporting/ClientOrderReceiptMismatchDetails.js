@@ -28,9 +28,8 @@ export const pmaSlice = createSlice({
   reducers: {
     setClientOrderReceiptMismatchDetails: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.clientOrderReceiptMismatchDetails = clientOrderReceiptMismatchDetails(data.data, year, month);
-      console.log(payload.data)
-      console.log(payload.data.total)
+      state.clientOrderReceiptMismatchDetails =
+        clientOrderReceiptMismatchDetails(data.data, year, month);
       state.totalCount = payload.data.total_count;
       // state.totalAmount = payload.data.total;
     },
@@ -43,7 +42,7 @@ export const pmaSlice = createSlice({
     setCountPerPage: (state, { payload }) => {
       state.countPerPage = payload;
     },
-    setInitialState: (state, { payload }) => {
+    setInitialState: (state) => {
       (state.filter = []),
         (state.status = ""),
         (state.filter = []),
@@ -80,15 +79,20 @@ export const {
 
 export const getClientOrderReceiptMismatchDetails =
   (payloadObj, year, month) => async (dispatch) => {
-    console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
         `${env_URL_SERVER}reportClientOrderReceiptMismatchDetails`,
         payloadObj
       );
-
-      dispatch(setClientOrderReceiptMismatchDetails({ data: response.data, year, month }));
+      console.log("hit")
+      dispatch(
+        setClientOrderReceiptMismatchDetails({
+          data: response.data,
+          year,
+          month,
+        })
+      );
       dispatch(setStatus("success"));
     } catch (err) {
       dispatch(setStatus("error"));

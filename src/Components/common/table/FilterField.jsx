@@ -18,20 +18,26 @@ export const FilterField = (props) => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    let copiedFilters = { ...filter };
-    if (search === "" && copiedFilters?.hasOwnProperty(columnfield)) {
-      delete copiedFilters[columnfield];
-      onFilterChange(copiedFilters);
-    }
-  }, [search]);
+  // useEffect(() => {
+  //   let copiedFilters = { ...filter };
+  //   if (search === "" && copiedFilters?.hasOwnProperty(columnfield)) {
+  //     console.log("why here", copiedFilters[columnfield]);
+  //     delete copiedFilters[columnfield];
+  //     onFilterChange(copiedFilters);
+  //   }
+  // }, [search]);
+  // useEffect(() => {
+  //   onFilterChange([]);
+  // }, []);
 
   useEffect(() => {
     let copiedFilters = { ...filter };
     if (search && !copiedFilters.hasOwnProperty(columnfield)) {
+      console.log("when here", copiedFilters);
       setSearch("");
     }
   }, [filter]);
+
   const open = Boolean(anchorEl);
 
   const optionType = {
@@ -115,6 +121,35 @@ export const FilterField = (props) => {
     }
   };
 
+  const handleSearch = (e) => {
+    let copiedFilters = { ...filter };
+    console.log(e.key, e.target.value, "key");
+    if (
+      (e.key === "Backspace" || e.key === "Delete") &&
+      e.target.value === "" &&
+      !copiedFilters.hasOwnProperty(columnfield)
+    ) {
+      delete copiedFilters[columnfield];
+      onFilterChange(copiedFilters);
+    } else {
+      setSearch(e.target.value);
+    }
+  };
+
+  const handleKeyUp = (e) => {
+    let copiedFilters = { ...filter };
+    console.log(e.key, e.target.value, "key");
+    if (
+      (e.key === "Backspace" || e.key === "Delete") &&
+      e.target.value === "" &&
+      copiedFilters.hasOwnProperty(columnfield)
+    ) {
+      delete copiedFilters[columnfield];
+      onFilterChange(copiedFilters);
+    } else {
+      setSearch(e.target.value);
+    }
+  };
   return (
     <div style={{ minWidth: "8rem", maxWidth: "8.5rem" }}>
       <div className="w-full  h-full flex justify-start py-3 px-1">
@@ -126,6 +161,7 @@ export const FilterField = (props) => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={handleEnterKeyPress}
+            onKeyUp={handleKeyUp}
             title={isDisabled ? "disabled" : ""}
           />
 
