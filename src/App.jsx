@@ -123,6 +123,7 @@ import ResetPassword from "./Screens/Login/ResetPassword.jsx";
 import RequestResetPassword from "./Screens/Login/RequestResetPassword.jsx";
 import OwnerMailId from "./Screens/Reports/Contacts/OwnerMailId/index.jsx";
 import ClientContactDetails from "./Screens/Reports/Contacts/ClientContactsDetails/index.jsx";
+import ClientStatementByDate from "./Screens/Reports/ClientStatementByDate/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -483,6 +484,10 @@ const App = () => {
               <Route
                 path="reports/clientContactDetails"
                 element={<ClientContactDetails />}
+              />
+              <Route
+                path="reports/clientStatementByDate"
+                element={<ClientStatementByDate />}
               />
             </Route>
 

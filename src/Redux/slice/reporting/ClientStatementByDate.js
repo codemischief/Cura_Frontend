@@ -7,7 +7,7 @@ import {
 } from "../../helper";
 
 const initialState = {
-  clientStatementAllEntitiesData: [],
+  Data: [],
   totalAmount : {},
   status: "",
   filter: {},
@@ -23,16 +23,16 @@ const initialState = {
 };
 
 export const pmaSlice = createSlice({
-  name: "clientStatementAllEntities",
+  name: "clientStatementByDate",
   initialState,
   reducers: {
-    setClientStatementAllEntitiesData: (state, { payload }) => {
+    setData: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.clientStatementAllEntitiesData = clientStatementAllEntities(data.data, year, month);
+      state.Data = clientStatementAllEntities(data.data, year, month);
       console.log(payload.data)
-      console.log(payload.data.total_amount)
+      console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
-      state.totalAmount = payload.data.total_amount;
+      state.totalAmount = payload.data.total;
     },
     setStatus: (state, { payload }) => {
       state.status = payload;
@@ -56,13 +56,15 @@ export const pmaSlice = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.clientStatementAllEntitiesData = []
     },
-    setClientStatementAllEntitiesFilters: (state, { payload }) => {
+    setFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
       state.sorting = payload;
+    },
+    resetData: (state, { payload }) => {
+      state.Data = [];
     },
   },
 });
@@ -70,38 +72,39 @@ export const pmaSlice = createSlice({
 // reducer
 // Action creators are generated for each case reducer function
 export const {
-  setClientStatementAllEntitiesData,
+  setData,
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setClientStatementAllEntitiesFilters,
+  setFilters,
   setInitialState,
   setSorting,
+  resetData
 } = pmaSlice.actions;
 
-export const getClientStatementAllEntitiesData =
+export const getData =
   (payloadObj, year, month) => async (dispatch) => {
     console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportPMAClientStatementMargins`,
+        `${env_URL_SERVER}reportClientStatement`,
         payloadObj
       );
         
-      dispatch(setClientStatementAllEntitiesData({ data: response.data, year, month }));
+      dispatch(setData({ data: response.data, year, month }));
       dispatch(setStatus("success"));
     } catch (err) {
       dispatch(setStatus("error"));
     }
   };
 
-export const downloadClientStatementAllEntitiesDataXls =
+export const downloadDataXls =
   (payloadObj, year, month) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportPMAClientStatementMargins`,
+        `${env_URL_SERVER}reportClientStatement`,
         payloadObj
       );
       if ((response.data.filename, payloadObj.user_id)) {
@@ -132,7 +135,7 @@ export const downloadClientStatementAllEntitiesDataXls =
       const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      FileSaver.saveAs(blob, "Client Statement-CI,CR and OR(All Entities).xlsx");
+      FileSaver.saveAs(blob, "Client Statement By Date (CI,CR,OR).xlsx");
     } catch (error) {
       console.log("error", error);
     }

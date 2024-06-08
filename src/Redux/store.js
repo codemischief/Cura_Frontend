@@ -59,6 +59,7 @@ import OwnerMailId from "./slice/reporting/Contacts/OwnerMailId";
 import ClientContactsDetails from "./slice/reporting/Contacts/ClientContactsDetails";
 import banksandbranches from "./slice/Research/BanksAndBranchesSlice";
 import commonApiReducer from "./slice/commonApis";
+import ClientStatementByDate from "./slice/reporting/ClientStatementByDate";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -117,6 +118,7 @@ export const store = configureStore({
     ownerMailId: OwnerMailId,
     clientContactsDetails: ClientContactsDetails,
     commonApi: commonApiReducer,
+    clientStatementByDate:ClientStatementByDate
   },
   // Add the RTK Query API middleware
 });
