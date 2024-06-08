@@ -126,7 +126,9 @@ const VendorStatementView = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
-
+  useEffect(()=> {
+    dispatch(setInitialState());
+  },[]);
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
       let obj = {

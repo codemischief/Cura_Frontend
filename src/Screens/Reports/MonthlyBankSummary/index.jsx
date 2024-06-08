@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
@@ -30,6 +30,7 @@ import Container from "../../../Components/common/Container";
 
 const PmaClientReport = () => {
   const dispatch = useDispatch();
+  const isInitialMount = useRef(true);
   const {
     monthlyBankSummary,
     status,
@@ -109,18 +110,23 @@ const PmaClientReport = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
+    if (isInitialMount.current) {
+      dispatch(setInitialState());
+      isInitialMount.current = false;
+    } else {
 
-    let obj = {
-      user_id: 1234,
-      rows: ["name", "monthyear", "payments", "bankpayments", "bankreceipts", "receipts"],
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      filters: formatedFilterData(filter),
-      search_key: search,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      order: sorting.sort_order ? sorting.sort_order : undefined,
-    };
-    dispatch(getMonthlyBankSummary(obj));
+      let obj = {
+        user_id: 1234,
+        rows: ["name", "monthyear", "payments", "bankpayments", "bankreceipts", "receipts"],
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        filters: formatedFilterData(filter),
+        search_key: search,
+        pg_no: +pageNo,
+        pg_size: +countPerPage,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
+      };
+      dispatch(getMonthlyBankSummary(obj));
+    }
 
   }, [
     filter,
@@ -164,14 +170,6 @@ const PmaClientReport = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadMonthlyBankSummary(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
 
   const handleShow = () => {

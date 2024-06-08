@@ -64,7 +64,7 @@ export const pmaSlice = createSlice({
       state.sorting = payload;
     },
     resetData: (state, { payload }) => {
-      state.pmaClientReceivable = [];
+      state.pmaBillingTrendView = [];
     },
   },
 });
