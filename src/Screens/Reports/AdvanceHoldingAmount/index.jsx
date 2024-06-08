@@ -25,7 +25,6 @@ import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import SimpleTable from "../../../Components/common/table/CustomTable";
-import CLientPortalTable from "../../../Components/common/table/ClientPortalTable";
 import Container from "../../../Components/common/Container";
 
 
@@ -229,7 +228,7 @@ const PmaInvoiceList = () => {
           
         </Stack> */}
 
-          <CLientPortalTable
+          <SimpleTable
             columns={columns}
             data={advanceHoldingAmount}
             pageNo={pageNo}

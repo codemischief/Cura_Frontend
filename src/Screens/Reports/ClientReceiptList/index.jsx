@@ -17,6 +17,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetData
 } from "../../../Redux/slice/reporting/ClientReceiptSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -122,6 +123,10 @@ const ClientReceiptList = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
+  useEffect(() => {
+    dispatch(setInitialState());
+    dispatch(resetData());
+  }, []);
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {

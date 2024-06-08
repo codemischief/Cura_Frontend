@@ -187,6 +187,7 @@ const LobReceiptPayments = () => {
         "entity": "Entity",
         "clientname": "Client Name",
         "type": "Type",
+        "date": "date",
         "amount": "Amount",
         "orderdetails": "Order Details",
         "lobname": "Lob Name",
@@ -346,7 +347,7 @@ const LobReceiptPayments = () => {
           </Stack>
 
           <SimpleTableWithFooter
-            pageName={'pmaClientStatement'}
+            pageName={'clientStatement-CLCRAndOR'}
             columns={columns}
             data={clientStatementAllEntitiesData}
             totalData={totalAmount}

@@ -10,15 +10,6 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
-// import {
-//     downloadPmaClientReceivable,
-//     getPmaClientReceivable,
-//     setCountPerPage,
-//     setInitialState,
-//     setPageNumber,
-//     setSorting,
-//     setStatus
-// } from "../../../Redux/slice/reporting/pmaInvoiceList"
 import {
   downloadPmaClientReceivables,
   getPmaClientReceivable,
@@ -26,7 +17,8 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus
+  setStatus,
+  resetData
 } from "../../../Redux/slice/reporting/ReportPmaClientReceivable"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -39,26 +31,6 @@ import Container from "../../../Components/common/Container";
 
 const PmaClientReceivable = () => {
   const dispatch = useDispatch();
-  //   const {
-  //     pmaBillingTrendView,
-  //     status,
-  //     totalAmount,
-  //     totalCount,
-  //     sorting,
-  //     countPerPage,
-  //     pageNo,
-  //     filter,
-  //   } = useSelector((state) => state.pmaBillingTrendView);
-  //   const {
-  //     pmaClientReport,
-  //     status,
-  //     totalAmount,
-  //     totalCount,
-  //     sorting,
-  //     countPerPage,
-  //     pageNo,
-  //     filter
-  //   } = useSelector((state) => state.pmaClientReport)
   const {
     pmaClientReceivable,
     status,
@@ -138,6 +110,10 @@ const PmaClientReceivable = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
+  useEffect(() => {
+    dispatch(setInitialState());
+    dispatch(resetData());
+  }, []);
   useEffect(() => {
 
     let obj = {

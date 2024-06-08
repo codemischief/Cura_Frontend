@@ -63,19 +63,23 @@ export const pmaSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetData: (state, { payload }) => {
+      state.pmaClientReceivable = [];
+    },
   },
 });
 
 // reducer
 // Action creators are generated for each case reducer function
 export const {
-   setPmaClientReceivables,
+  setPmaClientReceivables,
   setStatus,
   setPageNumber,
   setCountPerPage,
   setPmaClientReceivableFilters,
   setInitialState,
   setSorting,
+  resetData
 } = pmaSlice.actions;
 
 export const getPmaClientReceivable =
