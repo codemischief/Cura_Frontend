@@ -70,6 +70,9 @@ import ClientsWithOrderButNoEmailSlice from "./slice/reporting/Group12/ClientsWi
 import EmployeeWithoutVendor from "./slice/reporting/Group12/EmployeeWithoutVendor";
 import BankTransactionsWithWrongUserNameReducer from "./slice/reporting/Group12/BankTransactionsWithWrongUserName";
 import EntityBlankReportReducer from "./slice/reporting/Group12/EntityBlankReportSlice";
+import OwnerWithNoPropertyReducer from "./slice/reporting/Group12/OwnerWithNoProperty"
+import PropertyWithNoProjectReducer from "./slice/reporting/Group12/PropertyWithNoProject";
+
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -138,7 +141,9 @@ export const store = configureStore({
     clientsWithOrderButNoEmail: ClientsWithOrderButNoEmailSlice,
     employeeWithoutVendor: EmployeeWithoutVendor,
     bankTransactionsWithWrongUserName: BankTransactionsWithWrongUserNameReducer,
-    entityBlankReport: EntityBlankReportReducer
+    entityBlankReport: EntityBlankReportReducer,
+    ownerWithNoProperty:OwnerWithNoPropertyReducer,
+    propertyWithNoProject:PropertyWithNoProjectReducer
   },
   // Add the RTK Query API middleware
 });

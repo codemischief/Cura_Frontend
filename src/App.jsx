@@ -134,6 +134,8 @@ import ClientsWithOrderButNoEmail from "./Screens/Reports/Group12/ClientsWithOrd
 import EmployeeWithoutVendor from "./Screens/Reports/Group12/EmployeeWithoutVendor/index.jsx";
 import BankTransactionsWithWrongUserName from "./Screens/Reports/Group12/BankTransactionsWithWrongUserName/index.jsx";
 import EntityBlankReport from "./Screens/Reports/Group12/EntityBlankReport/index.jsx";
+import OwnerWithNoProperty from "./Screens/Reports/Group12/OwnerWIthNoProperty/index.jsx";
+import PropertyWithNoProjectView from "./Screens/Reports/Group12/PropertyWithNoProject/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -542,6 +544,14 @@ const App = () => {
                <Route
                 path="reports/entityBlankReport"
                 element={<EntityBlankReport />}
+              />
+               <Route
+                path="reports/ownerwithnoproperty"
+                element={<OwnerWithNoProperty />}
+              />
+              <Route
+                path="reports/propertywithnoproject"
+                element={<PropertyWithNoProjectView />}
               />
             </Route>
 
