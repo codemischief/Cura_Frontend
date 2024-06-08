@@ -1,43 +1,31 @@
-import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import SimpleTable from "../../../Components/common/table/CustomTable";
-import connectionDataColumn from "./Columns";
-import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { PlusOutlined } from "@ant-design/icons";
+
+import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
+import SimpleTable from "../../../Components/common/table/CustomTable";
+import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
-// import {
-//   deleteServiceApartment,
-//   getServiceApartmentData,
-//   setCountPerPage,
-//   setPageNumber,
-//   setSorting
-// } from "../../../Redux/slice/Research/AgentSlice";
+import { APIService } from "../../../services/API";
 import {
   deleteServiceApartment,
+  downloadServiceApartmentData,
   getServiceApartmentData,
   setCountPerPage,
   setPageNumber,
-  setSorting
-} from "../../../Redux/slice/Research/ServiceApartmentSlice"
-import { PlusOutlined } from "@ant-design/icons";
-import EmployerForm from "./EmployerForm";
+  setSorting,
+} from "../../../Redux/slice/Research/ServiceApartmentSlice";
+
+import getColumns from "./Columns";
 import AlertModal, {
   alertVariant,
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
-
+import errorHandler from "../../../Components/common/ErrorHandler";
+import ServiceApartmentForm from "./ServiceApartmentForm";
 const ResearchServiceApartments = () => {
   const dispatch = useDispatch();
-  // const {
-  //   AgentData,
-  //   status,
-  //   totalCount,
-  //   sorting,
-  //   countPerPage,
-  //   pageNo,
-  //   filter,
-  // } = useSelector((state) => state.agent);
   const {
     ServiceApartmentData,
     status,
@@ -47,6 +35,7 @@ const ResearchServiceApartments = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.serviceapartment);
+
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
@@ -56,18 +45,27 @@ const ResearchServiceApartments = () => {
   const [isDeleteDialogue, setIsDeleteDialogue] = useState(null);
   const [deleteError, setDeleteError] = useState("");
 
-  const handleEdit = (data) => {
-    setEditData({ ...data });
-    setOpenForm(true);
+  const handleEdit = async (data) => {
+    try {
+      let dataItem = {
+        user_id: 1234,
+        table_name: "serviceapartmentsandguesthouses",
+        item_id: data.id,
+      };
+      const response = await APIService.getItembyId(dataItem);
+      let updatedaresponse = await response.json();
+      setEditData(updatedaresponse?.data);
+      setOpenForm(true);
+    } catch (error) {
+      errorHandler(error, "Failed to fetch Please try again later");
+    }
   };
+
   const handleDelete = (data) => {
     setIsDeleteDialogue(data.id);
   };
 
-  const columns = useMemo(
-    () => connectionDataColumn(handleEdit, handleDelete),
-    []
-  );
+  const columns = useMemo(() => getColumns(handleEdit, handleDelete), []);
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -81,39 +79,28 @@ const ResearchServiceApartments = () => {
     dispatch(setPageNumber(1));
   };
 
-  const handleRefresh = () => {
-    if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "id",
-          "type",
-          "paymentdate",
-          "monthyear",
-          "fy",
-          "amount",
-          "entityname",
-          "mode_of_payment",
-          "clientid",
-          "clientname",
-          "vendorname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname",
-        ],
-        sort_by: ["id"],
+  const fetchData = () => {
+    let obj = {
+      user_id: 1234,
 
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-      };
-      // dispatch(getOrderPaymentData(obj));
-    }
+      rows: [
+        "name",
+        "apartments_guesthouse",
+        "city",
+        "suburb",
+        "emailid",
+        "phoneno",
+        "website",
+        "id"
+      ],
+      filters: formatedFilterData(filter),
+      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
+      order: sorting.sort_order,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      search_key: searchInput,
+    };
+    dispatch(getServiceApartmentData(obj));
   };
 
   const handleSearch = () => {
@@ -139,17 +126,7 @@ const ResearchServiceApartments = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    const obj = {
-      user_id: 1234,
-      rows: ["name","apartments_guesthouse","city",],
-      filters: formatedFilterData(filter),
-      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
-      order: sorting.sort_order,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      search_key: searchInput,
-    };
-    dispatch(getServiceApartmentData(obj));
+    fetchData();
   }, [
     filter,
     countPerPage,
@@ -168,35 +145,40 @@ const ResearchServiceApartments = () => {
   };
 
   const downloadExcel = async () => {
+    
+
     let obj = {
       user_id: 1234,
       rows: [
-        "id",
-        "type",
-        "paymentdate",
-        "monthyear",
-        "fy",
-        "amount",
-        "entityname",
-        "mode_of_payment",
-        "clientid",
-        "clientname",
-        "vendorname",
-        "orderid",
-        "orderdescription",
-        "serviceid",
-        "service",
-        "lobname",
+        "name",
+        "apartments_guesthouse",
+        "city",
+        "suburb",
+        "emailid",
+        "phoneno",
+        "website",
+        "id"
       ],
+      colmap : {
+        "name" : "Name",
+        "apartments_guesthouse" : "Apartments/Guest House",
+        "city" : "City",
+        "suburb" : "Locality",
+        "emailid" : "Email ID",
+        "phoneno" : "Phone Number",
+        "website" : "Website",
+        "id" : "ID" 
+      },
+      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
       search_key: search,
-      pg_no: 1,
-      pg_size: 15,
+      pg_no: 0,
+      pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    // dispatch(downloadPaymentDataXls(obj));
+    dispatch(downloadServiceApartmentData(obj));
   };
 
   const handleFormOpen = () => {
@@ -204,13 +186,14 @@ const ResearchServiceApartments = () => {
     setEditData({});
   };
 
-  const deleteServiceApartment = async () => {
+  const deleteServiceApartments = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
       await dispatch(deleteServiceApartment(data));
       setIsDeleteDialogue(null);
-      SetOpenSubmissionPrompt("Prospect Deleted Successfully");
+      SetOpenSubmissionPrompt("Service Apartment Deleted Successfully");
       setPromptType(alertVariant.success);
+      fetchData()
     } catch (error) {
       if (error.response) {
         setDeleteError(error.response.data.detail);
@@ -231,17 +214,19 @@ const ResearchServiceApartments = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "New Prospect updated successfully"
-      : "New Prospect created successfully";
+      ? "Changes Saved Successfully"
+      : "New Service Apartment created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
+    fetchData()
+    
   };
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no new Prospect updated."
-      : "Process cancelled, no new Prospect created.";
+      ? "Process cancelled, No Changes Saved."
+      : "Process cancelled, No New Service Apartment Created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
@@ -250,7 +235,7 @@ const ResearchServiceApartments = () => {
   return (
     <div className="h-[calc(100vh-7rem)]">
       {openForm && (
-        <EmployerForm
+        <ServiceApartmentForm
           isOpen={openForm}
           handleClose={openCancel}
           editData={editData}
@@ -260,8 +245,8 @@ const ResearchServiceApartments = () => {
       <div className="flex flex-col px-4 gap-[1.75rem]">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
-            heading={"Service Apartments and Guest Houses"}
-            path={["Research ", "Service Apartments and Guest Houses"]}
+            heading={"Service Apartment"}
+            path={["Research ", "Service Apartment"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <SearchBar
@@ -272,18 +257,17 @@ const ResearchServiceApartments = () => {
               onKeyDown={handleSearchEnterKey}
             />
             <button
-              className="bg-[#004DD7] text-white h-[36px] w-[480px] rounded-lg"
+              className="bg-[#004DD7] text-white h-[36px] w-[320px] rounded-lg"
               onClick={handleFormOpen}
             >
               <div className="flex items-center justify-center gap-4">
-                Add New Service Apartments and Guest Houses
+                Add New Service Apartment
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">
-          {console.log(ServiceApartmentData)}
           <SimpleTable
             columns={columns}
             data={ServiceApartmentData}
@@ -295,7 +279,7 @@ const ResearchServiceApartments = () => {
             height="calc(100vh - 15rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
-            handleRefresh={handleRefresh}
+            handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
             handleEdit={handleEdit}
@@ -315,8 +299,9 @@ const ResearchServiceApartments = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteServiceApartment}
+          handleDelete={deleteServiceApartments}
           deleteError={deleteError}
+          text={'Service Apartment'}
         />
       )}
     </div>
