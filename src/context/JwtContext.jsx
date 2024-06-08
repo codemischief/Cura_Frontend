@@ -118,6 +118,7 @@ function AuthProvider({ children }) {
         setCountdown(countdownValue);
         if (countdownValue <= 0) {
           clearInterval(countdownRef.current);
+          console.log("idle-logout");
           logout();
         }
       }, 1000);
@@ -157,6 +158,9 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    console.log("logout");
+    setIsModalOpen(false);
+    clearInterval(countdownRef.current);
     setSession(null);
     dispatch({ type: Types.Logout });
     toast.success("Logged out successfully");

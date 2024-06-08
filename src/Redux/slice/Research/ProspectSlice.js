@@ -84,7 +84,7 @@ export const getPropect = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}getResearchProspect`,
+      `getResearchProspect`,
       payloadObj
     );
 
