@@ -25,7 +25,7 @@ import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
-import SimpleTable from "../../../Components/common/table/ClientPortalTable";
+import SimpleTable from "../../../Components/common/table/CustomTable";
 import Container from "../../../Components/common/Container";
 const PmaClientReport = () => {
   const dispatch = useDispatch();
