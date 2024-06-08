@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+// import axios from "axios";
 import axios from "../../utils/axios";
+import { v4 as uuidv4 } from "uuid";
 const initialState = {
   countryData: [],
   status: "",
@@ -23,7 +25,6 @@ export const { setCountriesData, setStatus } = commonApis.actions;
 export const getCountries = () => async (dispatch) => {
   try {
     const data = {
-      user_id: 1234,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],

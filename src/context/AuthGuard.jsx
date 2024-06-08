@@ -4,10 +4,8 @@ import { toast } from "react-toastify";
 
 const AuthGuard = ({ children }) => {
   const location = useLocation();
-  // const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
-  let isAuthenticated = true;
-  
   if (!isAuthenticated) {
     toast.warning("Session expired");
     return <Navigate to="/login" state={{ from: location }} replace />;
