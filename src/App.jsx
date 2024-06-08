@@ -128,6 +128,15 @@ import ActiveLLAgreementView from "./Screens/Reports/ActiveLlAgreement/index.jsx
 import OrderAnalysis from "./Screens/Reports/OrderAnalysis/index.jsx";
 import LLlistReport from "./Screens/Reports/LLlist/index.jsx";
 import ClientStatementByDate from "./Screens/Reports/ClientStatementByDate/index.jsx";
+import PaymentUnderSuspenseOrder from "./Screens/Reports/Group12/PaymentUnderSuspenseOrder/index.jsx";
+import ReceiptsUnderSuspenseOrder from "./Screens/Reports/Group12/ReceiptsUnderSuspenseOrder/index.jsx";
+import ClientsWithOrderButNoEmail from "./Screens/Reports/Group12/ClientsWithOrderButNoEmail/index.jsx";
+import EmployeeWithoutVendor from "./Screens/Reports/Group12/EmployeeWithoutVendor/index.jsx";
+import BankTransactionsWithWrongUserName from "./Screens/Reports/Group12/BankTransactionsWithWrongUserName/index.jsx";
+import EntityBlankReport from "./Screens/Reports/Group12/EntityBlankReport/index.jsx";
+import OwnerWithNoProperty from "./Screens/Reports/Group12/OwnerWIthNoProperty/index.jsx";
+import PropertyWithNoProjectView from "./Screens/Reports/Group12/PropertyWithNoProject/index.jsx";
+import ServiceTaxReport from "./Screens/Reports/Group12/ServiceTaxReport/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -512,6 +521,42 @@ const App = () => {
               <Route
                 path="reports/clientStatementByDate"
                 element={<ClientStatementByDate />}
+                />
+              <Route
+                path="reports/paymentUnderSuspenseOrder"
+                element={<PaymentUnderSuspenseOrder />}
+              />
+              <Route
+                path="reports/receiptsUnderSuspenseOrder"
+                element={<ReceiptsUnderSuspenseOrder />}
+              />
+               <Route
+                path="reports/clientsWithOrderButNoEmail"
+                element={<ClientsWithOrderButNoEmail />}
+              />
+               <Route
+                path="reports/employeeWithoutVendor"
+                element={<EmployeeWithoutVendor />}
+              />
+               <Route
+                path="reports/bankTransactionsWithWrongUserName"
+                element={<BankTransactionsWithWrongUserName />}
+              />
+               <Route
+                path="reports/entityBlankReport"
+                element={<EntityBlankReport />}
+              />
+               <Route
+                path="reports/ownerwithnoproperty"
+                element={<OwnerWithNoProperty />}
+              />
+              <Route
+                path="reports/propertywithnoproject"
+                element={<PropertyWithNoProjectView />}
+                />
+                <Route
+                path="reports/serviceTaxReport"
+                element={<ServiceTaxReport />}
               />
             </Route>
 

@@ -64,6 +64,16 @@ import orderStatisticsReportReducer from "./slice/reporting/Statistics/OrderStat
 import OrderAnalysisReducer from "./slice/reporting/OrderAnalysis/OrderAnalysis";
 import LllistReducer from "./slice/reporting/LLlist/LllistSlice"
 import ClientStatementByDate from "./slice/reporting/ClientStatementByDate";
+import PaymentUnderSuspenseOrderSlice from "./slice/reporting/Group12/PaymentUnderSuspenseOrderSlice";
+import ReceiptsUnderSuspenseOrderSlice from "./slice/reporting/Group12/ReceiptsUnderSuspenseOrderSlice";
+import ClientsWithOrderButNoEmailSlice from "./slice/reporting/Group12/ClientsWithOrderButNoEmail";
+import EmployeeWithoutVendor from "./slice/reporting/Group12/EmployeeWithoutVendor";
+import BankTransactionsWithWrongUserNameReducer from "./slice/reporting/Group12/BankTransactionsWithWrongUserName";
+import EntityBlankReportReducer from "./slice/reporting/Group12/EntityBlankReportSlice";
+import OwnerWithNoPropertyReducer from "./slice/reporting/Group12/OwnerWithNoProperty"
+import PropertyWithNoProjectReducer from "./slice/reporting/Group12/PropertyWithNoProject";
+
+import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportSlice";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -126,7 +136,16 @@ export const store = configureStore({
     activeLLAgreement:ActiveLLAgreementReducer,
     orderAnalysis:OrderAnalysisReducer,
     LLlist:LllistReducer,
-    clientStatementByDate:ClientStatementByDate
+    clientStatementByDate:ClientStatementByDate,
+    paymentUnserSuspenseOrder: PaymentUnderSuspenseOrderSlice,
+    receiptsUnderSuspenseOrder: ReceiptsUnderSuspenseOrderSlice,
+    clientsWithOrderButNoEmail: ClientsWithOrderButNoEmailSlice,
+    employeeWithoutVendor: EmployeeWithoutVendor,
+    bankTransactionsWithWrongUserName: BankTransactionsWithWrongUserNameReducer,
+    entityBlankReport: EntityBlankReportReducer,
+    ownerWithNoProperty:OwnerWithNoPropertyReducer,
+    propertyWithNoProject:PropertyWithNoProjectReducer,
+    serviceTaxReport: ServiceTaxReportReducer
   },
   // Add the RTK Query API middleware
 });
