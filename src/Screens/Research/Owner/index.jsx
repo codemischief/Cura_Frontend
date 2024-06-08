@@ -93,6 +93,7 @@ const ResearchOwner = () => {
         "phoneno2",
         "emailid",
         "propertyfor",
+        "address",
         "societyname",
         "source",
         "propertydetails",
@@ -162,6 +163,7 @@ const ResearchOwner = () => {
         "phoneno1",
         "phoneno2",
         "emailid",
+        "address",
         "propertyfor",
         "societyname",
         "source",
@@ -214,7 +216,7 @@ const ResearchOwner = () => {
   const openSucess = () => {
     let messageToUpdate = editData?.id
       ? "Changes Saved Successfully"
-      : "New Real Estate Agent created successfully";
+      : "New Owner created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
@@ -225,7 +227,7 @@ const ResearchOwner = () => {
   const openCancel = () => {
     let messageToUpdate = editData?.id
       ? "Process cancelled, No Changes Saved."
-      : "Process cancelled, no new Real Estate created.";
+      : "Process cancelled, No New Owner Created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
@@ -300,6 +302,7 @@ const ResearchOwner = () => {
           setOpenDialog={setIsDeleteDialogue}
           handleDelete={deleteOwners}
           deleteError={deleteError}
+          text={'Owner'}
         />
       )}
     </div>

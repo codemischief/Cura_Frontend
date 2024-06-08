@@ -171,6 +171,7 @@ const LobReceiptPayments = () => {
     value : null
    });
    const [query,setQuery] = useState('')
+   
    const handleClientNameChange = (e) => {
        console.log(e)
        setSelectedOption(e)

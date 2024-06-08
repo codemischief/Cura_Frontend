@@ -59,6 +59,10 @@ import OwnerMailId from "./slice/reporting/Contacts/OwnerMailId";
 import ClientContactsDetails from "./slice/reporting/Contacts/ClientContactsDetails";
 import banksandbranches from "./slice/Research/BanksAndBranchesSlice";
 import commonApiReducer from "./slice/commonApis";
+import ActiveLLAgreementReducer from "./slice/reporting/ActiveLLAgreement/ActiveLLAgreement"
+import orderStatisticsReportReducer from "./slice/reporting/Statistics/OrderStatisticsReport/OrderStatisticsReport"
+import OrderAnalysisReducer from "./slice/reporting/OrderAnalysis/OrderAnalysis";
+import LllistReducer from "./slice/reporting/LLlist/LllistSlice"
 import ClientStatementByDate from "./slice/reporting/ClientStatementByDate";
 export const store = configureStore({
   reducer: {
@@ -118,6 +122,10 @@ export const store = configureStore({
     ownerMailId: OwnerMailId,
     clientContactsDetails: ClientContactsDetails,
     commonApi: commonApiReducer,
+    orderStatisticsReport:orderStatisticsReportReducer,
+    activeLLAgreement:ActiveLLAgreementReducer,
+    orderAnalysis:OrderAnalysisReducer,
+    LLlist:LllistReducer,
     clientStatementByDate:ClientStatementByDate
   },
   // Add the RTK Query API middleware
