@@ -29,7 +29,7 @@ export default function connectionDataColumn(onQuery) {
         field: "clientname",
         sorting: true,
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%" },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "45%" },
     },
 
       {
@@ -38,7 +38,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "45%"  },
       },
      
   ];

@@ -30,9 +30,9 @@ export const pmaSlice = createSlice({
       const { data, year, month } = payload;
       state.clientStatementAllEntitiesData = clientStatementAllEntities(data.data, year, month);
       console.log(payload.data)
-      console.log(payload.data.total)
+      console.log(payload.data.total_amount)
       state.totalCount = payload.data.total_count;
-      state.totalAmount = payload.data.total;
+      state.totalAmount = payload.data.total_amount;
     },
     setStatus: (state, { payload }) => {
       state.status = payload;

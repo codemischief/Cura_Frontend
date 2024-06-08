@@ -271,7 +271,7 @@ const helper = (index, obj, pageName) => {
     }
   } else if (pageName == 'nonPmaClientReceivables') {
     if (index == 2) {
-      return `Toal : ${obj?.sumamount}`
+      return `Total : ${obj?.sumamount}`
     }
   } else if (pageName == 'nonPmaClientStatement') {
     if (index == 6) {
@@ -307,6 +307,11 @@ const helper = (index, obj, pageName) => {
      return `Total: ${obj?.total_amount}`
     }
  }
+ else if(pageName==="clientStatement-CLCRAndOR"){
+  if(index===6){
+   return `Total: ${obj[0].sumamount}`
+  }
+}
  else if(pageName==="vendorStatement"){
   if(index===5){
     return `Total:${obj.invoiceamount_orderpaymentamount}`

@@ -10,24 +10,6 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
-// import {
-//   downloadLobReceiptPaymentsDataXls,
-//   getLobReceiptPaymentsData,
-//   setCountPerPage,
-//   setInitialState,
-//   setPageNumber,
-//   setSorting,
-//   setStatus,
-// } from "../../../Redux/slice/reporting/LOBReceiptPaymentSlice";
-// import {
-//     downloadPmaBillingTrendView,
-//     getPmaClientReport,
-//     setCountPerPage,
-//     setInitialState,
-//     setPageNumber,
-//     setSorting,
-//     setStatus
-// } from "../../../Redux/slice/reporting/pmaBillingTrendView"
 import {
   downloadPmaClientReport,
   getPmaClientReport,
@@ -43,21 +25,11 @@ import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
-import CLientPortalTable from "../../../Components/common/table/ClientPortalTable";
+import CLientPortalTable from "../../../Components/common/table/CustomTable";
 import Container from "../../../Components/common/Container";
 
 const PmaClientReport = () => {
   const dispatch = useDispatch();
-  //   const {
-  //     pmaBillingTrendView,
-  //     status,
-  //     totalAmount,
-  //     totalCount,
-  //     sorting,
-  //     countPerPage,
-  //     pageNo,
-  //     filter,
-  //   } = useSelector((state) => state.pmaBillingTrendView);
   const {
     pmaClientReport,
     status,
