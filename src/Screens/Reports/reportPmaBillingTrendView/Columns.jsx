@@ -11,7 +11,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "10%" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem" , maxWidth: "3rem" },
       sorting: false,
       render: (index) => {
         return (

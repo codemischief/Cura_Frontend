@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../../Components/modals/SucessfullModal";
 import connectionDataColumn from "./Columns";
@@ -27,6 +27,8 @@ import Container from "../../../../Components/common/Container";
 
 const ServiceTaxPaidByVendor = () => {
   const dispatch = useDispatch();
+  const isInitialMount = useRef(true);
+
   const {
     data,
     status,
@@ -74,7 +76,7 @@ const ServiceTaxPaidByVendor = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: ["vendorname","vendorcategory","servicetaxamount","amount","paymentmode","registered","paymentdate","monthyear"],
+      rows: ["vendorname", "vendorcategory", "servicetaxamount", "amount", "paymentmode", "registered", "paymentdate", "monthyear"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -106,18 +108,23 @@ const ServiceTaxPaidByVendor = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
+    if (isInitialMount.current) {
+      dispatch(setInitialState());
+      isInitialMount.current = false;
+    } else {
 
-    let obj = {
-      user_id: 1234,
-      rows: ["vendorname","vendorcategory","servicetaxamount","amount","paymentmode","registered","paymentdate","monthyear"],
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      filters: formatedFilterData(filter),
-      search_key: search,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      order: sorting.sort_order ? sorting.sort_order : undefined,
-    };
-    dispatch(getData(obj));
+      let obj = {
+        user_id: 1234,
+        rows: ["vendorname", "vendorcategory", "servicetaxamount", "amount", "paymentmode", "registered", "paymentdate", "monthyear"],
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        filters: formatedFilterData(filter),
+        search_key: search,
+        pg_no: +pageNo,
+        pg_size: +countPerPage,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
+      };
+      dispatch(getData(obj));
+    }
 
   }, [
     filter,
@@ -143,19 +150,19 @@ const ServiceTaxPaidByVendor = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: ["vendorname","vendorcategory","servicetaxamount","amount","paymentmode","registered","paymentdate","monthyear"],
+      rows: ["vendorname", "vendorcategory", "servicetaxamount", "amount", "paymentmode", "registered", "paymentdate", "monthyear"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
       colmap: {
         "vendorname": "Vendor Name",
         "vendorcategory": "Service Type",
-        "servicetaxamount" : "Service Tax Amount",
-        "amount" : "Amount",
-        "paymentmode" : "Payment Mode",
-        "registered" : "Registered",
-        "paymentdate" : "Payment Date",
-        "monthyear" : "Month Year",
+        "servicetaxamount": "Service Tax Amount",
+        "amount": "Amount",
+        "paymentmode": "Payment Mode",
+        "registered": "Registered",
+        "paymentdate": "Payment Date",
+        "monthyear": "Month Year",
       },
       search_key: search,
       pg_no: 0,

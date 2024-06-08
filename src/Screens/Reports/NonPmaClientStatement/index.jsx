@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState , useRef } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
@@ -27,6 +27,7 @@ import Container from "../../../Components/common/Container";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
+  const isInitialMount = useRef(true);
   const {
     NonPmaClientStAndRec,
     status,
@@ -107,18 +108,22 @@ const LobReceiptPayments = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-
-    let obj = {
-      user_id: 1234,
-      rows: ["clientname", "date", "type", "orderdetails", "details", "amount"],
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      filters: formatedFilterData(filter),
-      search_key: search,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      order: sorting.sort_order ? sorting.sort_order : undefined,
-    };
-    dispatch(getNonPmaClientStAndRec(obj));
+    if (isInitialMount.current) {
+      dispatch(setInitialState());
+      isInitialMount.current = false;
+    } else {
+      let obj = {
+        user_id: 1234,
+        rows: ["clientname", "date", "type", "orderdetails", "details", "amount"],
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        filters: formatedFilterData(filter),
+        search_key: search,
+        pg_no: +pageNo,
+        pg_size: +countPerPage,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
+      };
+      dispatch(getNonPmaClientStAndRec(obj));
+    }
   }, [
     filter,
     countPerPage,

@@ -52,6 +52,7 @@ export const vendorPaymentPeriod = createSlice({
         sort_by: "",
         sort_order: "",
       };
+      state.vendorPaymentPeriodData = []
     },
     setvendorPaymentPeriodViewFilters: (state, { payload }) => {
       state.filter = { ...payload };
