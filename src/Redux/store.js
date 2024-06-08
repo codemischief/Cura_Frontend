@@ -73,6 +73,7 @@ import EntityBlankReportReducer from "./slice/reporting/Group12/EntityBlankRepor
 import OwnerWithNoPropertyReducer from "./slice/reporting/Group12/OwnerWithNoProperty"
 import PropertyWithNoProjectReducer from "./slice/reporting/Group12/PropertyWithNoProject";
 
+import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportSlice";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -143,7 +144,8 @@ export const store = configureStore({
     bankTransactionsWithWrongUserName: BankTransactionsWithWrongUserNameReducer,
     entityBlankReport: EntityBlankReportReducer,
     ownerWithNoProperty:OwnerWithNoPropertyReducer,
-    propertyWithNoProject:PropertyWithNoProjectReducer
+    propertyWithNoProject:PropertyWithNoProjectReducer,
+    serviceTaxReport: ServiceTaxReportReducer
   },
   // Add the RTK Query API middleware
 });

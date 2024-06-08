@@ -7,21 +7,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import {
-  downloadClientsWithOrderButNoEmail,
-  getClientsWithOrderButNoEmail,
+  downloadServiceTaxReportData,
+  getServiceTaxReportData,
   setCountPerPage,
   setPageNumber,
   setSorting,
   setInitialState
-} from "../../../../Redux/slice/reporting/Group12/ClientsWithOrderButNoEmail";
+} from "../../../../Redux/slice/reporting/Group12/ServiceTaxReportSlice";
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 
-const ClientsWithOrderButNoEmail = () => {
+const ServiceTaxReport = () => {
   const dispatch = useDispatch();
   const {
-    clientsWithOrderButNoEmail,
+    serviceTaxReportData,
     status,
     totalAmount,
     totalCount,
@@ -29,7 +29,7 @@ const ClientsWithOrderButNoEmail = () => {
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.clientsWithOrderButNoEmail);
+  } = useSelector((state) => state.serviceTaxReport);
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -53,8 +53,8 @@ const ClientsWithOrderButNoEmail = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows:  [
-        "fullname","clienttypename","countryname","email1"
+      rows: [
+        "clientname","servicetype","service","orderdescription","amount","paymentmodename","recddate","monthyear","fy"
       ],
       sort_by: undefined,
       filters: formatedFilterData(filter),
@@ -63,7 +63,7 @@ const ClientsWithOrderButNoEmail = () => {
       pg_size: +countPerPage,
       order: undefined,
     };
-    dispatch(getClientsWithOrderButNoEmail(obj));
+    dispatch(getServiceTaxReportData(obj));
   };
 
   const handleSearch = () => {
@@ -93,20 +93,20 @@ const ClientsWithOrderButNoEmail = () => {
       isInitialMount.current = false;
     }
     else {
-    let obj = {
-      user_id: 1234,
-      rows:  [
-        "fullname","clienttypename","countryname","email1"
-      ],
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      filters: formatedFilterData(filter),
-      search_key: search,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      order: sorting.sort_order ? sorting.sort_order : undefined,
-    };
-    dispatch(getClientsWithOrderButNoEmail(obj));
-  }
+      let obj = {
+        user_id: 1234,
+        rows: [
+          "clientname","servicetype","service","orderdescription","amount","paymentmodename","recddate","monthyear","fy"
+        ],
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        filters: formatedFilterData(filter),
+        search_key: search,
+        pg_no: +pageNo,
+        pg_size: +countPerPage,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
+      };
+      dispatch(getServiceTaxReportData(obj));
+    }
   }, [
     filter,
     countPerPage,
@@ -127,8 +127,8 @@ const ClientsWithOrderButNoEmail = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows:  [
-        "fullname","clienttypename","countryname","email1"
+      rows: [
+        "clientname","servicetype","service","orderdescription","amount","paymentmodename","recddate","monthyear","fy"
       ],
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -137,15 +137,19 @@ const ClientsWithOrderButNoEmail = () => {
       pg_no: 0,
       pg_size: 0,
       colmap: {
-        fullname: "Client Name",
-        clienttypename: "Client Type Name",
-        countryname: "Country Name",
-        email1: "Email",
-        
+        clientname: "Client Name",
+        servicetype:"Service Type",
+        service:"Service",
+        orderdescription: "Order Description",
+        amount: "Amount",
+        paymentmodename: "Payment Mode",
+        recddate: "Received Date",
+        monthyear:"Month Year",
+        fy: "Fincal Year",
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadClientsWithOrderButNoEmail(obj));
+    dispatch(downloadServiceTaxReportData(obj));
   };
 
   return (
@@ -153,8 +157,8 @@ const ClientsWithOrderButNoEmail = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Clients With Order But No Email Ids"}
-            path={["Reports", "Exceptions", "Clients With Order But No Email Ids"]}
+            heading={"Agency and Services Receipts For Taxes"}
+            path={["Reports", "Exceptions", "Agency and Services Receipts For Taxes"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
@@ -175,7 +179,7 @@ const ClientsWithOrderButNoEmail = () => {
 
         <SimpleTable
           columns={columns}
-          data={clientsWithOrderButNoEmail}
+          data={serviceTaxReportData}
           totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
@@ -194,4 +198,4 @@ const ClientsWithOrderButNoEmail = () => {
   );
 };
 
-export default ClientsWithOrderButNoEmail;
+export default ServiceTaxReport;

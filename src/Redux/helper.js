@@ -442,5 +442,19 @@ export const formatUnderSuspensen = (data) => {
       ...billing,
       amount: billing.amount ? formatDate(billing.amount) : "",
     }));
-}
+  }
+  export const ServiceTaxReportFormat = (data) => {
+    return data.map((billing, index) => ({
+      ...billing,
+      amount: billing.amount ? floorDecimal(billing.amount) : "",
+    }));
+  }
+  export const bankTransferWithWrongUserNameFormat = (data) => {
+    return data.map((billing, index) => ({
+      ...billing,
+      amount: billing.amount ? floorDecimal(billing.amount) : "",
+    }));
+  }
+
+
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

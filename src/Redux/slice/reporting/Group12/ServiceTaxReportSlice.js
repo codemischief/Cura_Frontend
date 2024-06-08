@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
-import { env_URL_SERVER, bankTransferWithWrongUserNameFormat } from "../../../helper";
+import { env_URL_SERVER, ServiceTaxReportFormat } from "../../../helper";
 
 const initialState = {
-  BankTransactionsWithWrongUserName: [],
+  serviceTaxReportData: [],
   totalAmount: {},
   status: "",
   filter: {},
@@ -19,14 +19,14 @@ const initialState = {
   },
 };
 
-export const BankTransactionsWithWrongUserNameSlice = createSlice({
-  name: "BankTransactionsWithWrongUserName",
+export const ServiceTaxReportSlice = createSlice({
+  name: "ServiceTaxReport",
   initialState,
   reducers: {
-    setBankTransactionWithWrongUserName: (state, { payload }) => {
+    setServiceTaxReport: (state, { payload }) => {
       const { data } = payload.data;
 
-      state.BankTransactionsWithWrongUserName = bankTransferWithWrongUserNameFormat(data);
+      state.serviceTaxReportData = ServiceTaxReportFormat(data);
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -53,7 +53,7 @@ export const BankTransactionsWithWrongUserNameSlice = createSlice({
         sort_order: "",
       };
     },
-    setBankTransactionsWithWrongUserNameFilter: (state, { payload }) => {
+    setServiceTaxReportFilter: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
@@ -63,42 +63,42 @@ export const BankTransactionsWithWrongUserNameSlice = createSlice({
 });
 
 export const {
-  setBankTransactionWithWrongUserName,
+  setServiceTaxReport,
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setBankTransactionsWithWrongUserNameFilter,
+  setServiceTaxReportFilter,
   setInitialState,
   setSorting,
-} = BankTransactionsWithWrongUserNameSlice.actions;
+} = ServiceTaxReportSlice.actions;
 
-export const getBankTransactionsWithWrongUserName = (payloadObj) => async (dispatch) => {
+export const getServiceTaxReportData = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}reportExceptionBankStWrongNames`,
+      `${env_URL_SERVER}reportServicesAgencyRepairServices`,
       payloadObj
     );
 
-    dispatch(setBankTransactionWithWrongUserName({ data: response.data }));
+    dispatch(setServiceTaxReport({ data: response.data }));
     dispatch(setStatus("success"));
   } catch (err) {
     dispatch(setStatus("error"));
   }
 };
 
-export const downloadEmployeeWithoutVendor = (payloadObj) => async (
+export const downloadServiceTaxReportData = (payloadObj) => async (
   dispatch
 ) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}reportExceptionBankStWrongNames`,
+      `${env_URL_SERVER}reportServicesAgencyRepairServices`,
       payloadObj
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadBankTransactionsWithWrongUserName(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
       );
     }
     dispatch(setStatus("success"));
@@ -110,7 +110,7 @@ export const downloadEmployeeWithoutVendor = (payloadObj) => async (
   }
 };
 
-export const downloadBankTransactionsWithWrongUserName = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -125,9 +125,9 @@ export const downloadBankTransactionsWithWrongUserName = (filename, userId) => a
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "reportExceptionBankStWrongNames.xlsx");
+    FileSaver.saveAs(blob, "reportServicesAgencyRepairServices.xlsx");
   } catch (error) {
     console.log("error", error);
   }
 };
-export default BankTransactionsWithWrongUserNameSlice.reducer;
+export default ServiceTaxReportSlice.reducer;

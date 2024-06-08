@@ -28,8 +28,8 @@ export default function connectionDataColumn(onQuery) {
       },
     },
     {
-      title: "Type",
-      field: "type",
+      title: "Client Name",
+      field: "clientname",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: {
@@ -41,15 +41,29 @@ export default function connectionDataColumn(onQuery) {
       },
     },
     {
-      title: "Client Name",
-      field: "clientname",
+      title: "Service Type",
+      field: "servicetype",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
         minWidth: "6rem",
-        maxWidth: "15rem",
+        maxWidth: "25.813rem",
+
+      },
+    },
+    {
+      title: "Service",
+      field: "service",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        minWidth: "6rem",
+        maxWidth: "25.813rem",
+
       },
     },
     {
@@ -60,32 +74,9 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "26rem",
-        maxWidth: "40rem",
-      },
-    },
-    {
-      title: "Mode of Payment",
-      field: "mode_of_payment",
-      sorting: true,
-      filterComponent: TextFilterField,
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        minWidth: "6rem",
-        maxWidth: "40rem",
-      },
-    },
-    {
-      title: "Done By",
-      field: "doneby",
-      sorting: true,
-      filterComponent: TextFilterField,
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        minWidth: "6rem",
-        maxWidth: "20rem",
+        minWidth: "15rem",
+        maxWidth: "25.813rem",
+
       },
     },
     {
@@ -97,7 +88,56 @@ export default function connectionDataColumn(onQuery) {
         ...cellStyleCommon,
         justifyContent: "center",
         minWidth: "6rem",
+        maxWidth: "25.813rem",
+
+      },
+    },
+    {
+      title: "Payment Mode",
+      field: "paymentmodename",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        minWidth: "8rem",
+        maxWidth: "15rem",
+      },
+    },
+    {
+      title: "Received Date",
+      field: "recddate",
+      sorting: true,
+      filterComponent: DateFilterField,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        minWidth: "6rem",
         maxWidth: "20rem",
+      },
+    },
+    {
+      title: "Month Year",
+      field: "monthyear",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        minWidth: "6rem",
+        maxWidth: "20rem",
+      },
+    },
+    {
+      title: "Fiscal Year",
+      field: "fy",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        minWidth: "6rem",
+        maxWidth: "15rem",
       },
     },
   ];

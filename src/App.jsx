@@ -136,6 +136,7 @@ import BankTransactionsWithWrongUserName from "./Screens/Reports/Group12/BankTra
 import EntityBlankReport from "./Screens/Reports/Group12/EntityBlankReport/index.jsx";
 import OwnerWithNoProperty from "./Screens/Reports/Group12/OwnerWIthNoProperty/index.jsx";
 import PropertyWithNoProjectView from "./Screens/Reports/Group12/PropertyWithNoProject/index.jsx";
+import ServiceTaxReport from "./Screens/Reports/Group12/ServiceTaxReport/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -552,6 +553,10 @@ const App = () => {
               <Route
                 path="reports/propertywithnoproject"
                 element={<PropertyWithNoProjectView />}
+                />
+                <Route
+                path="reports/serviceTaxReport"
+                element={<ServiceTaxReport />}
               />
             </Route>
 
