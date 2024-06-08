@@ -316,7 +316,11 @@ const helper = (index, obj, pageName) => {
   if(index===5){
     return `Total:${obj.invoiceamount_orderpaymentamount}`
   }
-  
+ }
+ else if(pageName==="clientStatementByDate"){
+  if(index===5){
+    return `Total:${obj.totalamount}`
+  }
  }
  else if(pageName==='orderStaticsReport'){
   if(index===2){

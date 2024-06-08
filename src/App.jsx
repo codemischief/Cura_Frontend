@@ -127,6 +127,7 @@ import OrderStaticsView from "./Screens/Reports/Statistics/OrderStatisticsReport
 import ActiveLLAgreementView from "./Screens/Reports/ActiveLlAgreement/index.jsx";
 import OrderAnalysis from "./Screens/Reports/OrderAnalysis/index.jsx";
 import LLlistReport from "./Screens/Reports/LLlist/index.jsx";
+import ClientStatementByDate from "./Screens/Reports/ClientStatementByDate/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -508,8 +509,10 @@ const App = () => {
                path="/reports/clientstatics"
                element={<ClientStatistics/>}
               />
-              
-
+              <Route
+                path="reports/clientStatementByDate"
+                element={<ClientStatementByDate />}
+              />
             </Route>
 
             <Route path="/*" element={<NotFound />} />

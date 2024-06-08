@@ -253,7 +253,7 @@ export const navMenuConfig = [
         {
           subheader: "Client",
           items: [
-            { title: "Client Statement by Date (CI,CR,OR)", path: "" },
+            { title: "Client Statement by Date (CI,CR,OR)", path: PATH_DASHBOARD.report.clients.clientStatementByDate, },
             {
               title: "Duplicate Clients ",
               path: PATH_DASHBOARD.report.clients.duplicateClients,

@@ -63,7 +63,7 @@ import ActiveLLAgreementReducer from "./slice/reporting/ActiveLLAgreement/Active
 import orderStatisticsReportReducer from "./slice/reporting/Statistics/OrderStatisticsReport/OrderStatisticsReport"
 import OrderAnalysisReducer from "./slice/reporting/OrderAnalysis/OrderAnalysis";
 import LllistReducer from "./slice/reporting/LLlist/LllistSlice"
-
+import ClientStatementByDate from "./slice/reporting/ClientStatementByDate";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -125,8 +125,8 @@ export const store = configureStore({
     orderStatisticsReport:orderStatisticsReportReducer,
     activeLLAgreement:ActiveLLAgreementReducer,
     orderAnalysis:OrderAnalysisReducer,
-    LLlist:LllistReducer
-
+    LLlist:LllistReducer,
+    clientStatementByDate:ClientStatementByDate
   },
   // Add the RTK Query API middleware
 });

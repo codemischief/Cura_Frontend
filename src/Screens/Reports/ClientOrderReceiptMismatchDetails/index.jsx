@@ -16,7 +16,7 @@ import {
 } from "../../../Redux/slice/reporting/ClientOrderReceiptMismatchDetails";
 import { useSelector } from "react-redux";
 import { formatedFilterData } from "../../../utils/filters";
-import SimpleTable from "../../../Components/common/table/ClientPortalTable";
+import SimpleTable from "../../../Components/common/table/CustomTable";
 import Container from "../../../Components/common/Container";
 
 const PmaClientReport = () => {
