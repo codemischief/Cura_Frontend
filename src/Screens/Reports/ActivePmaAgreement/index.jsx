@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import { Refresh } from "@mui/icons-material";
 import {
   downloadActivePmaAgreement,
   getActivePmaAgreement,
@@ -259,17 +260,18 @@ const PmaInvoiceList = () => {
             />
 
             {/* </div> */}
+            <div
+          className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
+          onClick={() => {}}
+        >
+          <button>
+            <p>Filters</p>
+          </button>
+          <Refresh sx={{ height: "16px", width: "16px" }} />
+        </div>
           </div>
         </div>
-        <div className="flex justify-end">
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => dispatch(setActivePmaAgreementFilters({}))}
-          >
-            Clear All
-          </Button>
-        </div>
+       
 
         <SimpleTable
           columns={columns}

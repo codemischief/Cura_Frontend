@@ -27,6 +27,12 @@ export const navMenuConfig = [
             { title: "Services", path: PATH_DASHBOARD.admin.service },
           ],
         },
+        {
+          subheader: "Data Management",
+          items: [
+            { title: "Delete by ID", path: PATH_DASHBOARD.admin.deleteId },
+          ],
+        },
       ],
       [
         {
@@ -39,10 +45,20 @@ export const navMenuConfig = [
         },
       ],
       [
+        // {
+        //   subheader: "Data Management",
+        //   items: [
+        //     { title: "Delete by ID", path: PATH_DASHBOARD.admin.deleteId },
+        //   ],
+        // },
         {
-          subheader: "Data Management",
+          subheader: "Contacts",
           items: [
-            { title: "Delete by ID", path: PATH_DASHBOARD.admin.deleteId },
+            { title: "All Owner Email Ids", path: PATH_DASHBOARD.report.contact.ownerMailId },
+            { title: "All Tenants Email Ids", path: PATH_DASHBOARD.report.contact.tenantEmail },
+            { title: "Client Contacts", path: PATH_DASHBOARD.report.contact.clientContactDetails },
+            { title: "Owners Phone No's", path: "" },
+            { title: "Clients Phone No's", path: "" },
           ],
         },
       ],
@@ -222,6 +238,7 @@ export const navMenuConfig = [
             { title: "L and L List", path: "" },
           ],
         },
+       
         // {
         //   subheader: "Monthly Margin",
         //   items: [
@@ -302,16 +319,7 @@ export const navMenuConfig = [
         },
       ],
       [
-        {
-          subheader: "Contacts",
-          items: [
-            { title: "All Owner Email Ids", path: PATH_DASHBOARD.report.contact.ownerMailId },
-            { title: "All Tenants Email Ids", path: PATH_DASHBOARD.report.contact.tenantEmail },
-            { title: "Client Contacts", path: PATH_DASHBOARD.report.contact.clientContactDetails },
-            { title: "Owners Phone No's", path: "" },
-            { title: "Clients Phone No's", path: "" },
-          ],
-        },
+       
         {
           subheader: "Tally Report",
           items: [
@@ -345,31 +353,6 @@ export const navMenuConfig = [
             },
           ],
         },
-        
-      ],
-      [
-        {
-          subheader: "Exceptions",
-          items: [
-            { title: "Manage Vendor", path: "" },
-            { title: "Manage Vendor Invoice", path: "" },
-            { title: "Manage Vendor Payment", path: "" },
-          ],
-        },
-        {
-          subheader: "Vendor",
-          items: [
-            { title: "Vendor Summary", path: "" },
-            { title: "Vendor Statement", path: PATH_DASHBOARD.report.vendorReport.vendorStatement },
-          ],
-        },
-        {
-          subheader: "Service Tax Reports",
-          items: [
-            { title: "Agency Repair Service Receipts", path: "" },
-            { title: "Service Tax Paid by Vendor", path: PATH_DASHBOARD.report.serviceTaxReport.serviceTaxPaidByVendor },
-          ],
-        },
         {
           subheader: "Report Trace",
           items: [
@@ -387,6 +370,37 @@ export const navMenuConfig = [
             },
           ],
         },
+      ],
+      [
+        {
+          subheader: "Exceptions",
+          items: [
+            { title: "Payment Under Suspense Order", path: "" },
+            { title: "Receipt Under Suspense Order", path: "" },
+            { title: "Clients With Orders But No Email IDs", path: "" },
+            { title: "Employee Without Vendor", path: "" },
+            { title: "Bank Transaction With Wrong User Names", path: "" },
+            { title: "Entity blank for Transactions (CR,OR,OI,VI,OP)", path: "" },
+            { title: "Owners with no Properties", path: "" },
+            { title: "Properties with no Projects", path: "" },
+          
+          ],
+        },
+        {
+          subheader: "Vendor",
+          items: [
+            { title: "Vendor Summary", path: "" },
+            { title: "Vendor Statement", path: PATH_DASHBOARD.report.vendorReport.vendorStatement },
+          ],
+        },
+        {
+          subheader: "Service Tax Reports",
+          items: [
+            { title: "Agency Repair Service Receipts", path: "" },
+            { title: "Service Tax Paid by Vendor", path: PATH_DASHBOARD.report.serviceTaxReport.serviceTaxPaidByVendor },
+          ],
+        },
+        
       ],
       [
         {
@@ -428,26 +442,26 @@ export const navMenuConfig = [
 
       // col-1
       [
-        { subheader: "Prospect", path: PATH_DASHBOARD.research.prospect },
-        { subheader: "Employer", path: PATH_DASHBOARD.research.employer },
-        { subheader: "Manage Govt Department", path: PATH_DASHBOARD.research.governmentDepartment },
+        { subheader: "Prospects", path: PATH_DASHBOARD.research.prospect },
+        { subheader: "Employers", path: PATH_DASHBOARD.research.employer },
+        { subheader: "Govt Departments", path: PATH_DASHBOARD.research.governmentDepartment },
         { subheader: "Real Estate Agents", path: PATH_DASHBOARD.research.agent },
       ],
       // col-2
       [
         { subheader: "Manage Owners", path: PATH_DASHBOARD.research.owner },
-        { subheader: "Service Appartments And Guest Houses", path: PATH_DASHBOARD.research.serviceApartmentGuestHouse },
+        { subheader: "Service Apts. & Guest Houses", path: PATH_DASHBOARD.research.serviceApartmentGuestHouse },
         { subheader: "Friends", path: PATH_DASHBOARD.research.friends },
       ],
       [
         { subheader: "Bank and Branches", path: PATH_DASHBOARD.research.banks },
-        { subheader: "Business Group", path: PATH_DASHBOARD.research.businessgroup },
+        { subheader: "Business Groups", path: PATH_DASHBOARD.research.businessgroup },
         { subheader: "Professionals", path: PATH_DASHBOARD.research.professionals },
       ],
       [
         { subheader: "Mandals", path: PATH_DASHBOARD.research.mandals },
-        { subheader: "Architect", path: PATH_DASHBOARD.research.architect },
-        { subheader: "Educational Institute", path: PATH_DASHBOARD.research.educational },
+        { subheader: "Architects", path: PATH_DASHBOARD.research.architect },
+        { subheader: "Educational Institutes", path: PATH_DASHBOARD.research.educational },
       ],
     ],
   },
