@@ -13,8 +13,7 @@ import {
   setCountPerPage,
   setInitialState,
   setPageNumber,
-  setSorting,
-  setStatus,
+  setSorting
 } from "../../../../Redux/slice/reporting/TallyReports/OrderPaymentWithoutTds/OrderPaymentWithoutTds";
 import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
@@ -31,7 +30,7 @@ const OrderPaymentWithoutTdsView = () => {
     sorting,
     countPerPage,
     pageNo,
-    filter,
+    filter
   } = useSelector((state) => state.orderPaymentWithoutTds);
 
   const [showTable, setShowTable] = useState(false);
@@ -78,6 +77,7 @@ const OrderPaymentWithoutTdsView = () => {
 
   useState(() => {
     getEntityAndMode();
+    dispatch(setInitialState())
   }, []);
 
   const handleRefresh = () => {
@@ -246,11 +246,11 @@ const OrderPaymentWithoutTdsView = () => {
       dispatch(setInitialState());
       setShowTable(true);
     } else {
-      setError((prev) => ({
-        ...prev,
-        year: selectedYear ? prev.year : "please select a year first",
-        month: selectedMonth ? prev.month : "please select a year first",
-      }));
+      // setError((prev) => ({
+      //   ...prev,
+      //   year: selectedYear ? prev.year : "please select a year first",
+      //   month: selectedMonth ? prev.month : "please select a year first",
+      // }));
     }
   };
 

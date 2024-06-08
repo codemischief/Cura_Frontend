@@ -2,12 +2,11 @@ import { Stack } from "@mui/material";
 
 import styleConst from "./styleConst";
 import {
-  DateFilterField,
   NumberFilterField,
   TextFilterField,
 } from "./CustomFilterField";
 
-export default function connectionDataColumn(onQuery) {
+export default function connectionDataColumn() {
   const { cellStyleCommon } = styleConst;
 
   const columns = [
@@ -27,44 +26,39 @@ export default function connectionDataColumn(onQuery) {
       },
     },
     {
-      // filterComponent: TextFilterField,
+      filterComponent: TextFilterField,
       title: "Service",
       field: "service",
-      sorting: false,
-      filterDisabled: true,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      sorting: true,
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"11rem" },
     },
     {
-      filterComponent: NumberFilterField,
-      cellStyle: { minWidth: "20px", maxWidth: "34px" },
+      filterComponent: TextFilterField,
       title: "Client Name",
       field: "clientname",
-      filterDisabled: false,
       sorting: true,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"11rem" },
     },
     {
       title: "Order ID",
       field: "orderid",
       sorting: true,
-      cellStyle: { minWidth: "20px", maxWidth: "34px" },
-      filterComponent: DateFilterField,
-      // filterComponent:TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      filterComponent:TextFilterField,
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"9rem" },
     },
     {
       title: "Order Description",
       field: "orderdescription",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"17rem" },
     },
     {
       title: "Order Status",
       field: "orderstatus",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"9rem" },
     },
 
     {
@@ -72,21 +66,21 @@ export default function connectionDataColumn(onQuery) {
       field: "totalorderreceipt",
       sorting: true,
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"9rem" },
     },
     {
       title: "OP Amount",
       field: "totalorderpayment",
       sorting: true,
-      filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"9rem" },
     },
     {
       title: "OI Amount",
       field: "totalinvoiceamt",
       sorting: true,
-      filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"9rem" },
     }
    
   ];
