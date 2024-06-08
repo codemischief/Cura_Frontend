@@ -421,4 +421,26 @@ export const updatedOrderPaymentDD = (data) => {
     date: billing.date ? formatDate(billing.date) : "",
   }));
 }
+
+export const paymentUnderSuspensReportFormat = (data) => {
+  return data.map((ele, index) => ({
+    ...ele,
+    amount: floorDecimal(ele.amount)?floorDecimal(ele.amount):"0.00",
+    paymentdate: formatDate(ele.paymentdate)?formatDate(ele.paymentdate):"",
+  }));
+};
+
+export const formatUnderSuspensen = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+    recddate: billing.recddate ? formatDate(billing.recddate) : "",
+    amount: billing.amount ? floorDecimal(billing.amount) :"0.00"
+  }));
+}
+  export const entityBlankReportFormat = (data) => {
+    return data.map((billing, index) => ({
+      ...billing,
+      amount: billing.amount ? formatDate(billing.amount) : "",
+    }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
