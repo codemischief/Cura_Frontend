@@ -468,5 +468,15 @@ export const formatUnderSuspensen = (data) => {
     }));
   }
 
+export const LLlistFormat = (data)=>{
+  return data.map((billing, index) => ({
+    ...billing,
+    depositamount: billing.depositamount ? floorDecimal(billing.depositamount) : "0.00",
+    rentamount: billing.rentamount ? floorDecimal(billing.rentamount) : "0.00",
+    startdate:billing.startdate ? formatDate(billing.startdate) :"",
+    enddate:billing.enddate ? formatDate(billing.enddate) :"",
+  }));
+
+}
 
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
