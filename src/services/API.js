@@ -1164,11 +1164,8 @@ export const APIService = {
   deleteLLTenant,
   getLLTenant,
   download,
-<<<<<<< Updated upstream
   getDepartmentTypeAdmin,
   resetPassword,
-  changePassword
-=======
+  changePassword,
   getPaymentStatusAdmin
->>>>>>> Stashed changes
 };
