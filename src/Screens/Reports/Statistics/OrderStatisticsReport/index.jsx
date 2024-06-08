@@ -5,26 +5,25 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
-import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import {
-  downloadOrderPaymentB2BReport,
-  getOrderPaymentB2BView,
+  downloadOrderStatisticsReport,
+  getOrderStatisticsReport,
   setCountPerPage,
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus,
-} from "../../../../Redux/slice/reporting/TallyReports/OrderPaymentB2B/OrderPaymentB2B";
+} from "../../../../Redux/slice/reporting/Statistics/OrderStatisticsReport/OrderStatisticsReport";
 import connectionDataColumn from "./Columns";
-import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
+import SimpleTable from "../../../../Components/common/table/CustomTable";
+import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 
-const OrderPaymentB2BView = () => {
+const OrderStaticsView = () => {
   const dispatch = useDispatch();
   const {
-    orderPaymentB2BView,
+    orderStatisticsReport,
     status,
     totalAmount,
     totalCount,
@@ -32,18 +31,14 @@ const OrderPaymentB2BView = () => {
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.orderPaymentB2B);
+  } = useSelector((state) => state.orderStatisticsReport);
 
   const [showTable, setShowTable] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [modeData, setModeData] = useState([]);
-  const [entityData, setEntityData] = useState([]);
+  const [lobData, setLobData] = useState([]);
   const [search, setSearch] = useState("");
   const [intialFields, setIntialFields] = useState({
-    start_date: "",
-    end_date: "",
-    mode: "",
-    entity: "",
+    lob: "",
   });
 
   const columns = useMemo(() => connectionDataColumn(), []);
@@ -66,51 +61,38 @@ const OrderPaymentB2BView = () => {
     dispatch(setPageNumber(1));
   };
 
-  const getEntityAndMode = async () => {
+  const getLob = async () => {
     const data = {
       user_id: 1234,
+      rows: ["id", "name"],
+      filters: [],
+      sort_by: [],
+      order: "asc",
+      pg_no: 0,
+      pg_size: 0,
     };
-    const mode = await APIService.getModesAdmin(data);
-    const entity = await APIService.getEntityAdmin(data);
-    setEntityData((await entity.json()).data);
-    setModeData((await mode.json()).data);
+    const response = await APIService.getLob(data);
+    const result = await response.json();
+
+    setLobData(result.data);
   };
 
+
+
   useState(() => {
-    getEntityAndMode();
+    getLob();
     dispatch(setInitialState())
   }, []);
 
   const handleRefresh = () => {
-    if (
-      intialFields.start_date &&
-      intialFields.end_date &&
-      intialFields.mode &&
-      intialFields.entity
-    ) {
+    if (intialFields.lob) {
       let obj = {
         user_id: 1234,
         rows: [
-          "uniqueid",
-          "date",
-          "voucher",
-          "vouchertype",
-          "vouchernumber",
-          "drledger",
-          "crledger",
-          "ledgeramount",
-          "narration",
-          "instrumentno",
-          "instrumentdate",
+          "service", "on_hold", "estimate_given", "cancelled", "closed"
+          , "billed", "inquiry", "completed", "in_progress"
         ],
-        paymentMode: !isNaN(+intialFields.mode)
-          ? +intialFields.mode
-          : intialFields.mode,
-        entityid: !isNaN(+intialFields.entity)
-          ? +intialFields.entity
-          : intialFields.entity,
-        startdate: intialFields.start_date,
-        enddate: intialFields.end_date,
+        lobName: intialFields.lob,
         sort_by: undefined,
         filters: formatedFilterData(filter),
         search_key: search,
@@ -118,7 +100,7 @@ const OrderPaymentB2BView = () => {
         pg_size: +countPerPage,
         order: undefined,
       };
-      dispatch(getOrderPaymentB2BView(obj));
+      dispatch(getOrderStatisticsReport(obj));
     }
   };
 
@@ -144,30 +126,21 @@ const OrderPaymentB2BView = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
+    if (intialFields.lob) {
       let obj = {
         user_id: 1234,
         rows: [
-          "uniqueid",
-          "date",
-          "voucher",
-          "vouchertype",
-          "vouchernumber",
-          "drledger",
-          "crledger",
-          "ledgeramount",
-          "narration",
-          "instrumentno",
-          "instrumentdate",
+          "service",
+          "on_hold",
+          "estimate_given",
+          "cancelled",
+          "closed",
+          "billed",
+          "inquiry",
+          "completed",
+          "in_progress",
         ],
-        paymentMode: !isNaN(+intialFields.mode)
-          ? +intialFields.mode
-          : intialFields.mode,
-        entityid: !isNaN(+intialFields.entity)
-          ? +intialFields.entity
-          : intialFields.entity,
-        startdate: intialFields.start_date,
-        enddate: intialFields.end_date,
+        lobName: intialFields.lob,
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
@@ -175,7 +148,7 @@ const OrderPaymentB2BView = () => {
         pg_size: +countPerPage,
         order: sorting.sort_order ? sorting.sort_order : undefined,
       };
-      dispatch(getOrderPaymentB2BView(obj));
+      dispatch(getOrderStatisticsReport(obj));
     }
   }, [
     filter,
@@ -198,60 +171,44 @@ const OrderPaymentB2BView = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "uniqueid",
-        "date",
-        "voucher",
-        "vouchertype",
-        "vouchernumber",
-        "drledger",
-        "crledger",
-        "ledgeramount",
-        "narration",
-        "instrumentno",
-        "instrumentdate",
+        "service",
+        "on_hold",
+        "estimate_given",
+        "cancelled",
+        "closed",
+        "billed",
+        "inquiry",
+        "completed",
+        "in_progress",
       ],
-      paymentMode: !isNaN(+intialFields.mode)
-        ? +intialFields.mode
-        : intialFields.mode,
-      entityid: !isNaN(+intialFields.entity)
-        ? +intialFields.entity
-        : intialFields.entity,
-      startdate: intialFields.start_date,
+      lobName:intialFields.lob,
+
       downloadType: "excel",
-      enddate: intialFields.end_date,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       colmap: {
-        uniqueid: "Unique ID",
-        date: "Date",
-        voucher: "Type",
-        vouchertype: "Voucher Type",
-        vouchernumber: "Voucher Number",
-        drledger: "DR. Ledger",
-        crledger: "CR. Ledger",
-        ledgeramount: "Ledger Amount",
-        narration: "Narration",
-        instrumentno: "Instrument Number",
-        instrumentdate: "Instrument Date",
+        service: "Service",
+        on_hold: "On Hold",
+        estimate_given: "Estimate Given",
+        cancelled: "Cancelled",
+        closed: "Closed",
+        billed: "Billed",
+        inquiry: "Inquiry",
+        completed: "Completed",
+        in_progress: "In Progress",
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadOrderPaymentB2BReport(obj));
+    dispatch(downloadOrderStatisticsReport(obj));
   };
 
   const handleShow = () => {
-    if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
+    if (intialFields.lob) {
       dispatch(setInitialState());
       setShowTable(true);
-    } else {
-      setError((prev) => ({
-        ...prev,
-        year: selectedYear ? prev.year : "please select a year first",
-        month: selectedMonth ? prev.month : "please select a year first",
-      }));
     }
   };
 
@@ -260,8 +217,8 @@ const OrderPaymentB2BView = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Payment-Bank to Bank"}
-            path={["Reports", "Tally Report", "Order Payment-Bank to Bank"]}
+            heading={"Order Statistics Report"}
+            path={["Reports", "Statistics", "Order Statistics Report"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -295,55 +252,23 @@ const OrderPaymentB2BView = () => {
             alignItems={"center"}
             gap={"24px"}
           >
-            <div className="flex flex-col h-16 w-[200px]">
+            <div className="flex flex-col h-16 w-[281px]">
               <label className="font-sans text-sm font-normal leading-5">
-                Mode
+                LOB Name
               </label>
 
               <select
                 className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="mode"
-                value={intialFields.mode}
+                name="lob"
+                value={intialFields.lob}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden">Select  Mode</option>
+                <option selected className="hidden">Select Lob</option>
                 <option value="all">all</option>
-                {modeData.map((opt) => (
-                  <option value={opt[0]}>{opt[1]}</option>
+                {lobData.map((opt) => (
+                  <option value={opt.name}>{opt.name}</option>
                 ))}
               </select>
-            </div>
-            <div className="flex flex-col h-16 w-[200px]">
-              <label className="font-sans text-sm font-normal leading-5">
-                Entity
-              </label>
-              <select
-                className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="entity"
-                value={intialFields.entity}
-                onChange={handleChange}
-              >
-                <option selected value={""} className="hidden">Select Entity</option>
-                <option value="all">all</option>
-
-                {entityData.map((opt) => (
-                  <option value={opt[0]}>{opt[1]}</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col h-16 w-[200px]">
-              <DatePicker
-                label={"Select Start Date"}
-                onChange={handleChange}
-                name="start_date"
-              />
-            </div>
-            <div className="flex flex-col h-16 w-[200px]">
-              <DatePicker
-                label={"Select End Date"}
-                onChange={handleChange}
-                name="end_date"
-              />
             </div>
 
             <Button
@@ -359,28 +284,23 @@ const OrderPaymentB2BView = () => {
                 border: "1px solid #004DD7",
                 fontWeight: "600px",
                 lineHeight: "18.9px",
-                marginTop: "6px",
+                marginTop: "12px",
                 "&:hover": {
                   //you want this to be the same as the backgroundColor above
                   backgroundColor: "#004DD7",
                   color: "#fff",
                 },
               }}
-              disabled={
-                !intialFields.start_date ||
-                !intialFields.end_date ||
-                !intialFields.mode ||
-                !intialFields.entity
-              }
+              disabled={!intialFields.lob}
             >
               Show
             </Button>
           </Stack>
         </Stack>
         <SimpleTableWithFooter
-          pageName={"ClientReciptReports"}
+          pageName={'orderStaticsReport'}
           columns={columns}
-          data={orderPaymentB2BView}
+          data={orderStatisticsReport}
           totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
@@ -399,4 +319,4 @@ const OrderPaymentB2BView = () => {
   );
 };
 
-export default OrderPaymentB2BView;
+export default OrderStaticsView;
