@@ -58,16 +58,7 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
 
   useEffect(() => {
-    fetchCountryData();
-    if(editData?.id) {
-      // then its update wala case
-      fetchStateData(editData?.countryid)
-      fetchCityData(editData?.state)
-    }else {
-      // then its add wala case
-      fetchStateData(5);
-     fetchCityData("Maharashtra");
-    }
+    
   }, []);
 
   const fetchStateData = async (id) => {
@@ -103,7 +94,9 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
       agencyname : editData.agencyname ? editData.agencyname : null,
       phoneno2 : editData.phoneno2 ? editData.phoneno2 : null,
       registered : editData.registered ? editData.registered : false,
-      reraregistrationnumber : editData.reraregistrationnumber ? editData.reraregistrationnumber : null,
+      reraregistrationnumber : editData.rera_registration_number ? editData.rera_registration_number : null,
+      nameofpartners : editData?.nameofpartners ? editData.nameofpartners : null,
+      address : editData?.address ? editData.address : null,
       // employername : editData?.employername ? editData.employername : "",
       // adressline1 : editData?.addressline1 ? editData.addressline1 : "",
       // adressline2 : editData?.addressline2 ? editData.addressline2 : "",
@@ -137,24 +130,24 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
     try {
       const data = {
         user_id: 1234,
-        personname: values.personname,
-        suburb: values.suburb,
-        city: values.city,
-        state: values.state,
-        phoneno: values.phoneNumber,
-        email1: values.email,
-        country: Number(values.countryId),
-        propertylocation: values.propertylocation,
-        possibleservices: values.possibleservices,
-        createdby: 1234,
-        isdeleted: false,
+        nameofagent: values.nameofagent,
+        agencyname: values.agencyname,
+        emailid: values.emailid,
+        phoneno: values.phoneno,
+        phoneno2: values.phoneno2,
+        localitiesdealing: values.localitiesdealing,
+        address:values.address,
+        nameofpartners: values.nameofpartners,
+        registered : values.registered,
+        rera_registration_number : values.reraregistrationnumber
       };
 
       if (editData?.id) {
-        await dispatch(editEmployerData(data));
+        data.id = editData?.id 
+        await dispatch(editAgents(data));
         openSucess();
       } else {
-        await dispatch(addEmployerData(data));
+        await dispatch(addAgents(data));
         openSucess();
       }
     } catch (error) {
@@ -299,18 +292,37 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               
                             </div>
-                            <input
+                            <textarea className="inputFieldBorder inputFieldValue" style={{maxHeight : '50px', minHeight : '50px'}} name="localitiesdealing" value={formik.values.localitiesdealing} onChange={handleChange} onBlur={handleBlur}/>
+                            {/* <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
+                              className="inputFieldBorder inputFieldValue "
+                              style={{height : '50px'}}
                               type="text"
                               name="localitiesdealing"
                               value={formik.values.localitiesdealing}
                               onChange={handleChange}
                               onBlur={handleBlur}
+                            /> */}
+                            
+                          </div>
+                          <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Name Of Partners
+                              </label>
+                              
+                            </div>
+                            <input
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="nameofpartners"
+                              value={formik.values.nameofpartners}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
                             />
                             
                           </div>
-                         
                           
                           
                          
@@ -357,8 +369,8 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="hrcontactphone"
-                              value={formik.values.localitiesdealing}
+                              name="address"
+                              value={formik.values.address}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
@@ -372,8 +384,8 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="localitiesdealing"
-                              value={formik.values.localitiesdealing}
+                              name="reraregistrationnumber"
+                              value={formik.values.reraregistrationnumber}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
@@ -447,7 +459,7 @@ const AgentForm = ({ isOpen, handleClose, editData, openSucess }) => {
           onSubmit={handleConfirm}
           title={`${editData?.id ? 'Save' : 'Add'} Real Estate Agent`}
           description={
-            <div>
+            <div className="flex flex-col items-center">
               <p className="">Agent: {values.nameofagent}</p>
               <Typography
                 sx={{

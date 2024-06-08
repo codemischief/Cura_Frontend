@@ -54,7 +54,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '12%'
+        width : '10%'
       },
     },
     {
@@ -69,7 +69,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '12%'
+        width : '10%'
         
       },
     },
@@ -86,7 +86,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '12%'
+        width : '10%'
       },
     },
     {
@@ -101,7 +101,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '12%'
+        width : '10%'
       },
     },
     {
@@ -116,7 +116,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '12%'
+        width : '10%'
       },
     },
     {

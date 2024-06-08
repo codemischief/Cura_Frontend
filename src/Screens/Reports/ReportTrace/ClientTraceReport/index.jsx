@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../../Components/modals/SucessfullModal";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
-import SimpleTable from "../../../../Components/common/table/ClientPortalTable";
+import SimpleTable from "../../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../../services/API";
@@ -91,6 +91,9 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
+  useEffect(()=> {
+    dispatch(setInitialState());
+  },[]);
   useEffect(() => {
     if (selectedOption.value) {
       let obj = {
@@ -141,14 +144,6 @@ const LobReceiptPayments = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadClientTraceReportDataXls(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
 
   const handleShow = () => {
@@ -171,6 +166,7 @@ const LobReceiptPayments = () => {
     value : null
    });
    const [query,setQuery] = useState('')
+   
    const handleClientNameChange = (e) => {
        console.log(e)
        setSelectedOption(e)

@@ -152,6 +152,7 @@ const LobReceiptPayments = () => {
 
   useEffect(() => {
     fetchPaymentMode();
+    dispatch(setInitialState());
   }, []);
 
   const handleSortingChange = (accessor) => {

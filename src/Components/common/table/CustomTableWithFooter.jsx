@@ -29,7 +29,7 @@ const SimpleTableWithFooter = ({
       className={`w-full text-[12px] h-[${height}] overflow-x-auto `}
       style={{ height: `${height}` }}
     >
-      <table className="table-auto w-full">
+      <table style={{width:"-webkit-fill-available"}}>
         <thead className="h-[115px] sticky top-0 z-100 bg-white">
           <tr className="h-[56px] w-full ">
             {columns.map((column, index) => (
@@ -271,7 +271,7 @@ const helper = (index, obj, pageName) => {
     }
   } else if (pageName == 'nonPmaClientReceivables') {
     if (index == 2) {
-      return `Toal : ${obj?.sumamount}`
+      return `Total : ${obj?.sumamount}`
     }
   } else if (pageName == 'nonPmaClientStatement') {
     if (index == 6) {
@@ -307,11 +307,46 @@ const helper = (index, obj, pageName) => {
      return `Total: ${obj?.total_amount}`
     }
  }
+ else if(pageName==="clientStatement-CLCRAndOR"){
+  if(index===6){
+   return `Total: ${obj[0].sumamount}`
+  }
+}
  else if(pageName==="vendorStatement"){
   if(index===5){
     return `Total:${obj.invoiceamount_orderpaymentamount}`
   }
-  
+ }
+ else if(pageName==="clientStatementByDate"){
+  if(index===5){
+    return `Total:${obj.totalamount}`
+  }
+ }
+ else if(pageName==='orderStaticsReport'){
+  if(index===2){
+    return `Total:${obj.on_hold}`
+  }
+  if(index===3){
+    return `Total:${obj.estimate_given}`
+  }
+  if(index===4){
+    return `Total:${obj.cancelled}`
+  }
+  if(index===5){
+    return `Total:${obj.closed}`
+  }
+  if(index===6){
+    return `Total:${obj.billed}`
+  }
+  if(index===7){
+    return `Total:${obj.inquiry}`
+  }
+  if(index===8){
+    return `Total:${obj.completed}`
+  }
+  if(index===9){
+    return `Total:${obj.in_progress}`
+  }
  }
  
 }

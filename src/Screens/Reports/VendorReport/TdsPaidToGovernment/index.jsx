@@ -1,5 +1,5 @@
 import { Button, Stack } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 
 import { useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
+  setInitialState,
 } from "../../../../Redux/slice/reporting/Group9/tdsPaidToGovt";
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
@@ -19,6 +20,8 @@ import SimpleTable from "../../../../Components/common/table/CustomTable";
 
 const TdsPaidByVendorView = () => {
   const dispatch = useDispatch();
+  const isInitialMount = useRef(true);
+
   const {
     tdsPaidGovtData,
     status,
@@ -51,8 +54,8 @@ const TdsPaidByVendorView = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows:  ["order_description","amount","date","payment_description","vendorname"],
-      
+      rows: ["order_description", "amount", "date", "payment_description", "vendorname"],
+
       sort_by: undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -85,23 +88,29 @@ const TdsPaidByVendorView = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    let obj = {
-      user_id: 1234,
-      rows: [
-        "order_description",
-        "amount",
-        "date",
-        "payment_description",
-        "vendorname",
-      ],
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      filters: formatedFilterData(filter),
-      search_key: search,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      order: sorting.sort_order ? sorting.sort_order : undefined,
-    };
-    dispatch(getTdsPaidGovtData(obj));
+    if (isInitialMount.current) {
+      dispatch(setInitialState());
+      isInitialMount.current = false;
+    } else {
+
+      let obj = {
+        user_id: 1234,
+        rows: [
+          "order_description",
+          "amount",
+          "date",
+          "payment_description",
+          "vendorname",
+        ],
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        filters: formatedFilterData(filter),
+        search_key: search,
+        pg_no: +pageNo,
+        pg_size: +countPerPage,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
+      };
+      dispatch(getTdsPaidGovtData(obj));
+    }
   }, [
     filter,
     countPerPage,
@@ -122,7 +131,7 @@ const TdsPaidByVendorView = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows:  ["order_description","amount","date","payment_description","vendorname"],
+      rows: ["order_description", "amount", "date", "payment_description", "vendorname"],
 
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -137,7 +146,7 @@ const TdsPaidByVendorView = () => {
         registered: "Registered",
         payment_description: "Payment Description",
         vendorname: "Vendor Name",
-        
+
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };

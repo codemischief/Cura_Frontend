@@ -123,6 +123,11 @@ import ResetPassword from "./Screens/Login/ResetPassword.jsx";
 import RequestResetPassword from "./Screens/Login/RequestResetPassword.jsx";
 import OwnerMailId from "./Screens/Reports/Contacts/OwnerMailId/index.jsx";
 import ClientContactDetails from "./Screens/Reports/Contacts/ClientContactsDetails/index.jsx";
+import OrderStaticsView from "./Screens/Reports/Statistics/OrderStatisticsReport/index.jsx";
+import ActiveLLAgreementView from "./Screens/Reports/ActiveLlAgreement/index.jsx";
+import OrderAnalysis from "./Screens/Reports/OrderAnalysis/index.jsx";
+import LLlistReport from "./Screens/Reports/LLlist/index.jsx";
+import ClientStatementByDate from "./Screens/Reports/ClientStatementByDate/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -483,6 +488,30 @@ const App = () => {
               <Route
                 path="reports/clientContactDetails"
                 element={<ClientContactDetails />}
+              />
+              <Route 
+                path="/reports/orderStaticsView"
+                element={<OrderStaticsView/>}
+              />
+               <Route 
+                path="/reports/activellagreement"
+                element={<ActiveLLAgreementView/>}
+              />
+               <Route 
+                path="/reports/orderanalysis"
+                element={<OrderAnalysis/>}
+              />
+               <Route 
+                path="/reports/Lllist"
+                element={<LLlistReport/>}
+              />
+              <Route 
+               path="/reports/clientstatics"
+               element={<ClientStatistics/>}
+              />
+              <Route
+                path="reports/clientStatementByDate"
+                element={<ClientStatementByDate />}
               />
             </Route>
 

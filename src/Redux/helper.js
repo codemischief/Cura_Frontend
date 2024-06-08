@@ -233,7 +233,6 @@ export const bankTransferReconsiliation = (data) => {
   }));
 };
 export const clientOrderReceiptMismatchDetails = (data) => {
-  console.log(data);
   return data.map((billing, index) => ({
     ...billing,
     diff: billing.diff ? floorDecimal(billing.diff) : "0.00",
@@ -241,7 +240,6 @@ export const clientOrderReceiptMismatchDetails = (data) => {
   }));
 };
 export const bankReceiptReconciliation = (data) => {
-  console.log(data);
   return data.map((billing, index) => ({
     ...billing,
     bankst_cr: billing.bankst_cr ? floorDecimal(billing.bankst_cr) : "0.00",
@@ -297,61 +295,60 @@ export const StatisticsReport = (data) => {
 export const vendorStatementReport = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    invoicedate_orderpaymentdate: formatDate(ele.invoicedate_orderpaymentdate)?formatDate(ele.invoicedate_orderpaymentdate):"",
-    invoiceamount_orderpaymentamount: floorDecimal(ele.invoiceamount_orderpaymentamount)?floorDecimal(ele.invoiceamount_orderpaymentamount):"0.00",
+    invoicedate_orderpaymentdate: formatDate(ele.invoicedate_orderpaymentdate) ? formatDate(ele.invoicedate_orderpaymentdate) : "",
+    invoiceamount_orderpaymentamount: floorDecimal(ele.invoiceamount_orderpaymentamount) ? floorDecimal(ele.invoiceamount_orderpaymentamount) : "0.00",
   }));
 };
 
 export const tdsPaidByVendorReport = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    tds: floorDecimal(ele.tds)?floorDecimal(ele.tds):"0.00",
-    amount: floorDecimal(ele.amount)?floorDecimal(ele.amount):"0.00",
-    paymentdate: formatDate(ele.paymentdate)?formatDate(ele.paymentdate):"",
+    tds: floorDecimal(ele.tds) ? floorDecimal(ele.tds) : "0.00",
+    amount: floorDecimal(ele.amount) ? floorDecimal(ele.amount) : "0.00",
+    paymentdate: formatDate(ele.paymentdate) ? formatDate(ele.paymentdate) : "",
   }));
 };
 
 export const vendorPaymentPeriodReport = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    servicetaxamount: floorDecimal(ele.servicetaxamount)?floorDecimal(ele.servicetaxamount): "0.00",
-    amount: floorDecimal(ele.amount)?floorDecimal(ele.amount):"0.00",
-    tds: floorDecimal(ele.tds)?floorDecimal(ele.tds):"0.00",
+    servicetaxamount: floorDecimal(ele.servicetaxamount) ? floorDecimal(ele.servicetaxamount) : "0.00",
+    amount: floorDecimal(ele.amount) ? floorDecimal(ele.amount) : "0.00",
+    tds: floorDecimal(ele.tds) ? floorDecimal(ele.tds) : "0.00",
   }));
 };
 export const tdsPaidGovtFormat = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    amount: floorDecimal(ele.amount)?floorDecimal(ele.amount):"0.00",
+    amount: floorDecimal(ele.amount) ? floorDecimal(ele.amount) : "0.00",
   }));
 };
 
-
-export const clientReceiptFormatData = (data)=>{
+export const clientReceiptFormatData = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    date: formatDate(ele.date)?formatDate(ele.date):"",
-    ledgeramount:floorDecimal(ele.ledgeramount)?floorDecimal(ele.ledgeramount):"0.00"
+    date: formatDate(ele.date) ? formatDate(ele.date) : "",
+    ledgeramount: floorDecimal(ele.ledgeramount) ? floorDecimal(ele.ledgeramount) : "0.00"
 
   }));
-}
+};
 export const updatedEmployerData = (data) => {
-  console.log(data)
+  console.log(data);
   return data.map((billing, index) => ({
     ...billing,
   }));
-}
+};
 export const updatedGovernmentDepartmentData = (data) => {
-  console.log(data)
+  console.log(data);
   return data.map((billing, index) => ({
     ...billing,
   }));
-}
+};
 export const updatedAgentData = (data) => {
   return data.map((billing, index) => ({
     ...billing,
   }));
-}
+};
 
 export const updatedOwnerData = (data) => {
   console.log(data)
@@ -367,12 +364,29 @@ export const updatedServiceApartmentData = (data) => {
 }
 
 
-export const receiptToInvoice = (data)=>{
+export const receiptToInvoice = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    date: formatDate(ele.date)?formatDate(ele.date):"",
-   
+    date: formatDate(ele.date) ? formatDate(ele.date) : ""
+  }));
+};
 
+export const activeLLAgreement = (data) => {
+  return data.map((ele, index) => ({
+    ...ele,
+    start_date: formatDate(ele.startdate),
+    actualenddate: formatDate(ele.actualenddate),
+    rentamount: floorDecimal(ele.rentamount) ? floorDecimal(ele.rentamount) : "0.00",
+    depositamount: floorDecimal(ele.depositamount) ? floorDecimal(ele.depositamount) : "0.00",
+  }));
+};
+
+export const orderAnalysisFromat = (data) => {
+  return data.map((ele, index) => ({
+    ...ele,
+    totalorderpayment: formatDate(ele.totalorderpayment),
+    totalinvoiceamt: floorDecimal(ele.totalinvoiceamt) ? floorDecimal(ele.totalinvoiceamt) : "0.00",
+    totalorderreceipt: floorDecimal(ele.totalorderreceipt) ? floorDecimal(ele.totalorderreceipt) : "0.00",
   }));
 }
 export const updatedFriendsData = (data) => {
@@ -387,7 +401,7 @@ export const serviceTaxPaidByVendor = (data) => {
     amount: billing.amount
       ? floorDecimal(billing.amount)
       : "0.00",
-      paymentdate: billing.paymentdate ? formatDate(billing.paymentdate) : "",
+    paymentdate: billing.paymentdate ? formatDate(billing.paymentdate) : "",
   }));
 }
 export const TenantEmail = (data) => {
@@ -407,4 +421,15 @@ export const updatedOrderPaymentDD = (data) => {
     date: billing.date ? formatDate(billing.date) : "",
   }));
 }
+export const LLlistFormat = (data)=>{
+  return data.map((billing, index) => ({
+    ...billing,
+    depositamount: billing.depositamount ? floorDecimal(billing.depositamount) : "0.00",
+    rentamount: billing.rentamount ? floorDecimal(billing.rentamount) : "0.00",
+    startdate:billing.startdate ? formatDate(billing.startdate) :"",
+    enddate:billing.enddate ? formatDate(billing.enddate) :"",
+  }));
+
+}
+
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

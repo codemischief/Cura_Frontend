@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { CircularProgress, Stack } from "@mui/material";
 
 import styleConst from "./styleConst";
 import {
@@ -9,8 +9,9 @@ import {
 import { Create, Delete } from "@mui/icons-material";
 import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import EditButton from "../../../Components/common/buttons/EditButton";
-export default function getColumns(handleEdit, handleDelete) {
+export default function getColumns(handleEdit, handleDelete, isPending) {
   const { cellStyleCommon } = styleConst;
+  // const {}
 
   const columns = [
     {
@@ -62,8 +63,7 @@ export default function getColumns(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         minWidth: "50px",
-        maxWidth:"13.563"
-        
+        maxWidth: "13.563",
       },
     },
     {
@@ -133,27 +133,20 @@ export default function getColumns(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "50px",
+        minWidth: "70px",
       },
       render: (rowData) => {
         return (
           <div className="flex gap-2 justify-start">
-            <EditButton
-              handleEdit={handleEdit}
-              rowData={rowData}
-            />
-            <DeleteButton
-              handleDelete={handleDelete}
-              rowData={rowData}
-            />
-            {/* <Create
-              sx={{ width: "20px", height: "20px" }}
-              onClick={() => handleEdit(rowData)}
-            />
-            <Delete
-              sx={{ width: "20px", height: "20px" }}
-              onClick={() => handleDelete(rowData)}
-            /> */}
+            {isPending === rowData.id ? (
+              <button>
+                <CircularProgress sx={{ color: "blue" }} size={20} />{" "}
+                <p className="text-[8px]">loading</p>
+              </button>
+            ) : (
+              <EditButton handleEdit={handleEdit} rowData={rowData} />
+            )}
+            <DeleteButton handleDelete={handleDelete} rowData={rowData} />
           </div>
         );
       },
