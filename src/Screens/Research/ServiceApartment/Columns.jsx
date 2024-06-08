@@ -12,6 +12,8 @@ import {
   TextFilterField
 } from "./CustomFilerField"
 import { Create, Delete } from "@mui/icons-material";
+import EditButton from "../../../Components/common/buttons/EditButton";
+import DeleteButton from "../../../Components/common/buttons/deleteButton";
 
 export default function connectionDataColumn(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
@@ -23,7 +25,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width: "10%",
+        width: "5%",
       },
       align: "center",
       sorting: false,
@@ -52,7 +54,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '11.25%'
       },
     },
     {
@@ -67,7 +69,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '11.25%'
         
       },
     },
@@ -75,8 +77,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       id: 4,
       filterComponent: TextFilterField,
 
-      title: "Email ID",
-      field: "emailid",
+      title: "City",
+      field: "city",
       align: "left",
       filterDisabled: false,
       sorting: true,
@@ -84,11 +86,41 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '11.25%'
       },
     },
     {
       id: 5,
+      title: "Locality",
+      field: "suburb",
+      sorting: true,
+      align: "left",
+      filterComponent: TextFilterField,
+
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '11.25%'
+      },
+    },
+    {
+      id: 6,
+      title: "Email ID",
+      field: "emailid",
+      sorting: true,
+      align: "left",
+      filterComponent: TextFilterField,
+
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '11.25%'
+      },
+    },
+    {
+      id: 6,
       title: "Phone Number",
       field: "phoneno",
       sorting: true,
@@ -99,43 +131,13 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 6,
-      title: "Whatsapp Number",
-      field: "phoneno2",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 6,
-      title: "Localities Dealing",
-      field: "localitiesdealing",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
+        width : '11.25%'
       },
     },
     {
       id: 7,
-      title: "Name Of Partners",
-      field: "nameofpartners",
+      title: "Website",
+      field: "website",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
@@ -144,26 +146,11 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '11.25%'
       },
     },
     {
       id: 8,
-      title: "Registered",
-      field: "registered",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 9,
       title: "ID",
       field: "id",
       sorting: true,
@@ -174,32 +161,33 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '11.25%'
       },
     },
     {
       id: 10,
-      title: "Action",
+      title: "Edit",
       field: "action",
       sorting: false,
       align: "left",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '5%'
         // maxWidth: "18.25rem",
       },
       render: (rowData) => {
         return (
           <div className="flex gap-2 justify-start">
-            <Create
-              sx={{ width: "20px", height: "20px" }}
-              onClick={() => handleEdit(rowData)}
+            <EditButton
+               handleEdit={handleEdit}
+               rowData={rowData}
             />
-            <Delete
-              sx={{ width: "20px", height: "20px" }}
-              onClick={() => handleDelete(rowData)}
+            <DeleteButton
+                handleDelete={handleDelete}
+                rowData={rowData}
             />
+            
           </div>
         );
       },
