@@ -119,10 +119,10 @@ const SimpleTable = ({
                       className="py-3 "
                     >
                       {column.render
-                        ? column.field === "action"
+                        ? column.field === "action" 
                           ? column?.render(rowData)
                           : column?.render(
-                              (pageNo - 1) * countPerPage + rowIndex
+                              (pageNo - 1) * countPerPage + rowIndex,rowData
                             )
                         : rowData[column.field]}
                     </td>

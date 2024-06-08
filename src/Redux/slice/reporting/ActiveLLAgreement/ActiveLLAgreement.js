@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
-import { env_URL_SERVER } from "../../../../helper";
+import {
+  env_URL_SERVER,activeLLAgreement
+} from "../../../helper";
 
 const initialState = {
-  orderPaymentWithTdsView: [],
+  activeLlAgreement: [],
   totalAmount: {},
   status: "",
   filter: {},
@@ -19,13 +21,13 @@ const initialState = {
   },
 };
 
-export const orderPaymentWithTds = createSlice({
-  name: "OrderPaymentWithTds",
+export const activeLlAgreement = createSlice({
+  name: "activeLlAgreement",
   initialState,
   reducers: {
-    setOrderPaymentWithTdsView: (state, { payload }) => {
+    setActiveLlAgreement: (state, { payload }) => {
       const { data } = payload;
-      state.orderPaymentWithTdsView = data.data;
+      state.activeLlAgreement = activeLLAgreement(data.data)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -38,7 +40,7 @@ export const orderPaymentWithTds = createSlice({
     setCountPerPage: (state, { payload }) => {
       state.countPerPage = payload;
     },
-    setInitialState: (state, { payload }) => {
+    setInitialState: (state) => {
       (state.filter = []),
         (state.status = ""),
         (state.filter = []),
@@ -51,9 +53,10 @@ export const orderPaymentWithTds = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.orderPaymentWithTdsView = [];
+      state.activeLlAgreement=[]
+
     },
-    setOrderPaymentWithTdsViewFilters: (state, { payload }) => {
+    setActiveLlAgreementFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
@@ -62,56 +65,51 @@ export const orderPaymentWithTds = createSlice({
   },
 });
 
-// reducer
-// Action creators are generated for each case reducer function
 export const {
-  setOrderPaymentWithTdsView,
+  setActiveLlAgreement,
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setOrderPaymentWithTdsViewFilters,
+  setActiveLlAgreementFilters,
   setInitialState,
   setSorting,
-} = orderPaymentWithTds.actions;
+} = activeLlAgreement.actions;
 
-export const getOrderPaymentWithTdsView = (payloadObj) => async (dispatch) => {
-  try {
-    dispatch(setStatus("loading"));
-    const response = await axios.post(
-      `${env_URL_SERVER}reportOrderPaymentWithTDS`,
-      payloadObj
-    );
-
-    dispatch(setOrderPaymentWithTdsView({ data: response.data }));
-    dispatch(setStatus("success"));
-  } catch (err) {
-    dispatch(setStatus("error"));
-  }
-};
-
-export const downloadOrderPaymentWithTdsReport = (payloadObj) => async (
-  dispatch
-) => {
-  try {
-    dispatch(setStatus("loading"));
-    const response = await axios.post(
-      `${env_URL_SERVER}reportOrderPaymentWithTDS`,
-      payloadObj
-    );
-
-    if ((response.data.filename, payloadObj.user_id)) {
-      await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+export const getActiveLLAgreement =
+  (payloadObj) => async (dispatch) => {
+    try {
+      dispatch(setStatus("loading"));
+      const response = await axios.post(
+        `${env_URL_SERVER}reportActiveLLAgreement`,
+        payloadObj
       );
+
+      dispatch(setActiveLlAgreement({ data: response.data}));
+      dispatch(setStatus("success"));
+    } catch (err) {
+      dispatch(setStatus("error"));
     }
-    dispatch(setStatus("success"));
-    // return response.data;
-    // dispatch(setOrderPaymentData({ data: response.data, year, month }));
-    // dispatch(setStatus("success"));
-  } catch (err) {
-    dispatch(setStatus("error"));
-  }
-};
+  };
+
+export const downloadActiveLLAgreementReport =
+  (payloadObj) => async (dispatch) => {
+    
+    try {
+      dispatch(setStatus("loading"));
+      const response = await axios.post(
+        `${env_URL_SERVER}reportActiveLLAgreement`,
+        payloadObj
+      );
+      if ((response.data.filename, payloadObj.user_id)) {
+        await dispatch(
+          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        );
+      }
+      dispatch(setStatus("success"));
+    } catch (err) {
+      dispatch(setStatus("error"));
+    }
+  };
 
 export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
   try {
@@ -128,9 +126,9 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "Order-payment-with-TDS.xlsx");
+    FileSaver.saveAs(blob, "ReportActiveLLAgreement.xlsx");
   } catch (error) {
     console.log("error", error);
   }
 };
-export default orderPaymentWithTds.reducer;
+export default activeLlAgreement.reducer;

@@ -79,6 +79,8 @@ const ClientReceiptView = () => {
 
   useState(() => {
     getEntityAndMode();
+    dispatch(setInitialState())
+
   }, []);
 
   const handleRefresh = () => {
