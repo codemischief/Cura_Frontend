@@ -13,8 +13,8 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   sorting: {
-    sort_by: "",
-    sort_order: "",
+    sort_by: "id",
+    sort_order: "desc",
   },
 };
 
