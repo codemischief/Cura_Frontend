@@ -440,19 +440,28 @@ export const formatUnderSuspensen = (data) => {
   export const entityBlankReportFormat = (data) => {
     return data.map((billing, index) => ({
       ...billing,
-      amount: billing.amount ? formatDate(billing.amount) : "",
+      amount: billing.amount ? formatDate(billing.amount) : "0.00",
     }));
   }
   export const ServiceTaxReportFormat = (data) => {
     return data.map((billing, index) => ({
       ...billing,
-      amount: billing.amount ? floorDecimal(billing.amount) : "",
+      amount: billing.amount ? floorDecimal(billing.amount) : "0.00",
     }));
   }
   export const bankTransferWithWrongUserNameFormat = (data) => {
     return data.map((billing, index) => ({
       ...billing,
-      amount: billing.amount ? floorDecimal(billing.amount) : "",
+      amount: billing.amount ? floorDecimal(billing.amount) : "0.00",
+    }));
+  }
+  export const vendorSummary = (data) => {
+    return data.map((billing, index) => ({
+      ...billing,
+      estimateamount: billing.estimateamount ? floorDecimal(billing.estimateamount) : "0.00",
+      invoiceamount: billing.invoiceamount ? floorDecimal(billing.invoiceamount) : "0.00",
+      paymentamount: billing.paymentamount ? floorDecimal(billing.paymentamount) : "0.00",
+      computedpending: billing.computedpending ? floorDecimal(billing.computedpending) : "0.00",
     }));
   }
 

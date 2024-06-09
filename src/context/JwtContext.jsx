@@ -178,7 +178,7 @@ function AuthProvider({ children }) {
 
   // Use react-idle-timer hook
   const { reset: resetIdleTimer } = useIdleTimer({
-    timeout: 1 * 60 * 1000, // 5 minutes
+    timeout: 10 * 60 * 1000, // 5 minutes
     onIdle: handleOnIdle,
     debounce: 500,
     events: ["mousemove", "keydown", "mousedown", "touchstart"], // User activity events

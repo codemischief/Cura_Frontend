@@ -322,6 +322,20 @@ const helper = (index, obj, pageName) => {
     return `Total:${obj.totalamount}`
   }
  }
+ else if(pageName==="vendorSummaryReport"){
+  if(index===6){
+    return `Total:${obj.estimateamount}`
+  }
+  if(index===7){
+    return `Total:${obj.invoiceamount} `
+  }
+  if(index===8){
+    return `Total:${obj.paymentamount}`
+  }
+  if(index===9){
+    return `Total:${obj.computedpending} `
+  }
+ }
  else if(pageName==='orderStaticsReport'){
   if(index===2){
     return `Total:${obj.on_hold}`

@@ -137,6 +137,7 @@ import EntityBlankReport from "./Screens/Reports/Group12/EntityBlankReport/index
 import OwnerWithNoProperty from "./Screens/Reports/Group12/OwnerWIthNoProperty/index.jsx";
 import PropertyWithNoProjectView from "./Screens/Reports/Group12/PropertyWithNoProject/index.jsx";
 import ServiceTaxReport from "./Screens/Reports/Group12/ServiceTaxReport/index.jsx";
+import VendorSummary from "./Screens/Reports/VendorReport/vendorSummary/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -498,30 +499,30 @@ const App = () => {
                 path="reports/clientContactDetails"
                 element={<ClientContactDetails />}
               />
-              <Route 
+              <Route
                 path="/reports/orderStaticsView"
-                element={<OrderStaticsView/>}
+                element={<OrderStaticsView />}
               />
-               <Route 
+              <Route
                 path="/reports/activellagreement"
-                element={<ActiveLLAgreementView/>}
+                element={<ActiveLLAgreementView />}
               />
-               <Route 
+              <Route
                 path="/reports/orderanalysis"
-                element={<OrderAnalysis/>}
+                element={<OrderAnalysis />}
               />
-               <Route 
+              <Route
                 path="/reports/Lllist"
-                element={<LLlistReport/>}
+                element={<LLlistReport />}
               />
-              <Route 
-               path="/reports/clientstatics"
-               element={<ClientStatistics/>}
+              <Route
+                path="/reports/clientstatics"
+                element={<ClientStatistics />}
               />
               <Route
                 path="reports/clientStatementByDate"
                 element={<ClientStatementByDate />}
-                />
+              />
               <Route
                 path="reports/paymentUnderSuspenseOrder"
                 element={<PaymentUnderSuspenseOrder />}
@@ -530,33 +531,37 @@ const App = () => {
                 path="reports/receiptsUnderSuspenseOrder"
                 element={<ReceiptsUnderSuspenseOrder />}
               />
-               <Route
+              <Route
                 path="reports/clientsWithOrderButNoEmail"
                 element={<ClientsWithOrderButNoEmail />}
               />
-               <Route
+              <Route
                 path="reports/employeeWithoutVendor"
                 element={<EmployeeWithoutVendor />}
               />
-               <Route
+              <Route
                 path="reports/bankTransactionsWithWrongUserName"
                 element={<BankTransactionsWithWrongUserName />}
               />
-               <Route
+              <Route
                 path="reports/entityBlankReport"
                 element={<EntityBlankReport />}
               />
-               <Route
+              <Route
                 path="reports/ownerwithnoproperty"
                 element={<OwnerWithNoProperty />}
               />
               <Route
                 path="reports/propertywithnoproject"
                 element={<PropertyWithNoProjectView />}
-                />
-                <Route
+              />
+              <Route
                 path="reports/serviceTaxReport"
                 element={<ServiceTaxReport />}
+              />
+              <Route
+                path="reports/vendorSummary"
+                element={<VendorSummary />}
               />
             </Route>
 
