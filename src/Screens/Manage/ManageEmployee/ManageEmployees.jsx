@@ -33,7 +33,8 @@ import Draggable from 'react-draggable';
 import UsernameDropDown from '../../../Components/Dropdown/UsernameDropDown';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import { formatDate } from "../../../utils/formatDate";
-import ActiveFilter from "../../../assets/active_filter.png"
+import ActiveFilter from "../../../assets/active_filter.png";
+import AddButton from '../../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageEmployees = () => {
 
@@ -1142,12 +1143,13 @@ const ManageEmployees = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-9 w-72 rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-9 w-72 rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Employee
                                     <img className='h-4 w-4' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Employee" onClick={handleOpen} />
                         </div>
 
                     </div>

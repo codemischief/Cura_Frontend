@@ -34,6 +34,7 @@ import DropDown from '../../../Components/Dropdown/Dropdown';
 import ActiveFilter from "../../../assets/active_filter.png"
 import {formatDate} from "../../../utils/formatDate.js"
 import { usernameByUserId } from '../../../utils/UsernameByUserId.js';
+import AddButton from '../../../Components/common/CustomButton.jsx';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Payments = () => {
     const menuRef = useRef();
@@ -1126,12 +1127,13 @@ const Payments = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-9 w-80 rounded-lg " onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-9 w-80 rounded-lg " onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add Contractual Payments
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add Contractual Payments" onClick={handleOpen} sx={{width : "320px "}} />
                         </div>
 
                     </div>

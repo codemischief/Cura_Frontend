@@ -29,6 +29,7 @@ import CharacterFilter from '../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
+import AddButton from '../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const LOB = () => {
     const menuRef = useRef();
@@ -250,10 +251,10 @@ const LOB = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchQuery,
-            "downloadType" : type,
-            "colmap" : {
-                "name" : "LOB Name",
-                "id" : "ID"
+            "downloadType": type,
+            "colmap": {
+                "name": "LOB Name",
+                "id": "ID"
             }
         };
         const response = await APIService.getLob(data)
@@ -610,12 +611,14 @@ const LOB = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New LOB
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New LOB" onClick={handleOpen} />
+
                         </div>
 
                     </div>

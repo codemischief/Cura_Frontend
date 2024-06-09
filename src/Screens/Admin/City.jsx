@@ -29,6 +29,7 @@ import DeleteCityModal from "./Modals/DeleteCityModal";
 import CancelModel from "../../Components/modals/CancelModel";
 import EditCityModal from "./Modals/EditCityModal";
 import ActiveFilter from "../../assets/active_filter.png"
+import AddButton from "../../Components/common/CustomButton";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const City = () => {
     const menuRef = useRef();
@@ -747,7 +748,7 @@ const City = () => {
 
                         <div>
                             {/* button */}
-                            <button
+                            {/* <button
                                 className="bg-[#004DD7] text-white h-9 w-64 rounded-lg"
                                 onClick={handleOpen}
                             >
@@ -755,7 +756,9 @@ const City = () => {
                                     Add New City
                                     <img className="h-[18px] w-[18px]" src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New City" onClick={handleOpen} />
+                            
                         </div>
                     </div>
                 </div>
