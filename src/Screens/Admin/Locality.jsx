@@ -29,6 +29,7 @@ import CharacterFilter from '../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
+import AddButton from '../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Locality = () => {
     const menuRef = useRef();
@@ -771,12 +772,13 @@ const Locality = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Locality
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New City" onClick={handleOpen} />
                         </div>
 
                     </div>

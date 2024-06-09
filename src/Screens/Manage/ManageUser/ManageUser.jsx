@@ -35,7 +35,8 @@ import EditUser from './EditUser';
 import Draggable from 'react-draggable';
 import eyeIcon from "../../../assets/eye.jpg";
 import bcrypt from 'bcryptjs';
-import ActiveFilter from "../../../assets/active_filter.png"
+import ActiveFilter from "../../../assets/active_filter.png";
+import AddButton from '../../../Components/common/CustomButton';
 
 const ManageUser = () => {
 
@@ -1150,12 +1151,13 @@ const ManageUser = () => {
                         </div>
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-9 w-72 rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-9 w-72 rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New User
                                     <img className='h-4 w-4' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New User" onClick={handleOpen} />
                         </div>
                     </div>
                 </div>
