@@ -147,7 +147,7 @@ const LLlistReport = () => {
         statusName: intialValue.status,
         clientName: intialValue.clientId.label,
         typeName: intialValue.type,
-        clientPropertyID: +intialValue.clientProperty,
+        clientPropertyID: intialValue.clientProperty,
       };
       dispatch(getLLlist(obj));
     }
@@ -189,7 +189,7 @@ const LLlistReport = () => {
         statusName: intialValue.status,
         clientName: intialValue.clientId.label,
         typeName: intialValue.type,
-        clientPropertyID: +intialValue.clientProperty,
+        clientPropertyID: intialValue.clientProperty,
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
@@ -266,7 +266,7 @@ const LLlistReport = () => {
       statusName: intialValue.status,
       clientName: intialValue.clientId.label,
       typeName: intialValue.type,
-      clientPropertyID: +intialValue.clientProperty,
+      clientPropertyID:intialValue.clientProperty,
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,

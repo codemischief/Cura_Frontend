@@ -7,21 +7,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import {
-  downloadEmployeeWithoutVendor,
-  getEmployeeWithoutVendor,
+  downloadClientsPhoneNo,
+  getClientsPhoneNo,
   setCountPerPage,
   setPageNumber,
   setSorting,
   setInitialState
-} from "../../../../Redux/slice/reporting/Group12/EmployeeWithoutVendor";
+} from "../../../../Redux/slice/reporting/Group13/ClientPhoneNo";
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 
-const EmployeeWithoutVendor = () => {
+const ClientPhoneNo = () => {
   const dispatch = useDispatch();
   const {
-    employeeWithoutVendor,
+    clientPhoneNo,
     status,
     totalAmount,
     totalCount,
@@ -29,11 +29,12 @@ const EmployeeWithoutVendor = () => {
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.employeeWithoutVendor);
+  } = useSelector((state) => state.clientPhoneNo);
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const isInitialMount = useRef(true);
+  const [phoneNoType,setPhoneNoType] = useState("")
+  const [showTable, setShowTable] = useState(false);
 
   const columns = useMemo(() => connectionDataColumn(), []);
 
@@ -50,12 +51,18 @@ const EmployeeWithoutVendor = () => {
     dispatch(setPageNumber(1));
   };
 
+  useEffect(()=>{
+  dispatch(setInitialState())
+  },[])
+
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
       rows:  [
-        "username","userstatus","vendorname"
+        "clientname","homephone","workphone","mobilephone","clienttypename"
+
       ],
+      type:phoneNoType,
       sort_by: undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -63,7 +70,7 @@ const EmployeeWithoutVendor = () => {
       pg_size: +countPerPage,
       order: undefined,
     };
-    dispatch(getEmployeeWithoutVendor(obj));
+    dispatch(getClientsPhoneNo(obj));
   };
 
   const handleSearch = () => {
@@ -88,26 +95,23 @@ const EmployeeWithoutVendor = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    
-    if (isInitialMount.current) {
-      dispatch(setInitialState());
-      isInitialMount.current = false;
-    }
-    else{
-      let obj = {
-        user_id: 1234,
-        rows:  [
-          "username","userstatus","vendorname"
-        ],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getEmployeeWithoutVendor(obj));
-    }
+     if(phoneNoType){  
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "clientname","homephone","workphone","mobilephone","clienttypename"
+
+      ],
+      type:phoneNoType,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getClientsPhoneNo(obj));
+  }
   }, [
     filter,
     countPerPage,
@@ -125,11 +129,17 @@ const EmployeeWithoutVendor = () => {
     dispatch(setSorting({ sort_by: accessor, sort_order: sortOrder }));
   };
 
+  const handleShow = ()=>{
+    if(phoneNoType){
+      setShowTable(true)
+      dispatch(setInitialState())
+    }
+  }
+
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows:  [
-        "username","userstatus","vendorname"
+      rows: [  "clientname","homephone","workphone","mobilephone","clienttypename"
       ],
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -138,14 +148,18 @@ const EmployeeWithoutVendor = () => {
       pg_no: 0,
       pg_size: 0,
       colmap: {
-        username: "Username",
-        userstatus: "User Status",
-        vendorname: "Vendor Name",
+        clientname: "Name",
+        homephone: "Phone Number",
+        workphone: "Phone Number 1",
+        mobilephone: "Phone Number 2",
+        clienttypename: "Client Type",
         
       },
+      type:phoneNoType,
+      
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadEmployeeWithoutVendor(obj));
+    dispatch(downloadClientsPhoneNo(obj));
   };
 
   return (
@@ -153,16 +167,15 @@ const EmployeeWithoutVendor = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Employee Without Vendor"}
-            path={["Reports", "Exceptions", "Employee Withouut Vendor"]}
+            heading={"Client's Phone No.s"}
+            path={["Reports", "Contacts", "Client's Phone No.s"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
-            <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
+           {showTable && <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
               <p>
                 Generated on: <span> {new Date().toLocaleString()}</span>
               </p>
-            </div>
-
+            </div>}
             <SearchBar
               value={searchInput}
               handleSearchvalue={handleSearchvalue}
@@ -172,10 +185,69 @@ const EmployeeWithoutVendor = () => {
             />
           </div>
         </div>
+        <Stack
+          marginTop={"8px"}
+          justifyContent={"space-between"}
+          direction={"row"}
+          alignItems={"center"}
+          height={"3.875rem"}
+        >
+          <Stack
+            direction={"row"}
+            marginLeft={"30px"}
+            justifyContent={"space-around"}
+            alignItems={"center"}
+            gap={"24px"}
+          >
+            <div className="flex flex-col h-16 w-[281px]">
+              <label className="font-sans text-sm font-normal leading-5">
+                Phone Number Type
+              </label>
+
+              <select
+                className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
+                name="lob"
+                value={phoneNoType}
+                onChange={(e)=>setPhoneNoType(e.target.value)}
+              >
+                <option selected className="hidden">Select Type</option>
+                <option value={"int"} >International Number</option>
+                <option value={"mobile"} >Mobile Number</option>
+                <option  value={"phone"}>Phone Number</option>
+              </select>
+            </div>
+
+            <Button
+              variant="outlined"
+              onClick={handleShow}
+              sx={{
+                height: "36px",
+                textTransform: "none",
+                color: "#004DD7",
+                borderRadius: "8px",
+                width: "133px",
+                fontSize: "14px",
+                border: "1px solid #004DD7",
+                fontWeight: "600px",
+                lineHeight: "18.9px",
+                marginTop: "12px",
+                "&:hover": {
+                  //you want this to be the same as the backgroundColor above
+                  backgroundColor: "#004DD7",
+                  color: "#fff",
+                },
+              }}
+              disabled={!phoneNoType}
+            >
+              Show
+            </Button>
+          </Stack>
+        </Stack>
+
 
         <SimpleTable
           columns={columns}
-          data={employeeWithoutVendor}
+          data={clientPhoneNo}
           totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
@@ -187,11 +259,11 @@ const EmployeeWithoutVendor = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          height="calc(100vh - 18rem)"
         />
       </div>
     </Stack>
   );
 };
 
-export default EmployeeWithoutVendor;
+export default ClientPhoneNo;
