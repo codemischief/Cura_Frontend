@@ -9,9 +9,15 @@ import {
 import { Create, Delete } from "@mui/icons-material";
 import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import EditButton from "../../../Components/common/buttons/EditButton";
-export default function getColumns(handleEdit, handleDelete, isPending) {
+export default function getColumns(
+  handleEdit,
+  handleDelete,
+  isPending,
+  showAction
+) {
   const { cellStyleCommon } = styleConst;
   // const {}
+  console.log("showAction", showAction.add || showAction.edit);
 
   const columns = [
     {
@@ -124,7 +130,10 @@ export default function getColumns(handleEdit, handleDelete, isPending) {
       type: "numeric",
       filterComponent: NumberFilterField,
     },
-    {
+  ];
+
+  if (showAction.add || showAction.edit) {
+    columns.push({
       id: 8,
       title: "Edit",
       field: "action",
@@ -150,7 +159,7 @@ export default function getColumns(handleEdit, handleDelete, isPending) {
           </div>
         );
       },
-    },
-  ];
+    });
+  }
   return columns;
 }

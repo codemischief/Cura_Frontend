@@ -25,9 +25,12 @@ import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import { getCountries } from "../../../Redux/slice/commonApis";
 import useAuth from "../../../context/JwtContext";
+import { useLocation } from "react-router-dom";
 
 const PropectusPage = () => {
   const { user } = useAuth();
+  const { pathname } = useLocation();
+
   const dispatch = useDispatch();
   const {
     PropectusData,
@@ -78,7 +81,13 @@ const PropectusPage = () => {
   };
 
   const columns = useMemo(
-    () => getColumns(handleEdit, handleDelete, loading),
+    () =>
+      getColumns(
+        handleEdit,
+        handleDelete,
+        loading,
+        user.allowedModules[pathname]
+      ),
     [loading]
   );
 

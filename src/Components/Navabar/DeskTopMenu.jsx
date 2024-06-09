@@ -16,6 +16,7 @@ import {
   styled,
 } from "@mui/material";
 import { navMenuConfig } from "./navbarConfig";
+import useAuth from "../../context/JwtContext";
 
 const ListItemStyle = styled(ListItem)(({ theme }) => ({
   ...theme.typography.body2,
@@ -64,12 +65,10 @@ const LinkStyle = styled(Link)(({ theme }) => ({
 function MenuDesktopItem({
   item,
   pathname,
-  isHome,
   isOpen,
-  isOffset,
   onOpen,
   onClose,
-  activeTab,
+  accessModules,
 }) {
   const paperRef = useRef();
   const { title, path, children } = item;
@@ -197,7 +196,11 @@ function MenuDesktopItem({
                           disableGutters
                           component={RouterLink}
                           onClick={() => handleSubheaderClick(list.path)}
-                          to={list.path ? list.path : "#"}
+                          to={
+                            list.path
+                              ? isResourceAccessible(accessModules, list?.path)
+                              : "#"
+                          }
                           sx={{
                             fontFamily: "Open Sans",
                             fontSize: "16px",
@@ -227,12 +230,12 @@ function MenuDesktopItem({
                         {items?.map((item) => (
                           <ListItemStyle
                             onClick={onClose}
-                            key={item.title}
-                            to={item.path}
+                            key={item?.title}
+                            to={isResourceAccessible(accessModules, item?.path)}
                             component={RouterLink}
                             underline="none"
                             sx={{
-                              ...(item.path === pathname && {
+                              ...(item?.path === pathname && {
                                 typography: "subtitle2",
                                 color: "text.primary",
                               }),
@@ -243,10 +246,26 @@ function MenuDesktopItem({
                               fontStyle: "normal",
                               fontWeight: 400,
                               lineHeight: "150%",
+                              pointerEvents: isResourceAccessible(
+                                accessModules,
+                                item?.path
+                              )
+                                ? "auto"
+                                : "none",
+                              opacity: isResourceAccessible(
+                                accessModules,
+                                item?.path
+                              )
+                                ? 1
+                                : 0.5,
                             }}
                           >
                             <>
-                              <div className="px-2">{item.title}</div>
+                              <div className="px-2">
+                                {isResourceAccessible(accessModules, item?.path)
+                                  ? item?.title
+                                  : `${item.title} (disabled)`}
+                              </div>
                             </>
                           </ListItemStyle>
                         ))}
@@ -276,12 +295,13 @@ MenuDesktopItem.propTypes = {
   pathname: PropTypes.string.isRequired,
   activeTab: PropTypes.bool.isRequired,
   isHome: PropTypes.bool.isRequired,
-  isOpen: PropTypes.bool.isRequired,
+  isOpen: PropTypes.bool,
   isOffset: PropTypes.bool.isRequired,
   onOpen: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 export default function MenuDesktop({ isOffset, isHome }) {
+  const { user } = useAuth();
   const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(null);
@@ -312,6 +332,7 @@ export default function MenuDesktop({ isOffset, isHome }) {
           onClose={handleClose}
           isOffset={isOffset}
           isHome={isHome}
+          accessModules={user?.allowedModules}
         />
       ))}
     </Stack>
@@ -319,5 +340,10 @@ export default function MenuDesktop({ isOffset, isHome }) {
 }
 MenuDesktop.propTypes = {
   isHome: PropTypes.bool.isRequired,
-  isOffset: PropTypes.bool.isRequired,
+  isOffset: PropTypes.number,
+};
+
+const isResourceAccessible = (modules, pathToCheck) => {
+  if (pathToCheck?.includes("reports")) return pathToCheck;
+  return modules[pathToCheck] && modules[pathToCheck]?.get ? pathToCheck : null;
 };

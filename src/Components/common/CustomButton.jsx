@@ -13,7 +13,6 @@ const AddButton = ({ onClick = () => {}, title = "Add new", sx, icon }) => {
   return (
     <Button
       sx={{
-        ...sx,
         backgroundColor: "#004DD7",
         color: "white",
         height: "36px",
@@ -26,6 +25,7 @@ const AddButton = ({ onClick = () => {}, title = "Add new", sx, icon }) => {
         "&:hover": {
           backgroundColor: "#004DD7", // Keep the background color unchanged
         },
+        ...sx,
       }}
       onClick={onClick}
     >
