@@ -134,11 +134,22 @@ export const PATH_DASHBOARD = {
     },
     serviceTaxReport: {
       serviceTaxPaidByVendor: path(ROOTS.report, "/serviceTaxPaidByVendor"),
+      serviceTaxReport: path(ROOTS.report , "/serviceTaxReport"),
     },
     contact: {
       ownerMailId: path(ROOTS.report, "/ownerMailId"),
       tenantEmail: path(ROOTS.report, "/tenantEmail"),
       clientContactDetails: path(ROOTS.report, "/clientContactDetails"),
+    },
+    exceptions: {
+      paymentUnderSuspenseOrder: path(ROOTS.report,"/paymentUnderSuspenseOrder"),
+      receiptUnderSuspenseOrder: path(ROOTS.report,"/receiptsUnderSuspenseOrder"),
+      clientsWithOrderButNoEmail: path(ROOTS.report , "/clientsWithOrderButNoEmail"),
+      employeeWithoutVendor: path(ROOTS.report , "/employeeWithoutVendor"),
+      bankTransactionsWithWrongUserName: path(ROOTS.report , "/bankTransactionsWithWrongUserName"),
+      entityBlankReport: path(ROOTS.report , "/entityBlankReport"),
+      ownerwithnoproperty: path(ROOTS.report , "/ownerwithnoproperty"),
+      propertywithnoproject: path(ROOTS.report , "/propertywithnoproject")
     }
   },
 };

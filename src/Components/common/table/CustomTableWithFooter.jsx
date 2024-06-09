@@ -29,7 +29,7 @@ const SimpleTableWithFooter = ({
       className={`w-full text-[12px] h-[${height}] overflow-x-auto `}
       style={{ height: `${height}` }}
     >
-      <table style={{width:"-webkit-fill-available"}}>
+      <table style={{ width: "-webkit-fill-available" }}>
         <thead className="h-[115px] sticky top-0 z-100 bg-white">
           <tr className="h-[56px] w-full ">
             {columns.map((column, index) => (
@@ -47,7 +47,7 @@ const SimpleTableWithFooter = ({
           <tr className="bg-[#F0F6FF] h-[56px] text-left">
             {columns.map((column, index) => (
               <th key={index} style={{ ...column.cellStyle }}  >
-            
+
                 {column.sorting
                   ? <div className="flex">
                     <p>{column.title}</p>
@@ -55,11 +55,11 @@ const SimpleTableWithFooter = ({
                       <span className="font-extrabold px-1">↑↓</span>
                     </button>
                   </div>
-                  : 
+                  :
                   <div className="flex justify-center">
                     <p >{column.title}</p>
                   </div>
-                  }
+                }
               </th>
             ))}
           </tr>
@@ -132,7 +132,7 @@ const SimpleTableWithFooter = ({
                   ))}
                 </tr>
               ))
-            ) }
+            )}
             {data.length > 0 && <tr className="sticky bottom-0 z-100 bg-[#F0F6FF]">
               {columns.map((column, colIndex) => (
                 <td
@@ -296,73 +296,78 @@ const helper = (index, obj, pageName) => {
       return `Total: ${obj[0].contorderpayments}`
     } else if (index == 4) {
       return `Total: ${obj[0].order_payments}`
-    }else if (index == 5) {
+    } else if (index == 5) {
       return `Total: ${obj[0].contractual_payments}`
     } else {
       return ""
     }
   }
-  else if(pageName==="ClientReciptReports"){
-    if(index===8){
-     return `Total: ${obj?.total_amount}`
+  else if (pageName === "ClientReciptReports") {
+    if (index === 8) {
+      return `Total: ${obj?.total_amount}`
     }
- }
- else if(pageName==="clientStatement-CLCRAndOR"){
-  if(index===6){
-   return `Total: ${obj[0].sumamount}`
   }
-}
- else if(pageName==="vendorStatement"){
-  if(index===5){
-    return `Total:${obj.invoiceamount_orderpaymentamount}`
+  else if (pageName === "clientStatement-CLCRAndOR") {
+    if (index === 6) {
+      return `Total: ${obj[0].sumamount}`
+    }
   }
- }
- else if(pageName==="clientStatementByDate"){
-  if(index===5){
-    return `Total:${obj.totalamount}`
+  else if (pageName === "vendorStatement") {
+    if (index === 5) {
+      return `Total:${obj.invoiceamount_orderpaymentamount}`
+    }
   }
- }
- else if(pageName==="vendorSummaryReport"){
-  if(index===6){
-    return `Total:${obj.estimateamount}`
+  else if (pageName === "clientStatementByDate") {
+    if (index === 5) {
+      return `Total:${obj.totalamount}`
+    }
   }
-  if(index===7){
-    return `Total:${obj.invoiceamount} `
+  else if (pageName === "entityBlankReport") {
+    if (index === 5) {
+      return `Total:${obj.totalamount}`
+    }
   }
-  if(index===8){
-    return `Total:${obj.paymentamount}`
+  else if (pageName === "vendorSummaryReport") {
+    if (index === 6) {
+      return `Total:${obj.estimateamount}`
+    }
+    if (index === 7) {
+      return `Total:${obj.invoiceamount} `
+    }
+    if (index === 8) {
+      return `Total:${obj.paymentamount}`
+    }
+    if (index === 9) {
+      return `Total:${obj.computedpending} `
+    }
   }
-  if(index===9){
-    return `Total:${obj.computedpending} `
+  else if (pageName === 'orderStaticsReport') {
+    if (index === 2) {
+      return `Total:${obj.on_hold}`
+    }
+    if (index === 3) {
+      return `Total:${obj.estimate_given}`
+    }
+    if (index === 4) {
+      return `Total:${obj.cancelled}`
+    }
+    if (index === 5) {
+      return `Total:${obj.closed}`
+    }
+    if (index === 6) {
+      return `Total:${obj.billed}`
+    }
+    if (index === 7) {
+      return `Total:${obj.inquiry}`
+    }
+    if (index === 8) {
+      return `Total:${obj.completed}`
+    }
+    if (index === 9) {
+      return `Total:${obj.in_progress}`
+    }
   }
- }
- else if(pageName==='orderStaticsReport'){
-  if(index===2){
-    return `Total:${obj.on_hold}`
-  }
-  if(index===3){
-    return `Total:${obj.estimate_given}`
-  }
-  if(index===4){
-    return `Total:${obj.cancelled}`
-  }
-  if(index===5){
-    return `Total:${obj.closed}`
-  }
-  if(index===6){
-    return `Total:${obj.billed}`
-  }
-  if(index===7){
-    return `Total:${obj.inquiry}`
-  }
-  if(index===8){
-    return `Total:${obj.completed}`
-  }
-  if(index===9){
-    return `Total:${obj.in_progress}`
-  }
- }
- 
+
 }
 const helper2 = (index, obj, pageName) => {
   if (pageName == "lobreceiptpayments") {

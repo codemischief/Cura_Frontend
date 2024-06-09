@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import {
-  downloadBankTransactionsWithWrongUserName,
+  downloadData,
   getBankTransactionsWithWrongUserName,
   setCountPerPage,
   setPageNumber,
@@ -147,7 +147,7 @@ const BankTransactionsWithWrongUserName = () => {
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadBankTransactionsWithWrongUserName(obj));
+    dispatch(downloadData(obj));
   };
 
   return (

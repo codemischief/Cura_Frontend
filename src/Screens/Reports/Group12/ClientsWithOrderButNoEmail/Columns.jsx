@@ -14,7 +14,8 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "5rem",
+        minWidth: "4rem",
+        maxWidth: "5rem"
       },
       render: (index) => {
         return (
@@ -35,7 +36,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "15",
+        minWidth: "15rem",
         maxWidth: "20.813rem",
 
       },

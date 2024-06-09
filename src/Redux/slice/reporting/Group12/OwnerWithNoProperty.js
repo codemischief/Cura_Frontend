@@ -124,7 +124,7 @@ export const downloadXlsEndpoint = (filename, userId) => async () => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "reportExceptionBankStWrongNames.xlsx");
+    FileSaver.saveAs(blob, "reportOwnerWithNoProperty.xlsx");
   } catch (error) {
     console.log("error", error);
   }

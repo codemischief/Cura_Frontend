@@ -87,7 +87,7 @@ export const getBankTransactionsWithWrongUserName = (payloadObj) => async (dispa
   }
 };
 
-export const downloadEmployeeWithoutVendor = (payloadObj) => async (
+export const downloadData = (payloadObj) => async (
   dispatch
 ) => {
   try {

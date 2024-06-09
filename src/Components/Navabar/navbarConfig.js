@@ -375,14 +375,14 @@ export const navMenuConfig = [
         {
           subheader: "Exceptions",
           items: [
-            { title: "Payment Under Suspense Order", path: "" },
-            { title: "Receipt Under Suspense Order", path: "" },
-            { title: "Clients With Orders But No Email IDs", path: "" },
-            { title: "Employee Without Vendor", path: "" },
-            { title: "Bank Transaction With Wrong User Names", path: "" },
-            { title: "Entity blank for Transactions (CR,OR,OI,VI,OP)", path: "" },
-            { title: "Owners with no Properties", path: "" },
-            { title: "Properties with no Projects", path: "" },
+            { title: "Payment Under Suspense Order", path: PATH_DASHBOARD.report.exceptions.paymentUnderSuspenseOrder },
+            { title: "Receipt Under Suspense Order", path: PATH_DASHBOARD.report.exceptions.receiptUnderSuspenseOrder },
+            { title: "Clients With Orders But No Email IDs", path: PATH_DASHBOARD.report.exceptions.clientsWithOrderButNoEmail },
+            { title: "Employee Without Vendor", path: PATH_DASHBOARD.report.exceptions.employeeWithoutVendor },
+            { title: "Bank Transaction With Wrong User Names", path: PATH_DASHBOARD.report.exceptions.bankTransactionsWithWrongUserName },
+            { title: "Entity blank for Transactions (CR,OR,OI,VI,OP)", path: PATH_DASHBOARD.report.exceptions.entityBlankReport },
+            { title: "Owners with no Properties", path: PATH_DASHBOARD.report.exceptions.ownerwithnoproperty },
+            { title: "Properties with no Projects", path: PATH_DASHBOARD.report.exceptions.propertywithnoproject },
           
           ],
         },
@@ -396,7 +396,7 @@ export const navMenuConfig = [
         {
           subheader: "Service Tax Reports",
           items: [
-            { title: "Agency Repair Service Receipts", path: "" },
+            { title: "Agency Repair Service Receipts", path: PATH_DASHBOARD.report.serviceTaxReport.serviceTaxReport },
             { title: "Service Tax Paid by Vendor", path: PATH_DASHBOARD.report.serviceTaxReport.serviceTaxPaidByVendor },
           ],
         },

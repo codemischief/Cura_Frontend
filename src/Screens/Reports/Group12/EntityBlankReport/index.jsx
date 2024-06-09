@@ -16,7 +16,7 @@ import {
 } from "../../../../Redux/slice/reporting/Group12/EntityBlankReportSlice";
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
-import SimpleTable from "../../../../Components/common/table/CustomTable";
+import SimpleTable from "../../../../Components/common/table/CustomTableWithFooter";
 
 const EntityBlankReport = () => {
   const dispatch = useDispatch();
@@ -139,17 +139,20 @@ const EntityBlankReport = () => {
       pg_no: 0,
       pg_size: 0,
       colmap: {
-        order_description: "Order Description",
-        amount: "Amount",
+        id: "ID",
+        clientname:"Client Name",
+        type:"Type",
         date: "Date",
-        registered: "Registered",
-        payment_description: "Payment Description",
-        vendorname: "Vendor Name",
-        
+        amount: "Amount",
+        orderdetails: "Order Details",
+        lobname:"LOB",
+        service: "Service",
+        fy: "FY",
+        mode: "Mode",
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadTdsPaidToGovtReport(obj));
+    dispatch(downloadEntityBlankReportData(obj));
   };
 
   return (
@@ -157,8 +160,8 @@ const EntityBlankReport = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Entity Blank Report"}
-            path={["Reports", "Exceptions", "Entity Blank Report"]}
+            heading={"Entity blank for Transactions (CR,OR,OI,VI,OP)"}
+            path={["Reports", "Exceptions", "Entity blank for Transactions (CR,OR,OI,VI,OP)"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
@@ -178,6 +181,7 @@ const EntityBlankReport = () => {
         </div>
 
         <SimpleTable
+        pageName={"entityBlankReport"}
           columns={columns}
           data={entityBlankReportData}
           totalData={totalAmount}

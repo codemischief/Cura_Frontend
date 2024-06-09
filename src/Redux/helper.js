@@ -440,13 +440,16 @@ export const formatUnderSuspensen = (data) => {
   export const entityBlankReportFormat = (data) => {
     return data.map((billing, index) => ({
       ...billing,
-      amount: billing.amount ? formatDate(billing.amount) : "0.00",
+      amount: billing.amount ? floorDecimal(billing.amount) : "0.00",
+      date: billing.date ? formatDate(billing.date) : "",
+
     }));
   }
   export const ServiceTaxReportFormat = (data) => {
     return data.map((billing, index) => ({
       ...billing,
       amount: billing.amount ? floorDecimal(billing.amount) : "0.00",
+      recddate: billing.recddate ? formatDate(billing.recddate) : "",
     }));
   }
   export const bankTransferWithWrongUserNameFormat = (data) => {

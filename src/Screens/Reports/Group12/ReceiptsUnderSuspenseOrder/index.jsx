@@ -139,8 +139,8 @@ const ReceiptsUnderSuspenseOrder = () => {
       colmap: {
         clientname: "Client Name",
         orderdesc: "Order Description",
-        recddate: "Payment Date",
-        paymentmode: "Payment Mode",
+        recddate: "Date",
+        paymentmode: "Mode Of Payment",
         paymentby: "Payment By",
         amount: "Amount",
         receiptdescription:"Payment Description"
