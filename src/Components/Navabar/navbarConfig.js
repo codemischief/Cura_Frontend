@@ -389,7 +389,7 @@ export const navMenuConfig = [
         {
           subheader: "Vendor",
           items: [
-            { title: "Vendor Summary", path: "" },
+            { title: "Vendor Summary", path: PATH_DASHBOARD.report.vendorReport.vendorSummary },
             { title: "Vendor Statement", path: PATH_DASHBOARD.report.vendorReport.vendorStatement },
           ],
         },

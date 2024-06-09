@@ -1,6 +1,4 @@
 
-
-
 function path(root, sublink) {
   return `${root}${sublink}`;
 }
@@ -126,7 +124,8 @@ export const PATH_DASHBOARD = {
       statisticsReport: path(ROOTS.report , "/statisticsReport"),
     },
     vendorReport:{
-      vendorStatement : path(ROOTS.report, "/vendorstatement")
+      vendorStatement : path(ROOTS.report, "/vendorstatement"),
+      vendorSummary : path(ROOTS.report , "/vendorSummary")
     },
     tdsReport: {
       tdsPaidByVendor: path(ROOTS.report , "/tdspaidbyvendor"),
