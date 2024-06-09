@@ -1,40 +1,51 @@
 import { PATH_DASHBOARD } from "../route/path";
 
 export const routeMapObj = Object.freeze({
-  User: PATH_DASHBOARD.user,
+  // dashbaord
+
   // admin
+
+  User: PATH_DASHBOARD.admin.manageUsers,
   Payment: PATH_DASHBOARD.admin.payments,
-  BuilderInfo: PATH_DASHBOARD.manage.manageBuilder.root,
+
   LOB: PATH_DASHBOARD.admin.LOB,
   Locality: PATH_DASHBOARD.admin.locality,
   Country: PATH_DASHBOARD.admin.country,
   City: PATH_DASHBOARD.admin.city,
   Service: PATH_DASHBOARD.admin.service,
-  ProjectInfo: PATH_DASHBOARD.admin.projectManagementInfo,
+
   Employee: PATH_DASHBOARD.admin.manageEmployees,
+  deletebyid: PATH_DASHBOARD.admin.deleteId,
+  getLobEntityPayments: PATH_DASHBOARD.admin.lobReceiptPayments,
+  EntityReceiptPayments: PATH_DASHBOARD.admin.entityReceiptPayment,
+  LOBReceiptPayments: PATH_DASHBOARD.admin.lobReceiptPaymentsConsolidated,
 
   // research - routes
-  ResearchFriends: PATH_DASHBOARD.research.friends,
-  ResearchMandals: PATH_DASHBOARD.research.mandals,
-  ResearchArchitect: PATH_DASHBOARD.research.architect,
-  ResearchApartments: PATH_DASHBOARD.research.serviceApartmentGuestHouse,
+  ResearchProspect: PATH_DASHBOARD.research.prospect,
   ResearchEmployer: PATH_DASHBOARD.research.employer,
-  ResearchCOCAndBusinessGroup: PATH_DASHBOARD.research.coc,
-  ResearchProfessional: PATH_DASHBOARD.research.professionals,
-  ResearchBanksAndBranches: PATH_DASHBOARD.research.banks,
-  ResearchColleges: PATH_DASHBOARD.research.educational,
   ResearchGovtAgencies: PATH_DASHBOARD.research.governmentDepartment,
   ResearchRealEstateAgents: PATH_DASHBOARD.research.agent,
-  ResearchProspect: PATH_DASHBOARD.research.prospect,
   ResearchOwners: PATH_DASHBOARD.research.owner,
+  ResearchApartments: PATH_DASHBOARD.research.serviceApartmentGuestHouse,
+  ResearchFriends: PATH_DASHBOARD.research.friends,
+  ResearchBanksAndBranches: PATH_DASHBOARD.research.banks,
+  ResearchCOCAndBusinessGroup: PATH_DASHBOARD.research.coc,
+  ResearchProfessional: PATH_DASHBOARD.research.professionals,
+  ResearchMandals: PATH_DASHBOARD.research.mandals,
+  ResearchArchitect: PATH_DASHBOARD.research.architect,
+  ResearchColleges: PATH_DASHBOARD.research.educational,
 
   // manage
-  PMABilling: PATH_DASHBOARD.manage.pmaBilling,
+  BuilderInfo: PATH_DASHBOARD.manage.manageBuilder.root,
+  ProjectInfo: PATH_DASHBOARD.manage.projectManagementInfo,
+  // send client-statement is pending....
   BankStatement: PATH_DASHBOARD.manage.bankStatement,
+  manageOrder: PATH_DASHBOARD.manage.manageOrder,
   OrderReceipt: PATH_DASHBOARD.manage.orderReceipt,
   ClientProperty: PATH_DASHBOARD.manage.clientProperty,
   Vendor: PATH_DASHBOARD.manage.vendor,
   PMAAgreement: PATH_DASHBOARD.manage.pmaAgreement,
+  PMABilling: PATH_DASHBOARD.manage.pmaBilling,
   ClientInfo: PATH_DASHBOARD.manage.clientInfo,
   LLAgreement: PATH_DASHBOARD.manage.llAgreement,
   VendorPayment: PATH_DASHBOARD.manage.vendorPayment,

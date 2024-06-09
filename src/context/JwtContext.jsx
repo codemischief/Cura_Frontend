@@ -140,7 +140,15 @@ function AuthProvider({ children }) {
         let userObj = {
           id: user_id,
           roleId: role_id,
-          allowedModules: replaceKeys(access_rights),
+          allowedModules: {
+            ...replaceKeys(access_rights),
+            "/dashboard": {
+              add: true,
+              delete: true,
+              edit: true,
+              get: true,
+            },
+          },
         };
         setSession(userObj, token);
         dispatch({

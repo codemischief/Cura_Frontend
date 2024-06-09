@@ -1,4 +1,3 @@
-
 function path(root, sublink) {
   return `${root}${sublink}`;
 }
@@ -24,10 +23,13 @@ export const PATH_DASHBOARD = {
     LOB: path(ROOTS.admin, "/LOB"),
     service: path(ROOTS.admin, "/service"),
     payments: path(ROOTS.admin, "/payments"),
-    deleteId: path(ROOTS.admin, "deleteById"),
+    deleteId: path(ROOTS.admin, "/deleteById"),
     entityReceiptPayment: path(ROOTS.admin, "/entityReceiptPayments"),
     lobReceiptPayments: path(ROOTS.admin, "/lobReceiptPayments"),
-    lobReceiptPaymentsConsolidated :path(ROOTS.admin, "/lobReceiptPaymentsConsolidated"),
+    lobReceiptPaymentsConsolidated: path(
+      ROOTS.admin,
+      "/lobReceiptPaymentsConsolidated"
+    ),
   },
   research: {
     prospect: path(ROOTS.research, "/prospect"),
@@ -42,10 +44,7 @@ export const PATH_DASHBOARD = {
     friends: path(ROOTS.research, "/friends"),
     agent: path(ROOTS.research, "/agent"),
     governmentDepartment: path(ROOTS.research, "/governmentdepartment"),
-    serviceApartmentGuestHouse: path(
-      ROOTS.research,
-      "/serviceapartment"
-    ),
+    serviceApartmentGuestHouse: path(ROOTS.research, "/serviceapartment"),
   },
   manage: {
     manageBuilder: {
@@ -55,9 +54,9 @@ export const PATH_DASHBOARD = {
     },
     bankStatement: path(ROOTS.manage, "/bankstatement"),
     projectManagementInfo: path(ROOTS.manage, "/manageprojectinfo"),
-      manageOrder: path(ROOTS.manage, "/manageOrder"),
-      clientInfo: path(ROOTS.manage, "/manageclientinfo"),
-      clientProperty: path(ROOTS.manage, "/manageclientproperty"),
+    manageOrder: path(ROOTS.manage, "/manageOrder"),
+    clientInfo: path(ROOTS.manage, "/manageclientinfo"),
+    clientProperty: path(ROOTS.manage, "/manageclientproperty"),
     clientReceipt: path(ROOTS.manage, "/manageclientreceipt"),
     llAgreement: path(ROOTS.manage, "/managellagreement"),
     pmaAgreement: path(ROOTS.manage, "/managepmaagreement"),
@@ -74,63 +73,74 @@ export const PATH_DASHBOARD = {
       orderReceipt: path(ROOTS.report, "/orderReceiptList"),
       orderInvoiceList: path(ROOTS.report, "/orderInvoiceList"),
       clientReceiptList: path(ROOTS.report, "/clientReceiptList"),
-      vendorPayment: path(ROOTS.report,"/vendorPaymentsList")
+      vendorPayment: path(ROOTS.report, "/vendorPaymentsList"),
     },
     bankRecords: {
-      clientOrderReceiptMismatchDetails : path(ROOTS.report,"/clientOrderReceiptMismatchDetails"),
-      monthlyBankSummary :  path(ROOTS.report,"/monthlyBankSummary"),
-      bankTransferReconsiliation : path(ROOTS.report,"/bankTransferReconciliation"),
-      dailyBankReceiptsReconciliation : path(ROOTS.report,"/bankReceiptReconciliation"),
-      dailyBankPaymentsReconciliation : path(ROOTS.report,"/bankPaymentsReconciliation"),
+      clientOrderReceiptMismatchDetails: path(
+        ROOTS.report,
+        "/clientOrderReceiptMismatchDetails"
+      ),
+      monthlyBankSummary: path(ROOTS.report, "/monthlyBankSummary"),
+      bankTransferReconsiliation: path(
+        ROOTS.report,
+        "/bankTransferReconciliation"
+      ),
+      dailyBankReceiptsReconciliation: path(
+        ROOTS.report,
+        "/bankReceiptReconciliation"
+      ),
+      dailyBankPaymentsReconciliation: path(
+        ROOTS.report,
+        "/bankPaymentsReconciliation"
+      ),
     },
     monthlyMargin: {
-      clientStatementAll : path(ROOTS.report, "/clientStatementAll"),
+      clientStatementAll: path(ROOTS.report, "/clientStatementAll"),
     },
     reportTrace: {
-      clientTrace : path(ROOTS.report, "/clientTraceReport"),
-      orderTrace : path(ROOTS.report, "/orderTraceReport"),
-      vendorTrace : path(ROOTS.report, "/vendorTraceReport"),
+      clientTrace: path(ROOTS.report, "/clientTraceReport"),
+      orderTrace: path(ROOTS.report, "/orderTraceReport"),
+      vendorTrace: path(ROOTS.report, "/vendorTraceReport"),
     },
     clients: {
-      duplicateClients : path(ROOTS.report, "/duplicateClientReport"),
-      clientBankDetails : path(ROOTS.report, "/clientBankDetails"),
-      nonPmaClientStatements : path(ROOTS.report, "/nonPmaClientStatement"),
-      nonPmaClientReceivables : path(ROOTS.report, "/nonPmaClientReceivables"),
-      clientStatementByDate : path(ROOTS.report , "/clientStatementByDate")
+      duplicateClients: path(ROOTS.report, "/duplicateClientReport"),
+      clientBankDetails: path(ROOTS.report, "/clientBankDetails"),
+      nonPmaClientStatements: path(ROOTS.report, "/nonPmaClientStatement"),
+      nonPmaClientReceivables: path(ROOTS.report, "/nonPmaClientReceivables"),
+      clientStatementByDate: path(ROOTS.report, "/clientStatementByDate"),
     },
-    pma : {
+    pma: {
       activePmaAgreement: path(ROOTS.report, "/activePmaAgreement"),
-      projectContacts: path(ROOTS.report,"/projectContact"),
-      advanceHoldingAmont: path(ROOTS.report,"/advanceHoldingAmount"),
-      pmaClientStatementAll: path(ROOTS.report,"/pmaClientStatementAll"),
-      pmaClientStatement: path(ROOTS.report,"/pmaClientStatement"),
-      pmaClientReceivables: path(ROOTS.report,"/pmaClientReceivable"),
-      pmaInvoiceList: path(ROOTS.report,"/pmaInvoiceList"),
-      pmaBillingTrendReport: path(ROOTS.report,"/pmaBillingTrendView"),
-      clientPortalReport: path(ROOTS.report,"/pmaClientReport"),
+      projectContacts: path(ROOTS.report, "/projectContact"),
+      advanceHoldingAmont: path(ROOTS.report, "/advanceHoldingAmount"),
+      pmaClientStatementAll: path(ROOTS.report, "/pmaClientStatementAll"),
+      pmaClientStatement: path(ROOTS.report, "/pmaClientStatement"),
+      pmaClientReceivables: path(ROOTS.report, "/pmaClientReceivable"),
+      pmaInvoiceList: path(ROOTS.report, "/pmaInvoiceList"),
+      pmaBillingTrendReport: path(ROOTS.report, "/pmaBillingTrendView"),
+      clientPortalReport: path(ROOTS.report, "/pmaClientReport"),
     },
     tally: {
       ClientReceipt: path(ROOTS.report, "/clientReceipt"),
-      OrderPaymentDD:path(ROOTS.report, "/OrderPaymentDD"),
-      OrderPaymentBanktoCash:path(ROOTS.report,"/orderpaymentbanktocash"),
-      OrderPaymentBanktoBank:path(ROOTS.report,"/orderpaymentbanktobank"),
-      OrderPaymentWithTds:path(ROOTS.report,"/orderpaymentwithtds"),
-      OrderPaymentWithoutTds:path(ROOTS.report,"/orderpaymentwithouttds"),
-      OrderReceiptToInvoiceTax:path(ROOTS.report,"/orderreceipttoinvoiceTax")
-
+      OrderPaymentDD: path(ROOTS.report, "/OrderPaymentDD"),
+      OrderPaymentBanktoCash: path(ROOTS.report, "/orderpaymentbanktocash"),
+      OrderPaymentBanktoBank: path(ROOTS.report, "/orderpaymentbanktobank"),
+      OrderPaymentWithTds: path(ROOTS.report, "/orderpaymentwithtds"),
+      OrderPaymentWithoutTds: path(ROOTS.report, "/orderpaymentwithouttds"),
+      OrderReceiptToInvoiceTax: path(ROOTS.report, "/orderreceipttoinvoiceTax"),
     },
     statistics: {
-      clientStatistics: path(ROOTS.report , "/clientStatistics"),
-      statisticsReport: path(ROOTS.report , "/statisticsReport"),
+      clientStatistics: path(ROOTS.report, "/clientStatistics"),
+      statisticsReport: path(ROOTS.report, "/statisticsReport"),
     },
     vendorReport:{
       vendorStatement : path(ROOTS.report, "/vendorstatement"),
       vendorSummary : path(ROOTS.report , "/vendorSummary")
     },
     tdsReport: {
-      tdsPaidByVendor: path(ROOTS.report , "/tdspaidbyvendor"),
-      tdsPaidByGovernment: path(ROOTS.report , "/tdsPaidToGovernment"),
-      vendorPaymentPeriod: path(ROOTS.report , "/vendorpaymentsummary"),
+      tdsPaidByVendor: path(ROOTS.report, "/tdspaidbyvendor"),
+      tdsPaidByGovernment: path(ROOTS.report, "/tdsPaidToGovernment"),
+      vendorPaymentPeriod: path(ROOTS.report, "/vendorpaymentsummary"),
     },
     serviceTaxReport: {
       serviceTaxPaidByVendor: path(ROOTS.report, "/serviceTaxPaidByVendor"),
