@@ -25,10 +25,9 @@ import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import { getCountries } from "../../../Redux/slice/commonApis";
 import useAuth from "../../../context/JwtContext";
-import { useLocation } from "react-router-dom";
-import AddButton from "../../../Components/common/CustomButton";
 
 const PropectusPage = () => {
+  const { user } = useAuth();
   const dispatch = useDispatch();
   const {
     PropectusData,
@@ -275,7 +274,15 @@ const PropectusPage = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
-            <AddButton title="Add New Prospect" onClick={handleFormOpen} />
+            <button
+              className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg"
+              onClick={handleFormOpen}
+            >
+              <div className="flex items-center justify-center gap-4">
+                Add New Prospect
+                <PlusOutlined className="fill-white stroke-2" />
+              </div>
+            </button>
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">
