@@ -78,7 +78,6 @@ const OrderPaymentB2BView = () => {
 
   useState(() => {
     getEntityAndMode();
-    dispatch(setInitialState())
   }, []);
 
   const handleRefresh = () => {

@@ -20,6 +20,7 @@ import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
+import { downloadEntityReceiptPaymentsDataXls } from "../../../../Redux/slice/reporting/EntityReceiptPaymentSlice";
 
 const OrderPaymentDDView = () => {
   const dispatch = useDispatch();
@@ -78,7 +79,6 @@ const OrderPaymentDDView = () => {
 
   useState(() => {
     getEntityAndMode();
-    dispatch(setInitialState())
   }, []);
 
   const handleRefresh = () => {

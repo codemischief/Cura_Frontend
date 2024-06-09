@@ -1,5 +1,5 @@
 import { Button, Stack } from "@mui/material";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useSelector } from "react-redux";
@@ -12,7 +12,6 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
-  setInitialState,
 } from "../../../../Redux/slice/reporting/Group9/TdsByVendorSlice";
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
@@ -20,8 +19,6 @@ import SimpleTable from "../../../../Components/common/table/CustomTable";
 
 const TdsPaidByVendorView = () => {
   const dispatch = useDispatch();
-  const isInitialMount = useRef(true);
-
   const {
     tdsByVendorView,
     status,
@@ -102,36 +99,30 @@ const TdsPaidByVendorView = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    if (isInitialMount.current) {
-      dispatch(setInitialState());
-      isInitialMount.current = false;
-    } else {
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "vendorname",
+        "vendorcategory",
+        "paymentmode",
+        "registered",
+        "tds",
+        "panno",
+        "tdssection",
+        "amount",
+        "paymentdate",
+        "monthyear",
+        "companydeductee",
+      ],
 
-      let obj = {
-        user_id: 1234,
-        rows: [
-          "vendorname",
-          "vendorcategory",
-          "paymentmode",
-          "registered",
-          "tds",
-          "panno",
-          "tdssection",
-          "amount",
-          "paymentdate",
-          "monthyear",
-          "companydeductee",
-        ],
-
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getTdByVendorView(obj));
-    }
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getTdByVendorView(obj));
   }, [
     filter,
     countPerPage,
@@ -165,7 +156,7 @@ const TdsPaidByVendorView = () => {
         "monthyear",
         "companydeductee",
       ],
-
+     
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -201,13 +192,13 @@ const TdsPaidByVendorView = () => {
             path={["Reports", "TDS Report", "TDS Paid By Vendor"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
-
-            <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
-              <p>
-                Generated on: <span> {new Date().toLocaleString()}</span>
-              </p>
-            </div>
-
+            
+              <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
+                <p>
+                  Generated on: <span> {new Date().toLocaleString()}</span>
+                </p>
+              </div>
+            
             <SearchBar
               value={searchInput}
               handleSearchvalue={handleSearchvalue}
@@ -218,7 +209,7 @@ const TdsPaidByVendorView = () => {
           </div>
         </div>
 
-
+    
         <SimpleTable
           columns={columns}
           data={tdsByVendorView}

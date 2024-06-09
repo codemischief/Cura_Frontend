@@ -10,7 +10,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "4%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "10%" },
       sorting: false,
       render: (index) => {
         return (
@@ -28,7 +28,7 @@ export default function connectionDataColumn(onQuery) {
       field: "clientname",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "32%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "30%" },
     },
     {
       title: "Payments",
@@ -36,7 +36,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "32%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "30%" },
     },
     {
       title: "Receipts",
@@ -44,7 +44,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "32%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "30%" },
     },
 
   ];

@@ -18,7 +18,6 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
-  resetData
 } from "../../../Redux/slice/reporting/LOBReceiptPaymentSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -129,10 +128,6 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
-  useEffect(() => {
-    dispatch(setInitialState());
-    dispatch(resetData());
-  }, []);
   useEffect(() => {
     if (startDate && endDate && lob) {
       let obj = {

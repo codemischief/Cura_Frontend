@@ -52,7 +52,6 @@ export const vendorStatement = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.vendorStatementView=[]
     },
     setvendorStatementViewFilters: (state, { payload }) => {
       state.filter = { ...payload };

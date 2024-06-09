@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../../Components/modals/SucessfullModal";
 import connectionDataColumn from "./Columns";
@@ -27,8 +27,6 @@ import Container from "../../../../Components/common/Container";
 
 const ClientContactDetails = () => {
   const dispatch = useDispatch();
-  const isInitialMount = useRef(true);
-
   const {
     data,
     status,
@@ -76,8 +74,8 @@ const ClientContactDetails = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: [
-        "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
+      rows:  [
+        "employername","localcontact1name","localcontact1address","localcontact1details","localcontact2name","localcontact2address","localcontact2details"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -110,25 +108,20 @@ const ClientContactDetails = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    if (isInitialMount.current) {
-      dispatch(setInitialState());
-      isInitialMount.current = false;
-    } else {
 
-      let obj = {
-        user_id: 1234,
-        rows: [
-          "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
-        ],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getData(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "employername","localcontact1name","localcontact1address","localcontact1details","localcontact2name","localcontact2address","localcontact2details"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getData(obj));
 
   }, [
     filter,
@@ -155,7 +148,7 @@ const ClientContactDetails = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
+        "employername","localcontact1name","localcontact1address","localcontact1details","localcontact2name","localcontact2address","localcontact2details"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),

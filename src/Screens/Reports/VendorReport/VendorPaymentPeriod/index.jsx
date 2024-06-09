@@ -142,9 +142,6 @@ const VendorPaymentPeriodView = () => {
     sorting.sort_by,
   ]);
 
-  useEffect(()=>{
-    dispatch(setInitialState());
-  },[])
   const handleSortingChange = (accessor) => {
     const sortOrder =
       accessor === sorting.sort_by && sorting.sort_order === "asc"

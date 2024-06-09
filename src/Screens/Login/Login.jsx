@@ -167,7 +167,7 @@ const Login = () => {
                 }`}
               >
                 {isSubmitting ? (
-                  <CircularProgress sx={{ color: "white" }} size={30} />
+                  <CircularProgress sx={{ color: "white" }} />
                 ) : (
                   "Login"
                 )}

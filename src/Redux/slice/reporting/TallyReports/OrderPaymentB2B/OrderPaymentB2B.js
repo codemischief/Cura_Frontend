@@ -25,7 +25,7 @@ export const orderPaymentB2B = createSlice({
   reducers: {
     setOrderPaymentB2BView: (state, { payload }) => {
       const { data } = payload;
-      state.orderPaymentB2BView = clientReceiptFormatData(data.data);
+      state.orderPaymentB2BView = clientReceiptFormatData(data.data)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -51,7 +51,6 @@ export const orderPaymentB2B = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.orderPaymentB2BView = [];
     },
     setOrderPaymentB2BViewFilters: (state, { payload }) => {
       state.filter = { ...payload };

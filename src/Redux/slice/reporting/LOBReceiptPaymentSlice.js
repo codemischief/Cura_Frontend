@@ -63,9 +63,6 @@ export const pmaSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
-    resetData: (state, { payload }) => {
-      state.lobReceiptPaymentsData = [];
-    },
   },
 });
 
@@ -79,7 +76,6 @@ export const {
   setLobReceiptPaymentsFilters,
   setInitialState,
   setSorting,
-  resetData
 } = pmaSlice.actions;
 
 export const getLobReceiptPaymentsData =

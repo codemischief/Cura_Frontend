@@ -78,7 +78,6 @@ const OrderPaymentWithTdsView = () => {
 
   useState(() => {
     getEntityAndMode();
-    dispatch(setInitialState())
   }, []);
 
   const handleRefresh = () => {

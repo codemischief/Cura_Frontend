@@ -54,7 +54,6 @@ export const pmaSlice = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.clientTraceReportData=[]
     },
     setClientTraceReportFilters: (state, { payload }) => {
       state.filter = { ...payload };

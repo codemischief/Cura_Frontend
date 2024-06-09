@@ -7,7 +7,6 @@ import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
-import { Refresh } from '@mui/icons-material';
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress , Backdrop , CircularProgress } from "@mui/material";
 import { APIService } from '../../../services/API';
@@ -1470,18 +1469,10 @@ const ManageClientInfo = () => {
                             </div>
 
                             <div className='w-1/2  flex'>
-                           {/* <div className='p-3'> */}
-                                                        <div
-                                className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
-                                onClick={() => {}}
-                                >
-                                <button>
-                                    <p>Filters</p>
-                                </button>
-                                <Refresh sx={{ height: "16px", width: "16px" }} />
+                                <div className='p-3'>
+
                                 </div>
-                                </div>
-                            {/* </div> */}
+                            </div>
                         </div>
                     </div>
                 </div>

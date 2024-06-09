@@ -49,7 +49,7 @@ const ResearchAgent = () => {
     try {
       let dataItem = {
         user_id: 1234,
-        table_name: "realestateagents",
+        table_name: "get_research_realestate_agents_view",
         item_id: data.id,
       };
       const response = await APIService.getItembyId(dataItem);

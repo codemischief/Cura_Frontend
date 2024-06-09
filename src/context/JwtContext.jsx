@@ -1,22 +1,15 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { useIdleTimer } from "react-idle-timer";
-
+import { createContext, useContext, useEffect, useReducer } from "react";
+// utils
 import { isValidToken, setSession } from "../utils/jwt";
 import { env_URL_SERVER } from "../Redux/helper";
-import { replaceKeys } from "./routeMap";
-import SessionTimeoutModal from "../Components/modals/SessionAlert";
+import { toast } from "react-toastify";
 
-// Initial Types and States
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { replaceKeys } from "./routeMap";
+
+// ----------------------------------------------------------------------
+
 const Types = {
   Initial: "INITIALIZE",
   Login: "LOGIN",
@@ -65,9 +58,6 @@ const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(JWTReducer, initialState);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [countdown, setCountdown] = useState(10);
-  const countdownRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -108,22 +98,6 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const handleOnIdle = () => {
-    if (state.isAuthenticated) {
-      setIsModalOpen(true);
-      let countdownValue = 10;
-      setCountdown(countdownValue);
-      countdownRef.current = setInterval(() => {
-        countdownValue -= 1;
-        setCountdown(countdownValue);
-        if (countdownValue <= 0) {
-          clearInterval(countdownRef.current);
-          logout();
-        }
-      }, 1000);
-    }
-  };
-
   const login = async (username, password, company_key) => {
     try {
       const response = await axios.post(
@@ -158,33 +132,13 @@ function AuthProvider({ children }) {
 
   const logout = async () => {
     setSession(null);
-    dispatch({ type: Types.Logout });
-    toast.success("Logged out successfully");
+    toast.success("logout successfully");
     navigate("/login");
-  };
-  const handleContinueSession = () => {
-    clearInterval(countdownRef.current);
-    resetIdleTimer(); // Reset idle timer on user activity
-    setIsModalOpen(false);
   };
 
   const resetPassword = (email) => console.log(email);
 
   const updateProfile = () => {};
-
-  // Use react-idle-timer hook
-  const { reset: resetIdleTimer } = useIdleTimer({
-    timeout: 1 * 60 * 1000, // 5 minutes
-    onIdle: handleOnIdle,
-    debounce: 500,
-    events: ["mousemove", "keydown", "mousedown", "touchstart"], // User activity events
-  });
-
-  useEffect(() => {
-    if (state.isAuthenticated) {
-      resetIdleTimer(); // Reset idle timer when user logs in
-    }
-  }, [state.isAuthenticated, resetIdleTimer]);
 
   return (
     <AuthContext.Provider
@@ -193,19 +147,12 @@ function AuthProvider({ children }) {
         method: "jwt",
         login,
         logout,
+        // register,
         resetPassword,
         updateProfile,
       }}
     >
       {children}
-      {state.isAuthenticated && (
-        <SessionTimeoutModal
-          open={isModalOpen}
-          onContinue={handleContinueSession}
-          onLogout={logout}
-          countdown={countdown}
-        />
-      )}
     </AuthContext.Provider>
   );
 }
@@ -215,8 +162,7 @@ export { AuthContext, AuthProvider };
 const useAuth = () => {
   const context = useContext(AuthContext);
 
-  if (!context)
-    throw new Error("Auth context must be used inside AuthProvider");
+  if (!context) throw new Error("Auth context must be use inside AuthProvider");
 
   return context;
 };

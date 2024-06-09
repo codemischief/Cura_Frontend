@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
@@ -37,7 +37,6 @@ const LobReceiptPayments = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.nonPmaClientStAndRec);
-  const isInitialMount = useRef(true);
   console.log(totalAmount)
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -107,24 +106,19 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
-
   useEffect(() => {
-    if (isInitialMount.current) {
-      dispatch(setInitialState());
-      isInitialMount.current = false;
-    } else {
-      let obj = {
-        user_id: 1234,
-        rows: ["clientname", "amount"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getNonPmaClientStAndRec(obj));
-    }
+
+    let obj = {
+      user_id: 1234,
+      rows: ["clientname", "amount"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getNonPmaClientStAndRec(obj));
   }, [
     filter,
     countPerPage,

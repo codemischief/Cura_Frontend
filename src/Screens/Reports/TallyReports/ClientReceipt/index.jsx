@@ -1,8 +1,10 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
+
 import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
+import * as XLSX from "xlsx";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
@@ -77,8 +79,6 @@ const ClientReceiptView = () => {
 
   useState(() => {
     getEntityAndMode();
-    dispatch(setInitialState())
-
   }, []);
 
   const handleRefresh = () => {

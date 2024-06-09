@@ -59,9 +59,6 @@ export const pmaSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
-    resetData: (state, { payload }) => {
-      state.clientReceiptData = [];
-    },
   },
 });
 
@@ -75,7 +72,6 @@ export const {
   setClientReceiptFilters,
   setInitialState,
   setSorting,
-  resetData
 } = pmaSlice.actions;
 
 export const getClientReceiptData =

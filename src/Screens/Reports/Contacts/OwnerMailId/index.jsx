@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../../Components/modals/SucessfullModal";
 import connectionDataColumn from "./Columns";
@@ -27,8 +27,6 @@ import Container from "../../../../Components/common/Container";
 
 const OwnerMailId = () => {
   const dispatch = useDispatch();
-  const isInitialMount = useRef(true);
-
   const {
     data,
     status,
@@ -110,25 +108,20 @@ const OwnerMailId = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    if (isInitialMount.current) {
-      dispatch(setInitialState());
-      isInitialMount.current = false;
-    } else {
 
-      let obj = {
-        user_id: 1234,
-        rows: [
-          "email"
-        ],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getData(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows:[
+        "email"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getData(obj));
 
   }, [
     filter,
@@ -139,6 +132,9 @@ const OwnerMailId = () => {
     sorting.sort_by,
   ]);
 
+  useEffect(() => {
+
+  }, []);
 
   const handleSortingChange = (accessor) => {
     const sortOrder =
@@ -151,7 +147,7 @@ const OwnerMailId = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: [
+      rows:[
         "email"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,

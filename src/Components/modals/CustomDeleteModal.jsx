@@ -9,7 +9,6 @@ const CustomDeleteModal = ({
   handleDelete,
   deleteError,
   text,
-  isloading,
 }) => {
   const handleDialogClose = () => {
     setOpenDialog(null);
@@ -30,10 +29,7 @@ const CustomDeleteModal = ({
                   <div className="text-[16px] font-semibold">Delete</div>
                 </div>
                 <div className="absolute top-[-0.5rem] right-[-3.75rem]">
-                  <CrossIcon
-                    bgColor="bg-[#EBEBEB]"
-                    onClick={handleDialogClose}
-                  />
+                  <CrossIcon bgColor="#EBEBEB" onClick={handleDialogClose} />
                 </div>
               </div>
               <div className="flex justify-center items-center">
@@ -47,13 +43,10 @@ const CustomDeleteModal = ({
               </div>
               <div className="my-5 flex justify-center items-center gap-[10px]">
                 <button
-                  className={`w-[100px] h-[35px] rounded-md ${
-                    isloading ? "bg-gray-500 cursor-not-allowed" : "bg-red-700"
-                  } text-white`}
-                  disabled={isloading}
+                  className="w-[100px] h-[35px] bg-red-700 text-white rounded-md"
                   onClick={handleDelete}
                 >
-                  {isloading ? "Deleting..." : "Delete"}
+                  Delete
                 </button>
                 <button
                   className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"

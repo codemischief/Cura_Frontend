@@ -77,7 +77,6 @@ const OrderReceiptToInvoiceServiceTax = () => {
 
   useState(() => {
     getEntityAndMode();
-    dispatch(setInitialState())
   }, []);
 
   const handleRefresh = () => {

@@ -1,4 +1,4 @@
-import { CircularProgress, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 
 import styleConst from "./styleConst";
 import {
@@ -9,9 +9,8 @@ import {
 import { Create, Delete } from "@mui/icons-material";
 import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import EditButton from "../../../Components/common/buttons/EditButton";
-export default function getColumns(handleEdit, handleDelete, isPending) {
+export default function getColumns(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
-  // const {}
 
   const columns = [
     {
@@ -63,7 +62,8 @@ export default function getColumns(handleEdit, handleDelete, isPending) {
         ...cellStyleCommon,
         justifyContent: "center",
         minWidth: "50px",
-        maxWidth: "13.563",
+        maxWidth:"13.563"
+        
       },
     },
     {
@@ -133,20 +133,27 @@ export default function getColumns(handleEdit, handleDelete, isPending) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "70px",
+        minWidth: "50px",
       },
       render: (rowData) => {
         return (
           <div className="flex gap-2 justify-start">
-            {isPending === rowData.id ? (
-              <button>
-                <CircularProgress sx={{ color: "blue" }} size={20} />{" "}
-                <p className="text-[8px]">loading</p>
-              </button>
-            ) : (
-              <EditButton handleEdit={handleEdit} rowData={rowData} />
-            )}
-            <DeleteButton handleDelete={handleDelete} rowData={rowData} />
+            <EditButton
+              handleEdit={handleEdit}
+              rowData={rowData}
+            />
+            <DeleteButton
+              handleDelete={handleDelete}
+              rowData={rowData}
+            />
+            {/* <Create
+              sx={{ width: "20px", height: "20px" }}
+              onClick={() => handleEdit(rowData)}
+            />
+            <Delete
+              sx={{ width: "20px", height: "20px" }}
+              onClick={() => handleDelete(rowData)}
+            /> */}
           </div>
         );
       },

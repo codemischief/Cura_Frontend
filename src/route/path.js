@@ -98,7 +98,6 @@ export const PATH_DASHBOARD = {
       clientBankDetails : path(ROOTS.report, "/clientBankDetails"),
       nonPmaClientStatements : path(ROOTS.report, "/nonPmaClientStatement"),
       nonPmaClientReceivables : path(ROOTS.report, "/nonPmaClientReceivables"),
-      clientStatementByDate : path(ROOTS.report , "/clientStatementByDate")
     },
     pma : {
       activePmaAgreement: path(ROOTS.report, "/activePmaAgreement"),

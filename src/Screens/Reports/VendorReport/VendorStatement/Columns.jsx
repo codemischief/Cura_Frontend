@@ -6,7 +6,7 @@ import {
   TextFilterField,
 } from "./CustomFilterField";
 
-export default function connectionDataColumn() {
+export default function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
   const columns = [
     {

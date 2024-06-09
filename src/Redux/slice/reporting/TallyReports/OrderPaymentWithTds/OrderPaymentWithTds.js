@@ -51,7 +51,6 @@ export const orderPaymentWithTds = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.orderPaymentWithTdsView = [];
     },
     setOrderPaymentWithTdsViewFilters: (state, { payload }) => {
       state.filter = { ...payload };

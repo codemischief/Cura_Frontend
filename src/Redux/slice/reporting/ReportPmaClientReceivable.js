@@ -69,7 +69,7 @@ export const pmaSlice = createSlice({
 // reducer
 // Action creators are generated for each case reducer function
 export const {
-  setPmaClientReceivables,
+   setPmaClientReceivables,
   setStatus,
   setPageNumber,
   setCountPerPage,
