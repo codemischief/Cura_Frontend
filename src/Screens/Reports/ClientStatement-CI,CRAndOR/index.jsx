@@ -105,8 +105,6 @@ const LobReceiptPayments = () => {
     if (entity && lob) {
       let obj = {
         user_id: 1234,
-        lobName: lob,
-        entityName: entity,
         rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
           "lobname", "service", "fy", "mode"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -140,14 +138,9 @@ const LobReceiptPayments = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    dispatch(setInitialState())
-  },[])
-  useEffect(() => {
     if (entity && lob) {
       let obj = {
         user_id: 1234,
-        lobName: lob,
-        entityName: entity,
         rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
           "lobname", "service", "fy", "mode"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -171,7 +164,6 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     fetchLobData();
     fetchEntitiesData();
-    dispatch(setInitialState());
   }, []);
 
   const handleSortingChange = (accessor) => {
@@ -185,8 +177,6 @@ const LobReceiptPayments = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      lobName: lob,
-      entityName: entity,
       rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
         "lobname", "service", "fy", "mode"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -197,7 +187,6 @@ const LobReceiptPayments = () => {
         "entity": "Entity",
         "clientname": "Client Name",
         "type": "Type",
-        "date": "date",
         "amount": "Amount",
         "orderdetails": "Order Details",
         "lobname": "Lob Name",
@@ -357,7 +346,7 @@ const LobReceiptPayments = () => {
           </Stack>
 
           <SimpleTableWithFooter
-            pageName={'clientStatement-CLCRAndOR'}
+            pageName={'pmaClientStatement'}
             columns={columns}
             data={clientStatementAllEntitiesData}
             totalData={totalAmount}

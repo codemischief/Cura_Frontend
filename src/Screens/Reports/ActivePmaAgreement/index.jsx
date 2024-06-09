@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
@@ -10,7 +10,6 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
-import { Refresh } from "@mui/icons-material";
 import {
   downloadActivePmaAgreement,
   getActivePmaAgreement,
@@ -31,7 +30,6 @@ import Container from "../../../Components/common/Container";
 
 const PmaInvoiceList = () => {
   const dispatch = useDispatch();
-  const isInitialMount = useRef(true);
   const {
     activePmaAgreement,
     status,
@@ -123,37 +121,31 @@ const PmaInvoiceList = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    if (isInitialMount.current) {
-      dispatch(setInitialState());
-      isInitialMount.current = false;
-    } else {
-
-      let obj = {
-        user_id: 1234,
-        rows: [
-          "clientname",
-          "propertydescription",
-          "description",
-          "propertystatus",
-          "electricitybillingunit",
-          "electricityconsumernumber",
-          "propertytaxnumber",
-          "rentamount",
-          "startdate",
-          "enddate",
-          "lnlstartdate",
-          "lnlenddate",
-          "poastartdate",
-        ],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getActivePmaAgreement(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "clientname",
+        "propertydescription",
+        "description",
+        "propertystatus",
+        "electricitybillingunit",
+        "electricityconsumernumber",
+        "propertytaxnumber",
+        "rentamount",
+        "startdate",
+        "enddate",
+        "lnlstartdate",
+        "lnlenddate",
+        "poastartdate",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getActivePmaAgreement(obj));
   }, [
     filter,
     countPerPage,
@@ -163,7 +155,7 @@ const PmaInvoiceList = () => {
     sorting.sort_by,
   ]);
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   const handleSortingChange = (accessor) => {
     const sortOrder =
@@ -267,18 +259,17 @@ const PmaInvoiceList = () => {
             />
 
             {/* </div> */}
-            <div
-              className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
-              onClick={() => { }}
-            >
-              <button>
-                <p>Filters</p>
-              </button>
-              <Refresh sx={{ height: "16px", width: "16px" }} />
-            </div>
           </div>
         </div>
-
+        <div className="flex justify-end">
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => dispatch(setActivePmaAgreementFilters({}))}
+          >
+            Clear All
+          </Button>
+        </div>
 
         <SimpleTable
           columns={columns}

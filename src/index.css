@@ -32,15 +32,6 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-
-input:focus {
-  outline: none;
-}
-
-/* Disable outline on input active */
-input:active {
-  outline: none;
-}
 .react-datepicker {
     border: 1px solid #ccc; /* Light border */
     border-radius: 8px;     /* Border radius */
@@ -76,7 +67,6 @@ input:active {
   border: 1px solid var(--Border-BorderOpaque, #c6c6c6);
   background: transparent;
 }
-
 .selectBoxField > option {
   font-family: "Open Sans";
   font-size: 0.875rem;

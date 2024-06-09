@@ -142,15 +142,14 @@ const ShowAllOdersInformation = () => {
                        
                         {receiptsData.map((item) => {
                             return <tr>
-                                 
                                     <td className={commonStylesData}>{item.clientname}</td>
-                                    <td className={commonStylesData}>{item.property}</td>
-                                    <td className={commonStylesData}>{item.briefdescription}</td>
+                                    <td className={commonStylesData}>Property</td>
+                                    <td className={commonStylesData}>Order Description</td>
                                     <td className={commonStylesData}>{item.amount}</td>
-                                    <td className={commonStylesData}>{item.tds}</td>
-                                    <td className={commonStylesData}>{item.receivedbyname}</td>
-                                    <td className={commonStylesData}>{item.recddate}</td>
-                                    <td className={commonStylesData}>{item.paymentmodename}</td>
+                                    <td className={commonStylesData}>TDS</td>
+                                    <td className={commonStylesData}>Received By</td>
+                                    <td className={commonStylesData}>Received Date</td>
+                                    <td className={commonStylesData}>Payment Mode</td>
                                     <td className={commonStylesData}>Payment Status</td>
                             </tr>
                         })}
@@ -226,11 +225,11 @@ const ShowAllOdersInformation = () => {
                         {invoicesData.map((item) => {
                             return <tr>
                                 <td className={commonStylesData}>{item.clientname}</td>
-                                <td className={commonStylesData}>{item.quotedescription}</td>
-                                <td className={commonStylesData}>{item.estimateamount}</td>
-                                <td className={commonStylesData}>{item.estimatedate}</td>
-                                <td className={commonStylesData}>{item.invoiceamount}</td>
-                                <td className={commonStylesData}>{item.invoicedate}</td>
+                                <td className={commonStylesData}>Order Description</td>
+                                <td className={commonStylesData}>Estimate Amount</td>
+                                <td className={commonStylesData}>Estimate Date</td>
+                                <td className={commonStylesData}>Invoice Amount</td>
+                                <td className={commonStylesData}>Invoice Date</td>
                             </tr>
                         })}
                         

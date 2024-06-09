@@ -54,7 +54,6 @@ export const orderPaymentDD = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.orderPaymentDDView =[]
     },
     setorderPaymentDDViewFilters: (state, { payload }) => {
       state.filter = { ...payload };

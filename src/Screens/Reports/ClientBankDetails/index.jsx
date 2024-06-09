@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
@@ -25,13 +25,11 @@ import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
-import SimpleTable from "../../../Components/common/table/CustomTable";
+import SimpleTable from "../../../Components/common/table/ClientPortalTable";
 import Container from "../../../Components/common/Container";
 
 const PmaClientReport = () => {
   const dispatch = useDispatch();
-  const isInitialMount = useRef(true);
-
   const {
     clientBankDetails,
     status,
@@ -113,25 +111,20 @@ const PmaClientReport = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    if (isInitialMount.current) {
-      dispatch(setInitialState());
-      isInitialMount.current = false;
-    } else {
 
-      let obj = {
-        user_id: 1234,
-        rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
-          "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
-          "bankaccounttype"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getClientBankDetails(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
+        "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
+        "bankaccounttype"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getClientBankDetails(obj));
 
   }, [
     filter,
@@ -164,7 +157,7 @@ const PmaClientReport = () => {
       filters: formatedFilterData(filter),
       downloadType: "excel",
       colmap: {
-        "clientname": "Name",
+        "clientname": "Client Name",
         "onlinemailid": "Online Mail ID",
         "bankname": "Bank Name",
         "bankbranch": "Bank Branch",

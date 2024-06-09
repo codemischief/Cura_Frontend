@@ -969,14 +969,7 @@ const getLLTenant = async (data) => {
 
   return response;
 };
-const getPaymentStatusAdmin = async(data)=>{
-  const response = await fetch(
-    `${env_URL_SERVER}getPaymentStatusAdmin`,
-    METHOD_POST(data)
-  );
 
-  return response;
-}
 const getDepartmentTypeAdmin = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getDepartmentTypeAdmin`,
@@ -990,6 +983,7 @@ const download = async (data, filename) => {
     `${env_URL_SERVER}download/${filename}`,
     METHOD_POST(data)
   );
+  console.log(response);
   return response;
 };
 
@@ -1166,6 +1160,5 @@ export const APIService = {
   download,
   getDepartmentTypeAdmin,
   resetPassword,
-  changePassword,
-  getPaymentStatusAdmin
+  changePassword
 };

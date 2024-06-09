@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../../Components/modals/SucessfullModal";
 import connectionDataColumn from "./Columns";
@@ -27,8 +27,6 @@ import Container from "../../../../Components/common/Container";
 
 const ClientStatistics = () => {
   const dispatch = useDispatch();
-  const isInitialMount = useRef(true);
-
   const {
     data,
     status,
@@ -76,7 +74,7 @@ const ClientStatistics = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: ["total", "name"],
+      rows: ["total","name"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -108,23 +106,18 @@ const ClientStatistics = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    if (isInitialMount.current) {
-      dispatch(setInitialState());
-      isInitialMount.current = false;
-    } else {
 
-      let obj = {
-        user_id: 1234,
-        rows: ["total", "name"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getData(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows: ["total","name"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getData(obj));
 
   }, [
     filter,
@@ -134,6 +127,10 @@ const ClientStatistics = () => {
     sorting.sort_order,
     sorting.sort_by,
   ]);
+
+  useEffect(() => {
+
+  }, []);
 
   const handleSortingChange = (accessor) => {
     const sortOrder =
@@ -146,7 +143,7 @@ const ClientStatistics = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: ["name", "total"],
+      rows: ["name","total"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",

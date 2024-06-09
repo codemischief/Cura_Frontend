@@ -30,9 +30,9 @@ export const pmaSlice = createSlice({
       const { data, year, month } = payload;
       state.clientStatementAllEntitiesData = clientStatementAllEntities(data.data, year, month);
       console.log(payload.data)
-      console.log(payload.data.total_amount)
+      console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
-      state.totalAmount = payload.data.total_amount;
+      state.totalAmount = payload.data.total;
     },
     setStatus: (state, { payload }) => {
       state.status = payload;
@@ -56,7 +56,6 @@ export const pmaSlice = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.clientStatementAllEntitiesData = []
     },
     setClientStatementAllEntitiesFilters: (state, { payload }) => {
       state.filter = { ...payload };

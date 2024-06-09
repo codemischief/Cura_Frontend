@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
@@ -23,12 +23,8 @@ import AlertModal, {
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
-import { getCountries } from "../../../Redux/slice/commonApis";
-import useAuth from "../../../context/JwtContext";
 
 const PropectusPage = () => {
-  const { user } = useAuth();
-  console.log("user", user);
   const dispatch = useDispatch();
   const {
     PropectusData,
@@ -39,7 +35,6 @@ const PropectusPage = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.prospect);
-  const { countryData } = useSelector((state) => state.commonApi);
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -49,28 +44,20 @@ const PropectusPage = () => {
   const [editData, setEditData] = useState({});
   const [isDeleteDialogue, setIsDeleteDialogue] = useState(null);
   const [deleteError, setDeleteError] = useState("");
-  const [loading, setLoading] = useState("");
-  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const handleEdit = async (data) => {
     try {
-      setLoading(data.id);
       let dataItem = {
-        user_id: user.id,
+        user_id: 1234,
         table_name: "get_research_prospect_view",
         item_id: data.id,
       };
       const response = await APIService.getItembyId(dataItem);
       let updatedaresponse = await response.json();
       setEditData(updatedaresponse?.data);
-      setLoading("");
       setOpenForm(true);
     } catch (error) {
-      setLoading(false);
-      console.log("error", error);
       errorHandler(error, "Failed to fetch Please try again later");
-    } finally {
-      setLoading("");
     }
   };
 
@@ -78,11 +65,7 @@ const PropectusPage = () => {
     setIsDeleteDialogue(data.id);
   };
 
-  const columns = useMemo(
-    () => getColumns(handleEdit, handleDelete, loading),
-    [loading]
-  );
-
+  const columns = useMemo(() => getColumns(handleEdit, handleDelete), []);
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -98,7 +81,7 @@ const PropectusPage = () => {
 
   const fetchData = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: 1234,
 
       rows: [
         "id",
@@ -139,12 +122,6 @@ const PropectusPage = () => {
   };
 
   useEffect(() => {
-    if (countryData.length === 0) {
-      dispatch(getCountries());
-    }
-  }, []);
-
-  useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
 
@@ -176,6 +153,7 @@ const PropectusPage = () => {
     }, {});
 
     let obj = {
+      user_id: 1234,
       rows: [
         "personname",
         "suburb",
@@ -203,23 +181,18 @@ const PropectusPage = () => {
 
   const deleteProspects = async () => {
     try {
-      setDeleteLoading(true);
-      const data = { id: isDeleteDialogue };
+      const data = { user_id: 1234, id: isDeleteDialogue };
       await dispatch(deleteProspect(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Prospect Deleted Successfully");
       setPromptType(alertVariant.success);
-      fetchData();
-      setDeleteLoading(false);
+      fetchData()
     } catch (error) {
-      setDeleteLoading(false);
       if (error.response) {
         setDeleteError(error.response.data.detail);
       } else {
         setDeleteError("An unexpected error occurred.");
       }
-    } finally {
-      setDeleteLoading(false);
     }
   };
 
@@ -239,7 +212,8 @@ const PropectusPage = () => {
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
-    fetchData();
+    fetchData()
+    
   };
 
   const openCancel = () => {
@@ -320,8 +294,7 @@ const PropectusPage = () => {
           setOpenDialog={setIsDeleteDialogue}
           handleDelete={deleteProspects}
           deleteError={deleteError}
-          text={"Prospect"}
-          isloading={deleteLoading}
+          text={'Prospect'}
         />
       )}
     </div>

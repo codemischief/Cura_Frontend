@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../../Components/modals/SucessfullModal";
 import connectionDataColumn from "./Columns";
@@ -27,8 +27,6 @@ import Container from "../../../../Components/common/Container";
 
 const TenantEmail = () => {
   const dispatch = useDispatch();
-  const isInitialMount = useRef(true);
-
   const {
     data,
     status,
@@ -77,7 +75,7 @@ const TenantEmail = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "fullname", "firstname", "lastname", "email1", "email2", "employername"
+        "fullname","firstname","lastname","email1","email2","employername"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -110,25 +108,20 @@ const TenantEmail = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    if (isInitialMount.current) {
-      dispatch(setInitialState());
-      isInitialMount.current = false;
-    } else {
 
-      let obj = {
-        user_id: 1234,
-        rows: [
-          "fullname", "firstname", "lastname", "email1", "email2", "employername"
-        ],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getData(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "fullname","firstname","lastname","email1","email2","employername"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getData(obj));
 
   }, [
     filter,
@@ -155,7 +148,7 @@ const TenantEmail = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "fullname", "firstname", "lastname", "employername", "email1", "email2",
+        "fullname","firstname","lastname","employername","email1","email2",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -163,10 +156,10 @@ const TenantEmail = () => {
       colmap: {
         "fullname": "Full Name",
         "firstname": "First Name",
-        "lastname": "Last Name",
-        "employername": "Employer Name",
-        "email1": "Email 1",
-        "email2": "Email 2",
+        "lastname" : "Last Name",
+        "employername" : "Employer Name",
+        "email1" : "Email 1",
+        "email2" : "Email 2",
       },
       search_key: search,
       pg_no: 0,

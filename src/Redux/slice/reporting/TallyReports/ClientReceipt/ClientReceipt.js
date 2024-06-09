@@ -54,7 +54,6 @@ export const clientReceipt = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.clientReceiptView = []
     },
     setClientReceiptViewFilters: (state, { payload }) => {
       state.filter = { ...payload };

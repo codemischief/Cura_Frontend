@@ -1,11 +1,7 @@
-import FileSaver from "file-saver";
-import axios from "../../../utils/axios";
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { env_URL_SERVER, updatedResponsePmaData } from "../../helper";
-import { moduleMethods } from "../../../utils/axios";
-import { v4 as uuidv4 } from "uuid";
-
-const modulename = "ResearchProspect";
+import FileSaver from "file-saver";
 
 const initialState = {
   PropectusData: [],
@@ -80,7 +76,7 @@ export const {
   setFormSubmissionStatus,
 } = prospect.actions;
 
-export const getPropect = (payloadObj) => async (dispatch) => {
+export const getPropect = (payloadObj, year, month) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
@@ -88,7 +84,7 @@ export const getPropect = (payloadObj) => async (dispatch) => {
       payloadObj
     );
 
-    dispatch(setPropectusData({ data: response.data }));
+    dispatch(setPropectusData({ data: response.data, year, month }));
     dispatch(setStatus("success"));
   } catch (err) {
     dispatch(setStatus("error"));
@@ -100,15 +96,7 @@ export const addProspectData = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}addResearchProspect`,
-      {
-        ...payload,
-        reqid: uuidv4(),
-        modulename,
-        actionname: moduleMethods.add + modulename,
-      },
-      {
-        appendLog: true, // Set to true to append common payload
-      }
+      payload
     );
     dispatch(setFormSubmissionStatus("success"));
     return response;
@@ -123,16 +111,8 @@ export const editProspectData = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `editResearchProspect`,
-      {
-        ...payload,
-        reqid: uuidv4(),
-        modulename,
-        actionname: moduleMethods.edit + modulename,
-      },
-      {
-        appendLog: true, // Set to true to append common payload
-      }
+      `${env_URL_SERVER}editResearchProspect`,
+      payload
     );
     dispatch(setFormSubmissionStatus("success"));
     // return response;
@@ -145,7 +125,10 @@ export const editProspectData = (payload) => async (dispatch) => {
 export const downloadProspectusDataXls = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
-    const response = await axios.post(`getResearchProspect`, payloadObj);
+    const response = await axios.post(
+      `${env_URL_SERVER}getResearchProspect`,
+      payloadObj
+    );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
         downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
@@ -162,7 +145,7 @@ export const downloadProspectusDataXls = (payloadObj) => async (dispatch) => {
 export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `download/${filename}`,
+      `${env_URL_SERVER}download/${filename}`,
       {
         filename: filename,
         user_id: userId,
@@ -183,16 +166,8 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
 export const deleteProspect = (payload) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `deleteResearchProspect`,
-      {
-        ...payload,
-        reqid: uuidv4(),
-        modulename,
-        actionname: moduleMethods.delete + modulename,
-      },
-      {
-        appendLog: true, // Set to true to append common payload
-      }
+      `${env_URL_SERVER}deleteResearchProspect`,
+      payload
     );
     return response;
   } catch (error) {

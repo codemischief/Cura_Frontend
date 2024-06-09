@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../../Components/modals/SucessfullModal";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
-import SimpleTable from "../../../../Components/common/table/CustomTable";
+import SimpleTable from "../../../../Components/common/table/ClientPortalTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../../services/API";
@@ -91,9 +91,6 @@ const VendorTraceReport = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
-  useEffect(()=> {
-    dispatch(setInitialState());
-  },[]);
   useEffect(() => {
     if (selectedOption.value) {
       let obj = {

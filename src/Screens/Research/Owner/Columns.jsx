@@ -12,8 +12,6 @@ import {
   TextFilterField
 } from "./CustomFilerField"
 import { Create, Delete } from "@mui/icons-material";
-import EditButton from "../../../Components/common/buttons/EditButton";
-import DeleteButton from "../../../Components/common/buttons/deleteButton";
 
 export default function connectionDataColumn(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
@@ -25,7 +23,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width: "5%",
+        width: "10%",
       },
       align: "center",
       sorting: false,
@@ -54,7 +52,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '6.9%'
+        width : '300px'
       },
     },
     {
@@ -69,39 +67,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '6.9%'
-        
-      },
-    },
-    {
-      id: 3,
-      filterComponent: TextFilterField,
-      title: "Address",
-      field: "address",
-      align: "left",
-    //   width : '20%',
-      filterDisabled: false,
-      sorting: true,
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        width : '6.9%'
-        
-      },
-    },
-    {
-      id: 3,
-      filterComponent: TextFilterField,
-      title: "Property Details",
-      field: "propertydetails",
-      align: "left",
-    //   width : '20%',
-      filterDisabled: false,
-      sorting: true,
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        width : '6.9%'
+        width : '300px'
         
       },
     },
@@ -117,7 +83,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '6.9%'
+        width : '300px'
         
       },
     },
@@ -133,43 +99,11 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '6.9%'
+        width : '300px'
         
       },
     },
     
-    {
-      id: 4,
-      filterComponent: TextFilterField,
-
-      title: "PhoneNo1",
-      field: "phoneno1",
-      align: "left",
-      filterDisabled: false,
-      sorting: true,
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '6.9%'
-      },
-    },
-    {
-      id: 4,
-      filterComponent: TextFilterField,
-
-      title: "Phone No 2",
-      field: "phoneno2",
-      align: "left",
-      filterDisabled: false,
-      sorting: true,
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '6.9%'
-      },
-    },
     {
       id: 4,
       filterComponent: TextFilterField,
@@ -183,7 +117,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '6.9%'
+        width : '300px'
       },
     },
     {
@@ -198,11 +132,26 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '6.9%'
+        width : '300px'
         
       },
     },
-    
+    {
+      id: 3,
+      filterComponent: TextFilterField,
+      title: "Property Details",
+      field: "propertydetails",
+      align: "left",
+    //   width : '20%',
+      filterDisabled: false,
+      sorting: true,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        width : '300px'
+        
+      },
+    },
     {
       id: 3,
       filterComponent: TextFilterField,
@@ -215,7 +164,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '6.9%'
+        width : '300px'
         
       },
     },
@@ -231,11 +180,10 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '6.9%'
+        width : '300px'
         
       },
     },
-    
     {
       id: 9,
       title: "ID",
@@ -248,33 +196,32 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '6.9%'
+        width : '300px'
       },
     },
     {
       id: 10,
-      title: "Edit",
+      title: "",
       field: "action",
       sorting: false,
       align: "left",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '5%'
+        width : '300px'
         // maxWidth: "18.25rem",
       },
       render: (rowData) => {
         return (
           <div className="flex gap-2 justify-start">
-            <EditButton
-             handleEdit={handleEdit}
-             rowData={rowData}
+            <Create
+              sx={{ width: "20px", height: "20px" }}
+              onClick={() => handleEdit(rowData)}
             />
-            <DeleteButton
-             handleDelete={handleDelete}
-             rowData={rowData}
+            <Delete
+              sx={{ width: "20px", height: "20px" }}
+              onClick={() => handleDelete(rowData)}
             />
-           
           </div>
         );
       },

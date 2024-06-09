@@ -54,7 +54,6 @@ export const pmaSlice = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.data=[]
     },
     setFilters: (state, { payload }) => {
       state.filter = { ...payload };

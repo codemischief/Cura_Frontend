@@ -1,8 +1,6 @@
-import PropTypes from "prop-types";
-
-export const CrossIcon = ({ onClick, bgColor = "bg-[#fff]" }) => (
+export const CrossIcon = ({ onClick, bgColor = "#fff" }) => (
   <div
-    className={`flex justify-center items-center rounded-full w-[30px] h-[30px] ${bgColor} absolute right-2`}
+    className={`flex justify-center items-center rounded-full w-[30px] h-[30px] bg-[${bgColor}] absolute right-2`}
     onClick={onClick}
   >
     <svg
@@ -21,8 +19,3 @@ export const CrossIcon = ({ onClick, bgColor = "bg-[#fff]" }) => (
     </svg>
   </div>
 );
-
-CrossIcon.propTypes = {
-  bgColor: PropTypes.string,
-  onClick: PropTypes.func.isRequired,
-};

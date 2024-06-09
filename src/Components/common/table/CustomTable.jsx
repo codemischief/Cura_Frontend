@@ -25,7 +25,7 @@ const SimpleTable = ({
         <table style={{ width: "-webkit-fill-available" }}>
           <thead className="h-[115px] sticky top-0 z-100 bg-white ">
             <tr className="h-[56px]">
-              {columns?.map((column, index) => (
+              {columns.map((column, index) => (
                 <th
                   key={index}
                   style={{ ...column.cellStyle }}
@@ -43,7 +43,7 @@ const SimpleTable = ({
               ))}
             </tr>
             <tr className="bg-[#F0F6FF] h-[56px] ">
-              {columns?.map((column, index) => (
+              {columns.map((column, index) => (
                 <th
                   key={index}
                   style={{ ...column.cellStyle }}
@@ -85,7 +85,7 @@ const SimpleTable = ({
                 </td>
               </tr>
             )}
-            {data?.length === 0 && (
+            {data.length === 0 && (
               <tr className="w-full h-full">
                 <td
                   className="w-full h-full"
@@ -100,7 +100,7 @@ const SimpleTable = ({
                 </td>
               </tr>
             )}
-            {data?.length > 0 &&
+            {data.length > 0 &&
               data?.map((rowData, rowIndex) => (
                 <tr
                   key={rowData.id}
@@ -118,13 +118,13 @@ const SimpleTable = ({
                       }}
                       className="py-3 "
                     >
-                      {column?.render
-                        ? column?.field === "action"
+                      {column.render
+                        ? column.field === "action"
                           ? column?.render(rowData)
                           : column?.render(
-                              (pageNo - 1) * countPerPage + rowIndex,rowData
+                              (pageNo - 1) * countPerPage + rowIndex
                             )
-                        : rowData[column?.field]}
+                        : rowData[column.field]}
                     </td>
                   ))}
                 </tr>
