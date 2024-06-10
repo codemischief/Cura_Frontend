@@ -75,7 +75,8 @@ import PropertyWithNoProjectReducer from "./slice/reporting/Group12/PropertyWith
 import VendorSummary from "./slice/reporting/Group9/VendorSummary";
 import ClientPhoneNoReducer from "./slice/reporting/Group13/ClientPhoneNo"
 import OwnerPhoneNoReducer from "./slice/reporting/Group13/OwnerPhoneNo"
-import BankBalanceReconciliationReducer from "./slice/reporting/BankBalanceReconcilation"
+import BankBalanceReconciliationReducer from "./slice/reporting/BankBalanceReconcilation";
+import EducationalInstitute from "./slice/Research/EducationalInstitute";
 
 
 import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportSlice";
@@ -156,7 +157,8 @@ export const store = configureStore({
     vendorSummary:VendorSummary,
     clientPhoneNo:ClientPhoneNoReducer,
     ownerPhoneNo:OwnerPhoneNoReducer,
-    bankBalanceReconcilation:BankBalanceReconciliationReducer
+    bankBalanceReconcilation:BankBalanceReconciliationReducer,
+    educationalInstitute:EducationalInstitute
 
   },
   // Add the RTK Query API middleware
