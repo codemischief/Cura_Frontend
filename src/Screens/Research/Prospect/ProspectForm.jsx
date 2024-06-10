@@ -203,16 +203,16 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <span className="requiredError">*</span>
                             </div>
                             <CustomSelectNative
-                              data={countryData}
+                              data={Object.keys(countryData)}
                               renderData={(item) => {
                                 return (
-                                  <MenuItem value={item.id} key={item.id}>
-                                    {item.name}
+                                  <MenuItem value={item} key={item}>
+                                    {countryData[item]}
                                   </MenuItem>
                                 );
                               }}
-                              placeholder='Select Country'
-                              value={formik.values.countryId}
+                              placeholder="Select Country"
+                              value={countryData[formik.values.countryId]}
                               onChange={handleCountrySelect}
                             />
                             <div className="inputValidationError">
@@ -232,8 +232,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               name="state"
                               data={stateData}
                               value={formik.values.state}
-                              placeholder={'Select State'}
-                              
+                              placeholder={"Select State"}
                               renderData={(item) => {
                                 return (
                                   <MenuItem value={item[0]} key={item[0]}>
@@ -258,7 +257,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               name="city"
                               data={cityData}
                               value={formik.values.city}
-                              placeholder='Select City'
+                              placeholder="Select City"
                               renderData={(item) => {
                                 return (
                                   <MenuItem value={item.city} key={item.city}>

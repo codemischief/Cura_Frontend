@@ -86,7 +86,7 @@ const PropectusPage = () => {
         handleEdit,
         handleDelete,
         loading,
-        user.allowedModules[pathname]
+        user?.allowedModules[pathname]
       ),
     [loading]
   );
