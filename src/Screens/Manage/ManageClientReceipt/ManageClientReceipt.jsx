@@ -33,6 +33,7 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../../assets/active_filter.png"
 import { formatDate } from '../../../utils/formatDate';
+import AddButton from '../../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientReceipt = () => {
     const navigate = useNavigate()
@@ -1236,12 +1237,13 @@ const ManageClientReceipt = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-9 w-80 rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-9 w-80 rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Client Receipt
                                     <img className='h-4 w-4' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Client Receipt" sx={{ width: "320px" }} onClick={handleOpen} />
                         </div>
 
                     </div>

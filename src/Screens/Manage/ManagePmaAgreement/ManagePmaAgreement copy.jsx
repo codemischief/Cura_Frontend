@@ -34,7 +34,8 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
-import ActiveFilter from "../../../assets/active_filter.png"
+import ActiveFilter from "../../../assets/active_filter.png";
+import AddButton from '../../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManagePmaArgreement = () => {
     const {state} = useLocation();
@@ -1204,12 +1205,13 @@ const ManagePmaArgreement = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New PMA Agreement
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New PMA Agreement" sx={{ width: "300px" }} onClick={handleOpen} />
                         </div>
 
                     </div>

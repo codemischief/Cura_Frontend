@@ -33,7 +33,8 @@ import FileSaver from 'file-saver';
 import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
 import Draggable from 'react-draggable';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
-import ActiveFilter from "../../../assets/active_filter.png"
+import ActiveFilter from "../../../assets/active_filter.png";
+import AddButton from '../../../Components/common/CustomButton';
 const ManageProjectInfo = () => {
     
     const dataRows = ["buildername", "builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"]
@@ -1009,12 +1010,13 @@ const ManageProjectInfo = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Project
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Project" onClick={handleOpen} />
                         </div>
                     </div>
 

@@ -33,7 +33,8 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import Draggable from 'react-draggable';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
-import ActiveFilter from "../../../assets/active_filter.png"
+import ActiveFilter from "../../../assets/active_filter.png";
+import AddButton from '../../../Components/common/CustomButton';
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
     const dataRows = [
@@ -1286,12 +1287,13 @@ const ManageClientInfo = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4 text-[14px]">
                                     Add New Client
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Client" onClick={handleOpen} />
                         </div>
 
                     </div>

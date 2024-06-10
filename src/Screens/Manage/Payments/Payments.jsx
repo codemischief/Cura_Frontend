@@ -1105,7 +1105,7 @@ const Payments = () => {
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={pageLoading}
-        onClick={() => {}}
+        onClick={() => { }}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -1208,7 +1208,7 @@ const Payments = () => {
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
                             </button> */}
-              <AddButton onClick={handleOpen} sx={{ width: "320px" }} title="Add new contractual" />
+              <AddButton onClick={handleOpen} sx={{ width: "320px" }} title="Add new contractual Payment" />
             </div>
           </div>
         </div>

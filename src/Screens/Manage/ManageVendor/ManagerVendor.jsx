@@ -33,6 +33,7 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
 import EditVendor from './EditVendor';
 import Draggable from 'react-draggable';
+import AddButton from '../../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
 const ManageVendor = () => {
@@ -942,12 +943,13 @@ const ManageVendor = () => {
                         </div>
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-9 w-72 rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-9 w-72 rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Vendor
                                     <img className='h-4 w-4' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Vendor" sx={{ width: "290px" }} onClick={handleOpen} />
                         </div>
                     </div>
                 </div>

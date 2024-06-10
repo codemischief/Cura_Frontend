@@ -34,7 +34,8 @@ import EditOrderModal from './EditOrderModal';
 import Draggable from 'react-draggable';
 import { formatDate } from '../../../utils/formatDate';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
-import ActiveFilter from "../../../assets/active_filter.png"
+import ActiveFilter from "../../../assets/active_filter.png";
+import AddButton from '../../../Components/common/CustomButton';
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
@@ -1198,12 +1199,13 @@ const ManageOrder = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Order
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Order" onClick={handleOpen} />
                         </div>
 
                     </div>

@@ -37,6 +37,7 @@ import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import { formatDate } from '../../../utils/formatDate';
+import AddButton from '../../../Components/common/CustomButton';
 const ManageVendorInvoice = () => {
     const dataRows = [
         "vendorname",
@@ -1024,12 +1025,13 @@ const ManageVendorInvoice = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Vendor Invoice
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Vendor Invoice" sx={{ width: "300px" }} onClick={handleOpen} />
                         </div>
 
                     </div>

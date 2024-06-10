@@ -35,6 +35,7 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import { formatDate } from "../../../utils/formatDate";
 import { useNavigate, useLocation } from "react-router-dom";
+import AddButton from "../../../Components/common/CustomButton";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageVendorPayment = () => {
 
@@ -1160,12 +1161,13 @@ const ManageVendorPayment = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Vendor Payment
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Vendor Payment" sx={{ width: "300px" }} onClick={handleOpen} />
                         </div>
 
                     </div>

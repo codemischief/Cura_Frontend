@@ -28,7 +28,8 @@ import SaveConfirmationBuilder from "./SaveConfirmationBuilder";
 import CancelModel from './../../../Components/modals/CancelModel';
 import { ScreenSearchDesktopTwoTone } from "@mui/icons-material";
 import Draggable from "react-draggable";
-import ActiveFilter from "../../../assets/active_filter.png"
+import ActiveFilter from "../../../assets/active_filter.png";
+import AddButton from "../../../Components/common/CustomButton";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageBuilder = () => {
     // we have the module here
@@ -783,12 +784,13 @@ const ManageBuilder = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Builder
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Builder" onClick={handleOpen} />
                         </div>
 
                     </div>

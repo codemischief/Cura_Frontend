@@ -33,7 +33,8 @@ import Select from "react-select"
 import DeleteClientProperty from './DeleteClientProperty';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import Draggable from 'react-draggable';
-import ActiveFilter from "../../../assets/active_filter.png"
+import ActiveFilter from "../../../assets/active_filter.png";
+import AddButton from '../../../Components/common/CustomButton';
 const ManageClientProperty = () => {
     const menuRef = useRef();
     const { state } = useLocation()
@@ -1539,12 +1540,13 @@ const ManageClientProperty = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[290px] rounded-lg" onClick={handleOpen}>
+                            {/* <button className="bg-[#004DD7] text-white h-[36px] w-[290px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-2">
                                     <p className=''>Add New Client Property</p>
                                     <img className='h-[15px] w-[15px]' src={Add} alt="add" />
                                 </div>
-                            </button>
+                            </button> */}
+                            <AddButton title="Add New Client Property" sx={{ width: "290px" }} onClick={handleOpen} />
                         </div>
 
                     </div>
