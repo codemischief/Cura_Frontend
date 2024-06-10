@@ -374,8 +374,8 @@ export const receiptToInvoice = (data) => {
 export const activeLLAgreement = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    start_date: formatDate(ele.startdate),
-    actualenddate: formatDate(ele.actualenddate),
+    startdate: formatDate(ele.startdate)?formatDate(ele.startdate):"",
+    actualenddate: formatDate(ele.actualenddate)?formatDate(ele.actualenddate): "",
     rentamount: floorDecimal(ele.rentamount) ? floorDecimal(ele.rentamount) : "0.00",
     depositamount: floorDecimal(ele.depositamount) ? floorDecimal(ele.depositamount) : "0.00",
   }));
