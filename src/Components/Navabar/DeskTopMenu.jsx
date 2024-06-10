@@ -151,7 +151,7 @@ function MenuDesktopItem({
           width: "98%",
           position: "absolute",
           padding: title === "Research" ? "28px 10rem" : "28px",
-          top: 98,
+          top: 80,
           left: 18,
           maxHeight: "calc(100vh - 6.8rem)",
           borderRadius: "15px",
@@ -200,7 +200,7 @@ function MenuDesktopItem({
                           to={list.path ? list.path : "#"}
                           sx={{
                             fontFamily: "Open Sans",
-                            fontSize: "18px",
+                            fontSize: "16px",
                             fontStyle: "normal",
                             fontWeight: 600,
                             lineHeight: "135%",
@@ -239,7 +239,7 @@ function MenuDesktopItem({
                               marginTop: "0px",
                               paddingTop: "8px",
                               fontFamily: "Open Sans",
-                              fontSize: "0.6875rem",
+                              fontSize: "0.725rem",
                               fontStyle: "normal",
                               fontWeight: 400,
                               lineHeight: "150%",

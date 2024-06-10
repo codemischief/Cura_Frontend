@@ -126,7 +126,9 @@ const VendorStatementView = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
-
+  useEffect(()=> {
+    dispatch(setInitialState());
+  },[]);
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
       let obj = {
@@ -208,11 +210,11 @@ const VendorStatementView = () => {
       dispatch(setInitialState());
       setShowTable(true);
     } else {
-      setError((prev) => ({
-        ...prev,
-        year: selectedYear ? prev.year : "please select a year first",
-        month: selectedMonth ? prev.month : "please select a year first",
-      }));
+      // setError((prev) => ({
+      //   ...prev,
+      //   year: selectedYear ? prev.year : "please select a year first",
+      //   month: selectedMonth ? prev.month : "please select a year first",
+      // }));
     }
   };
 

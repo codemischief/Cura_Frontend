@@ -10,15 +10,6 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
-// import {
-//   downloadLobReceiptPaymentsDataXls,
-//   getLobReceiptPaymentsData,
-//   setCountPerPage,
-//   setInitialState,
-//   setPageNumber,
-//   setSorting,
-//   setStatus,
-// } from "../../../Redux/slice/reporting/LOBReceiptPaymentSlice";
 import {
   downloadPmaBillingTrendView,
   getPmaBillingTrendViewData,
@@ -26,7 +17,8 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus
+  setStatus,
+  resetData
 } from "../../../Redux/slice/reporting/pmaBillingTrendView"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -142,6 +134,10 @@ const PmaBillingTrendView = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
+  useEffect(() => {
+    dispatch(setInitialState());
+    dispatch(resetData());
+  }, []);
   useEffect(() => {
     if (startDate) {
       const startYear = startDate.getFullYear()
