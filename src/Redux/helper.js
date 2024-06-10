@@ -474,7 +474,7 @@ export const LLlistFormat = (data)=>{
     depositamount: billing.depositamount ? floorDecimal(billing.depositamount) : "0.00",
     rentamount: billing.rentamount ? floorDecimal(billing.rentamount) : "0.00",
     startdate:billing.startdate ? formatDate(billing.startdate) :"",
-    enddate:billing.enddate ? formatDate(billing.enddate) :"",
+    actualenddate:billing.actualenddate ? formatDate(billing.actualenddate) :"",
   }));
 
 } 

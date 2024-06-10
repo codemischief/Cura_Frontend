@@ -57,7 +57,7 @@ export const LLlist = createSlice({
       state.LLlist=[]
 
     },
-    settFilters: (state, { payload }) => {
+    setFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
