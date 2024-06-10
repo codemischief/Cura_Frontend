@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
 import {
-  env_URL_SERVER,orderAnalysisFromat
+  env_URL_SERVER,LLlistFormat
 } from "../../../helper";
 
 const initialState = {
@@ -27,7 +27,7 @@ export const LLlist = createSlice({
   reducers: {
     setLLlist: (state, { payload }) => {
       const { data } = payload;
-      state.LLlist = (data.data)
+      state.LLlist = LLlistFormat(data.data)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },

@@ -27,6 +27,7 @@ export const orderAnalysis = createSlice({
   reducers: {
     setOrderAnalysis: (state, { payload }) => {
       const { data } = payload;
+      console.log(data,"datadatadatadatadata");
       state.orderAnalysis = orderAnalysisFromat(data.data)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
@@ -56,7 +57,7 @@ export const orderAnalysis = createSlice({
       state.orderAnalysis=[]
 
     },
-    settFilters: (state, { payload }) => {
+    setFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
@@ -84,7 +85,7 @@ export const getorderAnalysis =
         payloadObj
       );
 
-      dispatch(orderAnalysis({ data: response.data}));
+      dispatch(setOrderAnalysis({ data: response.data}));
       dispatch(setStatus("success"));
     } catch (err) {
       dispatch(setStatus("error"));
@@ -126,7 +127,7 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "ReportActiveLLAgreement.xlsx");
+    FileSaver.saveAs(blob, "OrderAnalysis.xlsx");
   } catch (error) {
     console.log("error", error);
   }

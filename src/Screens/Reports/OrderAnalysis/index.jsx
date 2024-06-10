@@ -37,8 +37,6 @@ const OrderAnalysis = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.orderAnalysis);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [showTable, setShowTable] = useState(false);
   const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
@@ -56,14 +54,13 @@ const OrderAnalysis = () => {
     ],
   });
   const [query, setQuery] = useState("");
-
   const [intialValue, setIntialValue] = useState({
     lobname: "",
     status: "",
     service: "",
-    client:  {
-      label: "Select Client ID",
-      value: null,
+    client: {
+      value:"",
+      label:""
     },
   });
 
@@ -105,12 +102,12 @@ const OrderAnalysis = () => {
       search_key: e,
     };
     const response = await APIService.getClientAdminPaginated(data);
-    
+
     const res = await response.json();
 
     const results = res.data.map((e) => {
       return {
-        label: e[0],
+        label: e[1],
         value: e[1],
       };
     });
@@ -148,12 +145,23 @@ const OrderAnalysis = () => {
   }, []);
 
   const handleRefresh = () => {
-    if (startDate && endDate) {
+    if (intialValue.status && intialValue.client && intialValue.lobname && intialValue.service) {
       let obj = {
         user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [service],
+        rows: ["service",
+          "clientname",
+          "orderid",
+          "orderdescription",
+          "orderstatus",
+          "totalorderpayment",
+          "totalinvoiceamt",
+          "totalorderreceipt"],
+        lobName: !isNaN(+intialValue.lobname)
+          ? +intialValue.lobname
+          : intialValue.lobname,
+        statusName: intialValue.status,
+        serviceName: intialValue.service,
+        clientName: intialValue.client.value,
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
@@ -184,12 +192,16 @@ const OrderAnalysis = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
+
+
   useEffect(() => {
-    if (startDate && endDate) {
+    if (intialValue.status && intialValue.client && intialValue.lobname && intialValue.service) {
       let obj = {
         user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
+        lobName: intialValue.lobname,
+        statusName: intialValue.status,
+        serviceName: intialValue.service,
+        clientName: intialValue.client.value,
         rows: [
           "service",
           "clientname",
@@ -201,7 +213,6 @@ const OrderAnalysis = () => {
           "totalorderreceipt",
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
@@ -227,16 +238,15 @@ const OrderAnalysis = () => {
     dispatch(setSorting({ sort_by: accessor, sort_order: sortOrder }));
   };
 
-  const handleChange = (e)=>{
-   const {name,value} = e.target
-   setIntialValue({...intialValue,[name]:value})
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setIntialValue({ ...intialValue, [name]: value })
   }
 
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      startdate: startDate ?? "2021-01-01",
-      enddate: endDate ?? "2022-01-01",
+
       rows: [
         "service",
         "clientname",
@@ -247,17 +257,23 @@ const OrderAnalysis = () => {
         "totalinvoiceamt",
         "totalorderreceipt",
       ],
+      lobName: !isNaN(+intialValue.lobname)
+        ? +intialValue.lobname
+        : intialValue.lobname,
+      statusName: intialValue.status,
+      serviceName: intialValue.service,
+      clientName: intialValue.client?.value,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       colmap: {
-        service: "Type",
-        clientname: "ID",
-        orderid: "Received Date",
-        orderdescription: "Fiscal Month",
-        orderstatus: "Fiscal year",
-        totalorderpayment: "Amount",
-        totalinvoiceamt: "Entity",
-        totalorderreceipt: "Mode",
+        service: "Service",
+        clientname: "Client Name",
+        orderid: "Order ID",
+        orderdescription: "Order Description",
+        orderstatus: "Order Status",
+        totalorderpayment: "OP Amount",
+        totalinvoiceamt: "OI Amount",
+        totalorderreceipt: "OP Amount",
       },
       filters: formatedFilterData(filter),
       search_key: search,
@@ -265,56 +281,19 @@ const OrderAnalysis = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(dowmloadOrderAnalysis(obj)).then((response) => {
-      const tableData = response.data;
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "OrderPaymentList.xlsx");
-      dispatch(setStatus("success"));
-    });
+    dispatch(dowmloadOrderAnalysis(obj))
   };
 
   const handleShow = () => {
-    if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "id",
-          "type",
-          "recddate",
-          "fy",
-          "monthyear",
-          "amount",
-          "entityname",
-          "paymentmode",
-          "clientid",
-          "clientname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname",
-        ],
-        sort_by: ["id"],
-        order: "desc",
-        filters: [],
-        search_key: "",
-        pg_no: 1,
-        pg_size: 15,
-      };
-      dispatch(getorderAnalysis(obj));
-      setShowTable(true);
-    } else {
-      // setError((prev) => ({
-      //   ...prev,
-      //   year: selectedYear ? prev.year : "please select a year first",
-      //   month: selectedMonth ? prev.month : "please select a year first",
-      // }));
-    }
+   dispatch(setInitialState())
+   setShowTable(true)
   };
+  
+  const handleClient = (value)=>{
+    setIntialValue({...intialValue,client:value})
+  }
+  console.log(intialValue,"valuekjfn");
+
   return (
     <Container>
       <Stack gap="1rem">
@@ -372,7 +351,7 @@ const OrderAnalysis = () => {
                   <option value="all">all</option>
 
                   {data.Lob.map((opt) => (
-                    <option value={opt.id}>{opt.name}</option>
+                    <option value={opt.name}>{opt.name}</option>
                   ))}
                 </select>
               </div>
@@ -390,13 +369,13 @@ const OrderAnalysis = () => {
                   <option selected value={""} className="hidden">Select Status</option>
                   <option value="all">all</option>
                   {data.Status.map((opt) => (
-                    <option value={opt.id}>{opt.status}</option>
+                    <option value={opt.status}>{opt.status}</option>
                   ))}
                 </select>
               </div>
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                 Select Service
+                  Select Service
                 </label>
 
                 <select
@@ -408,56 +387,56 @@ const OrderAnalysis = () => {
                   <option selected value={""} className="hidden">Select Service</option>
                   <option value="all">all</option>
                   {data.Service.map((opt) => (
-                    <option value={opt[0]}>{opt[1]}</option>
+                    <option value={opt[1]}>{opt[1]}</option>
                   ))}
                 </select>
               </div>
               <div className="flex flex-col h-16 w-[200px]">
-              <div className="text-[13px]">Client Name </div>
-              <AsyncSelect
-                onChange={handleChange}
-                value={""}
-                name={"client"}
-                loadOptions={loadOptions}
-                cacheOptions
-                defaultOptions
-                onInputChange={(value) => setQuery(value)}
-                styles={{
-                  control: (provided, state) => ({
-                    ...provided,
-                    minHeight: 30,
-                    lineHeight: "0.8",
-                    height: 8,
-                    width: 180,
-                    fontSize: 10,
-                    // padding: '1px'
-                  }),
-                
-                  dropdownIndicator: (provided, state) => ({
-                    ...provided,
-                    padding: "1px", // adjust padding for the dropdown indicator
-                  }),
-                 
-                  option: (provided, state) => ({
-                    ...provided,
-                    padding: "2px 10px", // Adjust padding of individual options (top/bottom, left/right)
-                    margin: 0, // Ensure no extra margin
-                    fontSize: 10, // Adjust font size of individual options
-                  }),
-                  menu: (provided, state) => ({
-                    ...provided,
-                    width: 180, // Adjust the width of the dropdown menu
-                    zIndex: 9999, // Ensure the menu appears above other elements
-                  }),
-                  menuList: (provided, state) => ({
-                    ...provided,
-                    padding: 0, // Adjust padding of the menu list
-                    fontSize: 10,
-                    maxHeight: 150, // Adjust font size of the menu list
-                  }),
-                }}
-              />
-               </div>
+                <div className="text-[13px]">Client Name </div>
+                <AsyncSelect
+                  onChange={handleClient}
+                  value={intialValue.client}
+                  name={"client"}
+                  loadOptions={loadOptions}
+                  cacheOptions
+                  defaultOptions
+                  onInputChange={(value) => setQuery(value)}
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      minHeight: 30,
+                      lineHeight: "0.8",
+                      height: 8,
+                      width: 180,
+                      fontSize: 10,
+                      // padding: '1px'
+                    }),
+
+                    dropdownIndicator: (provided, state) => ({
+                      ...provided,
+                      padding: "1px", // adjust padding for the dropdown indicator
+                    }),
+
+                    option: (provided, state) => ({
+                      ...provided,
+                      padding: "2px 10px", // Adjust padding of individual options (top/bottom, left/right)
+                      margin: 0, // Ensure no extra margin
+                      fontSize: 10, // Adjust font size of individual options
+                    }),
+                    menu: (provided, state) => ({
+                      ...provided,
+                      width: 180, // Adjust the width of the dropdown menu
+                      zIndex: 9999, // Ensure the menu appears above other elements
+                    }),
+                    menuList: (provided, state) => ({
+                      ...provided,
+                      padding: 0, // Adjust padding of the menu list
+                      fontSize: 10,
+                      maxHeight: 150, // Adjust font size of the menu list
+                    }),
+                  }}
+                />
+              </div>
               <Button
                 variant="outlined"
                 //   onClick={handleShow}
@@ -479,7 +458,7 @@ const OrderAnalysis = () => {
                   },
                 }}
                 onClick={handleShow}
-                disabled={!(startDate && endDate)}
+                disabled={!(intialValue.status && intialValue.client && intialValue.lobname && intialValue.service)}
               >
                 Show
               </Button>

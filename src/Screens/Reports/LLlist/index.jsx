@@ -45,33 +45,31 @@ const LLlistReport = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [data, setData] = useState({
-    Lob: [],
-    Status: [],
-    Service: [],
-    Client: [
+    StatusData: [],
+    ClientData: [
       {
-        label: "Select Client ID",
-        value: null,
-      },
+        label: "Select Client", value: ""
+      }
     ],
+    ClientPropertyData: [],
+    TypeData: [],
   });
+
   const [query, setQuery] = useState("");
 
   const [intialValue, setIntialValue] = useState({
-    lobname: "",
     status: "",
-    service: "",
-    client: {
-      label: "Select Client ID",
-      value: null,
+    clientId: {
+      label: "select Client Name",
+      value: ""
     },
+    clientProperty: "",
+    type: "",
   });
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
-
-
 
   const handlePageChange = (value) => {
     dispatch(setPageNumber(value));
@@ -80,21 +78,6 @@ const LLlistReport = () => {
   const handlePageCountChange = (e) => {
     dispatch(setCountPerPage(e.target.value));
     dispatch(setPageNumber(1));
-  };
-
-  const lobDatafetch = async () => {
-    const data = {
-      user_id: 1234,
-      rows: ["id", "name"],
-      filters: [],
-      sort_by: [],
-      order: "asc",
-      pg_no: 0,
-      pg_size: 0,
-    };
-    const response = await APIService.getLob(data);
-    const result = await response.json();
-    setData((prev) => ({ ...prev, Lob: [...result.data] }));
   };
 
   const loadOptions = async (e) => {
@@ -106,15 +89,13 @@ const LLlistReport = () => {
       search_key: e,
     };
     const response = await APIService.getClientAdminPaginated(data);
-
     const res = await response.json();
-
     const results = res.data.map((e) => {
       return {
-        label: e[0],
-        value: e[1],
+        label: e[1],
+        value: e[0],
       };
-    });
+    })
 
     if (results === "No Result Found") {
       return [];
@@ -128,27 +109,27 @@ const LLlistReport = () => {
     };
     const response = await APIService.getPaymentStatusAdmin(data);
     const result = await response.json();
-    console.log(result.data, "Status");
-    setData((prev) => ({ ...prev, Status: [...result.data] }));
+    setData((prev) => ({ ...prev, StatusData: [...result.data] }));
   };
 
-  const serviceFetch = async () => {
+
+  const typeFetch = async () => {
     const data = { user_id: 1234 };
-    const response = await APIService.getServiceAdmin(data);
+    const response = await APIService.getClientTypeAdmin(data);
     const res = await response.json();
-    setData((prev) => ({ ...prev, Service: [...res.data] }));
-  };
+    setData((prev) => ({ ...prev, TypeData: [...res.data] }));
+  }
+
 
 
   useEffect(() => {
     statusFetch();
-    serviceFetch();
-    lobDatafetch();
+    typeFetch();
     dispatch(setInitialState())
   }, []);
 
   const handleRefresh = () => {
-    if (startDate && endDate) {
+    if (intialValue.clientId && intialValue.status && intialValue.type) {
       let obj = {
         user_id: 1234,
         startdate: startDate ?? "2021-01-01",
@@ -163,6 +144,10 @@ const LLlistReport = () => {
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
+        statusName: intialValue.status,
+        clientName: intialValue.clientId.label,
+        typeName: intialValue.type,
+        clientPropertyID: +intialValue.clientProperty,
       };
       dispatch(getLLlist(obj));
     }
@@ -190,11 +175,9 @@ const LLlistReport = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    if (startDate && endDate) {
+    if (intialValue.clientId && intialValue.status && intialValue.type) {
       let obj = {
         user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
         rows: [
           "clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
@@ -202,19 +185,11 @@ const LLlistReport = () => {
           "registrationtype", "noticeperiodindays", "type", "id"
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        lobName: !isNaN(+intialValue.lobname)
-          ? +intialValue.lobname
-          : intialValue.lobname,
         filters: formatedFilterData(filter),
-        statusName: !isNaN(+intialValue.status)
-          ? +intialValue.status
-          : intialValue.status,
-        serviceName: !isNaN(+intialValue.service)
-          ? +intialValue.service
-          : intialValue.service,
-        clientName: !isNaN(+intialValue.Client.value)
-          ? +intialValue.Client.value
-          : intialValue.Client.value,
+        statusName: intialValue.status,
+        clientName: intialValue.clientId.label,
+        typeName: intialValue.type,
+        clientPropertyID: +intialValue.clientProperty,
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
@@ -244,73 +219,67 @@ const LLlistReport = () => {
     setIntialValue({ ...intialValue, [name]: value })
   }
 
+  const handleClient = async (value) => {
+    const data = { user_id: 1234, "client_id": value.value, };
+    const response = await APIService.getClientPropertyByClientId(data);
+    const res = await response.json();
+    console.log(res, "resresresresres");
+    setData((prev) => ({ ...prev, ClientPropertyData: [...res.data] }));
+    setIntialValue({ ...intialValue, clientId: value })
+
+
+  }
+
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [
-        ["clienttypename", "startdate", "actualenddate", "startdatemonthyear",
+        "clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
-          "registrationtype", "noticeperiodindays", "type", "id"]
+          "registrationtype", "noticeperiodindays", "type", "id"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       colmap: {
-        service: "Type",
-        clientname: "ID",
-        orderid: "Received Date",
-        orderdescription: "Fiscal Month",
-        orderstatus: "Fiscal year",
-        totalorderpayment: "Amount",
-        totalinvoiceamt: "Entity",
-        totalorderreceipt: "Mode",
+        type: "Type",
+        id: "ID",
+        startdate:'Start Date',
+        actualenddate:"End Date",
+        startdatemonthyear:"StartDate Fiscal Month",
+        enddatemonthyear:'EndDate Fiscal Month',
+        rentamount:"Rent",
+        depositamount:"Deposit",
+        entityname:"Entity",
+        clientid:"Client ID",
+        clienttypename:"Client Name",
+        propertydescription:"Property Description",
+        property_status:"Property Status",
+        status:"Status",
+        registrationtype:"Registration Type",
+        paymentcycle:"Payment Cycle",
+        noticeperiodindays:"Notice Period In Days"
+
       },
+      statusName: intialValue.status,
+      clientName: intialValue.clientId.label,
+      typeName: intialValue.type,
+      clientPropertyID: +intialValue.clientProperty,
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadLLlist(obj)).then((response) => {
-      const tableData = response.data;
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "OrderPaymentList.xlsx");
-      dispatch(setStatus("success"));
-    });
+    dispatch(downloadLLlist(obj))
   };
 
+
   const handleShow = () => {
-    if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          ["clienttypename", "startdate", "actualenddate", "startdatemonthyear",
-            "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
-            "clientid", "propertydescription", "property_status", "status",
-            "registrationtype", "noticeperiodindays", "type", "id"]
-        ],
-        sort_by: ["id"],
-        order: "desc",
-        filters: [],
-        search_key: "",
-        pg_no: 1,
-        pg_size: 15,
-      };
-      dispatch(getLLlist(obj));
-      setShowTable(true);
-    } else {
-      // setError((prev) => ({
-      //   ...prev,
-      //   year: selectedYear ? prev.year : "please select a year first",
-      //   month: selectedMonth ? prev.month : "please select a year first",
-      // }));
-    }
+    dispatch(setInitialState())
+    setShowTable(true)
   };
   return (
     <Container>
@@ -352,27 +321,7 @@ const LLlistReport = () => {
               alignItems={"center"}
               gap={"24px"}
             >
-              <div className="flex flex-col h-16 w-[200px]">
-                <label className="font-sans text-sm font-normal leading-5">
-                  LOB Name
-                </label>
 
-                <select
-                  className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                  name="lobname"
-                  value={intialValue.lobname}
-                  onChange={handleChange}
-                >
-                  <option selected value={""} className="hidden">
-                    Select LOB
-                  </option>
-                  <option value="all">all</option>
-
-                  {data.Lob.map((opt) => (
-                    <option value={opt.id}>{opt.name}</option>
-                  ))}
-                </select>
-              </div>
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
                   Select status
@@ -386,34 +335,17 @@ const LLlistReport = () => {
                 >
                   <option selected value={""} className="hidden">Select Status</option>
                   <option value="all">all</option>
-                  {data.Status.map((opt) => (
-                    <option value={opt.id}>{opt.status}</option>
+                  {data.StatusData.map((opt) => (
+                    <option value={opt.status}>{opt.status}</option>
                   ))}
                 </select>
               </div>
-              <div className="flex flex-col h-16 w-[200px]">
-                <label className="font-sans text-sm font-normal leading-5">
-                  Select Service
-                </label>
 
-                <select
-                  className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                  name="service"
-                  value={intialValue.service}
-                  onChange={handleChange}
-                >
-                  <option selected value={""} className="hidden">Select Service</option>
-                  <option value="all">all</option>
-                  {data.Service.map((opt) => (
-                    <option value={opt[0]}>{opt[1]}</option>
-                  ))}
-                </select>
-              </div>
               <div className="flex flex-col h-16 w-[200px]">
                 <div className="text-[13px]">Client Name </div>
                 <AsyncSelect
-                  onChange={handleChange}
-                  value={""}
+                  onChange={handleClient}
+                  value={intialValue.clientId}
                   name={"client"}
                   loadOptions={loadOptions}
                   cacheOptions
@@ -455,6 +387,42 @@ const LLlistReport = () => {
                   }}
                 />
               </div>
+              <div className="flex flex-col h-16 w-[200px]">
+                <label className="font-sans text-sm font-normal leading-5">
+                  Client Property
+                </label>
+
+                <select
+                  className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
+                  name="clientProperty"
+                  value={intialValue.clientProperty}
+                  onChange={handleChange}
+                >
+                  <option selected value={""} className="hidden">Select Client Property</option>
+                  {data.ClientPropertyData.map((opt) => (
+                    <option value={opt.id}>{opt.propertyname}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col h-16 w-[200px]">
+                <label className="font-sans text-sm font-normal leading-5">
+                  Type
+                </label>
+
+                <select
+                  className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
+                  name="type"
+                  value={intialValue.type}
+                  onChange={handleChange}
+                >
+                  <option selected value={""} className="hidden">Select Client Property</option>
+                  <option selected value={"all"} >all</option>
+
+                  {data.TypeData.map((opt) => (
+                    <option value={opt.name}>{opt.name}</option>
+                  ))}
+                </select>
+              </div>
               <Button
                 variant="outlined"
                 //   onClick={handleShow}
@@ -476,7 +444,7 @@ const LLlistReport = () => {
                   },
                 }}
                 onClick={handleShow}
-                disabled={!(startDate && endDate)}
+                disabled={!(intialValue.type && intialValue.clientId && intialValue.status)}
               >
                 Show
               </Button>
