@@ -53,7 +53,7 @@ export default function connectionDataColumn() {
       title: "End Date",
       field: "actualenddate",
       sorting: true,
-      filterComponent: TextFilterField,
+      filterComponent: DateFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth: "9rem" },
     },
     {
