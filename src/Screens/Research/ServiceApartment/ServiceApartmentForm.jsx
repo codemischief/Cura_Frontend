@@ -8,11 +8,11 @@ import { CircularProgress, Modal, Typography } from "@mui/material";
 
 import { APIService } from "../../../services/API";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
-
+import {MenuItem} from "@mui/material";
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 import { addServiceApartment, editServiceApartments } from "../../../Redux/slice/Research/ServiceApartmentSlice";
-
+import CustomSelectNative from "../../../Components/common/select/CustomSelectNative";
 const validationSchema = Yup.object().shape({
   name : Yup.string().required('Enter Name '),
   countryId: Yup.string().required("Select Country"),
@@ -459,8 +459,45 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            
                             <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
+                              name="state"
+                              value={formik.values.state}
+                              defaultValue="Select State"
+                              onChange={handleState}
+                              onBlur={handleBlur}
+                            >
+                              <option value="" className="inputValidationError" hidden>
+                                Select State
+                              </option>
+                              {stateData.length > 0 &&
+                                stateData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData[0]}
+                                      key={editData[0]}
+                                    >
+                                      {editData[0]}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            {/* <CustomSelectNative
+                              name="state"
+                              data={stateData}
+                              value={formik.values.state}
+                              placeholder={'Select State'}
+                              renderData={(item) => {
+                                return (
+                                  <MenuItem value={item[0]} key={item[0]}>
+                                    {item[0]}
+                                  </MenuItem>
+                                );
+                              }}
+                              onChange={handleState}
+                            /> */}
+                            {/* <select
                               // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="selectBoxField inputFieldValue"
                               name="state"
@@ -482,7 +519,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
                                     </option>
                                   );
                                 })}
-                            </select>
+                            </select> */}
                             <div className="inputValidationError">
                               {/* {formErrors.state} */}
                               {errors.state && <div>{errors.state}</div>}

@@ -151,16 +151,25 @@ const ResearchProfessionals = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "id",
         "name",
         "type",
         "city",
         "suburb",
         "emailid",
-        "phonenumber",
         "professionalid",  
+        "phonenumber",
+        "id",
       ],
-      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
+      colmap : {
+        "name" : "Name",
+        "type" : "Type",
+        "city" : "City",
+        "suburb" : "Locality",
+        "emailid" : "Email ID",
+        "professionalid" : "Profession ID",  
+        "phonenumber" : "Phone Number",
+        "id" : "ID",
+      },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
@@ -205,7 +214,7 @@ const ResearchProfessionals = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "Changes Updated Successfully"
+      ? "Changes Saved Successfully"
       : "New Professional Created Successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
@@ -292,6 +301,7 @@ const ResearchProfessionals = () => {
           setOpenDialog={setIsDeleteDialogue}
           handleDelete={deleteProfessionalsFnc}
           deleteError={deleteError}
+          text={'Professional'}
         />
       )}
     </div>

@@ -301,6 +301,7 @@ const ResearchFriends = () => {
           setOpenDialog={setIsDeleteDialogue}
           handleDelete={deleteFriends}
           deleteError={deleteError}
+          text={'Friends'}
         />
       )}
     </div>
