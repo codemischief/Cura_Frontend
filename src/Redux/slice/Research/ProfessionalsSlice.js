@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { env_URL_SERVER, updatedFriendsData } from "../../helper";
+import { env_URL_SERVER, updatedProfessionalsData } from "../../helper";
 import FileSaver from "file-saver";
 const initialState = {
-  FriendsData: [],
+  ProfessionalsData: [],
   formSubmissionStatus: "",
   status: "",
   filter: {},
@@ -18,13 +18,13 @@ const initialState = {
   },
 };
 
-export const friends = createSlice({
-  name: "friends",
+export const professionals = createSlice({
+  name: "professionals",
   initialState,
   reducers: {
-    setFriendsData: (state, { payload }) => {
+    setProfessionalsData: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.FriendsData = updatedFriendsData(data.data, year, month);
+      state.ProfessionalsData = updatedProfessionalsData(data.data, year, month);
       state.totalCount = payload.data.total_count;
     },
     setStatus: (state, { payload }) => {
@@ -65,7 +65,7 @@ export const friends = createSlice({
 // reducer
 // Action creators are generated for each case reducer function
 export const {
-  setFriendsData,
+  setProfessionalsData,
   setStatus,
   setPageNumber,
   setCountPerPage,
@@ -73,28 +73,28 @@ export const {
   setInitialState,
   setSorting,
   setFormSubmissionStatus,
-} = friends.actions;
+} = professionals.actions;
 
-export const getFriendsData = (payloadObj, year, month) => async (dispatch) => {
+export const getProfessionalsData = (payloadObj, year, month) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}getResearchFriends`,
+      `${env_URL_SERVER}getResearchProfessional`,
       payloadObj
     );
 
-    dispatch(setFriendsData({ data: response.data, year, month }));
+    dispatch(setProfessionalsData({ data: response.data, year, month }));
     dispatch(setStatus("success"));
   } catch (err) {
     dispatch(setStatus("error"));
   }
 };
 
-export const addFriends = (payload) => async (dispatch) => {
+export const addProfessionals = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}addResearchFriends`,
+      `${env_URL_SERVER}addResearchProfessional`,
       payload
     );
     dispatch(setFormSubmissionStatus("success"));
@@ -106,11 +106,11 @@ export const addFriends = (payload) => async (dispatch) => {
   }
 };
 
-export const editFriends = (payload) => async (dispatch) => {
+export const editProfessionals = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}editResearchFriends`,
+      `${env_URL_SERVER}editResearchProfessional`,
       payload
     );
     dispatch(setFormSubmissionStatus("success"));
@@ -120,11 +120,23 @@ export const editFriends = (payload) => async (dispatch) => {
     // throw error;
   }
 };
-export const downloadFriendsDataXls = (payloadObj) => async (dispatch) => {
+
+export const deleteProfessionals = (payload) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      `${env_URL_SERVER}deleteResearchProfessional`,
+      payload
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const downloadProfessionalsData = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}getResearchFriends`,
+      `${env_URL_SERVER}getResearchProfessional`,
       payloadObj
     );
     if ((response.data.filename, payloadObj.user_id)) {
@@ -133,7 +145,9 @@ export const downloadFriendsDataXls = (payloadObj) => async (dispatch) => {
       );
     }
     dispatch(setStatus("success"));
-
+    // return response.data;
+    // dispatch(setOrderPaymentData({ data: response.data, year, month }));
+    // dispatch(setStatus("success"));
   } catch (err) {
     dispatch(setStatus("error"));
   }
@@ -153,24 +167,10 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "FriendsData.xlsx");
+    FileSaver.saveAs(blob, "ProfessionalsData.xlsx");
   } catch (error) {
     console.log("error", error);
   }
 };
-
-
-export const deleteFriends = (payload) => async (dispatch) => {
-  try {
-    const response = await axios.post(
-      `${env_URL_SERVER}deleteResearchFriends`,
-      payload
-    );
-    return response;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const handleRefresh = (payload) => async (dispatch) => {};
-export default friends.reducer;
+export default professionals.reducer;

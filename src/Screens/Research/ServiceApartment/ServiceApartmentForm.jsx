@@ -135,7 +135,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
       contactname1 : editData?.contactname1 ? editData?.contactname1 : null,
       contactperson1 : editData?.contactperson1 ? editData?.contactperson1 : null,
       contactemail1 : editData?.email1 ? editData?.email1 : null,
-      countryId: editData?.countryid ? editData.countryid : 5,
+      countryId: editData?.country ? editData.country : 5,
       state: editData?.state ? editData.state : "Maharashtra",
       city: editData?.city ? editData.city : 847,
       locality : editData?.suburb ? editData.suburb : null,
@@ -175,22 +175,6 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
           state : values.state,
           country : values.countryId,
           apartments_guesthouse : values.apartmentorguesthouse
-           // user_id:1234,
-          // "name": "Example Apartments",
-          // "emailid": "example@example.com",
-          // "phoneno": "123-456-7890",
-          // "website": "www.exampleapartments.com",
-          // "contactperson1": "John Doe",
-          // "contactperson2": "Jane Doe",
-          // "email1": "john@example.com",
-          // "email2": "jane@example.com",
-          // "contactname1": "John",
-          // "contactname2": "Jane",
-          // "suburb": "Suburbia",
-          // "city": 847,
-          // "state": "Example State",
-          // "country": 5,
-          // "apartments_guesthouse": "Example Guesthouse"
       };
 
       if (editData?.id) {
@@ -241,8 +225,8 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
-    setFieldValue("state", null);
     setFieldValue("city", null);
+    setFieldValue("state", null);
     setCityData([])
     fetchStateData(country?.id);
   };
@@ -270,7 +254,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
 
                     <ModalHeader
                       onClose={handleClose}
-                      title={editData.id ? "Edit Owner" : "New Owner"}
+                      title={editData.id ? "Edit Service Apartment" : "New Service Apartment"}
                     />
                     </div>
                     <div className="h-auto w-full mt-[5px] ">
@@ -683,7 +667,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title={`${editData?.id ? 'Save Owner' : 'Add Owner'}`}
+          title={`${editData?.id ? 'Save Service Aprtment' : 'Add Service Apartment'}`}
           description={
             <div className="flex flex-col items-center">
               <p className="">Owner: {values.name}</p>
@@ -697,7 +681,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
                   color: "#282828",
                 }}
               >
-                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Owner?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Service Apartment?
               </Typography>
             </div>
           }
