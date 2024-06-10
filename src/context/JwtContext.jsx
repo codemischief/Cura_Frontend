@@ -68,7 +68,11 @@ function AuthProvider({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [countdown, setCountdown] = useState(10);
   const countdownRef = useRef(null);
-  const [idleTimeout, setIdleTimeout] = useState(10 * 60 * 1000);
+  const [idleTimeout, setIdleTimeout] = useState(() =>
+    sessionStorage.getItem("idleTimeOut")
+      ? sessionStorage.getItem("idleTimeOut")
+      : 10 * 60 * 1000
+  );
   // const [idleTimer, setIdleTimer] = useState(1);
   const navigate = useNavigate();
 
@@ -194,8 +198,7 @@ function AuthProvider({ children }) {
 
   // Use react-idle-timer hook
   const { reset: resetIdleTimer, getRemainingTime } = useIdleTimer({
-    timeout:
-    idleTimeout, // 5 minutes
+    timeout: idleTimeout, // 5 minutes
     onIdle: handleOnIdle,
     debounce: 500,
     events: ["mousemove", "keydown", "mousedown", "touchstart"], // User activity events
