@@ -76,6 +76,7 @@ import VendorSummary from "./slice/reporting/Group9/VendorSummary";
 
 import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportSlice";
 import professionals  from "./slice/Research/ProfessionalsSlice";
+import mandals  from "./slice/Research/MandalSlice";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -149,7 +150,8 @@ export const store = configureStore({
     ownerWithNoProperty:OwnerWithNoPropertyReducer,
     propertyWithNoProject:PropertyWithNoProjectReducer,
     serviceTaxReport: ServiceTaxReportReducer,
-    vendorSummary:VendorSummary
+    vendorSummary:VendorSummary,
+    mandals : mandals
   },
   // Add the RTK Query API middleware
 });

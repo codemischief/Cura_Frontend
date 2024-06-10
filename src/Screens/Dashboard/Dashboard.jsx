@@ -3,21 +3,15 @@ import searchIcon from "../../assets/searchIcon.png";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navabar/Navbar";
+import useAuth from "../../context/JwtContext";
+import { userId } from "../../utils/axios";
+import useAuth from "../../../context/JwtContext";
 const Dashboard = () => {
+  const { user } = useAuth();
+  console.log(user)
   const [myOrder, setmyorder] = useState([]);
   const [cashBalance, setcashbalance] = useState([]);
-  useEffect(() => {
-    fetch("/myOrder")
-      .then((res) => res.json())
-      .then((data) => {
-        setmyorder(data);
-      });
-    fetch("/myCashBalance")
-      .then((res) => res.json())
-      .then((data) => {
-        setcashbalance(data);
-      });
-  }, []);
+  
 
   //************ mock post request ************** */
   //   const [content, setContent] = useState('')
