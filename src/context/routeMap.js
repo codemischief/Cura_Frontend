@@ -61,3 +61,9 @@ export const replaceKeys = (access_rights) => {
     return acc;
   }, {});
 };
+
+// 173 | deletebyid
+//  172 | deletebyid
+//  171 | getLobEntityPayments
+//  170 | LOBReceiptPayments
+//  168 | EntityReceiptPayments

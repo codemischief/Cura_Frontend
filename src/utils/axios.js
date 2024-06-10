@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
-export const accessToken = localStorage.getItem("accessToken");
-export const userId = JSON.parse(localStorage.getItem("user"))?.id;
+export const accessToken = sessionStorage.getItem("accessToken");
+export const userId = JSON.parse(sessionStorage.getItem("user"))?.id;
 // customHeaderMethods
 export const moduleMethods = Object.freeze({
   get: "get",
@@ -63,7 +63,6 @@ axiosInstance.interceptors.request.use(
       ...config.data,
       user_id: logPayload.user_id,
     };
-
 
     return config;
   },

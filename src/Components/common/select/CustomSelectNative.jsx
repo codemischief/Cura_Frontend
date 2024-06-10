@@ -20,6 +20,12 @@ const CustomSelectNative = ({
         onChange={onChange}
         displayEmpty
         inputProps={{ "aria-label": "Without label" }}
+        renderValue={(selected) => {
+          if (!selected) {
+            return <span className="text-[#C6C6C6]">{placeholder}</span>;
+          }
+          return selected;
+        }}
         MenuProps={{
           slotProps: {
             paper: {
@@ -28,7 +34,7 @@ const CustomSelectNative = ({
                 borderRadius: "0.9375rem",
                 color: "#505050",
                 // paddingTop: "1rem",
-                marginTop:"0.2rem"
+                marginTop: "0.2rem",
               },
             },
           },
