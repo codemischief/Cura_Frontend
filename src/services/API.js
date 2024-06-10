@@ -1033,6 +1033,14 @@ const getProfessionalTypesAdmin = async (data) => {
 
   return response;
 }
+const dashboardData = async (data) => {
+  const response = await fetch(
+    `${env_URL_SERVER}dashboardData`,
+    METHOD_POST(data)
+  );
+
+  return response;
+}
 export const APIService = {
   getCountries,
   getNewBuilderInfo,
@@ -1176,5 +1184,6 @@ export const APIService = {
   resetPassword,
   changePassword,
   getPaymentStatusAdmin,
-  getProfessionalTypesAdmin
+  getProfessionalTypesAdmin,
+  dashboardData
 };

@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navabar/Navbar";
 import useAuth from "../../context/JwtContext";
 import { userId } from "../../utils/axios";
-import useAuth from "../../../context/JwtContext";
+import { APIService } from "../../services/API";
+// import useAuth from "../../../context/JwtContext";
 const Dashboard = () => {
   const { user } = useAuth();
   console.log(user)
@@ -26,7 +27,17 @@ const Dashboard = () => {
   //         body: JSON.stringify({content})
   //     });
   //   }
-
+  const fetchDashboardData = async (id) => {
+    const data = {"user_id" : id}
+    const response = await APIService.dashboardData(data)
+    const res = await response.json()
+    console.log(res)
+    setmyorder(res.data)
+  }
+  useEffect(() => {
+     console.log(user)
+     fetchDashboardData(user.id)
+  },[])
   return (
     <div className="w-full flex flex-col h-[calc(100vh-6.2rem)] overflow-x-hidden bg-[#F5F5F5]">
       <div className="flex flex-col gap-2 h-full w-full px-[2.25rem] py-[2.5rem]">
@@ -71,18 +82,18 @@ const Dashboard = () => {
 
               {/* map the items here */}
               <div className="h-44 overflow-auto">
-                {myOrder.map((item) => {
+                {myOrder.map((item,index) => {
                   return (
                     <div className=" w-full h-[35px] flex border-gray-400 border-b-[1px] text-[14px]">
                       {/* this will have the index */}
                       <div className="w-[30.4%] h-full  px-3 py-2">
-                        <h1>{item.sl}</h1>
+                        <h1>{index + 1}</h1>
                       </div>
                       <div className="w-[50.7%] h-full  px-3 py-2">
                         <h1>{item.order_status}</h1>
                       </div>
                       <div className="w-[15%] h-full  px-3 py-2">
-                        <h1>{item.count} </h1>
+                        <h1>{item.count_orders} </h1>
                       </div>
                     </div>
                   );

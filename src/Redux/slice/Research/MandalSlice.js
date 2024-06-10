@@ -24,7 +24,7 @@ export const mandals = createSlice({
   reducers: {
     setMandalsData: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.ProfessionalsData = updatedMandalsData(data.data, year, month);
+      state.MandalsData = updatedMandalsData(data.data, year, month);
       state.totalCount = payload.data.total_count;
     },
     setStatus: (state, { payload }) => {
@@ -75,7 +75,7 @@ export const {
   setFormSubmissionStatus,
 } = mandals.actions;
 
-export const getProfessionalsData = (payloadObj, year, month) => async (dispatch) => {
+export const getMandals = (payloadObj, year, month) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
