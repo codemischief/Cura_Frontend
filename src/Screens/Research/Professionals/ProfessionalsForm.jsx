@@ -10,46 +10,16 @@ import { APIService } from "../../../services/API";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 
 import {
-  addFriends,
-  editFriends
-} from "../../../Redux/slice/Research/FriendsSlice"
+  addProfessionals,
+  editProfessionals
+} from "../../../Redux/slice/Research/ProfessionalsSlice"
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
 const validationSchema = Yup.object().shape({
-  name : Yup.string().required('Enter Name'),
-  countryId: Yup.string().required("Select Country"),
-  state: Yup.string().required("Select State"),
-  city: Yup.string().required("Select City"),
+
 });
-// {
-//   "user_id": 1234,
-//   "country": 5,
-//   "onsiteopportunity": true,
-//   "city": "Pune",
-//   "state": "Maharashtra",
-//   "admincontactmail": "admin@example.com",
-//   "zip": "10001",
-//   "hc": "Healthcare",
-//   "website": "www.example.com",
-//   "admincontactphone": "1234567890",
-//   "contactname1": "Jane Smith",
-//   "contactmail1": "jane@example.com",
-//   "contactphone1": "2345678901",
-//   "contactname2": "Michael Johnson",
-//   "contactmail2": "michael@example.com",
-//   "contactphone2": "3456789012",
-//   "hrcontactname": "Emily Brown",
-//   "hrcontactmail": "hr@example.com",
-//   "hrcontactphone": "4567890123",
-//   "admincontactname": "Admin Name",
-//   "employername": "Example Corp",
-//   "industry": "Technology",
-//   "addressline1": "123 Main St",
-//   "addressline2": "Suite 101",
-//   "suburb": "Downtown"
-// }
-const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
+const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   const [countryData, setCountryData] = useState({
     arr: [],
@@ -93,15 +63,8 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   useEffect(() => {
     fetchCountryData();
-    if(editData?.id) {
-      // then its update wala case
-      fetchStateData(editData?.countryid)
-      fetchCityData(editData?.state)
-    }else {
-      // then its add wala case
-      fetchStateData(5);
-      fetchCityData("Maharashtra");
-    }
+    fetchStateData(5);
+    fetchCityData("Maharashtra");
   }, []);
 
   const fetchStateData = async (id) => {
@@ -120,36 +83,19 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   const formik = useFormik({
     initialValues: {
+      type : editData?.type ? editData.type : null,
       name : editData?.name ? editData.name : null,
-      friendof : editData.friendof ? editData.friendof : null,
-      emailid : editData.emailid ? editData.emailid : null,
-      phonenumber : editData?.phoneno ? editData.phoneno : null,
-      employer : editData?.employer ? editData.employer : null,
-      notes : editData?.notes ? editData.notes : null,
-      countryId: editData?.countryid ? editData.countryid : 5,
-      state: editData?.state ? editData.state : "Maharashtra",
-      city: editData?.cityid ? editData.cityid : 847,
+      emailid : editData?.emailid ? editData.emailid : null,
+      phonenumber : editData?.phonenumber ? editData.phonenumber : null,
+      website : editData?.website ? editData.website : null,
+      professionid : editData?.professionalid ? editData.professionalid : null,
+      countryId : editData?.country ? editData.country : 5,
+      state : editData?.state ? editData.state : "Maharashtra",
+      city : editData?.city ? editData.city : 847,
       locality : editData?.suburb ? editData.suburb : null,
-      societyname : editData?.societyname ? editData.societyname : null,
       excludefrommailinglist : editData?.excludefrommailinglist ? editData.excludefrommailinglist : null,
-      // employername : editData?.employername ? editData.employername : "",
-      // adressline1 : editData?.addressline1 ? editData.addressline1 : "",
-      // adressline2 : editData?.addressline2 ? editData.addressline2 : "",
-      // zip : editData?.zip ? editData.zip : "",
-      // industry : editData?.industry ? editData.industry : "",
-      // hrcontactname : editData?.hrcontactname ? editData.hrcontactname : "",
-      // hrcontactphone : editData?.hrcontactphone ? editData.hrcontactphone : "",
-      // hrcontactmail : editData?.hrcontactmail ? editData.hrcontactmail : "",
-      // admincontactname : editData?.admincontactname ? editData.admincontactname : "",
-      // admincontactmail : editData?.admincontactmail ? editData.admincontactmail : "",
-      // hc : editData?.hc ? emailData.hc : "",
-      // website : editData?.website ? emailData.website : "",
-      // contactname1 : editData?.contactname1 ? emailData.contactname1 : "",
-      // contactphone1 : editData?.contactphone1 ? emailData.contactphone1 : "",
-      // contactmail1 : editData?.contactmail1 ? emailData.contactmail1 : "",
-      // contactname2 : editData?.contactname2 ? emailData.contactname2 : "",
-      // contactphone2 : editData?.contactphone2 ? emailData.contactphone2 : "",
-      // contactmail2 : editData?.contactmail2 ? emailData.contactmail2 : ""
+
+     
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -161,30 +107,26 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const handleConfirm = async () => {
     try {
       const data = {
-      
-          user_id: 1234,
-          name: values.name,
-          emailid: values.emailid,
-          phoneno: values.phonenumber,
-          contactname: values.friendof,
-          societyname: values.societyname,
-          employer: values.employer,
-          suburb: values.locality,
-          city: values.city,
-          state: values.state,
-          country: values.countryId,
-          notes: values.notes,
-          excludefrommailinglist : values.excludefrommailinglist
+        user_id: 1234,
+        name: values.name,
+        typeid: values.type,
+        emailid: values.emailid,
+        professionalid:values.professionid,
+        phonenumber: values.phonenumber,
+        suburb: values.locality,
+        city: values.city,
+        state: values.state,
+        country: values.countryId,
+        website: values.website,
+        excludefrommailinglist: values.excludefrommailinglist,
       };
 
       if (editData?.id) {
-
-        data.id = editData?.id 
-
-        await dispatch(editFriends(data));
+        data.id = editData.id
+        await dispatch(editProfessionals(data));
         openSucess();
       } else {
-        await dispatch(addFriends(data));
+        await dispatch(addProfessionals(data));
         openSucess();
       }
     } catch (error) {
@@ -227,9 +169,8 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
-    setFieldValue("city", null);
     setFieldValue("state", null);
-    setCityData([])
+    setFieldValue("city", null);
     fetchStateData(country?.id);
   };
 
@@ -256,7 +197,7 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
                     <ModalHeader
                       onClose={handleClose}
-                      title={editData.id ? "Edit Friends" : "New Friends"}
+                      title={editData.id ? "Edit Professional" : "New Professional"}
                     />
                     </div>
                     <div className="h-auto w-full mt-[5px] ">
@@ -265,35 +206,35 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Name
+                                Type
                               </label>
                               <span className="requiredError">*</span>
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="name"
-                              value={formik.values.name}
+                              name="type"
+                              value={formik.values.type}
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
-                            <div className="inputValidationError">
-                              {touched.name && errors.name && (
-                                <div>{errors.name}</div>
+                            {/* <div className="inputValidationError">
+                              {touched.employername && errors.employername && (
+                                <div>{errors.employername}</div>
                               )}
-                            </div>
+                            </div> */}
                           </div>
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Friend's Of
+                                Name
                               </label>
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="friendof"
-                              value={formik.values.friendof}
+                              name="name"
+                              value={formik.values.name}
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
@@ -311,7 +252,7 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
-                              type="email"
+                              type="text"
                               name="emailid"
                               value={formik.values.emailid}
                               onBlur={handleBlur}
@@ -323,6 +264,7 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               )}
                             </div> */}
                           </div>
+                         
                           
                           <div className="">
                             {/* <div className="text-[13px]">
@@ -341,20 +283,24 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            
+                            {/* <div className="inputValidationError">
+                              {touched.suburb && errors.suburb && (
+                                <div>{errors.suburb}</div>
+                              )}
+                            </div> */}
                           </div>
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Employer
+                                Website
                               </label>
                               
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="employer"
-                              value={formik.values.employer}
+                              name="website"
+                              value={formik.values.website}
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
@@ -364,32 +310,29 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               )}
                             </div> */}
                           </div>
-                          <div className="">
-                            <div className="flex">
-                              <label className="inputFieldLabel">
-                                Notes
-                              </label>
-                              
-                            </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="notes"
-                              value={formik.values.notes}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                            />
-                           
-                          </div>
+                          
                           
 
                           
                         </div>
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
-                        <div className="">
+                          <div className="">
+                            {/* <div className="text-[13px]">Email </div> */}
+                            <label className="inputFieldLabel">Profession ID</label>
+                            <input
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="professionid"
+                              value={formik.values.professionid}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                          <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Country 
+                                Country Name
                               </label>
                               <span className="requiredError">*</span>
                             </div>
@@ -409,9 +352,9 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                State 
+                                State Name
                               </label>
-                              <span className="requiredError">*</span>
+                              {/* <span className="requiredError">*</span> */}
                             </div>
                             <select
                               // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -421,8 +364,8 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               defaultValue="Select State"
                               onChange={handleState}
                             >
-                              <option value="" className="inputFieldValue" hidden>
-                                Select State
+                              <option value="" className="inputFieldValue">
+                                select state
                               </option>
                               {stateData.length > 0 &&
                                 stateData.map((editData) => {
@@ -448,9 +391,9 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                City 
+                                City Name
                               </label>
-                              <span className="requiredError">*</span>
+                              {/* <span className="requiredError">*</span> */}
                             </div>
 
                             <select
@@ -471,7 +414,6 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                     <option
                                       value={editData.id}
                                       key={editData.id}
-                                      
                                     >
                                       {editData.city}
                                     </option>
@@ -484,8 +426,10 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                           </div>
                           <div className="">
-                            {/* <div className="text-[13px]">Email </div> */}
-                            <label className="inputFieldLabel">Locality</label>
+                            {/* <div className="text-[13px]">Phone Number </div> */}
+                            <label className="inputFieldLabel">
+                              Locality
+                            </label>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
@@ -496,29 +440,15 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                             />
                           </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Society Name
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="societyname"
-                              value={formik.values.societyname}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
+                          
                           
                         </div>
-                         
 
 
-                       
+
+                        
                       </div>
-                        <div className="w-full   flex items-center justify-center">
+                      <div className="w-full   flex items-center justify-center">
                          <div className="flex items-center">
                              <input 
                               type="checkbox" checked={formik.values.excludefrommailinglist}
@@ -543,9 +473,9 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         {isSubmitting ? (
                           <CircularProgress />
                         ) : editData?.id ? (
-                          "Save"
+                          "Update"
                         ) : (
-                          "Add"
+                          "Save"
                         )}
                       </button>
                       <button
@@ -568,16 +498,16 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Save" : "Add"}
+          btnTitle={editData?.id ? "Update" : "Save"}
           onClose={() => {
             setOpenConfimation(false);
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title={`${editData?.id ? 'Save Friend' : 'Add Friend'}`}
+          title="Add Client"
           description={
-            <div className="flex flex-col items-center">
-              <p className="">Friend Name: {values.name}</p>
+            <div>
+              <p className="">Client: {values.personname}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
@@ -588,7 +518,7 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to {editData?.id ? 'Edit' : "Add"} this Friend?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Prosfessional?
               </Typography>
             </div>
           }
@@ -599,7 +529,7 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   // );
 };
 
-FriendsForm.propTypes = {
+ProfessionalsForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   editData: PropTypes.shape({
@@ -614,4 +544,4 @@ FriendsForm.propTypes = {
   }),
   openSucess: PropTypes.func.isRequired,
 };
-export default FriendsForm;
+export default ProfessionalsForm;

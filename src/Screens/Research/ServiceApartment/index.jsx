@@ -169,7 +169,6 @@ const ResearchServiceApartments = () => {
         "website" : "Website",
         "id" : "ID" 
       },
-      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),

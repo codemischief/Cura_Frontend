@@ -23,7 +23,7 @@ import AlertModal, {
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
-import EmployerForm from "./EmployerForm"
+import BankAndBranchesForm from "./BankAndBranchesForm";
 const ResearchBanks = () => {
   const dispatch = useDispatch();
   const {
@@ -49,7 +49,7 @@ const ResearchBanks = () => {
     try {
       let dataItem = {
         user_id: 1234,
-        table_name: "get_research_banksandbranches_view",
+        table_name: "banksandbranches",
         item_id: data.id,
       };
       const response = await APIService.getItembyId(dataItem);
@@ -225,7 +225,7 @@ const ResearchBanks = () => {
   return (
     <div className="h-[calc(100vh-7rem)]">
       {openForm && (
-        <EmployerForm
+        <BankAndBranchesForm
           isOpen={openForm}
           handleClose={openCancel}
           editData={editData}

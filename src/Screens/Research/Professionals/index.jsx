@@ -1,36 +1,41 @@
-import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import SimpleTable from "../../../Components/common/table/CustomTable";
-import connectionDataColumn from "./Columns";
-import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { PlusOutlined } from "@ant-design/icons";
+
+import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
+import SimpleTable from "../../../Components/common/table/CustomTable";
+import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
+import { APIService } from "../../../services/API";
 import {
-  deleteAgents,
-  getAgentData,
+  deleteProfessionals,
+  downloadProfessionalsData,
+  getProfessionalsData,
   setCountPerPage,
   setPageNumber,
-  setSorting
-} from "../../../Redux/slice/Research/AgentSlice";
-import { PlusOutlined } from "@ant-design/icons";
-import EmployerForm from "./EmployerForm";
+  setSorting,
+} from "../../../Redux/slice/Research/ProfessionalsSlice";
+
+import getColumns from "./Columns";
 import AlertModal, {
   alertVariant,
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
-
+import errorHandler from "../../../Components/common/ErrorHandler";
+// import FriendsForm from "./FriendsForm";
+import ProfessionalsForm from "./ProfessionalsForm";
 const ResearchProfessionals = () => {
   const dispatch = useDispatch();
   const {
-    AgentData,
+    ProfessionalsData,
     status,
     totalCount,
     sorting,
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.agent);
+  } = useSelector((state) => state.professionals);
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -41,18 +46,27 @@ const ResearchProfessionals = () => {
   const [isDeleteDialogue, setIsDeleteDialogue] = useState(null);
   const [deleteError, setDeleteError] = useState("");
 
-  const handleEdit = (data) => {
-    setEditData({ ...data });
-    setOpenForm(true);
+  const handleEdit = async (data) => {
+    try {
+      let dataItem = {
+        user_id: 1234,
+        table_name: "get_professionals_view",
+        item_id: data.id,
+      };
+      const response = await APIService.getItembyId(dataItem);
+      let updatedaresponse = await response.json();
+      setEditData(updatedaresponse?.data);
+      setOpenForm(true);
+    } catch (error) {
+      errorHandler(error, "Failed to fetch Please try again later");
+    }
   };
+
   const handleDelete = (data) => {
     setIsDeleteDialogue(data.id);
   };
 
-  const columns = useMemo(
-    () => connectionDataColumn(handleEdit, handleDelete),
-    []
-  );
+  const columns = useMemo(() => getColumns(handleEdit, handleDelete), []);
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -66,39 +80,28 @@ const ResearchProfessionals = () => {
     dispatch(setPageNumber(1));
   };
 
-  const handleRefresh = () => {
-    if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "id",
-          "type",
-          "paymentdate",
-          "monthyear",
-          "fy",
-          "amount",
-          "entityname",
-          "mode_of_payment",
-          "clientid",
-          "clientname",
-          "vendorname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname",
-        ],
-        sort_by: ["id"],
+  const fetchData = () => {
+    let obj = {
+      user_id: 1234,
 
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-      };
-      // dispatch(getOrderPaymentData(obj));
-    }
+      rows: [
+        "id",
+        "name",
+        "type",
+        "city",
+        "suburb",
+        "emailid",
+        "phonenumber",
+        "professionalid",    
+      ],
+      filters: formatedFilterData(filter),
+      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
+      order: sorting.sort_order,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      search_key: searchInput,
+    };
+    dispatch(getProfessionalsData(obj));
   };
 
   const handleSearch = () => {
@@ -124,27 +127,7 @@ const ResearchProfessionals = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    const obj = {
-      user_id: 1234,
-      rows: [
-        "id",
-        "nameofagent",
-        "agencyname",
-        "emailid",
-        "phoneno",
-        "phoneno2",
-        "localitiesdealing",
-        "nameofpartners",
-        "registered"
-      ],
-      filters: formatedFilterData(filter),
-      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
-      order: sorting.sort_order,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      search_key: searchInput,
-    };
-    dispatch(getAgentData(obj));
+    fetchData();
   }, [
     filter,
     countPerPage,
@@ -163,35 +146,30 @@ const ResearchProfessionals = () => {
   };
 
   const downloadExcel = async () => {
+   
+
     let obj = {
       user_id: 1234,
       rows: [
         "id",
+        "name",
         "type",
-        "paymentdate",
-        "monthyear",
-        "fy",
-        "amount",
-        "entityname",
-        "mode_of_payment",
-        "clientid",
-        "clientname",
-        "vendorname",
-        "orderid",
-        "orderdescription",
-        "serviceid",
-        "service",
-        "lobname",
+        "city",
+        "suburb",
+        "emailid",
+        "phonenumber",
+        "professionalid",  
       ],
+      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
       search_key: search,
-      pg_no: 1,
-      pg_size: 15,
+      pg_no: 0,
+      pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    // dispatch(downloadPaymentDataXls(obj));
+    dispatch(downloadProfessionalsData(obj));
   };
 
   const handleFormOpen = () => {
@@ -199,13 +177,14 @@ const ResearchProfessionals = () => {
     setEditData({});
   };
 
-  const deleteAgents = async () => {
+  const deleteProfessionalsFnc = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
-      await dispatch(deleteAgents(data));
+      await dispatch(deleteProfessionals(data));
       setIsDeleteDialogue(null);
-      SetOpenSubmissionPrompt("Prospect Deleted Successfully");
+      SetOpenSubmissionPrompt("Professional Deleted Successfully");
       setPromptType(alertVariant.success);
+      fetchData()
     } catch (error) {
       if (error.response) {
         setDeleteError(error.response.data.detail);
@@ -226,17 +205,19 @@ const ResearchProfessionals = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "New Prospect updated successfully"
-      : "New Prospect created successfully";
+      ? "Changes Updated Successfully"
+      : "New Professional Created Successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
+    fetchData()
+    
   };
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no new Prospect updated."
-      : "Process cancelled, no new Prospect created.";
+      ? "Process cancelled, No Changes Saved."
+      : "Process cancelled, no new Professional Added.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
@@ -245,7 +226,7 @@ const ResearchProfessionals = () => {
   return (
     <div className="h-[calc(100vh-7rem)]">
       {openForm && (
-        <EmployerForm
+        <ProfessionalsForm
           isOpen={openForm}
           handleClose={openCancel}
           editData={editData}
@@ -267,7 +248,7 @@ const ResearchProfessionals = () => {
               onKeyDown={handleSearchEnterKey}
             />
             <button
-              className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg"
+              className="bg-[#004DD7] text-white h-[36px] w-[330px] rounded-lg"
               onClick={handleFormOpen}
             >
               <div className="flex items-center justify-center gap-4">
@@ -278,10 +259,9 @@ const ResearchProfessionals = () => {
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">
-          {console.log(AgentData)}
           <SimpleTable
             columns={columns}
-            data={AgentData}
+            data={ProfessionalsData}
             pageNo={pageNo}
             isLoading={status === "loading"}
             totalCount={totalCount}
@@ -290,7 +270,7 @@ const ResearchProfessionals = () => {
             height="calc(100vh - 15rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
-            handleRefresh={handleRefresh}
+            handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
             handleEdit={handleEdit}
@@ -310,7 +290,7 @@ const ResearchProfessionals = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteAgents}
+          handleDelete={deleteProfessionalsFnc}
           deleteError={deleteError}
         />
       )}
