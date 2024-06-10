@@ -242,7 +242,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       field: "id",
       sorting: true,
       align: "left",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
 
       cellStyle: {
         ...cellStyleCommon,
@@ -256,7 +256,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       title: "Edit",
       field: "action",
       sorting: false,
-      align: "left",
+      align: "center",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",

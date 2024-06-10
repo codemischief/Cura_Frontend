@@ -8,11 +8,11 @@ import { CircularProgress, Modal, Typography } from "@mui/material";
 
 import { APIService } from "../../../services/API";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
-
+import {MenuItem} from "@mui/material";
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 import { addServiceApartment, editServiceApartments } from "../../../Redux/slice/Research/ServiceApartmentSlice";
-
+import CustomSelectNative from "../../../Components/common/select/CustomSelectNative";
 const validationSchema = Yup.object().shape({
   name : Yup.string().required('Enter Name '),
   countryId: Yup.string().required("Select Country"),
@@ -135,7 +135,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
       contactname1 : editData?.contactname1 ? editData?.contactname1 : null,
       contactperson1 : editData?.contactperson1 ? editData?.contactperson1 : null,
       contactemail1 : editData?.email1 ? editData?.email1 : null,
-      countryId: editData?.countryid ? editData.countryid : 5,
+      countryId: editData?.country ? editData.country : 5,
       state: editData?.state ? editData.state : "Maharashtra",
       city: editData?.city ? editData.city : 847,
       locality : editData?.suburb ? editData.suburb : null,
@@ -175,22 +175,6 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
           state : values.state,
           country : values.countryId,
           apartments_guesthouse : values.apartmentorguesthouse
-           // user_id:1234,
-          // "name": "Example Apartments",
-          // "emailid": "example@example.com",
-          // "phoneno": "123-456-7890",
-          // "website": "www.exampleapartments.com",
-          // "contactperson1": "John Doe",
-          // "contactperson2": "Jane Doe",
-          // "email1": "john@example.com",
-          // "email2": "jane@example.com",
-          // "contactname1": "John",
-          // "contactname2": "Jane",
-          // "suburb": "Suburbia",
-          // "city": 847,
-          // "state": "Example State",
-          // "country": 5,
-          // "apartments_guesthouse": "Example Guesthouse"
       };
 
       if (editData?.id) {
@@ -241,8 +225,8 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
-    setFieldValue("state", null);
     setFieldValue("city", null);
+    setFieldValue("state", null);
     setCityData([])
     fetchStateData(country?.id);
   };
@@ -270,7 +254,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
 
                     <ModalHeader
                       onClose={handleClose}
-                      title={editData.id ? "Edit Owner" : "New Owner"}
+                      title={editData.id ? "Edit Service Apartment" : "New Service Apartment"}
                     />
                     </div>
                     <div className="h-auto w-full mt-[5px] ">
@@ -475,8 +459,45 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            
                             <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
+                              name="state"
+                              value={formik.values.state}
+                              defaultValue="Select State"
+                              onChange={handleState}
+                              onBlur={handleBlur}
+                            >
+                              <option value="" className="inputValidationError" hidden>
+                                Select State
+                              </option>
+                              {stateData.length > 0 &&
+                                stateData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData[0]}
+                                      key={editData[0]}
+                                    >
+                                      {editData[0]}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            {/* <CustomSelectNative
+                              name="state"
+                              data={stateData}
+                              value={formik.values.state}
+                              placeholder={'Select State'}
+                              renderData={(item) => {
+                                return (
+                                  <MenuItem value={item[0]} key={item[0]}>
+                                    {item[0]}
+                                  </MenuItem>
+                                );
+                              }}
+                              onChange={handleState}
+                            /> */}
+                            {/* <select
                               // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="selectBoxField inputFieldValue"
                               name="state"
@@ -498,7 +519,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
                                     </option>
                                   );
                                 })}
-                            </select>
+                            </select> */}
                             <div className="inputValidationError">
                               {/* {formErrors.state} */}
                               {errors.state && <div>{errors.state}</div>}
@@ -683,10 +704,10 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title={`${editData?.id ? 'Save Owner' : 'Add Owner'}`}
+          title={`${editData?.id ? 'Save Service Aprtment' : 'Add Service Apartment'}`}
           description={
             <div className="flex flex-col items-center">
-              <p className="">Owner: {values.name}</p>
+              <p className="">Apartment Name: {values.name}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
@@ -697,7 +718,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
                   color: "#282828",
                 }}
               >
-                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Owner?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Service Apartment?
               </Typography>
             </div>
           }

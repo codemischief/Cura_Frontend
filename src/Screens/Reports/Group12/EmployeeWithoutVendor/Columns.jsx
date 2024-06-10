@@ -5,7 +5,6 @@ import {
 } from "./CustomFilterField";
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
-
 export default function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
   const columns = [
@@ -52,9 +51,11 @@ export default function connectionDataColumn(onQuery) {
         maxWidth: "20.813rem",
 
       },
-      render: (index,row) => {
+      render: (index, row) => {
+
         return (
-         <Stack
+
+          <Stack
             direction="row"
             sx={{ justifyContent: "start", width: "12rem" }}
           >
@@ -71,8 +72,8 @@ export default function connectionDataColumn(onQuery) {
             )}
 
           </Stack>
-        )
-      }
+        );
+      },
     },
     {
       title: "Vendor Name",

@@ -1,5 +1,5 @@
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
-const accessToken = localStorage.getItem("accessToken");
+const accessToken = sessionStorage.getItem("accessToken");
 // const env_URL_SERVER="http://192.168.10.183:8000/"
 const API = {
   LOGIN: "$env_URL_SERVERvalidateCredentials",
@@ -1025,6 +1025,14 @@ const changePassword = async (data, token) => {
   );
   return responseInterceptor(response);
 };
+const getProfessionalTypesAdmin = async (data) => {
+  const response = await fetch(
+    `${env_URL_SERVER}getProfessionalTypesAdmin`,
+    METHOD_POST(data)
+  );
+
+  return response;
+}
 export const APIService = {
   getCountries,
   getNewBuilderInfo,
@@ -1167,5 +1175,6 @@ export const APIService = {
   getDepartmentTypeAdmin,
   resetPassword,
   changePassword,
-  getPaymentStatusAdmin
+  getPaymentStatusAdmin,
+  getProfessionalTypesAdmin
 };

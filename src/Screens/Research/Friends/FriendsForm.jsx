@@ -17,10 +17,10 @@ import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
 const validationSchema = Yup.object().shape({
-  employername : Yup.string().required('Employer Name Is Required'),
-  countryId: Yup.string().required("Country Name is required"),
-  state: Yup.string().required("State is required"),
-  city: Yup.string().required("City is required"),
+  name : Yup.string().required('Enter Name'),
+  countryId: Yup.string().required("Select Country"),
+  state: Yup.string().required("Select State"),
+  city: Yup.string().required("Select City"),
 });
 // {
 //   "user_id": 1234,
@@ -93,8 +93,15 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   useEffect(() => {
     fetchCountryData();
-    fetchStateData(5);
-    fetchCityData("Maharashtra");
+    if(editData?.id) {
+      // then its update wala case
+      fetchStateData(editData?.countryid)
+      fetchCityData(editData?.state)
+    }else {
+      // then its add wala case
+      fetchStateData(5);
+      fetchCityData("Maharashtra");
+    }
   }, []);
 
   const fetchStateData = async (id) => {
@@ -119,11 +126,12 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
       phonenumber : editData?.phoneno ? editData.phoneno : null,
       employer : editData?.employer ? editData.employer : null,
       notes : editData?.notes ? editData.notes : null,
-      countryId: editData?.country ? editData.country : 5,
+      countryId: editData?.countryid ? editData.countryid : 5,
       state: editData?.state ? editData.state : "Maharashtra",
-      city: editData?.city ? editData.city : "Pune",
-      locality : editData?.locality ? editData.locality : null,
+      city: editData?.cityid ? editData.cityid : 847,
+      locality : editData?.suburb ? editData.suburb : null,
       societyname : editData?.societyname ? editData.societyname : null,
+      excludefrommailinglist : editData?.excludefrommailinglist ? editData.excludefrommailinglist : null,
       // employername : editData?.employername ? editData.employername : "",
       // adressline1 : editData?.addressline1 ? editData.addressline1 : "",
       // adressline2 : editData?.addressline2 ? editData.addressline2 : "",
@@ -166,12 +174,13 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
           state: values.state,
           country: values.countryId,
           notes: values.notes,
-    
-        
-        
+          excludefrommailinglist : values.excludefrommailinglist
       };
 
       if (editData?.id) {
+
+        data.id = editData?.id 
+
         await dispatch(editFriends(data));
         openSucess();
       } else {
@@ -204,12 +213,23 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    setFieldValue(e.target.name, e.target.value);
+    // console.log(e.target)
+    // setFieldValue(e.target.name, e.target.value);
+    const { type, name, value, checked } = e.target;
+    // const fieldValue = type === 'checkbox' ? checked : value;
+    console.log(name, checked);
+    if(type == 'checkbox') {
+      setFieldValue(name,checked)
+    }else {
+
+      setFieldValue(name, value);
+    }
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
-    setFieldValue("state", "");
-    setFieldValue("city", "");
+    setFieldValue("city", null);
+    setFieldValue("state", null);
+    setCityData([])
     fetchStateData(country?.id);
   };
 
@@ -449,8 +469,8 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                 cityData.map((editData) => {
                                   return (
                                     <option
-                                      value={editData.city}
-                                      key={editData.city}
+                                      value={editData.id}
+                                      key={editData.id}
                                       
                                     >
                                       {editData.city}
@@ -493,10 +513,23 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           </div>
                           
                         </div>
-
+                         
 
 
                        
+                      </div>
+                        <div className="w-full   flex items-center justify-center">
+                         <div className="flex items-center">
+                             <input 
+                              type="checkbox" checked={formik.values.excludefrommailinglist}
+                                className='mr-3 h-4 w-4'
+                                name="excludefrommailinglist"
+                                onBlur={handleBlur}
+                                onChange={handleChange}/>
+                              <label className="inputFieldLabel">
+                                Exclude From Mailing List
+                              </label>
+                         </div>
                       </div>
                     </div>
 
@@ -541,10 +574,10 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Client"
+          title={`${editData?.id ? 'Save Friend' : 'Add Friend'}`}
           description={
-            <div>
-              <p className="">Client: {values.personname}</p>
+            <div className="flex flex-col items-center">
+              <p className="">Friend Name: {values.name}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
@@ -555,7 +588,7 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to {editData?.id ? 'Editt' : "Add"} this Friend?
+                Are you sure you want to {editData?.id ? 'Edit' : "Add"} this Friend?
               </Typography>
             </div>
           }

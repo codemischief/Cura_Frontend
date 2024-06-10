@@ -23,7 +23,7 @@ import AlertModal, {
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
-import EmployerForm from "./EmployerForm"
+import BankAndBranchesForm from "./BankAndBranchesForm";
 const ResearchBanks = () => {
   const dispatch = useDispatch();
   const {
@@ -49,7 +49,7 @@ const ResearchBanks = () => {
     try {
       let dataItem = {
         user_id: 1234,
-        table_name: "get_research_banksandbranches_view",
+        table_name: "banksandbranches",
         item_id: data.id,
       };
       const response = await APIService.getItembyId(dataItem);
@@ -89,7 +89,7 @@ const ResearchBanks = () => {
         "emailid",
         "phoneno",
         "website",
-        "contact"
+        "contactperson"
       ],
       filters: formatedFilterData(filter),
       sort_by: sorting.sort_by ? [sorting.sort_by] : [],
@@ -153,13 +153,21 @@ const ResearchBanks = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "id",
         "name",
         "emailid",
         "phoneno",
         "website",
-        "contact"
+        "contactperson",
+        "id",
       ],
+      colmap : {
+         "name" : "Name",
+        "emailid" : "Email ID",
+        "phoneno" : "Phone Number",
+        "website" : "Website",
+        "contactperson" : "Contact",
+        "id" : "ID",
+      },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
@@ -176,7 +184,7 @@ const ResearchBanks = () => {
     setEditData({});
   };
 
-  const deleteBanksAndBranches = async () => {
+  const deleteBanksAndBranchesfnc = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
       await dispatch(deleteBanksAndBranches(data));
@@ -204,7 +212,7 @@ const ResearchBanks = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "Bank And Branch updated successfully"
+      ? "Changes Saved Successfully"
       : "New Bank And Branch created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
@@ -215,7 +223,7 @@ const ResearchBanks = () => {
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no new Bank And Branch updated."
+      ? "Process cancelled, No Changes Saved."
       : "Process cancelled, no new Bank And Branch created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
@@ -225,7 +233,7 @@ const ResearchBanks = () => {
   return (
     <div className="h-[calc(100vh-7rem)]">
       {openForm && (
-        <EmployerForm
+        <BankAndBranchesForm
           isOpen={openForm}
           handleClose={openCancel}
           editData={editData}
@@ -289,7 +297,7 @@ const ResearchBanks = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteBanksAndBranches}
+          handleDelete={deleteBanksAndBranchesfnc}
           deleteError={deleteError}
           text={'Banks And Branches'}
         />

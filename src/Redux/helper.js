@@ -467,6 +467,11 @@ export const formatUnderSuspensen = (data) => {
       computedpending: billing.computedpending ? floorDecimal(billing.computedpending) : "0.00",
     }));
   }
+  export const updatedProfessionalsData = (data) => {
+    return data.map((billing, index) => ({
+      ...billing,
+    }));
+  }
 
 export const LLlistFormat = (data)=>{
   return data.map((billing, index) => ({

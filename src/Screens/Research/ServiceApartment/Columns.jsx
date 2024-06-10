@@ -155,7 +155,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       field: "id",
       sorting: true,
       align: "left",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
 
       cellStyle: {
         ...cellStyleCommon,
@@ -169,7 +169,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       title: "Edit",
       field: "action",
       sorting: false,
-      align: "left",
+      align: "center",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
@@ -178,7 +178,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       },
       render: (rowData) => {
         return (
-          <div className="flex gap-2 justify-start">
+          <div className="flex gap-2 justify-center">
             <EditButton
                handleEdit={handleEdit}
                rowData={rowData}

@@ -12,6 +12,8 @@ import {
   TextFilterField
 } from "./CustomFilerField"
 import { Create, Delete } from "@mui/icons-material";
+import EditButton from "../../../Components/common/buttons/EditButton";
+import DeleteButton from "../../../Components/common/buttons/deleteButton";
 
 export default function connectionDataColumn(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
@@ -153,7 +155,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       field: "id",
       sorting: true,
       align: "left",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
 
       cellStyle: {
         ...cellStyleCommon,
@@ -164,10 +166,10 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     },
     {
       id: 10,
-      title: "",
+      title: "Edit",
       field: "action",
       sorting: false,
-      align: "left",
+      align: "center",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
@@ -177,14 +179,15 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       render: (rowData) => {
         return (
           <div className="flex gap-2 justify-start">
-            <Create
-              sx={{ width: "20px", height: "20px" }}
-              onClick={() => handleEdit(rowData)}
+            <EditButton
+              handleEdit={handleEdit}
+              rowData={rowData}
             />
-            <Delete
-              sx={{ width: "20px", height: "20px" }}
-              onClick={() => handleDelete(rowData)}
+            <DeleteButton
+               handleDelete={handleDelete}
+               rowData={rowData}
             />
+  
           </div>
         );
       },

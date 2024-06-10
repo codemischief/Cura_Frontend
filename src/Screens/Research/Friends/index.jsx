@@ -145,25 +145,30 @@ const ResearchFriends = () => {
   };
 
   const downloadExcel = async () => {
-    const colMap = columns?.slice(1, -1)?.reduce((acc, column) => {
-      if (column.field) {
-        acc[column.field] = column.title;
-      }
-      return acc;
-    }, {});
+   
 
     let obj = {
       user_id: 1234,
       rows: [
-        "id",
         "name",
         "city",
         "emailid",
         "phoneno",
         "friendof",
         "societyname",
-        "employer"
+        "employer",
+        "id",
       ],
+      colmap : {
+          "name" : "Name",
+          "city" : "City",
+          "emailid" : "Email ID",
+          "phoneno" : "Phone Number",
+          "friendof" : "Friend's Of",
+          "societyname" : "Society Name",
+          "employer" : "Employer",
+          "id" : "ID"
+      },
       // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
@@ -186,7 +191,7 @@ const ResearchFriends = () => {
       const data = { user_id: 1234, id: isDeleteDialogue };
       await dispatch(deleteFriends(data));
       setIsDeleteDialogue(null);
-      SetOpenSubmissionPrompt("Employer Deleted Successfully");
+      SetOpenSubmissionPrompt("Friend Deleted Successfully");
       setPromptType(alertVariant.success);
       fetchData()
     } catch (error) {
@@ -296,6 +301,7 @@ const ResearchFriends = () => {
           setOpenDialog={setIsDeleteDialogue}
           handleDelete={deleteFriends}
           deleteError={deleteError}
+          text={'Friends'}
         />
       )}
     </div>

@@ -79,6 +79,7 @@ import BankBalanceReconciliationReducer from "./slice/reporting/BankBalanceRecon
 
 
 import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportSlice";
+import professionals  from "./slice/Research/ProfessionalsSlice";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -119,6 +120,7 @@ export const store = configureStore({
     owner: owner,
     friends: friends,
     banksandbranches: banksandbranches,
+    professionals : professionals,
     clientStatistics: ClientStatistics,
     clientReceiptReport: ClientReceiptReportReducer,
     orderPaymentDDReport: OrderPaymentDDReportReducer,
