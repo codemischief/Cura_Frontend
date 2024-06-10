@@ -1,36 +1,41 @@
-import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import SimpleTable from "../../../Components/common/table/CustomTable";
-import connectionDataColumn from "./Columns";
-import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { PlusOutlined } from "@ant-design/icons";
+
+import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
+import SimpleTable from "../../../Components/common/table/CustomTable";
+import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
+import { APIService } from "../../../services/API";
 import {
-  deleteAgents,
-  getAgentData,
+  deleteData,
+  downloadDataXls,
+  getData,
   setCountPerPage,
   setPageNumber,
-  setSorting
-} from "../../../Redux/slice/Research/AgentSlice";
-import { PlusOutlined } from "@ant-design/icons";
-import EmployerForm from "./EmployerForm";
+  setSorting,
+} from "../../../Redux/slice/Research/EducationalInstitute";
+
+import getColumns from "./Columns";
 import AlertModal, {
   alertVariant,
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
-
+import errorHandler from "../../../Components/common/ErrorHandler";
+import EmployerForm from "./EmployerForm";
+import AddButton from "../../../Components/common/CustomButton";
 const ResearchEducational = () => {
   const dispatch = useDispatch();
   const {
-    AgentData,
+    Data,
     status,
     totalCount,
     sorting,
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.agent);
+  } = useSelector((state) => state.educationalInstitute);
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -41,18 +46,27 @@ const ResearchEducational = () => {
   const [isDeleteDialogue, setIsDeleteDialogue] = useState(null);
   const [deleteError, setDeleteError] = useState("");
 
-  const handleEdit = (data) => {
-    setEditData({ ...data });
-    setOpenForm(true);
+  const handleEdit = async (data) => {
+    try {
+      let dataItem = {
+        user_id: 1234,
+        table_name: "get_research_employer_view",
+        item_id: data.id,
+      };
+      const response = await APIService.getItembyId(dataItem);
+      let updatedaresponse = await response.json();
+      setEditData(updatedaresponse?.data);
+      setOpenForm(true);
+    } catch (error) {
+      errorHandler(error, "Failed to fetch Please try again later");
+    }
   };
+
   const handleDelete = (data) => {
     setIsDeleteDialogue(data.id);
   };
 
-  const columns = useMemo(
-    () => connectionDataColumn(handleEdit, handleDelete),
-    []
-  );
+  const columns = useMemo(() => getColumns(handleEdit, handleDelete), []);
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -66,39 +80,19 @@ const ResearchEducational = () => {
     dispatch(setPageNumber(1));
   };
 
-  const handleRefresh = () => {
-    if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "id",
-          "type",
-          "paymentdate",
-          "monthyear",
-          "fy",
-          "amount",
-          "entityname",
-          "mode_of_payment",
-          "clientid",
-          "clientname",
-          "vendorname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname",
-        ],
-        sort_by: ["id"],
+  const fetchData = () => {
+    let obj = {
+      user_id: 1234,
 
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-      };
-      // dispatch(getOrderPaymentData(obj));
-    }
+      rows: ["type","name","city","suburb","emailid","phoneno","id"],
+      filters: formatedFilterData(filter),
+      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
+      order: sorting.sort_order,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      search_key: searchInput,
+    };
+    dispatch(getData(obj));
   };
 
   const handleSearch = () => {
@@ -124,27 +118,7 @@ const ResearchEducational = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    const obj = {
-      user_id: 1234,
-      rows: [
-        "id",
-        "nameofagent",
-        "agencyname",
-        "emailid",
-        "phoneno",
-        "phoneno2",
-        "localitiesdealing",
-        "nameofpartners",
-        "registered"
-      ],
-      filters: formatedFilterData(filter),
-      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
-      order: sorting.sort_order,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      search_key: searchInput,
-    };
-    dispatch(getAgentData(obj));
+    fetchData();
   }, [
     filter,
     countPerPage,
@@ -163,35 +137,35 @@ const ResearchEducational = () => {
   };
 
   const downloadExcel = async () => {
+    const colMap = columns?.slice(1, -1)?.reduce((acc, column) => {
+      if (column.field) {
+        acc[column.field] = column.title;
+      }
+      return acc;
+    }, {});
+
     let obj = {
       user_id: 1234,
-      rows: [
-        "id",
-        "type",
-        "paymentdate",
-        "monthyear",
-        "fy",
-        "amount",
-        "entityname",
-        "mode_of_payment",
-        "clientid",
-        "clientname",
-        "vendorname",
-        "orderid",
-        "orderdescription",
-        "serviceid",
-        "service",
-        "lobname",
-      ],
+      rows: ["type","name","city","suburb","emailid","phoneno","id"],
+      colmap : {
+        "type" : "Institute Type",
+        "name" : "Name",
+        "city" : "City",
+        "suburb" : "Locality",
+        "emailid" : "Email ID",
+        "phoneno" : "Phone Number",
+        "id" : "ID",
+      },
+      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
       search_key: search,
-      pg_no: 1,
-      pg_size: 15,
+      pg_no: 0,
+      pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    // dispatch(downloadPaymentDataXls(obj));
+    dispatch(downloadEmployerDataXls(obj));
   };
 
   const handleFormOpen = () => {
@@ -199,13 +173,14 @@ const ResearchEducational = () => {
     setEditData({});
   };
 
-  const deleteAgents = async () => {
+  const deleteEmployers = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
-      await dispatch(deleteAgents(data));
+      await dispatch(deleteData(data));
       setIsDeleteDialogue(null);
-      SetOpenSubmissionPrompt("Prospect Deleted Successfully");
+      SetOpenSubmissionPrompt("Educational Institute Deleted Successfully");
       setPromptType(alertVariant.success);
+      fetchData()
     } catch (error) {
       if (error.response) {
         setDeleteError(error.response.data.detail);
@@ -226,17 +201,19 @@ const ResearchEducational = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "New Prospect updated successfully"
-      : "New Prospect created successfully";
+      ? "Changes Saved Successfully"
+      : "New Educational Institute created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
+    fetchData()
+    
   };
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no new Prospect updated."
-      : "Process cancelled, no new Prospect created.";
+      ? "Process cancelled, No Changes Saved."
+      : "Process cancelled, No Educational Institute Created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
@@ -266,22 +243,23 @@ const ResearchEducational = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
-            <button
-              className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg"
+            {/* <button
+              className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg"
               onClick={handleFormOpen}
             >
               <div className="flex items-center justify-center gap-4">
-                Add New Educational Institute
+                Add New Employer
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
-            </button>
+            </button> */}
+            <AddButton title="Add New Educational Institute" sx={{width: "340px"}} onClick={handleFormOpen} />
+
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">
-          {console.log(AgentData)}
           <SimpleTable
             columns={columns}
-            data={AgentData}
+            data={Data}
             pageNo={pageNo}
             isLoading={status === "loading"}
             totalCount={totalCount}
@@ -290,7 +268,7 @@ const ResearchEducational = () => {
             height="calc(100vh - 15rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
-            handleRefresh={handleRefresh}
+            handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
             handleEdit={handleEdit}
@@ -310,8 +288,9 @@ const ResearchEducational = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteAgents}
+          handleDelete={deleteEmployers}
           deleteError={deleteError}
+          text={'Employer'}
         />
       )}
     </div>

@@ -10,14 +10,6 @@ import ManageProjectInfo from "./Screens/Manage/ManageProjectInfo/ManageProjectI
 import ManageOrder from "./Screens/Manage/ManageOrder/ManageOrder";
 import ManageEmployees from "./Screens/Manage/ManageEmployee/ManageEmployees";
 import ManageBuilder from "./Screens/Manage/ManageBuilder/ManageBuilder";
-import Owner from "./Screens/Research/Owner/Owner";
-import Educational from "./Screens/Research/Educational/Educational";
-import Architect from "./Screens/Research/Architect/Architect";
-import Mandals from "./Screens/Research/Mandals/Mandals";
-import Professionals from "./Screens/Research/Professionals/Professionals";
-import COC from "./Screens/Research/COC/COC";
-import Banks from "./Screens/Research/Banks/Banks";
-import Friends from "./Screens/Research/Friends/Friends";
 import Payments from "./Screens/Manage/Payments/Payments";
 import ManageClientInfo from "./Screens/Manage/ManageClientInfo/ManageClientInfo";
 import ManageClientProperty from "./Screens/Manage/ManageClientProperty/ManageClientProperty";
