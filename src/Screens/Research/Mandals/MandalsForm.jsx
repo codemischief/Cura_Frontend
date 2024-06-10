@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import * as Yup from "yup";
 import { Form, FormikProvider, useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress, Modal, Typography } from "@mui/material";
+import { CircularProgress, Modal, Typography, MenuItem } from "@mui/material";
 
 import { APIService } from "../../../services/API";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
@@ -12,12 +12,9 @@ import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 import { addMandals, editMandals } from "../../../Redux/slice/Research/MandalSlice";
-
+import CustomSelectNative from "../../../Components/common/select/CustomSelectNative";
 const validationSchema = Yup.object().shape({
-  employername : Yup.string().required('Employer Name Is Required'),
-  countryId: Yup.string().required("Country Name is required"),
-  state: Yup.string().required("State is required"),
-  city: Yup.string().required("City is required"),
+
 });
 // {
 //   "user_id": 1234,
@@ -48,10 +45,9 @@ const validationSchema = Yup.object().shape({
 // }
 const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
-  const [countryData, setCountryData] = useState({
-    arr: [],
-    obj: {},
-  });
+  const { countryData } = useSelector((state) => state.commonApi);
+  console.log(countryData)
+  // const [countryData,setCountryData] = useState([])
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -59,8 +55,16 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const [openConfirmation, setOpenConfimation] = useState(false);
   const { formSubmissionStatus } = useSelector((state) => state.employer);
 
+  
+
+  const fetchCityData = async (id) => {
+    const data = { user_id: 1234, state_name: id };
+    const response = await APIService.getCities(data);
+    const result = (await response.json()).data;
+    setCityData(result);
+  };
   const fetchCountryData = async () => {
-    setLoading(true);
+    // setLoading(true);
     const data = {
       user_id: 1234,
       rows: ["id", "name"],
@@ -72,24 +76,18 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
-    const resultConverted = await result?.reduce((acc, current) => {
-      acc[current.id] = current.name;
-      return acc;
-    }, {});
+    // setCountryData(result)
+    // setLoading(false);
+    // const resultConverted = await result?.reduce((acc, current) => {
+    //   acc[current.id] = current.name;
+    //   return acc;
+    // }, {});
 
-    setLoading(false);
-    setCountryData({ arr: result, obj: resultConverted });
+    // setCountryData({ arr: result, obj: resultConverted });
+    console.log(countryData)
   };
-
-  const fetchCityData = async (id) => {
-    const data = { user_id: 1234, state_name: id };
-    const response = await APIService.getCities(data);
-    const result = (await response.json()).data;
-    setCityData(result);
-  };
-
   useEffect(() => {
-    fetchCountryData();
+    fetchCountryData()
     fetchStateData(5);
     fetchCityData("Maharashtra");
   }, []);
@@ -160,6 +158,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
       };
 
       if (editData?.id) {
+        data.id = editData?.id
         await dispatch(editMandals(data));
         openSucess();
       } else {
@@ -194,11 +193,12 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const handleChange = (e) => {
     setFieldValue(e.target.name, e.target.value);
   };
-  const handleCountrySelect = (country) => {
-    setFieldValue("countryId", country?.id);
-    setFieldValue("state", "");
-    setFieldValue("city", "");
-    fetchStateData(country?.id);
+  const handleCountrySelect = (e) => {
+    setFieldValue("countryId", e.target.value);
+    setFieldValue("city", null);
+    setFieldValue("state", null);
+    setCityData([]);
+    fetchStateData(e.target.value);
   };
 
   const handleState = (e) => {
@@ -332,21 +332,159 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               )}
                             </div> */}
                           </div>
-                          
+                          <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Contact Email 1
+                              </label>
+                              
+                            </div>
+                            <input
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="contactemail1"
+                              value={formik.values.contactemail1}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                            />
+                            {/* <div className="inputValidationError">
+                              {touched.employername && errors.employername && (
+                                <div>{errors.employername}</div>
+                              )}
+                            </div> */}
+                          </div>
+                          <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Phone 1
+                              </label>
+                              
+                            </div>
+                            <input
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="phone1"
+                              value={formik.values.phone1}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                            />
+                            {/* <div className="inputValidationError">
+                              {touched.employername && errors.employername && (
+                                <div>{errors.employername}</div>
+                              )}
+                            </div> */}
+                          </div>
+                          <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Phone 2
+                              </label>
+                              
+                            </div>
+                            <input
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="phone2"
+                              value={formik.values.phone2}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                            />
+                            {/* <div className="inputValidationError">
+                              {touched.employername && errors.employername && (
+                                <div>{errors.employername}</div>
+                              )}
+                            </div> */}
+                          </div>
                           
 
                           
                         </div>
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
+                        <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Country 
+                              </label>
+                              <span className="requiredError">*</span>
+                            </div>
+                            <CustomSelectNative
+                              data={Object.keys(countryData)}
+                              renderData={(item) => {
+                                return (
+                                  <MenuItem value={item} key={item}>
+                                    {countryData[item]}
+                                  </MenuItem>
+                                );
+                              }}
+                              placeholder="Select Country"
+                              value={countryData[formik.values.countryId]}
+                              onChange={handleCountrySelect}
+                            />
+                            <div className="inputValidationError">
+                              {errors.countryId && (
+                                <div>{errors.countryId}</div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                State Name
+                              </label>
+                              <span className="requiredError">*</span>
+                            </div>
+                            <CustomSelectNative
+                              name="state"
+                              data={stateData}
+                              value={formik.values.state}
+                              placeholder={"Select State"}
+                              renderData={(item) => {
+                                return (
+                                  <MenuItem value={item[0]} key={item[0]}>
+                                    {item[0]}
+                                  </MenuItem>
+                                );
+                              }}
+                              onChange={handleState}
+                            />
+                            <div className="inputValidationError">
+                              {errors.state && <div>{errors.state}</div>}
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                City Name
+                              </label>
+                              <span className="requiredError">*</span>
+                            </div>
+                            <CustomSelectNative
+                              name="city"
+                              data={cityData}
+                              value={formik.values.city}
+                              placeholder="Select City"
+                              renderData={(item) => {
+                                return (
+                                  <MenuItem value={item.city} key={item.city}>
+                                    {item.city}
+                                  </MenuItem>
+                                );
+                              }}
+                              onChange={handleChange}
+                            />
+                            <div className="inputValidationError">
+                              {errors.city && <div>{errors.city}</div>}
+                            </div>
+                          </div>
                           <div className="">
                             {/* <div className="text-[13px]">Email </div> */}
-                            <label className="inputFieldLabel">Industry</label>
+                            <label className="inputFieldLabel">Locality</label>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="industry"
-                              value={formik.values.industry}
+                              name="locality"
+                              value={formik.values.locality}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
@@ -354,14 +492,14 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
                             <label className="inputFieldLabel">
-                              HR Name
+                              Contact Name 2
                             </label>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="hrcontactname"
-                              value={formik.values.hrcontactname}
+                              name="contactname2"
+                              value={formik.values.contactname2}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
@@ -369,14 +507,14 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
                             <label className="inputFieldLabel">
-                              HR Phone
+                             Contact Email 2
                             </label>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="hrcontactphone"
-                              value={formik.values.hrcontactphone}
+                              name="contactemail2"
+                              value={formik.values.contactemail2}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
@@ -384,78 +522,20 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
                             <label className="inputFieldLabel">
-                              HR Email
+                              Website
                             </label>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="hrcontactmail"
-                              value={formik.values.hrcontactmail}
+                              name="website"
+                              value={formik.values.website}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
                           </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Admin Name
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="admincontactname"
-                              value={formik.values.admincontactname}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Admin Phone
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="admincontactphone"
-                              value={formik.values.admincontactphone}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Admin Email
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="email"
-                              name="admincontactmail"
-                              value={formik.values.admincontactmail}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Notes
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="hc"
-                              value={formik.values.hc}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
+                         
+                         
                           
                         </div>
 
