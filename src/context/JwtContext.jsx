@@ -192,6 +192,10 @@ function AuthProvider({ children }) {
     setIsModalOpen(false);
   };
 
+  const handleCloseModal = (event, reason) => {
+    if (reason && reason === "backdropClick") return;
+    setIsModalOpen(false);
+  };
   const resetPassword = (email) => console.log(email);
 
   const updateProfile = () => {};
@@ -232,6 +236,7 @@ function AuthProvider({ children }) {
           onContinue={handleContinueSession}
           onLogout={logout}
           countdown={countdown}
+          onClose={handleCloseModal}
         />
       )}
     </AuthContext.Provider>
