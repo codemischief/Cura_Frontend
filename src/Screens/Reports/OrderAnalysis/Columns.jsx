@@ -12,7 +12,7 @@ export default function connectionDataColumn() {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "50px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "4rem" , maxWidth:"5rem"},
       sorting: false,
       render: (index) => {
         return (
@@ -43,7 +43,7 @@ export default function connectionDataColumn() {
       title: "Order ID",
       field: "orderid",
       sorting: true,
-      filterComponent:TextFilterField,
+      filterComponent:NumberFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"9rem" },
     },
     {
@@ -51,7 +51,7 @@ export default function connectionDataColumn() {
       field: "orderdescription",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"17rem" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"20rem" },
     },
     {
       title: "Order Status",

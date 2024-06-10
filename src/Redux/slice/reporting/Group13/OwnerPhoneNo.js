@@ -1,12 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
-import {
-  env_URL_SERVER,LLlistFormat
-} from "../../../helper";
+import { env_URL_SERVER } from "../../../helper";
 
 const initialState = {
-  LLlist: [],
+    ownersPhoneNo: [],
   totalAmount: {},
   status: "",
   filter: {},
@@ -21,14 +19,13 @@ const initialState = {
   },
 };
 
-export const LLlist = createSlice({
-  name: "LLlist",
+export const OwnersPhoneNoSlice = createSlice({
+  name: "ownersPhoneNo",
   initialState,
   reducers: {
-    setLLlist: (state, { payload }) => {
-      const { data } = payload;
-      state.LLlist = LLlistFormat(data.data)
-      console.log(LLlist)
+    setOwnerPhoneNoData: (state, { payload }) => {
+      const { data } = payload.data;
+      state.ownersPhoneNo = (data);
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -54,10 +51,9 @@ export const LLlist = createSlice({
         sort_by: "",
         sort_order: "",
       };
-      state.LLlist=[]
-
+      state.ownersPhoneNo= []
     },
-    setFilters: (state, { payload }) => {
+    setOwnerPhoneNoFilter: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
@@ -67,50 +63,52 @@ export const LLlist = createSlice({
 });
 
 export const {
-  setLLlist,
+  setOwnerPhoneNoData,
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setFilters,
+  setOwnerPhoneNoFilter,
   setInitialState,
   setSorting,
-} = LLlist.actions;
+} = OwnersPhoneNoSlice.actions;
 
-export const getLLlist =
-  (payloadObj) => async (dispatch) => {
-    try {
-      dispatch(setStatus("loading"));
-      const response = await axios.post(
-        `${env_URL_SERVER}reportLLAgreement`,
-        payloadObj
+export const getOwnersPhoneNo = (payloadObj) => async (dispatch) => {
+  try {
+    dispatch(setStatus("loading"));
+    const response = await axios.post(
+      `${env_URL_SERVER}reportOwnerPhoneNos`,
+      payloadObj
+    );
+
+    dispatch(setOwnerPhoneNoData({ data: response.data }));
+    dispatch(setStatus("success"));
+  } catch (err) {
+    dispatch(setStatus("error"));
+  }
+};
+
+export const downloadOwnersPhoneNo = (payloadObj) => async (
+  dispatch
+) => {
+  try {
+    dispatch(setStatus("loading"));
+    const response = await axios.post(
+      `${env_URL_SERVER}reportOwnerPhoneNos`,
+      payloadObj
+    );
+    if ((response.data.filename, payloadObj.user_id)) {
+      await dispatch(
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
       );
-
-      dispatch(setLLlist({ data: response.data}));
-      dispatch(setStatus("success"));
-    } catch (err) {
-      dispatch(setStatus("error"));
     }
-  };
-
-export const downloadLLlist =
-  (payloadObj) => async (dispatch) => {
-    
-    try {
-      dispatch(setStatus("loading"));
-      const response = await axios.post(
-        `${env_URL_SERVER}reportLLAgreement`,
-        payloadObj
-      );
-      if ((response.data.filename, payloadObj.user_id)) {
-        await dispatch(
-          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
-        );
-      }
-      dispatch(setStatus("success"));
-    } catch (err) {
-      dispatch(setStatus("error"));
-    }
-  };
+    dispatch(setStatus("success"));
+    // return response.data;
+    // dispatch(setOrderPaymentData({ data: response.data, year, month }));
+    // dispatch(setStatus("success"));
+  } catch (err) {
+    dispatch(setStatus("error"));
+  }
+};
 
 export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
   try {
@@ -127,9 +125,9 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "ReportActiveLLAgreement.xlsx");
+    FileSaver.saveAs(blob, "reportOwnerPhone.xlsx");
   } catch (error) {
     console.log("error", error);
   }
 };
-export default LLlist.reducer;
+export default OwnersPhoneNoSlice.reducer;

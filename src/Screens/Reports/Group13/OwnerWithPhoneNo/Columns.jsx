@@ -1,9 +1,9 @@
 import { Stack } from "@mui/material";
 import styleConst from "./styleConst";
 import {
+  NumberFilterField,
   TextFilterField,
 } from "./CustomFilterField";
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 export default function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
@@ -27,66 +27,55 @@ export default function connectionDataColumn(onQuery) {
       },
     },
     {
-      title: "Username",
-      field: "username",
+      title: "Name",
+      field: "name",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "12rem",
-        maxWidth: "20.813rem",
+        minWidth: "6rem",
+        maxWidth: "30.813rem",
 
       },
     },
     {
-      title: "User Status",
-      field: "userstatus",
+      title: "Phone Number",
+      field: "phoneno",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "20rem",
-        maxWidth: "20.813rem",
-
-      },
-      render: (index, row) => {
-
-        return (
-
-          <Stack
-            direction="row"
-            sx={{ justifyContent: "start", width: "12rem" }}
-          >
-            {row['userstatus'] === "Inactive" ? (
-              <div className="flex justify-center items-center gap-2">
-                <FiberManualRecordIcon sx={{ width: "10px", height: "10px", color: "red", fill: "red" }} />
-                {row['userstatus']}
-              </div>
-            ) : (
-              <div className="flex justify-center items-center gap-2">
-                <FiberManualRecordIcon sx={{ width: "10px", height: "10px", color: "red", fill: "green" }} />
-                {row['userstatus']}
-              </div>
-            )}
-
-          </Stack>
-        );
+        minWidth: "6rem",
+        maxWidth: "15rem",
       },
     },
     {
-      title: "Vendor Name",
-      field: "vendorname",
+      title: "Phone Number 1",
+      field: "phoneno1",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "8rem",
+        minWidth: "15rem",
         maxWidth: "20rem",
       },
     },
+    {
+      title: "Phone Number 2",
+      field: "phoneno2",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        minWidth: "6rem",
+        maxWidth: "20rem",
+      },
+    },
+   
   ];
   return columns;
 }

@@ -6,6 +6,7 @@ import {
   NumberFilterField,
   TextFilterField,
 } from "./CustomFilterField";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 export default function connectionDataColumn() {
   const { cellStyleCommon } = styleConst;
@@ -127,6 +128,29 @@ export default function connectionDataColumn() {
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem" },
+      render: (index, row) => {
+
+        return (
+
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "start", width: "12rem" }}
+          >
+            {row['status'] === "Inactive" ? (
+              <div className="flex justify-center items-center gap-2">
+                <FiberManualRecordIcon sx={{ width: "10px", height: "10px", color: "red", fill: "red" }} />
+                {row['status']}
+              </div>
+            ) : (
+              <div className="flex justify-center items-center gap-2">
+                <FiberManualRecordIcon sx={{ width: "10px", height: "10px", color: "red", fill: "green" }} />
+                {row['status']}
+              </div>
+            )}
+
+          </Stack>
+        );
+      },
     },
     {
       title: "Registration Type",
@@ -152,7 +176,7 @@ export default function connectionDataColumn() {
    
     {
       title: "Client Type",
-      field: "totalinvoiceamt",
+      field: "clienttypename",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem" },

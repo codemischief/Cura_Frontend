@@ -95,7 +95,7 @@ const SimpleTable = ({
                 >
                   <div className="w-full h-full py-5 flex flex-col gap-3 items-start sm:items-center justify-center">
                     <p className="text-sm max-w-[10em] lg:max-w-none">
-                      The Data you are looking for could not be found.
+                      No Records To Show.
                     </p>
                   </div>
                 </td>

@@ -374,8 +374,8 @@ export const receiptToInvoice = (data) => {
 export const activeLLAgreement = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    start_date: formatDate(ele.startdate),
-    actualenddate: formatDate(ele.actualenddate),
+    startdate: formatDate(ele.startdate)?formatDate(ele.startdate):"",
+    actualenddate: formatDate(ele.actualenddate)?formatDate(ele.actualenddate): "",
     rentamount: floorDecimal(ele.rentamount) ? floorDecimal(ele.rentamount) : "0.00",
     depositamount: floorDecimal(ele.depositamount) ? floorDecimal(ele.depositamount) : "0.00",
   }));
@@ -384,7 +384,7 @@ export const activeLLAgreement = (data) => {
 export const orderAnalysisFromat = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    totalorderpayment: formatDate(ele.totalorderpayment),
+    totalorderpayment: floorDecimal(ele.totalorderpayment)?floorDecimal(ele.totalorderpayment):"0.00",
     totalinvoiceamt: floorDecimal(ele.totalinvoiceamt) ? floorDecimal(ele.totalinvoiceamt) : "0.00",
     totalorderreceipt: floorDecimal(ele.totalorderreceipt) ? floorDecimal(ele.totalorderreceipt) : "0.00",
   }));
@@ -479,7 +479,22 @@ export const LLlistFormat = (data)=>{
     depositamount: billing.depositamount ? floorDecimal(billing.depositamount) : "0.00",
     rentamount: billing.rentamount ? floorDecimal(billing.rentamount) : "0.00",
     startdate:billing.startdate ? formatDate(billing.startdate) :"",
-    enddate:billing.enddate ? formatDate(billing.enddate) :"",
+    actualenddate:billing.actualenddate ? formatDate(billing.actualenddate) :"",
+  }));
+
+} 
+
+export const updateOrderStatisticsReport = (data)=>{
+  return data.map((billing, index) => ({
+    ...billing,
+    on_hold: billing.on_hold ? floorDecimal(billing.on_hold) : "0.00",
+    estimate_given: billing.estimate_given ? floorDecimal(billing.estimate_given) : "0.00",
+    cancelled: billing.cancelled ? floorDecimal(billing.cancelled) : "0.00",
+    closed: billing.closed ? floorDecimal(billing.closed) : "0.00",
+    billed: billing.billed ? floorDecimal(billing.billed) : "0.00",
+    inquiry: billing.inquiry ? floorDecimal(billing.inquiry) : "0.00",
+    completed: billing.completed ? floorDecimal(billing.completed) : "0.00",
+    in_progress: billing.in_progress ? floorDecimal(billing.in_progress) : "0.00",
   }));
 
 }

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
 import {
-  env_URL_SERVER,
+  env_URL_SERVER,updateOrderStatisticsReport
 } from "../../../../helper";
 
 const initialState = {
@@ -27,7 +27,7 @@ export const orderStatisticsReport = createSlice({
   reducers: {
     setOrderStatisticsReport: (state, { payload }) => {
       const { data } = payload;
-      state.orderStatisticsReport = data.data
+      state.orderStatisticsReport = data.data;
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },

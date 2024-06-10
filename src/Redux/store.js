@@ -73,6 +73,11 @@ import EntityBlankReportReducer from "./slice/reporting/Group12/EntityBlankRepor
 import OwnerWithNoPropertyReducer from "./slice/reporting/Group12/OwnerWithNoProperty"
 import PropertyWithNoProjectReducer from "./slice/reporting/Group12/PropertyWithNoProject";
 import VendorSummary from "./slice/reporting/Group9/VendorSummary";
+import ClientPhoneNoReducer from "./slice/reporting/Group13/ClientPhoneNo"
+import OwnerPhoneNoReducer from "./slice/reporting/Group13/OwnerPhoneNo"
+import BankBalanceReconciliationReducer from "./slice/reporting/BankBalanceReconcilation";
+import EducationalInstitute from "./slice/Research/EducationalInstitute";
+
 
 import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportSlice";
 import professionals  from "./slice/Research/ProfessionalsSlice";
@@ -151,7 +156,11 @@ export const store = configureStore({
     propertyWithNoProject:PropertyWithNoProjectReducer,
     serviceTaxReport: ServiceTaxReportReducer,
     vendorSummary:VendorSummary,
-    mandals : mandals
+    mandals : mandals,
+    clientPhoneNo:ClientPhoneNoReducer,
+    ownerPhoneNo:OwnerPhoneNoReducer,
+    bankBalanceReconcilation:BankBalanceReconciliationReducer,
+    educationalInstitute:EducationalInstitute,
   },
   // Add the RTK Query API middleware
 });
