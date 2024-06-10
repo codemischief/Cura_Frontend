@@ -245,7 +245,7 @@ export const navMenuConfig = [
               title: "Client Receipt List",
               path: PATH_DASHBOARD.report.list.clientReceiptList,
             },
-            { title: "L and L List", path: "" },
+            { title: "L and L List", path: PATH_DASHBOARD.report.list.Lllist },
           ],
         },
 
@@ -455,18 +455,18 @@ export const navMenuConfig = [
           subheader: "Orders",
           items: [
             { title: "Aged Order", path: "" },
-            { title: "Order Analysis", path: "" },
+            { title: "Order Analysis", path: PATH_DASHBOARD.report.orders.orderanalysis },
           ],
         },
         {
           subheader: "Legal",
-          items: [{ title: "Active L & L Agreement", path: "" }],
+          items: [{ title: "Active L & L Agreement", path: PATH_DASHBOARD.report.legal.activellagreement }],
         },
 
         {
           subheader: "Statistics",
           items: [
-            { title: "Order Statistics", path: "" },
+            { title: "Order Statistics", path: PATH_DASHBOARD.report.statistics.orderStaticsView },
             {
               title: "Client Statistics",
               path: PATH_DASHBOARD.report.statistics.clientStatistics,
@@ -475,7 +475,6 @@ export const navMenuConfig = [
               title: "Statistics Report",
               path: PATH_DASHBOARD.report.statistics.statisticsReport,
             },
-            { title: "Owners Statistics Report", path: "" },
           ],
         },
         {

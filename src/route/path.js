@@ -74,6 +74,13 @@ export const PATH_DASHBOARD = {
       orderInvoiceList: path(ROOTS.report, "/orderInvoiceList"),
       clientReceiptList: path(ROOTS.report, "/clientReceiptList"),
       vendorPayment: path(ROOTS.report, "/vendorPaymentsList"),
+      Lllist: path(ROOTS.report , "/Lllist"),
+    },
+    orders: {
+      orderanalysis: path(ROOTS.report , "/orderanalysis"),
+    },
+    legal : {
+      activellagreement: path(ROOTS.report , "/activellagreement"),
     },
     bankRecords: {
       clientOrderReceiptMismatchDetails: path(
@@ -132,6 +139,7 @@ export const PATH_DASHBOARD = {
     statistics: {
       clientStatistics: path(ROOTS.report, "/clientStatistics"),
       statisticsReport: path(ROOTS.report, "/statisticsReport"),
+      orderStaticsView: path(ROOTS.report , "/orderStaticsView"),
     },
     vendorReport:{
       vendorStatement : path(ROOTS.report, "/vendorstatement"),
