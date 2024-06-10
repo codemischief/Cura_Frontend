@@ -229,8 +229,8 @@ const OwnerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
-    setFieldValue("state", null);
     setFieldValue("city", null);
+    setFieldValue("state", null);
     setCityData([])
     fetchStateData(country?.id);
   };

@@ -211,6 +211,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                   </MenuItem>
                                 );
                               }}
+                              placeholder='Select Country'
                               value={formik.values.countryId}
                               onChange={handleCountrySelect}
                             />
@@ -257,6 +258,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               name="city"
                               data={cityData}
                               value={formik.values.city}
+                              placeholder='Select City'
                               renderData={(item) => {
                                 return (
                                   <MenuItem value={item.city} key={item.city}>

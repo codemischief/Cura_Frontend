@@ -15,7 +15,7 @@ const CustomSelectNative = ({
   return (
     <FormControl sx={{ minWidth: 120 }}>
       <Select
-        className="selectBoxField inputFieldValue !text-sm !text-[#505050] border-[#C6C6C6]"
+        className="selectBoxField inputFieldValue text-sm !text-[#505050] border-[#C6C6C6] "
         value={value}
         onChange={onChange}
         displayEmpty
