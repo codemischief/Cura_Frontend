@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "./JwtContext";
 import { toast } from "react-toastify";
+import { routeMapObj } from "./routeMap";
 
 const AuthGuard = ({ children }) => {
   const location = useLocation();
@@ -11,6 +12,8 @@ const AuthGuard = ({ children }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
   if (location.pathname.includes("reports")) {
+    // if(user.roleId ===1)
+    // routeMapObj.getLobEntityPayments
     return <>{children}</>;
   }
 

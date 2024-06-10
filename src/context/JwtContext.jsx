@@ -68,13 +68,16 @@ function AuthProvider({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [countdown, setCountdown] = useState(10);
   const countdownRef = useRef(null);
+  const [idleTimeout, setIdleTimeout] = useState(10 * 60 * 1000);
+  // const [idleTimer, setIdleTimer] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken");
-        const user = localStorage.getItem("user");
+        const accessToken = sessionStorage.getItem("accessToken");
+        const user = sessionStorage.getItem("user");
+        const storedIdleTimeout = sessionStorage.getItem("idleTimeOut");
         if (accessToken && isValidToken(accessToken)) {
           setSession(JSON.parse(user), accessToken);
           dispatch({
@@ -84,6 +87,9 @@ function AuthProvider({ children }) {
               user: JSON.parse(user),
             },
           });
+          if (storedIdleTimeout) {
+            setIdleTimeout(parseInt(storedIdleTimeout, 10));
+          }
         } else {
           dispatch({
             type: Types.Initial,
@@ -118,7 +124,6 @@ function AuthProvider({ children }) {
         setCountdown(countdownValue);
         if (countdownValue <= 0) {
           clearInterval(countdownRef.current);
-          console.log("idle-logout");
           logout();
         }
       }, 1000);
@@ -135,7 +140,8 @@ function AuthProvider({ children }) {
           company_key,
         }
       );
-      const { token, user_id, role_id, access_rights } = response.data;
+      const { token, user_id, role_id, access_rights, idleTimeOut } =
+        response.data;
       if (token) {
         let userObj = {
           id: user_id,
@@ -150,7 +156,10 @@ function AuthProvider({ children }) {
             },
           },
         };
-        setSession(userObj, token);
+        const idleTimeoutInMs = idleTimeOut * 1000; // Convert seconds to milliseconds
+        // sessionStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
+        setIdleTimeout(idleTimeoutInMs); // Set idleTimeout state
+        setSession(userObj, token, idleTimeoutInMs);
         dispatch({
           type: Types.Login,
           payload: {
@@ -166,7 +175,6 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    console.log("logout");
     setIsModalOpen(false);
     clearInterval(countdownRef.current);
     setSession(null);
@@ -185,8 +193,9 @@ function AuthProvider({ children }) {
   const updateProfile = () => {};
 
   // Use react-idle-timer hook
-  const { reset: resetIdleTimer } = useIdleTimer({
-    timeout: 10 * 60 * 1000, // 5 minutes
+  const { reset: resetIdleTimer, getRemainingTime } = useIdleTimer({
+    timeout:
+    idleTimeout, // 5 minutes
     onIdle: handleOnIdle,
     debounce: 500,
     events: ["mousemove", "keydown", "mousedown", "touchstart"], // User activity events
@@ -196,7 +205,11 @@ function AuthProvider({ children }) {
     if (state.isAuthenticated) {
       resetIdleTimer(); // Reset idle timer when user logs in
     }
-  }, [state.isAuthenticated, resetIdleTimer]);
+  }, [state.isAuthenticatedI]);
+
+  useEffect(() => {
+    console.log("getRemainingTime", getRemainingTime());
+  });
 
   return (
     <AuthContext.Provider

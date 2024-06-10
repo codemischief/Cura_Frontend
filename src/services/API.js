@@ -1,5 +1,5 @@
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
-const accessToken = localStorage.getItem("accessToken");
+const accessToken = sessionStorage.getItem("accessToken");
 // const env_URL_SERVER="http://192.168.10.183:8000/"
 const API = {
   LOGIN: "$env_URL_SERVERvalidateCredentials",

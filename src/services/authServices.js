@@ -7,12 +7,12 @@ const env_URL_SERVER=import.meta.env.VITE_ENV_URL_SERVER
 
 
 const setToken = (token) => {
-       localStorage.setItem('token' ,token);
+       sessionStorage.setItem('token' ,token);
 };
 
 
 const getToken = ()=> {
-   const token = localStorage.getItem('token');
+   const token = sessionStorage.getItem('token');
    if(token){
        return token;
    }
