@@ -68,11 +68,11 @@ const BankAndBranchesForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const formik = useFormik({
     initialValues: {
       
-      bankname : editData?.bankname ? editData.bankname : null,
-      bankaddress : editData?.bankaddress ? editData.bankaddress : null,
+      bankname : editData?.name ? editData.name : null,
+      bankaddress : editData?.branchaddress ? editData.branchaddress : null,
       contactperson : editData?.contactperson ? editData.contactperson : null,
-      phonenumber : editData?.phonenumber ? editData.phonenumber : null,
-      emailid : editData?.emailid ? editData.emaildid : null,
+      phonenumber : editData?.phoneno ? editData.phoneno : null,
+      emailid : editData?.emailid ? editData.emailid : null,
       website : editData?.website ? editData.website : null,
       notes : editData?.notes ? editData.notes : null,
       excludefrommailinglist : editData?.excludefrommailinglist ? editData.excludefrommailinglist : false,
@@ -95,11 +95,12 @@ const BankAndBranchesForm = ({ isOpen, handleClose, editData, openSucess }) => {
         phoneno : values.phonenumber,
         website : values.website,
         contactperson : values.contactperson,
-        contact : null,
-        excludefrommailinglist : values.excludefrommailinglist
+        excludefrommailinglist : values.excludefrommailinglist,
+        notes : values.notes
       };
 
       if (editData?.id) {
+        data.id = editData.id
         await dispatch(editBanksAndBranches(data));
         openSucess();
       } else {
@@ -132,7 +133,17 @@ const BankAndBranchesForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    setFieldValue(e.target.name, e.target.value);
+    // console.log(e.target)
+    // setFieldValue(e.target.name, e.target.value);
+    const { type, name, value, checked } = e.target;
+    // const fieldValue = type === 'checkbox' ? checked : value;
+    console.log(name, checked);
+    if(type == 'checkbox') {
+      setFieldValue(name,checked)
+    }else {
+
+      setFieldValue(name, value);
+    }
   };
   
 
@@ -186,7 +197,7 @@ const BankAndBranchesForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Bank Address
+                                Branch Address
                               </label>
                               <span className="requiredError">*</span>
                             </div>

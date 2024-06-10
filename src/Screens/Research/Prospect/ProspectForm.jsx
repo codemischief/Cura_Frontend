@@ -231,6 +231,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               name="state"
                               data={stateData}
                               value={formik.values.state}
+                              placeholder={'Select State'}
+                              
                               renderData={(item) => {
                                 return (
                                   <MenuItem value={item[0]} key={item[0]}>

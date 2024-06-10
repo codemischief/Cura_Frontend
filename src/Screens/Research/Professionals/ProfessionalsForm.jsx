@@ -26,6 +26,7 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     obj: {},
   });
   const [stateData, setStateData] = useState([]);
+  const [typeData,setTypeData] = useState([])
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
@@ -60,11 +61,28 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = (await response.json()).data;
     setCityData(result);
   };
-
+  const fetchTypeData = async () => {
+    const d = {
+      "user_id" : 1234
+    }
+    const response = await APIService.getProfessionalTypesAdmin(d)
+    const res = await response.json()
+    console.log(res)
+    setTypeData(res.data)
+  }
   useEffect(() => {
+    fetchTypeData()
     fetchCountryData();
-    fetchStateData(5);
-    fetchCityData("Maharashtra");
+    if(editData?.id) {
+      // then its update wala case
+      fetchStateData(editData?.countryid)
+      fetchCityData(editData?.state)
+    }else {
+      // then its add wala case
+      fetchStateData(5);
+      fetchCityData("Maharashtra");
+    }
+    
   }, []);
 
   const fetchStateData = async (id) => {
@@ -83,19 +101,17 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   const formik = useFormik({
     initialValues: {
-      type : editData?.type ? editData.type : null,
+      type : editData?.typeid ? editData.typeid : null,
       name : editData?.name ? editData.name : null,
       emailid : editData?.emailid ? editData.emailid : null,
       phonenumber : editData?.phonenumber ? editData.phonenumber : null,
       website : editData?.website ? editData.website : null,
       professionid : editData?.professionalid ? editData.professionalid : null,
-      countryId : editData?.country ? editData.country : 5,
+      countryId : editData?.countryid ? editData.countryid : 5,
       state : editData?.state ? editData.state : "Maharashtra",
-      city : editData?.city ? editData.city : 847,
+      city : editData?.cityid ? editData.cityid : 847,
       locality : editData?.suburb ? editData.suburb : null,
       excludefrommailinglist : editData?.excludefrommailinglist ? editData.excludefrommailinglist : null,
-
-     
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -171,6 +187,7 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     setFieldValue("countryId", country?.id);
     setFieldValue("state", null);
     setFieldValue("city", null);
+    setCityData([])
     fetchStateData(country?.id);
   };
 
@@ -210,14 +227,30 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
                               name="type"
                               value={formik.values.type}
-                              onBlur={handleBlur}
+                              defaultValue="Select Type"
                               onChange={handleChange}
-                            />
+                            >
+                              <option value="" className="inputFieldValue" hidden>
+                                Select Type
+                              </option>
+                              {typeData.length > 0 &&
+                                typeData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.professionalid}
+                                      key={editData.professionalid}
+                                    >
+                                      {editData.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            
                             {/* <div className="inputValidationError">
                               {touched.employername && errors.employername && (
                                 <div>{errors.employername}</div>
@@ -364,8 +397,8 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               defaultValue="Select State"
                               onChange={handleState}
                             >
-                              <option value="" className="inputFieldValue">
-                                select state
+                              <option value="" className="inputFieldValue" hidden>
+                                Select State
                               </option>
                               {stateData.length > 0 &&
                                 stateData.map((editData) => {
@@ -473,9 +506,9 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         {isSubmitting ? (
                           <CircularProgress />
                         ) : editData?.id ? (
-                          "Update"
-                        ) : (
                           "Save"
+                        ) : (
+                          "Add"
                         )}
                       </button>
                       <button
@@ -498,7 +531,7 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Update" : "Save"}
+          btnTitle={editData?.id ? "Save" : "Add"}
           onClose={() => {
             setOpenConfimation(false);
           }}

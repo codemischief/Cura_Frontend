@@ -89,7 +89,7 @@ const ResearchBanks = () => {
         "emailid",
         "phoneno",
         "website",
-        "contact"
+        "contactperson"
       ],
       filters: formatedFilterData(filter),
       sort_by: sorting.sort_by ? [sorting.sort_by] : [],
@@ -158,7 +158,7 @@ const ResearchBanks = () => {
         "emailid",
         "phoneno",
         "website",
-        "contact"
+        "contactperson"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
@@ -176,7 +176,7 @@ const ResearchBanks = () => {
     setEditData({});
   };
 
-  const deleteBanksAndBranches = async () => {
+  const deleteBanksAndBranchesfnc = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
       await dispatch(deleteBanksAndBranches(data));
@@ -289,7 +289,7 @@ const ResearchBanks = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteBanksAndBranches}
+          handleDelete={deleteBanksAndBranchesfnc}
           deleteError={deleteError}
           text={'Banks And Branches'}
         />

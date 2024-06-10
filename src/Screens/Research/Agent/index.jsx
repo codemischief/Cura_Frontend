@@ -211,7 +211,7 @@ const ResearchAgent = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "Real Estate updated successfully"
+      ? "Real Estate Agent updated successfully"
       : "New Real Estate created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
@@ -222,8 +222,8 @@ const ResearchAgent = () => {
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no  Real Estate updated."
-      : "Process cancelled, no new Real Estate created.";
+      ? "Process cancelled, no  Real Estate Agent updated."
+      : "Process cancelled, no new Real Estate Agent created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);

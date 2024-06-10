@@ -122,7 +122,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 6,
       title: "Profession ID",
-      field: "professionid",
+      field: "professionalid",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
@@ -137,7 +137,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 7,
       title: "Phone Number",
-      field: "phoneno",
+      field: "phonenumber",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
