@@ -409,10 +409,13 @@ const LLlistReport = () => {
                   value={intialValue.clientProperty}
                   onChange={handleChange}
                 >
+                  
                   <option selected value={""} className="hidden">Select Client Property</option>
-                  {data.ClientPropertyData.map((opt) => (
+                  {data.ClientPropertyData.length>0 ? data.ClientPropertyData.map((opt) => (
                     <option value={opt.id}>{opt.propertyname}</option>
-                  ))}
+                  )):
+                  intialValue.clientId && <option value={""}>No property for this Client</option>
+                }
                 </select>
               </div>
               <div className="flex flex-col h-16 w-[200px]">
