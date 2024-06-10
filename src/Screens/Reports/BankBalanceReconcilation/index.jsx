@@ -236,7 +236,7 @@ const BankBalanceReconcilation = () => {
                                         >
                                             <div className="w-full h-full py-5 flex flex-col gap-3 items-start sm:items-center justify-center border-b dark:border-gray-700">
                                                 <p className="text-sm max-w-[10em] lg:max-w-none">
-                                                    The Data you are looking for could not be found.
+                                                    No Record To Show In Application Bank Balance Table.
                                                 </p>
                                             </div>
                                         </td>
@@ -299,7 +299,7 @@ const BankBalanceReconcilation = () => {
                                         >
                                             <div className="w-full h-full py-5 flex flex-col gap-3 items-start sm:items-center justify-center border-b dark:border-gray-700">
                                                 <p className="text-sm max-w-[10em] lg:max-w-none">
-                                                    The Data you are looking for could not be found.
+                                                No Record To Show In Passbook Bank Balance Table.
                                                 </p>
                                             </div>
                                         </td>
