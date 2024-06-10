@@ -13,7 +13,8 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "5rem",
+        minWidth: "4rem",
+        maxWidth: "5rem"
       },
       render: (index) => {
         return (
@@ -34,7 +35,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "6rem",
+        minWidth: "8rem",
         maxWidth: "20.813rem",
 
       },
@@ -43,19 +44,19 @@ export default function connectionDataColumn(onQuery) {
       title: "Phone Number",
       field: "homephone",
       sorting: true,
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "6rem",
-        maxWidth: "15rem",
+        minWidth: "8rem",
+        maxWidth: "20rem",
       },
     },
     {
       title: "Phone Number 1",
       field: "workphone",
       sorting: true,
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
@@ -67,7 +68,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Phone Number 2",
       field: "mobilephone",
       sorting: true,
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",

@@ -43,7 +43,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Phone Number",
       field: "phoneno",
       sorting: true,
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
@@ -55,7 +55,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Phone Number 1",
       field: "phoneno1",
       sorting: true,
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
@@ -67,7 +67,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Phone Number 2",
       field: "phoneno2",
       sorting: true,
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",

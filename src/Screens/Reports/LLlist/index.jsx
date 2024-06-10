@@ -55,6 +55,18 @@ const LLlistReport = () => {
     TypeData: [],
   });
 
+  const [statusDropdown, setStatusDropdown] = useState([
+    {
+        id: 1,
+        type: "Active"
+    },
+    {
+        id: 2,
+        type: "Inactive"
+    },
+    
+]);
+
   const [query, setQuery] = useState("");
 
   const [intialValue, setIntialValue] = useState({
@@ -334,9 +346,9 @@ const LLlistReport = () => {
                   onChange={handleChange}
                 >
                   <option selected value={""} className="hidden">Select Status</option>
-                  <option value="all">all</option>
-                  {data.StatusData.map((opt) => (
-                    <option value={opt.status}>{opt.status}</option>
+                  {/* <option value="all">all</option> */}
+                  {statusDropdown.map((opt) => (
+                    <option value={opt.type}>{opt.type}</option>
                   ))}
                 </select>
               </div>
