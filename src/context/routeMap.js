@@ -29,7 +29,7 @@ export const routeMapObj = Object.freeze({
   ResearchApartments: PATH_DASHBOARD.research.serviceApartmentGuestHouse,
   ResearchFriends: PATH_DASHBOARD.research.friends,
   ResearchBanksAndBranches: PATH_DASHBOARD.research.banks,
-  ResearchCOCAndBusinessGroup: PATH_DASHBOARD.research.coc,
+  ResearchCOCAndBusinessGroup: PATH_DASHBOARD.research.businessgroup,
   ResearchProfessional: PATH_DASHBOARD.research.professionals,
   ResearchMandals: PATH_DASHBOARD.research.mandals,
   ResearchArchitect: PATH_DASHBOARD.research.architect,
