@@ -43,7 +43,7 @@ export default function connectionDataColumn() {
       title: "Order ID",
       field: "orderid",
       sorting: true,
-      filterComponent:TextFilterField,
+      filterComponent:NumberFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"9rem" },
     },
     {

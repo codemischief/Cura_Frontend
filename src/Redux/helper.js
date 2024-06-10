@@ -384,7 +384,7 @@ export const activeLLAgreement = (data) => {
 export const orderAnalysisFromat = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    totalorderpayment: formatDate(ele.totalorderpayment),
+    totalorderpayment: floorDecimal(ele.totalorderpayment)?floorDecimal(ele.totalorderpayment):"0.00",
     totalinvoiceamt: floorDecimal(ele.totalinvoiceamt) ? floorDecimal(ele.totalinvoiceamt) : "0.00",
     totalorderreceipt: floorDecimal(ele.totalorderreceipt) ? floorDecimal(ele.totalorderreceipt) : "0.00",
   }));

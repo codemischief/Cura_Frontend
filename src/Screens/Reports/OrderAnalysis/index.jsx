@@ -48,7 +48,7 @@ const OrderAnalysis = () => {
     Service: [],
     Client: [
       {
-        label: "Select Client ID",
+        label: "Select Client",
         value: null,
       },
     ],
