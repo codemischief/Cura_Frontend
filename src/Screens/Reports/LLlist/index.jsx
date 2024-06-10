@@ -55,6 +55,18 @@ const LLlistReport = () => {
     TypeData: [],
   });
 
+  const [statusDropdown, setStatusDropdown] = useState([
+    {
+      id: 1,
+      type: "Active"
+    },
+    {
+      id: 2,
+      type: "Inactive"
+    },
+
+  ]);
+
   const [query, setQuery] = useState("");
 
   const [intialValue, setIntialValue] = useState({
@@ -129,15 +141,17 @@ const LLlistReport = () => {
   }, []);
 
   const handleRefresh = () => {
-    if (intialValue.clientId && intialValue.status && intialValue.type) {
+    if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
         user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
         rows: ["clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
           "registrationtype", "noticeperiodindays", "type", "id"],
+        statusName: intialValue.status,
+        clientName: intialValue.clientId.label,
+        typeName: intialValue.type,
+        clientPropertyID: intialValue.clientProperty,
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
@@ -147,7 +161,7 @@ const LLlistReport = () => {
         statusName: intialValue.status,
         clientName: intialValue.clientId.label,
         typeName: intialValue.type,
-        clientPropertyID: +intialValue.clientProperty,
+        clientPropertyID: intialValue.clientProperty,
       };
       dispatch(getLLlist(obj));
     }
@@ -175,7 +189,7 @@ const LLlistReport = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    if (intialValue.clientId && intialValue.status && intialValue.type) {
+    if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
         user_id: 1234,
         rows: [
@@ -189,7 +203,7 @@ const LLlistReport = () => {
         statusName: intialValue.status,
         clientName: intialValue.clientId.label,
         typeName: intialValue.type,
-        clientPropertyID: +intialValue.clientProperty,
+        clientPropertyID: intialValue.clientProperty,
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
@@ -233,40 +247,37 @@ const LLlistReport = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      startdate: startDate ?? "2021-01-01",
-      enddate: endDate ?? "2022-01-01",
       rows: [
-        "clienttypename", "startdate", "actualenddate", "startdatemonthyear",
-          "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
-          "clientid", "propertydescription", "property_status", "status",
-          "registrationtype", "noticeperiodindays", "type", "id"
+        "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clienttypename", 
+         "propertydescription","property_status","status","registrationtype","paymentcycle",
+         "noticeperiodindays",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       colmap: {
         type: "Type",
         id: "ID",
-        startdate:'Start Date',
-        actualenddate:"End Date",
-        startdatemonthyear:"StartDate Fiscal Month",
-        enddatemonthyear:'EndDate Fiscal Month',
-        rentamount:"Rent",
-        depositamount:"Deposit",
-        entityname:"Entity",
-        clientid:"Client ID",
-        clienttypename:"Client Name",
-        propertydescription:"Property Description",
-        property_status:"Property Status",
-        status:"Status",
-        registrationtype:"Registration Type",
-        paymentcycle:"Payment Cycle",
-        noticeperiodindays:"Notice Period In Days"
+        startdate: 'Start Date',
+        actualenddate: "End Date",
+        startdatemonthyear: "StartDate Fiscal Month",
+        enddatemonthyear: 'EndDate Fiscal Month',
+        rentamount: "Rent",
+        depositamount: "Deposit",
+        entityname: "Entity",
+        clientid: "Client ID",
+        clienttypename: "Client Name",
+        propertydescription: "Property Description",
+        property_status: "Property Status",
+        status: "Status",
+        registrationtype: "Registration Type",
+        paymentcycle: "Payment Cycle",
+        noticeperiodindays: "Notice Period In Days"
 
       },
       statusName: intialValue.status,
       clientName: intialValue.clientId.label,
       typeName: intialValue.type,
-      clientPropertyID: +intialValue.clientProperty,
+      clientPropertyID: intialValue.clientProperty,
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
@@ -334,9 +345,9 @@ const LLlistReport = () => {
                   onChange={handleChange}
                 >
                   <option selected value={""} className="hidden">Select Status</option>
-                  <option value="all">all</option>
-                  {data.StatusData.map((opt) => (
-                    <option value={opt.status}>{opt.status}</option>
+                  {/* <option value="all">all</option> */}
+                  {statusDropdown.map((opt) => (
+                    <option value={opt.type}>{opt.type}</option>
                   ))}
                 </select>
               </div>
@@ -444,7 +455,7 @@ const LLlistReport = () => {
                   },
                 }}
                 onClick={handleShow}
-                disabled={!(intialValue.type && intialValue.clientId && intialValue.status)}
+                disabled={!(intialValue.type && intialValue.clientId && intialValue.status && intialValue.clientProperty)}
               >
                 Show
               </Button>

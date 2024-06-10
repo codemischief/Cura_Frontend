@@ -203,13 +203,13 @@ const ActiveLLAgreementView = () => {
           </div>
         </div>
 
-        <Stack
+        {/* <Stack
           marginTop={"8px"}
           justifyContent={"space-between"}
           direction={"row"}
           alignItems={"center"}
           height={"3.875rem"}
-        ></Stack>
+        ></Stack> */}
         <SimpleTable
           columns={columns}
           data={activeLlAgreement}
@@ -224,7 +224,7 @@ const ActiveLLAgreementView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 18rem)"
+          height="calc(100vh - 12rem)"
         />
       </div>
     </Stack>

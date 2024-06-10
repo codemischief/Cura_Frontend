@@ -138,6 +138,9 @@ import OwnerWithNoProperty from "./Screens/Reports/Group12/OwnerWIthNoProperty/i
 import PropertyWithNoProjectView from "./Screens/Reports/Group12/PropertyWithNoProject/index.jsx";
 import ServiceTaxReport from "./Screens/Reports/Group12/ServiceTaxReport/index.jsx";
 import VendorSummary from "./Screens/Reports/VendorReport/vendorSummary/index.jsx";
+import ClientPhoneNo from "./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx";
+import OwnerPhoneNo from "./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx";
+import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -562,6 +565,19 @@ const App = () => {
               <Route
                 path="reports/vendorSummary"
                 element={<VendorSummary />}
+              />
+              <Route
+                path="reports/clientphoneno"
+                element={<ClientPhoneNo />}
+              />
+              <Route
+                path="reports/ownerphoneno"
+                element={<OwnerPhoneNo />}
+              />
+              <Route
+                path="reports/bankbalancereconciliation"
+                element={<BankBalanceReconcilation />}
+
               />
             </Route>
 

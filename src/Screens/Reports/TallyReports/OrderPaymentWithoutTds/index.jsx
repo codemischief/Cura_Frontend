@@ -259,8 +259,8 @@ const OrderPaymentWithoutTdsView = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Payments Without TDS"}
-            path={["Reports", "Tally Report", " Order Payments Without TDS"]}
+            heading={"Order Payments To Vendors"}
+            path={["Reports", "Tally Report", "Order Payments To Vendors"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
