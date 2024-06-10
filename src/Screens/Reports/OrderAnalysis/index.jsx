@@ -122,7 +122,7 @@ const OrderAnalysis = () => {
     const data = {
       user_id: 1234,
     };
-    const response = await APIService.getPaymentStatusAdmin(data);
+    const response = await APIService.getOrderStatusAdmin(data);
     const result = await response.json();
     console.log(result.data, "Status");
     setData((prev) => ({ ...prev, Status: [...result.data] }));
@@ -369,7 +369,7 @@ const OrderAnalysis = () => {
                   <option selected value={""} className="hidden">Select Status</option>
                   <option value="all">all</option>
                   {data.Status.map((opt) => (
-                    <option value={opt.status}>{opt.status}</option>
+                    <option value={opt[1]}>{opt[1]}</option>
                   ))}
                 </select>
               </div>
