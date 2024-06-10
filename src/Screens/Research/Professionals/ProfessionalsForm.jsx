@@ -17,7 +17,11 @@ import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
 const validationSchema = Yup.object().shape({
-
+  type : Yup.string().required('Select Type'),
+  name : Yup.string().required('Enter Name'),
+  countryId: Yup.string().required("Select Country"),
+  state: Yup.string().required("Select State"),
+  city: Yup.string().required("Select City"),
 });
 const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
@@ -185,8 +189,8 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
-    setFieldValue("state", null);
     setFieldValue("city", null);
+    setFieldValue("state", null);
     setCityData([])
     fetchStateData(country?.id);
   };
@@ -251,17 +255,18 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                 })}
                             </select>
                             
-                            {/* <div className="inputValidationError">
-                              {touched.employername && errors.employername && (
-                                <div>{errors.employername}</div>
+                            <div className="inputValidationError ">
+                              {touched.type && errors.type && (
+                                <div>{errors.type}</div>
                               )}
-                            </div> */}
+                            </div>
                           </div>
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
                                 Name
                               </label>
+                              <span className="requiredError">*</span>
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
@@ -271,11 +276,11 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
-                            {/* <div className="inputValidationError">
-                              {touched.employername && errors.employername && (
-                                <div>{errors.employername}</div>
+                            <div className="inputValidationError">
+                              {touched.name && errors.name && (
+                                <div>{errors.name}</div>
                               )}
-                            </div> */}
+                            </div>
                           </div>
                           <div className="">
                             <div className="flex">
@@ -285,7 +290,7 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="emailid"
                               value={formik.values.emailid}
                               onBlur={handleBlur}
@@ -387,7 +392,7 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 State Name
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span> 
                             </div>
                             <select
                               // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -426,7 +431,7 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 City Name
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span> 
                             </div>
 
                             <select

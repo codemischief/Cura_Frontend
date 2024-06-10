@@ -341,9 +341,9 @@ const BankAndBranchesForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         {isSubmitting ? (
                           <CircularProgress />
                         ) : editData?.id ? (
-                          "Update"
-                        ) : (
                           "Save"
+                        ) : (
+                          "Add"
                         )}
                       </button>
                       <button
@@ -366,16 +366,16 @@ const BankAndBranchesForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Update" : "Save"}
+          btnTitle={editData?.id ? "Save" : "Add"}
           onClose={() => {
             setOpenConfimation(false);
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Client"
+          title={`${editData?.id ? 'Save Bank And Branch' : 'Add Bank And Branch'}`}
           description={
             <div>
-              <p className="">Client: {values.personname}</p>
+              <p className="">Bank Name: {values.bankname}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
@@ -386,7 +386,7 @@ const BankAndBranchesForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this client?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Bank and Branch?
               </Typography>
             </div>
           }

@@ -707,7 +707,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
           title={`${editData?.id ? 'Save Service Aprtment' : 'Add Service Apartment'}`}
           description={
             <div className="flex flex-col items-center">
-              <p className="">Owner: {values.name}</p>
+              <p className="">Apartment Name: {values.name}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",

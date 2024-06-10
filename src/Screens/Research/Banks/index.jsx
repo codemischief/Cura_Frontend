@@ -153,13 +153,21 @@ const ResearchBanks = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "id",
         "name",
         "emailid",
         "phoneno",
         "website",
-        "contactperson"
+        "contactperson",
+        "id",
       ],
+      colmap : {
+         "name" : "Name",
+        "emailid" : "Email ID",
+        "phoneno" : "Phone Number",
+        "website" : "Website",
+        "contactperson" : "Contact",
+        "id" : "ID",
+      },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
@@ -204,7 +212,7 @@ const ResearchBanks = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "Bank And Branch updated successfully"
+      ? "Changes Saved Successfully"
       : "New Bank And Branch created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
@@ -215,7 +223,7 @@ const ResearchBanks = () => {
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no new Bank And Branch updated."
+      ? "Process cancelled, No Changes Saved."
       : "Process cancelled, no new Bank And Branch created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);

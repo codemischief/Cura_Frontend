@@ -148,7 +148,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       },
       render: (rowData) => {
         return (
-          <div className="flex gap-2 justify-start">
+          <div className="flex gap-2 justify-center">
             <EditButton
                handleEdit={handleEdit}
                rowData={rowData}

@@ -170,7 +170,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       field: "id",
       sorting: true,
       align: "left",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
 
       cellStyle: {
         ...cellStyleCommon,
