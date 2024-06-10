@@ -34,7 +34,7 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Payment",
-      field: "payments",
+      field: "payment",
       cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
     },
     {

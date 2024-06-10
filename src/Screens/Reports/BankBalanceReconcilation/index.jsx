@@ -107,8 +107,8 @@ const BankBalanceReconcilation = () => {
     };
 
     return (
-        <Container>
-            <Stack gap="1rem">
+        <Container >
+            <Stack gap="1rem" sx={{height:"100%"}}>
                 <div className="flex flex-col px-4">
                     <div className="flex justify-between">
                         <HeaderBreadcrum
@@ -184,7 +184,7 @@ const BankBalanceReconcilation = () => {
                         </Stack>
                     </Stack>
                 </div>
-                <div className="flex flex-col gap-12 mt-7">
+                <div className="flex flex-col gap-12 mt-7 h-full" >
                     <div className="flex flex-col gap-4">
                     <p className="font-semibold text-xl leading-[1.35]">Application Bank Balance</p>
                     <table style={{ width: "-webkit-fill-available" }}>
@@ -335,12 +335,12 @@ const BankBalanceReconcilation = () => {
                     </table>
                     </div>
                 </div>
-                <div className="flex gap-3 justify-end ">
+                <div className="flex gap-3 justify-end p-4 border-t-2 border-[#CBCBCB]">
                     <Popover
                         open={open}
                         anchorEl={anchorEl}
                         onClose={() => setAnchorEl(null)}
-                        sx={{ top: "-130px", left: "-20px" }}
+                        sx={{ top: "-70px", left: "-20px" }}
                         anchorOrigin={{
                             vertical: "bottom",
                             horizontal: "left",
