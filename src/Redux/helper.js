@@ -477,6 +477,21 @@ export const LLlistFormat = (data)=>{
     enddate:billing.enddate ? formatDate(billing.enddate) :"",
   }));
 
+} 
+
+export const updateOrderStatisticsReport = (data)=>{
+  return data.map((billing, index) => ({
+    ...billing,
+    on_hold: billing.on_hold ? floorDecimal(billing.on_hold) : "0.00",
+    estimate_given: billing.estimate_given ? floorDecimal(billing.estimate_given) : "0.00",
+    cancelled: billing.cancelled ? floorDecimal(billing.cancelled) : "0.00",
+    closed: billing.closed ? floorDecimal(billing.closed) : "0.00",
+    billed: billing.billed ? floorDecimal(billing.billed) : "0.00",
+    inquiry: billing.inquiry ? floorDecimal(billing.inquiry) : "0.00",
+    completed: billing.completed ? floorDecimal(billing.completed) : "0.00",
+    in_progress: billing.in_progress ? floorDecimal(billing.in_progress) : "0.00",
+  }));
+
 }
 
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
