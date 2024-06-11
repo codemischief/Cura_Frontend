@@ -11,7 +11,7 @@ const isValidToken = (accessToken) => {
     return false;
   }
   const decoded = jwtDecode(accessToken);
-  console.log("decoded", decoded);
+  // console.log("decoded", decoded);
   const currentTime = Date.now() / 1000;
 
   return decoded.exp > currentTime;
@@ -26,7 +26,7 @@ const handleTokenExpired = (exp) => {
   expiredTimer = window.setTimeout(() => {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("user");
-    sessionStorage.removeItem("idleTimeOut");
+    // sessionStorage.removeItem("idleTimeOut");
   }, timeLeft);
 };
 
@@ -34,7 +34,7 @@ const setSession = (user, accessToken, idleTimeOut) => {
   if (accessToken) {
     sessionStorage.setItem("accessToken", accessToken);
     sessionStorage.setItem("user", JSON.stringify(user));
-    sessionStorage.setItem("idleTimeOut", idleTimeOut);
+    // sessionStorage.setItem("idleTimeOut", idleTimeOut);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     // This function below will handle when token is expired
     const { exp } = jwtDecode(accessToken);
@@ -42,7 +42,7 @@ const setSession = (user, accessToken, idleTimeOut) => {
   } else {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("user");
-    sessionStorage.removeItem("idleTimeOut");
+    // sessionStorage.removeItem("idleTimeOut");
     delete axios.defaults.headers.common.Authorization;
   }
 };

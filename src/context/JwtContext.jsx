@@ -65,14 +65,14 @@ const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(JWTReducer, initialState);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [countdown, setCountdown] = useState(10);
-  const countdownRef = useRef(null);
-  const [idleTimeout, setIdleTimeout] = useState(() =>
-    sessionStorage.getItem("idleTimeOut")
-      ? sessionStorage.getItem("idleTimeOut")
-      : 10 * 60 * 1000
-  );
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [countdown, setCountdown] = useState(10);
+  // const countdownRef = useRef(null);
+  // const [idleTimeout, setIdleTimeout] = useState(() =>
+  //   sessionStorage.getItem("idleTimeOut")
+  //     ? sessionStorage.getItem("idleTimeOut")
+  //     : 10 * 60 * 1000
+  // );
   // const [idleTimer, setIdleTimer] = useState(1);
   const navigate = useNavigate();
 
@@ -81,7 +81,7 @@ function AuthProvider({ children }) {
       try {
         const accessToken = sessionStorage.getItem("accessToken");
         const user = sessionStorage.getItem("user");
-        const storedIdleTimeout = sessionStorage.getItem("idleTimeOut");
+        // const storedIdleTimeout = sessionStorage.getItem("idleTimeOut");
         if (accessToken && isValidToken(accessToken)) {
           setSession(JSON.parse(user), accessToken);
           dispatch({
@@ -91,9 +91,9 @@ function AuthProvider({ children }) {
               user: JSON.parse(user),
             },
           });
-          if (storedIdleTimeout) {
-            setIdleTimeout(parseInt(storedIdleTimeout, 10));
-          }
+          // if (storedIdleTimeout) {
+          //   setIdleTimeout(parseInt(storedIdleTimeout, 10));
+          // }
         } else {
           dispatch({
             type: Types.Initial,
@@ -104,7 +104,7 @@ function AuthProvider({ children }) {
           });
         }
       } catch (err) {
-        console.log("err", err);
+        // console.log("err", err);
         dispatch({
           type: Types.Initial,
           payload: {
@@ -118,21 +118,21 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const handleOnIdle = () => {
-    if (state.isAuthenticated) {
-      setIsModalOpen(true);
-      let countdownValue = 10;
-      setCountdown(countdownValue);
-      countdownRef.current = setInterval(() => {
-        countdownValue -= 1;
-        setCountdown(countdownValue);
-        if (countdownValue <= 0) {
-          clearInterval(countdownRef.current);
-          logout();
-        }
-      }, 1000);
-    }
-  };
+  // const handleOnIdle = () => {
+  //   if (state.isAuthenticated) {
+  //     setIsModalOpen(true);
+  //     let countdownValue = 10;
+  //     setCountdown(countdownValue);
+  //     countdownRef.current = setInterval(() => {
+  //       countdownValue -= 1;
+  //       setCountdown(countdownValue);
+  //       if (countdownValue <= 0) {
+  //         clearInterval(countdownRef.current);
+  //         logout();
+  //       }
+  //     }, 1000);
+  //   }
+  // };
 
   const login = async (username, password, company_key) => {
     try {
@@ -162,8 +162,9 @@ function AuthProvider({ children }) {
         };
         const idleTimeoutInMs = idleTimeOut * 1000; // Convert seconds to milliseconds
         // sessionStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
-        setIdleTimeout(idleTimeoutInMs); // Set idleTimeout state
-        setSession(userObj, token, idleTimeoutInMs);
+        // setIdleTimeout(idleTimeoutInMs); // Set idleTimeout state
+        // setSession(userObj, token, idleTimeoutInMs);
+        setSession(userObj, token);
         dispatch({
           type: Types.Login,
           payload: {
@@ -179,44 +180,44 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    setIsModalOpen(false);
-    clearInterval(countdownRef.current);
+    // setIsModalOpen(false);
+    // clearInterval(countdownRef.current);
     setSession(null);
     dispatch({ type: Types.Logout });
     toast.success("Logged out successfully");
     navigate("/login");
   };
-  const handleContinueSession = () => {
-    clearInterval(countdownRef.current);
-    resetIdleTimer(); // Reset idle timer on user activity
-    setIsModalOpen(false);
-  };
+  // const handleContinueSession = () => {
+  //   // clearInterval(countdownRef.current);
+  //   resetIdleTimer(); // Reset idle timer on user activity
+  //   // setIsModalOpen(false);
+  // };
 
-  const handleCloseModal = (event, reason) => {
-    if (reason && reason === "backdropClick") return;
-    setIsModalOpen(false);
-  };
+  // const handleCloseModal = (event, reason) => {
+  //   if (reason && reason === "backdropClick") return;
+  //   // setIsModalOpen(false);
+  // };
   const resetPassword = (email) => console.log(email);
 
   const updateProfile = () => {};
 
   // Use react-idle-timer hook
-  const { reset: resetIdleTimer, getRemainingTime } = useIdleTimer({
-    timeout: idleTimeout, // 5 minutes
-    onIdle: handleOnIdle,
-    debounce: 500,
-    events: ["mousemove", "keydown", "mousedown", "touchstart"], // User activity events
-  });
+  // const { reset: resetIdleTimer, getRemainingTime } = useIdleTimer({
+  //   timeout: idleTimeout, // 5 minutes
+  //   onIdle: handleOnIdle,
+  //   debounce: 500,
+  //   events: ["mousemove", "keydown", "mousedown", "touchstart"], // User activity events
+  // });
 
-  useEffect(() => {
-    if (state.isAuthenticated) {
-      resetIdleTimer(); // Reset idle timer when user logs in
-    }
-  }, [state.isAuthenticatedI]);
+  // useEffect(() => {
+  //   if (state.isAuthenticated) {
+  //     resetIdleTimer(); // Reset idle timer when user logs in
+  //   }
+  // }, [state.isAuthenticatedI]);
 
-  useEffect(() => {
-    console.log("getRemainingTime", getRemainingTime());
-  });
+  // useEffect(() => {
+  //   console.log("getRemainingTime", getRemainingTime());
+  // });
 
   return (
     <AuthContext.Provider
@@ -230,7 +231,7 @@ function AuthProvider({ children }) {
       }}
     >
       {children}
-      {state.isAuthenticated && (
+      {/* {state.isAuthenticated && (
         <SessionTimeoutModal
           open={isModalOpen}
           onContinue={handleContinueSession}
@@ -238,7 +239,7 @@ function AuthProvider({ children }) {
           countdown={countdown}
           onClose={handleCloseModal}
         />
-      )}
+    )} */}
     </AuthContext.Provider>
   );
 }
