@@ -28,6 +28,8 @@ const validationSchema = Yup.object().shape({
 const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   const { countryData } = useSelector((state) => state.commonApi);
+  console.log(countryData)
+  console.log('hey')
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);

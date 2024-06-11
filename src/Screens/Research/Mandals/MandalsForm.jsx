@@ -13,40 +13,15 @@ import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 import { addMandals, editMandals } from "../../../Redux/slice/Research/MandalSlice";
 import CustomSelectNative from "../../../Components/common/select/CustomSelectNative";
+import { getCountries } from "../../../Redux/slice/commonApis";
 const validationSchema = Yup.object().shape({
 
 });
-// {
-//   "user_id": 1234,
-//   "country": 5,
-//   "onsiteopportunity": true,
-//   "city": "Pune",
-//   "state": "Maharashtra",
-//   "admincontactmail": "admin@example.com",
-//   "zip": "10001",
-//   "hc": "Healthcare",
-//   "website": "www.example.com",
-//   "admincontactphone": "1234567890",
-//   "contactname1": "Jane Smith",
-//   "contactmail1": "jane@example.com",
-//   "contactphone1": "2345678901",
-//   "contactname2": "Michael Johnson",
-//   "contactmail2": "michael@example.com",
-//   "contactphone2": "3456789012",
-//   "hrcontactname": "Emily Brown",
-//   "hrcontactmail": "hr@example.com",
-//   "hrcontactphone": "4567890123",
-//   "admincontactname": "Admin Name",
-//   "employername": "Example Corp",
-//   "industry": "Technology",
-//   "addressline1": "123 Main St",
-//   "addressline2": "Suite 101",
-//   "suburb": "Downtown"
-// }
 const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   const { countryData } = useSelector((state) => state.commonApi);
   console.log(countryData)
+
   // const [countryData,setCountryData] = useState([])
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
@@ -76,6 +51,11 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
+    const idNameObject = {};
+    result.forEach((country) => {
+      idNameObject[country.id] = country.name;
+    });
+    // setCountryData(idNameObject)
     // setCountryData(result)
     // setLoading(false);
     // const resultConverted = await result?.reduce((acc, current) => {
@@ -87,7 +67,10 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     console.log(countryData)
   };
   useEffect(() => {
-    fetchCountryData()
+    // fetchCountryData()
+    if (countryData.length === 0) {
+      dispatch(getCountries());
+    }
     fetchStateData(5);
     fetchCityData("Maharashtra");
   }, []);
@@ -224,7 +207,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
                     <ModalHeader
                       onClose={handleClose}
-                      title={editData.id ? "Edit Employer" : "New Employer"}
+                      title={editData.id ? "Edit Mandal" : "New Mandal"}
                     />
                     </div>
                     <div className="h-auto w-full mt-[5px] ">
@@ -580,7 +563,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Update" : "Save"}
+          btnTitle={editData?.id ? "Save" : "Add"}
           onClose={() => {
             setOpenConfimation(false);
           }}
@@ -589,7 +572,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
           title="Add Client"
           description={
             <div>
-              <p className="">Client: {values.personname}</p>
+              <p className="">Mandal: {values.name}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
@@ -600,7 +583,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this client?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Mandal?
               </Typography>
             </div>
           }
