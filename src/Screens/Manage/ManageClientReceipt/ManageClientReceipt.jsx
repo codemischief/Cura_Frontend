@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link , useNavigate } from "react-router-dom";
+import { Outlet, Link , useNavigate, useParams, useLocation } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -36,6 +36,8 @@ import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientReceipt = () => {
+    const location = useLocation()
+    console.log(location)
     const navigate = useNavigate()
     const initialRows = [
         "clientname",
@@ -402,7 +404,7 @@ const ManageClientReceipt = () => {
 
     const initialValues = {
         receivedDate: null,
-        receivedBy: 1,
+        receivedBy: 1234,
         receiptMode: 5,
         client: "",
         howReceived: null,
@@ -519,6 +521,7 @@ const ManageClientReceipt = () => {
             "pg_no": 0,
             "pg_size": 0,
             "downloadType" : type,
+            "routename" : location?.pathname,
             "search_key": searchInput,
             "colmap" : {
                 "clientname" : "Client Name",
@@ -1181,7 +1184,7 @@ const ManageClientReceipt = () => {
        setOrderData(temp)
     }
     return (
-        <div className='h-screen font-medium'>
+        <div className='font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -1203,7 +1206,7 @@ const ManageClientReceipt = () => {
             {deleteConfirmation && <DeleteClientReceipt handleClose={() => { setDeleteConfirmation(false) }} handleDelete={deleteClientReceipt} item={currReceiptId} showCancel={openCancelModal} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no New Client Receipt added." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
-            <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
+            <div className='h-[calc(100vh_-_123px)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>

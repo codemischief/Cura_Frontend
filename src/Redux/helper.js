@@ -322,6 +322,7 @@ export const tdsPaidGovtFormat = (data) => {
   return data.map((ele, index) => ({
     ...ele,
     amount: floorDecimal(ele.amount) ? floorDecimal(ele.amount) : "0.00",
+    date: formatDate(ele.date) ? formatDate(ele.date) : "",
   }));
 };
 

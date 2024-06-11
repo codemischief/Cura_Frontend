@@ -225,29 +225,29 @@ const helper = (index, obj, pageName) => {
     if (index == 1) {
 
     } else if (index == 2) {
-      return `Total: ${obj.jan_sum}`
+      return `Total: ${obj[0].jan}`
     } else if (index == 3) {
-      return `Total: ${obj.feb_sum}`
+      return `Total: ${obj[0].feb}`
     } else if (index == 4) {
-      return `Total: ${obj.mar_sum}`
+      return `Total: ${obj[0].mar}`
     } else if (index == 5) {
-      return `Total: ${obj.apr_sum}`
+      return `Total: ${obj[0].apr}`
     } else if (index == 6) {
-      return `Total: ${obj.may_sum}`
+      return `Total: ${obj[0].may}`
     } else if (index == 7) {
-      return `Total: ${obj.jun_sum}`
+      return `Total: ${obj[0].jun}`
     } else if (index == 8) {
-      return `Total: ${obj.jul_sum}`
+      return `Total: ${obj[0].jul}`
     } else if (index == 9) {
-      return `Total: ${obj.aug_sum}`
+      return `Total: ${obj[0].aug}`
     } else if (index == 10) {
-      return `Total: ${obj.sep_sum}`
+      return `Total: ${obj[0].sep}`
     } else if (index == 11) {
-      return `Total: ${obj.oct_sum}`
+      return `Total: ${obj[0].oct}`
     } else if (index == 12) {
-      return `Total: ${obj.nov_sum}`
+      return `Total: ${obj[0].nov}`
     } else if (index == 13) {
-      return `Total: ${obj.dec_sum}`
+      return `Total: ${obj[0].dec}`
     }
   } else if (pageName == "lobreceiptpaymentconsolidated") {
     if (index == 2) {

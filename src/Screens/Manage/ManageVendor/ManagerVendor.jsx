@@ -892,7 +892,7 @@ const ManageVendor = () => {
     }
     // fetching utility routes end here
     return (
-        <div className='h-screen w-full font-medium'>
+        <div className='w-full font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -910,7 +910,7 @@ const ManageVendor = () => {
             {deleteConfirmation && <DeleteVendorModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteVendor} item={currVendorId} currVendor={formValues.vendorName} showCancel={openCancelModal} name={currVendorName} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new vendor created." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
-            <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
+            <div className='h-[calc(100vh_-_123px)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>

@@ -1208,7 +1208,7 @@ const ManageBankStatement = () => {
          }
     ])
     return (
-        <div className="h-screen font-medium">
+        <div className="font-medium">
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -1224,7 +1224,7 @@ const ManageBankStatement = () => {
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Bank Statement" />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new Bank Statement created." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
-            <div className="w-full h-[calc(100vh_-_7rem)] px-10">
+            <div className="w-full h-[calc(100vh_-_123px)] px-10">
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
@@ -1385,7 +1385,7 @@ const ManageBankStatement = () => {
                     </div>
                 </div>
 
-                <div className="w-full h-[calc(100vh_-_14rem)] text-[12px] font-medium">
+                <div className="w-full h-[calc(100vh_-_16rem)] text-[12px] font-medium">
 
                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                         <div className='w-[85%] flex'>
@@ -1494,7 +1494,7 @@ const ManageBankStatement = () => {
                         {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} showCancel={openCancelModal} />}
                     </div>
-                        <div className="h-[3rem] w-full bg-[#F0F6FF] flex">
+                        <div className="h-[2rem] w-full bg-[#F0F6FF] flex">
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4 border-[1px] border-gray-300'>
                                     
