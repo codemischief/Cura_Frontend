@@ -2,7 +2,7 @@ import React from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { useState, useEffect } from "react";
 import { APIService } from '../../../../services/API';
-const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builderNameData, formErrors }) => {
+const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builderNameData, formErrors , state}) => {
 
     const selectedProjectType = [1, 2, 3, 4];
     const selectedBuilderName = [1, 2, 3, 4];
@@ -347,6 +347,9 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                         <div className="text-[13px]">
                             Builder Name <label className="text-red-500">*</label>
                         </div>
+                        {state?.hyperlinked ?
+                        
+                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={'hehe'} >{state.buildername}</div> : 
                         <select
                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                             name="builderid"
@@ -360,7 +363,7 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                                     {item.buildername}
                                 </option>
                             ))}
-                        </select>
+                        </select>}
                         <div className="w-full text-[9.5px] text-[#CD0000] absolute  ">{formErrors.builderid}</div>
                     </div>
                     <div className="">
@@ -440,7 +443,7 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                             setFormValues(existing)
                         }}
                     />
-                    Tenet woking bachlors allowed
+                    Tenant woking bachlors allowed
                 </div>
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
                     <input
@@ -458,7 +461,7 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                     />
 
 
-                    Tenet student allowed
+                    Tenant student allowed
                 </div>
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
                     <input
@@ -475,7 +478,7 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                         }}
                     />
 
-                    Tenet Foreigners allowed
+                    Tenant Foreigners allowed
                 </div>
             </div>
         </>

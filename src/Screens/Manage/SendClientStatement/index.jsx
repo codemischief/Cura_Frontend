@@ -134,13 +134,13 @@ const OrderReceiptList = () => {
           "description",
           "amount",
         ],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        sort_by: sorting.sort_by ? [sorting.sort_by] : "",
 
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
+        order: sorting.sort_order ? sorting.sort_order : "",
       };
       dispatch(getData(obj));
     }
@@ -175,7 +175,7 @@ const OrderReceiptList = () => {
         "description",
         "amount",
       ],
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "excel",
       colmap: {
         "date": "Date",
@@ -187,7 +187,7 @@ const OrderReceiptList = () => {
       search_key: search,
       pg_no: 0,
       pg_size: 0,
-      order: sorting.sort_order ? sorting.sort_order : undefined,
+      order: sorting.sort_order ? sorting.sort_order : "",
     };
     dispatch(downloadData(obj)).then((response) => {
       // const tableData = response.data;
@@ -243,7 +243,31 @@ const OrderReceiptList = () => {
     }
     return results
   }
+  const sendEmail = () => {
+    console.log(sorting)
+    let obj = {
+      user_id: 1234,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      sendEmail:true,
+      clientid:selectedOption.value,
+      entityid:1,
+      rows: [
+        "date",
+        "type",
+        "description",
+        "amount",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
 
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(getData(obj));
+  }
   return (
     <Container>
       <div className="flex flex-col px-4">
@@ -264,6 +288,7 @@ const OrderReceiptList = () => {
               <CustomButton
                 title="Send Client Statement"
                 onClick={() => {
+                  sendEmail()
                   showTable && setOpenModal(true);
                 }}
               />

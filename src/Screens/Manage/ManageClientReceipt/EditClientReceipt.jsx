@@ -171,11 +171,11 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
           }
           return results
        }
-    const fetchInitialData = async  (id) => {
+    const fetchInitialData = async  () => {
         const d = {
             "user_id" : 1234,
             "table_name" : "client_receipt",
-            "id" : id
+            "id" : currClientReceipt.id
         }
         const response = await APIService.getItembyId(d)
         const res = await response.json()
@@ -184,7 +184,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
 
     }
     useEffect(() => {
-        fetchInitialData(currClientReceipt.id)
+        fetchInitialData()
         fetchUsersData()
         fetchModesData()
         fetchHowReceivedData()

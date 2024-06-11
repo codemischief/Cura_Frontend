@@ -13,11 +13,11 @@ import EditContact from './ManageProjectInfoForm/EditContact';
 import EditPhotos from './ManageProjectInfoForm/EditPhotos';
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
-const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
+const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state}) => {
     const [selectedDialogue,setSelectedDialogue] = useState(1)
     const initialValues = {
         "project_info": {
-            "builderid": null,
+            "builderid": state?.hyperlinked ? state.builderid : null,
             "projectname": null,
             "addressline1": null,
             "addressline2": null,
@@ -197,6 +197,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
             setFormErrors((existing) => {
                 return { ...existing, projectname: "Enter Project name" }
             })
+            res.page = 1
             res.status = false
         }else {
             setFormErrors((existing) => {
@@ -208,6 +209,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
             setFormErrors((existing) => {
                 return { ...existing, project_type: "Select Project Type" }
             })
+            res.page = 1
             res.status = false
         }else {
             setFormErrors((existing) => {
@@ -220,6 +222,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
             setFormErrors((existing) => {
                 return { ...existing, addressline1: "Enter Adress Line1" }
             })
+            res.page = 1
             res.status = false
         }else {
             setFormErrors((existing) => {
@@ -232,6 +235,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
             setFormErrors((existing) => {
                 return { ...existing, suburb: "Enter Suburb" }
             })
+            res.page = 1
             res.status = false
         }else {
             setFormErrors((existing) => {
@@ -246,7 +250,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
             setFormErrors((existing) => {
                 return { ...existing, builderid: "Select Builder Name" }
             })
-            
+            res.page = 1
             res.status = false
         }else {
             setFormErrors((existing) => {
@@ -489,7 +493,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
                                 </div>
                             </div>
                             {!pageLoading && <>
-                            {selectedDialogue == 1 && <EditProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} />}
+                            {selectedDialogue == 1 && <EditProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} state={state}/>}
                             {selectedDialogue == 2 && <EditProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors}/>}
                             {selectedDialogue == 3 && <EditBankDetails formValues={formValues} setFormValues={setFormValues}/>}
                             {selectedDialogue == 4 && <EditContact formValues={formValues} setFormValues={setFormValues}/>}

@@ -272,6 +272,7 @@ const ManageProjectInfo = () => {
             setFormErrors((existing) => {
                 return { ...existing, project_type: "Select Project Type" }
             })
+            res.page = 1
             res.status = false
         } else {
             setFormErrors((existing) => {
@@ -284,6 +285,7 @@ const ManageProjectInfo = () => {
             setFormErrors((existing) => {
                 return { ...existing, addressline1: "Enter Adress Line1" }
             })
+            res.page = 1
             res.status = false
         } else {
             setFormErrors((existing) => {
@@ -296,6 +298,7 @@ const ManageProjectInfo = () => {
             setFormErrors((existing) => {
                 return { ...existing, suburb: "Enter Suburb" }
             })
+            res.page = 1
             res.status = false
         } else {
             setFormErrors((existing) => {
@@ -355,6 +358,7 @@ const ManageProjectInfo = () => {
         let temp = validate()
         if (!temp.status) {
             console.log(formErrors)
+            console.log(temp.page)
             setSelectedDialogue(temp.page)
             return;
         }
@@ -613,7 +617,7 @@ const ManageProjectInfo = () => {
     }
     const initialValues = {
         "project_info": {
-            "builderid": null,
+            "builderid": state?.hyperlinked ? state.builderid : null,
             "projectname": null,
             "addressline1": null,
             "addressline2": null,
@@ -976,7 +980,7 @@ const ManageProjectInfo = () => {
                <CircularProgress color="inherit"/>
 
             </Backdrop>
-            {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} showCancel={openCancelModal} state={state} />}
             {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} showCancel={openCancelModal} projectName={deleteProjectName}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Project Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
@@ -1398,7 +1402,7 @@ const ManageProjectInfo = () => {
                 <>
                     <div className='flex justify-center'>
                         <Draggable handle='div.move'>
-                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                        <div className="w-[1100px] h-auto  bg-white rounded-lg">
                             <div className='move cursor-move'>
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                                     <div className="mr-[410px] ml-[410px]">
@@ -1426,12 +1430,12 @@ const ManageProjectInfo = () => {
                                     <button onClick={selectFifth}><div>Photos</div></button>
                                 </div>
                             </div>
-                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} />}
+                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} state={state}/>}
                             {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors} />}
                             {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues} />}
-                            <div className="my-2 flex justify-center items-center gap-[10px]">
+                            <div className="my-2 flex justify-center items-center gap-[10px] mt-[20px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddProjectInfo} >Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>

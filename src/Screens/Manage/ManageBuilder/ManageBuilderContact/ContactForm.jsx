@@ -15,7 +15,16 @@ import {
 import { ModalHeader } from "../../../../Components/modals/ModalAtoms";
 import CustomSelectNative from "../../../../Components/common/select/CustomSelectNative";
 
-const validationSchema = Yup.object().shape({});
+const validationSchema = Yup.object().shape({
+  contactname : Yup.string().required('Enter Contact Name'),
+  jobtitle : Yup.string().required('Enter Job Title'),
+  businessphone : Yup.string().required('Enter Business Phone'),
+  email : Yup.string().required('Enter Email'),
+  suburb : Yup.string().required('Enter Suburb'),
+  countryId: Yup.string().required("Select Country"),
+  state: Yup.string().required("Select State"),
+  city: Yup.string().required("Select City"),
+});
 // {
 //   "user_id": 1234,
 //   "country": 5,
@@ -82,16 +91,16 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = await response.json();
     setStateData(result.data);
   };
-
+  console.log(editData);
   const formik = useFormik({
     initialValues: {
       contactname: editData?.contactname ? editData.contactname : null,
       jobtitle: editData?.jobtitle ? editData.jobtitle : null,
-      email: editData?.email ? editData.email : null,
+      email: editData?.email1 ? editData.email1 : null,
       businessphone: editData?.businessphone ? editData.businessphone : null,
       mobilephone: editData?.mobilephone ? editData.mobilephone : null,
       adressline1: editData?.addressline1 ? editData.addressline1 : null,
-      countryId: editData?.countryid ? editData.countryid : 5,
+      countryId: editData?.country ? editData.country : 5,
       state: editData?.state ? editData.state : "Maharashtra",
       city: editData?.city ? editData.city : 847,
       suburb: editData.suburb ? editData.suburb : null,
@@ -214,7 +223,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 Builder Name
                               </label>
-                              <span className="requiredError">*</span>
+                              
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
@@ -235,6 +244,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 Contact Name
                               </label>
+                              <span className="requiredError">*</span>
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
@@ -244,17 +254,18 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
-                            {/* <div className="inputValidationError">
-                              {touched.employername && errors.employername && (
-                                <div>{errors.employername}</div>
+                            <div className="inputValidationError">
+                              {touched.contactname && errors.contactname && (
+                                <div>{errors.contactname}</div>
                               )}
-                            </div> */}
+                            </div>
                           </div>
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
                                 Job Title
                               </label>
+                              <span className="requiredError">*</span>
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
@@ -264,11 +275,11 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
-                            {/* <div className="inputValidationError">
-                              {touched.employername && errors.employername && (
-                                <div>{errors.employername}</div>
+                            <div className="inputValidationError">
+                              {touched.jobtitle && errors.jobtitle && (
+                                <div>{errors.jobtitle}</div>
                               )}
-                            </div> */}
+                            </div>
                           </div>
 
                           <div className="">
@@ -282,7 +293,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="email"
                               value={formik.values.email}
                               onChange={handleChange}
@@ -290,8 +301,8 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             />
                             <div className="inputValidationError">
                               {/* {formErrors.suburb} */}
-                              {touched.suburb && errors.suburb && (
-                                <div>{errors.suburb}</div>
+                              {touched.email && errors.email && (
+                                <div>{errors.email}</div>
                               )}
                             </div>
                           </div>
@@ -300,6 +311,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 Business Phone
                               </label>
+                              <span className="requiredError">*</span>
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
@@ -309,11 +321,11 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
-                            {/* <div className="inputValidationError">
-                              {touched.employername && errors.employername && (
-                                <div>{errors.employername}</div>
+                            <div className="inputValidationError">
+                              {touched.businessphone && errors.businessphone && (
+                                <div>{errors.businessphone}</div>
                               )}
-                            </div> */}
+                            </div>
                           </div>
                           <div className="">
                             <div className="flex">
@@ -445,8 +457,8 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                             />
                             <div className="inputValidationError">
-                              {touched.industry && errors.industry && (
-                                <div>{errors.industry}</div>
+                              {touched.suburb && errors.suburb && (
+                                <div>{errors.suburb}</div>
                               )}
                             </div>
                           </div>
@@ -552,7 +564,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
           title={`${editData?.id ? "Save Contact" : "Add Contact"}`}
           description={
             <div className="flex flex-col items-center">
-              <p className="">Employer: {values.employername}</p>
+              <p className="">Contact Name: {values.contactname}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",

@@ -57,8 +57,10 @@ const ManageBuilderContact = () => {
       };
       const response = await APIService.getItembyId(dataItem);
       let updatedaresponse = await response.json();
-      updatedaresponse.buildername = state.buildername;
-      setEditData(updatedaresponse);
+     
+      setEditData(
+        {...updatedaresponse.data,buildername : state.buildername}
+      );
       setOpenForm(true);
     } catch (error) {
       errorHandler(error, "Failed to fetch Please try again later");
@@ -88,25 +90,13 @@ const ManageBuilderContact = () => {
       user_id: 1234,
       builderid :state.builderid,
       rows: [
+        "contactname",
+        "buildername",
+        "jobtitle",
+        "suburb",
+        "city",
         "id",
-          "buildername",
-          "builderid",
-          "contactname",
-          "jobtitle",
-          "businessphone",
-          "homephone",
-          "mobilephone",
-          "addressline1",
-          "addressline2",
-          "suburb",
-          "city",
-          "state",
-          "country",
-          "zip",
-          "notes",
-          "dated",
-          "createdby",
-          "isdeleted"
+          
       ],
       filters: formatedFilterData(filter),
       sort_by: sorting.sort_by ? [sorting.sort_by] : [],
@@ -168,26 +158,21 @@ const ManageBuilderContact = () => {
     let obj = {
       user_id: 1234,
       rows: [
+        "contactname",
+        "buildername",
+        "jobtitle",
+        "suburb",
+        "city",
         "id",
-          "buildername",
-          "builderid",
-          "contactname",
-          "jobtitle",
-          "businessphone",
-          "homephone",
-          "mobilephone",
-          "addressline1",
-          "addressline2",
-          "suburb",
-          "city",
-          "state",
-          "country",
-          "zip",
-          "notes",
-          "dated",
-          "createdby",
-          "isdeleted"
       ],
+      colmap : {
+        "contactname" : "Contact Name",
+        "buildername" : "Builder Name",
+        "jobtitle" : "Job Title",
+        "suburb" : "Suburb",
+        "city" : "City",
+        "id" : "ID"
+      },
       // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
@@ -261,11 +246,11 @@ const ManageBuilderContact = () => {
           openSucess={openSucess}
         />
       )}
-      <div className="flex flex-col px-4 gap-[1.75rem]">
-        <div className="flex justify-between mt-[10px]">
+      <div className="flex flex-col px-4 gap-[1rem]">
+        <div className="flex justify-between mt-[10px] ">
           <HeaderBreadcrum
             heading={"Contact"}
-            path={["Manage ", "Contact"]}
+            path={["Manage ","Manage Builder ", "Contact"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <SearchBar
@@ -286,7 +271,10 @@ const ManageBuilderContact = () => {
             </button>
           </div>
         </div>
-        <div className="w-full h-full overflow-y-auto">
+        <div className="w-full px-5  h-12 flex items-center border-gray border-b-[1px]">
+            <h1>Builder Name : {state?.buildername}</h1>
+        </div>
+        <div className="w-full px-5 h-full overflow-y-auto">
           <SimpleTable
             columns={columns}
             data={ContactData}
@@ -295,7 +283,7 @@ const ManageBuilderContact = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 18rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}

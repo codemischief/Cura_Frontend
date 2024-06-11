@@ -448,7 +448,7 @@ const ManageClientProperty = () => {
         }
     }
     useEffect(() => {
-        console.log(state)
+        
         
         setHyperLinkData()
         fetchClientData();

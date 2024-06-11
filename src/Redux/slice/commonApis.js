@@ -32,7 +32,7 @@ export const { setCountriesData, setStatus } = commonApis.actions;
 export const getCountries = () => async (dispatch) => {
   try {
     const data = {
-      user_id: userId,
+      user_id: userId ?? 1234,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],
