@@ -374,7 +374,7 @@ const getClientInfo = async (data) => {
 const getClientProperty = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getClientProperty`,
-    METHOD_POST(data)
+    METHOD_POST({...data, routename : 'temp'})
   );
   return response;
 };

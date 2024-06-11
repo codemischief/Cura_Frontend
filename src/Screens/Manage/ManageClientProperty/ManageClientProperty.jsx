@@ -813,7 +813,7 @@ const ManageClientProperty = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            "routename" : pathname,
+            
             "downloadType" : type,
             "colmap" : {
                 "client" : "Client Name",
