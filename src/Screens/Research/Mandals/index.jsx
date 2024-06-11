@@ -16,7 +16,7 @@ import {
   setPageNumber,
   setSorting,
 } from "../../../Redux/slice/Research/MandalSlice";
-
+import { getCountries } from "../../../Redux/slice/commonApis";
 import getColumns from "./Columns";
 import AlertModal, {
   alertVariant,
@@ -35,7 +35,9 @@ const ResearchMandals = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.mandals);
-
+  const {
+    countryData
+  } = useSelector((state) => state.commonApi)
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
@@ -88,6 +90,7 @@ const ResearchMandals = () => {
         "name",
         "typename",
         "city",
+        "suburb",
         "emailid",
         "phoneno"
       ],
@@ -120,6 +123,9 @@ const ResearchMandals = () => {
   };
 
   useEffect(() => {
+    if (countryData.length === 0) {
+      dispatch(getCountries());
+    }
     if (searchInput === "") setSearch("");
   }, [searchInput]);
 
@@ -152,6 +158,7 @@ const ResearchMandals = () => {
         "name",
         "typename",
         "city",
+        "suburb",
         "emailid",
         "phoneno"
       ],

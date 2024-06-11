@@ -90,6 +90,22 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       },
     },
     {
+      id: 4,
+      filterComponent: TextFilterField,
+
+      title: "Locality",
+      field: "suburb",
+      align: "left",
+      filterDisabled: false,
+      sorting: true,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '15%'
+      },
+    },
+    {
       id: 5,
       title: "Email ID",
       field: "emailid",

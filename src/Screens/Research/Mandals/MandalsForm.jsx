@@ -15,7 +15,9 @@ import { addMandals, editMandals } from "../../../Redux/slice/Research/MandalSli
 import CustomSelectNative from "../../../Components/common/select/CustomSelectNative";
 import { getCountries } from "../../../Redux/slice/commonApis";
 const validationSchema = Yup.object().shape({
-
+  countryId: Yup.string().required("Select Country"),
+  state: Yup.string().required("Select State"),
+  city: Yup.string().required("Select City"),
 });
 const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
@@ -68,9 +70,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
   useEffect(() => {
     // fetchCountryData()
-    if (countryData.length === 0) {
-      dispatch(getCountries());
-    }
+    
     fetchStateData(5);
     fetchCityData("Maharashtra");
   }, []);
@@ -569,7 +569,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Client"
+          title={`${editData?.id ? 'Save Mandal' : 'Add Mandal'}`}
           description={
             <div>
               <p className="">Mandal: {values.name}</p>
