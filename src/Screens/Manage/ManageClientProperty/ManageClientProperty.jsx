@@ -448,6 +448,8 @@ const ManageClientProperty = () => {
         }
     }
     useEffect(() => {
+        console.log(state)
+        
         setHyperLinkData()
         fetchClientData();
         fetchData();
@@ -481,7 +483,7 @@ const ManageClientProperty = () => {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-    }, []);
+    }, [state]);
 
     const handleOpenEdit = (oldItem) => {
         console.log('called');
