@@ -4,22 +4,25 @@ import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
-import SimpleTable from "../../../Components/common/table/ClientPortalTable";
+import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import CustomButton from "../../../Components/common/CustomButton";
 import AsyncSelect from "react-select/async";
 import { APIService } from '../../../services/API';
+import Container from "../../../Components/common/Container";
+import { formatDate } from "../../../utils/formatDate";
 
 import { useDispatch } from "react-redux";
 import {
-  downloadReceiptDataXls,
-  getOrderReceiptData,
+  downloadData,
+  getData,
   setCountPerPage,
   setPageNumber,
   setSorting,
   setStatus,
-} from "../../../Redux/slice/reporting/OrderReceiptSlice";
+  setInitialState,
+} from "../../../Redux/slice/SendClientStatement";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
@@ -28,14 +31,16 @@ import * as XLSX from "xlsx";
 const OrderReceiptList = () => {
   const dispatch = useDispatch();
   const {
-    orderReceiptData,
+    Data,
     status,
     totalCount,
     sorting,
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.orderReceipt);
+    openingBalance,
+    closingBalance,
+  } = useSelector((state) => state.sendClientStatement);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -44,6 +49,7 @@ const OrderReceiptList = () => {
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+  const [height, setHeight] = useState("calc(100vh - 16rem)");
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
@@ -69,28 +75,19 @@ const OrderReceiptList = () => {
   };
 
   const handleRefresh = () => {
-    if (startDate && endDate) {
+    if (startDate && endDate && selectedOption.value) {
       let obj = {
         user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
+        sendEmail:false,
+        clientid:selectedOption.value,
+        entityid:1,
         rows: [
+          "date",
           "type",
-          "id",
-          "recddate",
-          "monthyear",
-          "fy",
+          "description",
           "amount",
-          "entityname",
-          "paymentmode",
-          "clientid",
-          "clientname",
-          "vendorname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname",
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -99,7 +96,7 @@ const OrderReceiptList = () => {
         pg_no: +pageNo,
         pg_size: +countPerPage,
       };
-      dispatch(getOrderReceiptData(obj));
+      dispatch(getData(obj));
     }
   };
 
@@ -123,28 +120,19 @@ const OrderReceiptList = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    if (startDate && endDate) {
+    if (startDate && endDate && selectedOption.value) {
       let obj = {
         user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
+        sendEmail:false,
+        clientid:selectedOption.value,
+        entityid:1,
         rows: [
+          "date",
           "type",
-          "id",
-          "recddate",
-          "monthyear",
-          "fy",
+          "description",
           "amount",
-          "entityname",
-          "paymentmode",
-          "clientid",
-          "clientname",
-          "vendorname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname",
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
 
@@ -154,7 +142,7 @@ const OrderReceiptList = () => {
         pg_size: +countPerPage,
         order: sorting.sort_order ? sorting.sort_order : undefined,
       };
-      dispatch(getOrderReceiptData(obj));
+      dispatch(getData(obj));
     }
   }, [
     filter,
@@ -178,43 +166,22 @@ const OrderReceiptList = () => {
       user_id: 1234,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
+      sendEmail:false,
+      clientid:selectedOption.value,
+      entityid:1,
       rows: [
+        "date",
         "type",
-        "id",
-        "recddate",
-        "monthyear",
-        "fy",
+        "description",
         "amount",
-        "entityname",
-        "paymentmode",
-        "clientid",
-        "clientname",
-        "vendorname",
-        "orderid",
-        "orderdescription",
-        "serviceid",
-        "service",
-        "lobname",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       colmap: {
+        "date": "Date",
         "type": "Type",
-        "id": "ID",
-        "recddate": "Received Date",
-        "monthyear": "Fiscal Month",
-        "fy": "Fiscal year",
+        "description": "Description",
         "amount": "Amount",
-        "entityname": "Entity",
-        "paymentmode": "Mode",
-        "clientid": "Client ID",
-        "clientname": "Client Name",
-        "vendorname": "Vendor Name",
-        "orderid": "Order ID",
-        "orderdescription": "Order Description",
-        "serviceid": "Service ID",
-        "service": "Service",
-        "lobname": "LOB Name"
       },
       filters: formatedFilterData(filter),
       search_key: search,
@@ -222,48 +189,22 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadReceiptDataXls(obj)).then((response) => {
-      const tableData = response.data;
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "OrderPaymentList.xlsx");
-      dispatch(setStatus("success"));
+    dispatch(downloadData(obj)).then((response) => {
+      // const tableData = response.data;
+      // const worksheet = XLSX.utils.json_to_sheet(tableData);
+      // const workbook = XLSX.utils.book_new();
+      // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      // XLSX.writeFile(workbook, "SendClientStatement.xlsx");
+      // dispatch(setStatus("success"));
     });
   };
 
   const handleShow = () => {
-
-    let obj = {
-      user_id: 1234,
-      startdate: "2020-01-01",
-      enddate: "2022-01-01",
-      rows: [
-        "id",
-        "type",
-        "recddate",
-        "fy",
-        "monthyear",
-        "amount",
-        "entityname",
-        "paymentmode",
-        "clientid",
-        "clientname",
-        "orderid",
-        "orderdescription",
-        "serviceid",
-        "service",
-        "lobname"
-      ],
-      sort_by: ["id"],
-      order: "desc",
-      filters: [],
-      search_key: "",
-      pg_no: 1,
-      pg_size: 15,
-    };
-    dispatch(getOrderReceiptData(obj));
-    setShowTable(true);
+    if(startDate && endDate && selectedOption.value){
+      dispatch(setInitialState());
+      setShowTable(true);
+      setHeight("calc(100vh - 24rem)")
+    }
   };
 
   const [query, setQuery] = useState('')
@@ -304,7 +245,7 @@ const OrderReceiptList = () => {
   }
 
   return (
-    <Stack gap="1rem">
+    <Container>
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -360,8 +301,8 @@ const OrderReceiptList = () => {
                     ...provided,
                     minHeight: 23,
                     lineHeight: '0.8',
-                    height: 28,
-                    width: 200,
+                    height: 30,
+                    width: 180,
                     fontSize: 10,
                     // padding: '1px'
                   }),
@@ -375,38 +316,46 @@ const OrderReceiptList = () => {
                     ...provided,
                     padding: '1px', // adjust padding for the dropdown indicator
                   }),
-                  options: (provided, state) => ({
+                  // options: (provided, state) => ({
+                  //     ...provided,
+                  //     fontSize: 10// adjust padding for the dropdown indicator
+                  // }),
+                  option: (provided, state) => ({
                     ...provided,
-                    fontSize: 10// adjust padding for the dropdown indicator
+                    padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                    margin: 0, // Ensure no extra margin
+                    fontSize: 10 // Adjust font size of individual options
                   }),
                   menu: (provided, state) => ({
                     ...provided,
-                    width: 230, // Adjust the width of the dropdown menu
+                    width: 180, // Adjust the width of the dropdown menu
+                    zIndex: 9999 // Ensure the menu appears above other elements
                   }),
+                  menuList: (provided, state) => ({
+                    ...provided,
+                    padding: 0, // Adjust padding of the menu list
+                    fontSize: 10,
+                    maxHeight: 150 // Adjust font size of the menu list
+                  }),
+
                 }}
               />
             </div>
 
-            <div className="">
-              <div className="text-sm">From <label className="text-red-500">*</label></div>
-              <input className="w-40 h-7 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="amount" />
-            </div>
-
-            <div className="">
-              <div className="text-sm">To <label className="text-red-500">*</label></div>
-              <input className="w-40 h-7 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="amount" />
-            </div>
-
-            {/* <DatePicker
-              label={"Select Start Date"}
+            <DatePicker
+              label={"From"}
               onChange={handleDateChange}
               name="startDate"
             />
+
             <DatePicker
-              label={"Select End Date"}
+              label={"To"}
               onChange={handleDateChange}
               name="endDate"
-            /> */}
+            />
+            {console.log(startDate)}
+            {console.log(endDate)}
+            {console.log(selectedOption.value)}
             <Button
               variant="outlined"
               //   onClick={handleShow}
@@ -428,7 +377,7 @@ const OrderReceiptList = () => {
                 },
               }}
               onClick={handleShow}
-            // disabled={!(startDate && endDate)}
+              disabled={!(startDate && endDate && selectedOption.value)}
             >
               View Statement
             </Button>
@@ -449,7 +398,7 @@ const OrderReceiptList = () => {
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
                 <div className="">Client Name</div>
-                <div className=""></div>
+                <div className="">{selectedOption.label}</div>
               </div>
             </Stack>
             <Stack
@@ -458,7 +407,7 @@ const OrderReceiptList = () => {
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
                 <div className="">Data Range</div>
-                <div className=""></div>
+                <div className="">{formatDate(startDate)} To {formatDate(endDate)}</div>
               </div>
             </Stack>
             <Stack
@@ -467,7 +416,7 @@ const OrderReceiptList = () => {
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
                 <div className="">Opening Balance</div>
-                <div className=""></div>
+                <div className="">{openingBalance}</div>
               </div>
             </Stack>
             <Stack
@@ -476,7 +425,7 @@ const OrderReceiptList = () => {
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
                 <div className="">Current Balance</div>
-                <div className=""></div>
+                <div className="">{closingBalance}</div>
               </div>
             </Stack>
           </Stack>
@@ -485,7 +434,7 @@ const OrderReceiptList = () => {
 
         <SimpleTable
           columns={columns}
-          data={orderReceiptData}
+          data={Data}
           pageNo={pageNo}
           isLoading={status === "loading"}
           totalCount={totalCount}
@@ -496,7 +445,7 @@ const OrderReceiptList = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-
+          height={height}
         />
       </div>
       {toast && (
@@ -505,7 +454,8 @@ const OrderReceiptList = () => {
           message="New Receipt Added Successfully"
         />
       )}
-    </Stack>
+
+    </Container>
   );
 };
 

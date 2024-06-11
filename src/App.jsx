@@ -264,6 +264,10 @@ const App = () => {
                 element={<ManageVendorPayment />}
               />
               <Route
+                path="/manage/sendClientStatement"
+                element={<SendClientStatement />}
+              />
+              <Route
                 path="manage/managebuilder/projects/:buildername"
                 element={<ManageBuilderProject />}
               />
@@ -569,7 +573,6 @@ const App = () => {
               <Route
                 path="reports/bankbalancereconciliation"
                 element={<BankBalanceReconcilation />}
-
               />
             </Route>
 
