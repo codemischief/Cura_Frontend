@@ -1234,7 +1234,7 @@ const ManageClientInfo = () => {
     }
     const [orderText,setOrderText] = useState('Select Tenant Of Property')
     return (
-        <div className='h-screen font-medium'>
+        <div className='font-medium'>
             
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
