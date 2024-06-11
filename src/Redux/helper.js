@@ -505,4 +505,11 @@ export const updatedMandalsData = (data) => {
     ...billing,
   }));
 }
+export const sendClientStatement = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+    amount: billing.amount ? floorDecimal(billing.amount) : "0.00",
+    date: billing.date ? formatDate(billing.date) : "",
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
