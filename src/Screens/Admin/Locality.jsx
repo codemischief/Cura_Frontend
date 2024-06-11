@@ -30,9 +30,11 @@ import NumericFilter from '../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
 import AddButton from '../../Components/common/CustomButton';
+
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Locality = () => {
     const menuRef = useRef();
+    
     const navigate = useNavigate()
     const [existingLocalities, setExistingLocalities] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);

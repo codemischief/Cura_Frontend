@@ -15,8 +15,9 @@ const SimpleTable = ({
   handleSortingChange,
   downloadExcel,
   height = "calc(100vh - 19rem)",
-}) => {
-  return (
+  }) => {
+    {console.log(data)}
+    return (
     <>
       <div
         className={`w-full text-[12px] overflow-x-auto `}

@@ -2,9 +2,15 @@ import PropTypes from "prop-types";
 
 import { Modal, Box, Typography, Button } from "@mui/material";
 
-const SessionTimeoutModal = ({ open, onContinue, onLogout, countdown }) => {
+const SessionTimeoutModal = ({
+  open,
+  onContinue,
+  onLogout,
+  onClose,
+  countdown,
+}) => {
   return (
-    <Modal open={open} onClose={onLogout}>
+    <Modal open={open} disableEscapeKeyDown onClose={onClose}>
       <Box sx={{ ...modalStyle }}>
         <Typography variant="h6">
           Your session will expire soon. Please click continue to stay logged

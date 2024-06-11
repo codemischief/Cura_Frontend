@@ -75,11 +75,13 @@ import PropertyWithNoProjectReducer from "./slice/reporting/Group12/PropertyWith
 import VendorSummary from "./slice/reporting/Group9/VendorSummary";
 import ClientPhoneNoReducer from "./slice/reporting/Group13/ClientPhoneNo"
 import OwnerPhoneNoReducer from "./slice/reporting/Group13/OwnerPhoneNo"
-import BankBalanceReconciliationReducer from "./slice/reporting/BankBalanceReconcilation"
+import BankBalanceReconciliationReducer from "./slice/reporting/BankBalanceReconcilation";
+import EducationalInstitute from "./slice/Research/EducationalInstitute";
 
 
 import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportSlice";
 import professionals  from "./slice/Research/ProfessionalsSlice";
+import mandals  from "./slice/Research/MandalSlice";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -154,10 +156,11 @@ export const store = configureStore({
     propertyWithNoProject:PropertyWithNoProjectReducer,
     serviceTaxReport: ServiceTaxReportReducer,
     vendorSummary:VendorSummary,
+    mandals : mandals,
     clientPhoneNo:ClientPhoneNoReducer,
     ownerPhoneNo:OwnerPhoneNoReducer,
-    bankBalanceReconcilation:BankBalanceReconciliationReducer
-
+    bankBalanceReconcilation:BankBalanceReconciliationReducer,
+    educationalInstitute:EducationalInstitute,
   },
   // Add the RTK Query API middleware
 });
