@@ -7,17 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress, Modal, Typography, MenuItem } from "@mui/material";
 import { APIService } from "../../../../services/API";
 import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
-import {
-  addEmployerData,
-  editEmployerData,
-} from "../../../../Redux/slice/Research/EmployerSlice";
+
 import {
   addContactData,
   editContact,
 } from "../../../../Redux/slice/Manage/contact";
-// import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import { ModalHeader } from "../../../../Components/modals/ModalAtoms";
-import CustomSelect from "../../../../Components/common/select/CustomSelect";
 import CustomSelectNative from "../../../../Components/common/select/CustomSelectNative";
 
 const validationSchema = Yup.object().shape({});
@@ -51,37 +46,12 @@ const validationSchema = Yup.object().shape({});
 const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   const { countryData } = useSelector((state) => state.commonApi);
-  // const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [openConfirmation, setOpenConfimation] = useState(false);
   const { formSubmissionStatus } = useSelector((state) => state.employer);
 
-  // const fetchCountryData = async () => {
-  //   setLoading(true);
-  //   const data = {
-  //     user_id: 1234,
-  //     rows: ["id", "name"],
-  //     filters: [],
-  //     sort_by: [],
-  //     order: "asc",
-  //     pg_no: 0,
-  //     pg_size: 0,
-  //   };
-  //   const response = await APIService.getCountries(data);
-  //   const result = (await response.json()).data;
-  //   // setCountryData(result)
-  //   setLoading(false);
-  //   // const resultConverted = await result?.reduce((acc, current) => {
-  //   //   acc[current.id] = current.name;
-  //   //   return acc;
-  //   // }, {});
-
-  //   // setCountryData({ arr: result, obj: resultConverted });
-  //   console.log(countryData)
-  // };
   function convertToIdNameObject(data) {
     const idNameObject = {};
     data.forEach((item) => {
@@ -93,18 +63,14 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const data = { user_id: 1234, state_name: id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
-    // convertToIdNameObject
     setCityData(convertToIdNameObject(result));
   };
 
   useEffect(() => {
-    // fetchCountryData();
     if (editData?.id) {
-      // then its update wala case
       fetchStateData(editData?.countryid);
       fetchCityData(editData?.state);
     } else {
-      // then its add wala case
       fetchStateData(5);
       fetchCityData("Maharashtra");
     }
@@ -117,12 +83,6 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
     setStateData(result.data);
   };
 
-  const fetchCity = async (id) => {
-    const data = { user_id: 1234, state_name: id };
-    const response = await APIService.getCities(data);
-    const result = await response.json();
-    setCityData(convertToIdNameObject(result.data));
-  };
   const formik = useFormik({
     initialValues: {
       contactname: editData?.contactname ? editData.contactname : null,
@@ -148,25 +108,6 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   });
 
   const handleConfirm = async () => {
-    // "user_id": 1234,
-    // "builderid": 101,
-    // "contactname": "Alice Smith",
-    // "email1": "alice.smith@example.com",
-    // "jobtitle": "Project Engineer",
-    // "businessphone": "123-456-7890",
-    // "homephone": "987-654-3210",
-    // "mobilephone": "555-123-4567",
-    // "addressline1": "456 Oak Street",
-    // "addressline2": "Suite 200",
-    // "suburb": "Downtown",
-    // "city": 456,
-    // "state": "New York",
-    // "country": 2,
-    // "zip": "54321",
-    // "notes": "Some notes about Alice Smith",
-    // "dated": "2024-03-14T08:00:00",
-    // "createdby": 5678,
-    // "isdeleted": false
     try {
       const data = {
         user_id: 1234,
@@ -221,21 +162,14 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-    // console.log(e.target)
-    // setFieldValue(e.target.name, e.target.value);
     const { type, name, value, checked } = e.target;
-    // const fieldValue = type === 'checkbox' ? checked : value;
-    console.log(name, checked);
     if (type == "checkbox") {
       setFieldValue(name, checked);
     } else {
-      console.log(name, value);
       setFieldValue(name, value);
     }
   };
   const handleCountrySelect = (e) => {
-    // console.log(country)
     setFieldValue("countryId", e.target.value);
     setFieldValue("city", null);
     setFieldValue("state", null);
@@ -245,7 +179,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   const handleState = (e) => {
     setFieldValue(e.target.name, e.target.value);
-    fetchCity(e.target.value);
+    fetchCityData(e.target.value);
   };
 
   return (
@@ -477,7 +411,6 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">City</label>
                               <span className="requiredError">*</span>
                             </div>
-                            {console.log(cityData[formik.values.city])}
                             <CustomSelectNative
                               name="city"
                               data={Object.keys(cityData)}
@@ -501,11 +434,9 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                           </div>
                           <div className="">
-                            {/* <div className="text-[13px]">Email </div> */}
                             <label className="inputFieldLabel">Suburb</label>
                             <span className="requiredError">*</span>
                             <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
                               name="suburb"
@@ -520,10 +451,8 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                           </div>
                           <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
                             <label className="inputFieldLabel">ZIP Code</label>
                             <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
                               name="zip"
@@ -533,7 +462,6 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             />
                           </div>
                           <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
                             <label className="inputFieldLabel">
                               Home Phone
                             </label>
