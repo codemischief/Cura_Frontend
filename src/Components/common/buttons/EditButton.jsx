@@ -7,8 +7,8 @@ import { useLocation } from "react-router-dom";
 const EditButton = ({ handleEdit, sx, rowData }) => {
   const { user } = useAuth();
   const { pathname } = useLocation();
-
-  if (!user.allowedModules[pathname]?.edit) return null;
+   
+  // if (!user.allowedModules[pathname]?.edit) return null;
   return (
     <Create
       sx={{

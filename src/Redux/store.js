@@ -82,6 +82,7 @@ import EducationalInstitute from "./slice/Research/EducationalInstitute";
 import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportSlice";
 import professionals  from "./slice/Research/ProfessionalsSlice";
 import mandals  from "./slice/Research/MandalSlice";
+import contact from "./slice/Manage/contact";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -161,6 +162,7 @@ export const store = configureStore({
     ownerPhoneNo:OwnerPhoneNoReducer,
     bankBalanceReconcilation:BankBalanceReconciliationReducer,
     educationalInstitute:EducationalInstitute,
+    contact : contact
   },
   // Add the RTK Query API middleware
 });

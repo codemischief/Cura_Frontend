@@ -6,7 +6,7 @@ const initialState = {
   countryData: [],
   status: "",
 };
-function convertToIdNameObject(countries) {
+export function convertToIdNameObject(countries) {
   const idNameObject = {};
   countries.forEach((country) => {
     idNameObject[country.id] = country.name;

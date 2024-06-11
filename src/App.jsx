@@ -32,7 +32,7 @@ import ResearchAgent from "./Screens/Research/Agent/index.jsx";
 import GovernmentDepartment from "./Screens/Research/Government Department/GovernmentDepartment";
 import ManageBankStatement from "./Screens/Manage/ManageBankStatement/ManageBankStatement";
 import ManageBuilderProject from "./Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject";
-import ManageBuilderContact from "./Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact";
+import ManageBuilderContact from "./Screens/Manage/ManageBuilder/ManageBuilderContact/index.jsx";
 import Temp from "./Screens/Admin/temp";
 import ManageClientPropertyByClientName from "./Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName";
 import ClientPmaArgreement from "./Screens/Manage/ManageClientProperty/ClientPmaAgreement/ClientPmaAgreement";
