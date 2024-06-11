@@ -37,9 +37,19 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 const ManageProjectInfo = () => {
     
-    const dataRows = ["buildername", "builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"]
-    // we have the module here
-
+    const dataRows = [
+        "projectname", 
+        "buildername", 
+        "suburb",
+        "otherdetails", 
+        "mailgroup1", 
+        "mailgroup2", 
+        "rules", 
+        "tenantstudentsallowed", 
+        "tenantworkingbachelorsallowed", 
+        "tenantforeignersallowed", 
+        "id",
+    ]
     const menuRef = useRef();
     const navigate = useNavigate()
     const {state} = useLocation()
@@ -975,7 +985,7 @@ const ManageProjectInfo = () => {
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new project created." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             
-            <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
+            <div className='h-[calc(100vh_-_123px)] w-full px-10'>
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1311,7 +1321,7 @@ const ManageProjectInfo = () => {
 
             </div>
 
-            <div className='w-full h-12 flex justify-between px-6 bg-white '>
+            <div className='w-full h-12 flex justify-between px-6 bg-white fixed'>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>
