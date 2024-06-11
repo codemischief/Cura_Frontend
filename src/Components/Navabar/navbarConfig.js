@@ -200,7 +200,8 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.bankRecords
                 .clientOrderReceiptMismatchDetails,
             },
-            { title: "Bank Balance Reconciliation", path: "" },
+            { title: "Bank Balance Reconciliation", 
+              path: PATH_DASHBOARD.report.bankRecords.bankBalanceReconciliation},
             {
               title: "Monthly Bank Summary",
               path: PATH_DASHBOARD.report.bankRecords.monthlyBankSummary,
@@ -220,6 +221,7 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.bankRecords
                 .dailyBankPaymentsReconciliation,
             },
+            
           ],
         },
         {

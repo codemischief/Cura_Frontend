@@ -82,6 +82,7 @@ export const downloadbankBalanceReconcillation =
             dispatch(setLoading(false))
           
         } catch (err) {
+            dispatch(setLoading(false))
             console.log(err);
 
         }
