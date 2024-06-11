@@ -4,25 +4,23 @@ import PropTypes from "prop-types";
 import * as Yup from "yup";
 import { Form, FormikProvider, useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress, Modal, Typography , MenuItem} from "@mui/material";
+import { CircularProgress, Modal, Typography, MenuItem } from "@mui/material";
 import { APIService } from "../../../../services/API";
 import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
 import {
   addEmployerData,
-  editEmployerData
-} from "../../../../Redux/slice/Research/EmployerSlice"
+  editEmployerData,
+} from "../../../../Redux/slice/Research/EmployerSlice";
 import {
   addContactData,
-  editContact
-} from "../../../../Redux/slice/Manage/contact"
+  editContact,
+} from "../../../../Redux/slice/Manage/contact";
 // import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import { ModalHeader } from "../../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../../Components/common/select/CustomSelect";
 import CustomSelectNative from "../../../../Components/common/select/CustomSelectNative";
 
-const validationSchema = Yup.object().shape({
-   
-});
+const validationSchema = Yup.object().shape({});
 // {
 //   "user_id": 1234,
 //   "country": 5,
@@ -51,9 +49,8 @@ const validationSchema = Yup.object().shape({
 //   "suburb": "Downtown"
 // }
 const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
-  console.log(editData)
   const dispatch = useDispatch();
-  const {countryData} = useSelector((state) => state.commonApi)
+  const { countryData } = useSelector((state) => state.commonApi);
   // const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
@@ -62,29 +59,29 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const [openConfirmation, setOpenConfimation] = useState(false);
   const { formSubmissionStatus } = useSelector((state) => state.employer);
 
-  const fetchCountryData = async () => {
-    setLoading(true);
-    const data = {
-      user_id: 1234,
-      rows: ["id", "name"],
-      filters: [],
-      sort_by: [],
-      order: "asc",
-      pg_no: 0,
-      pg_size: 0,
-    };
-    const response = await APIService.getCountries(data);
-    const result = (await response.json()).data;
-    setCountryData(result)
-    setLoading(false);
-    // const resultConverted = await result?.reduce((acc, current) => {
-    //   acc[current.id] = current.name;
-    //   return acc;
-    // }, {});
+  // const fetchCountryData = async () => {
+  //   setLoading(true);
+  //   const data = {
+  //     user_id: 1234,
+  //     rows: ["id", "name"],
+  //     filters: [],
+  //     sort_by: [],
+  //     order: "asc",
+  //     pg_no: 0,
+  //     pg_size: 0,
+  //   };
+  //   const response = await APIService.getCountries(data);
+  //   const result = (await response.json()).data;
+  //   // setCountryData(result)
+  //   setLoading(false);
+  //   // const resultConverted = await result?.reduce((acc, current) => {
+  //   //   acc[current.id] = current.name;
+  //   //   return acc;
+  //   // }, {});
 
-    // setCountryData({ arr: result, obj: resultConverted });
-    console.log(countryData)
-  };
+  //   // setCountryData({ arr: result, obj: resultConverted });
+  //   console.log(countryData)
+  // };
   function convertToIdNameObject(data) {
     const idNameObject = {};
     data.forEach((item) => {
@@ -101,17 +98,16 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
 
   useEffect(() => {
-    fetchCountryData();
-    if(editData?.id) {
+    // fetchCountryData();
+    if (editData?.id) {
       // then its update wala case
-      fetchStateData(editData?.countryid)
-      fetchCityData(editData?.state)
-    }else {
+      fetchStateData(editData?.countryid);
+      fetchCityData(editData?.state);
+    } else {
       // then its add wala case
       fetchStateData(5);
       fetchCityData("Maharashtra");
     }
-    
   }, []);
 
   const fetchStateData = async (id) => {
@@ -125,25 +121,24 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const data = { user_id: 1234, state_name: id };
     const response = await APIService.getCities(data);
     const result = await response.json();
-    setCityData(result.data);
+    setCityData(convertToIdNameObject(result.data));
   };
-  console.log(editData)
   const formik = useFormik({
     initialValues: {
-      contactname : editData?.contactname ? editData.contactname : null,
-      jobtitle : editData?.jobtitle ? editData.jobtitle : null,
-      email : editData?.email ? editData.email : null,
-      businessphone : editData?.businessphone ? editData.businessphone : null,
-      mobilephone : editData?.mobilephone ? editData.mobilephone : null,
-      adressline1 : editData?.addressline1 ? editData.addressline1 : null,
-      countryId: editData?.countryid ? editData.countryid: 5,
+      contactname: editData?.contactname ? editData.contactname : null,
+      jobtitle: editData?.jobtitle ? editData.jobtitle : null,
+      email: editData?.email ? editData.email : null,
+      businessphone: editData?.businessphone ? editData.businessphone : null,
+      mobilephone: editData?.mobilephone ? editData.mobilephone : null,
+      adressline1: editData?.addressline1 ? editData.addressline1 : null,
+      countryId: editData?.countryid ? editData.countryid : 5,
       state: editData?.state ? editData.state : "Maharashtra",
       city: editData?.city ? editData.city : 847,
-      suburb : editData.suburb ? editData.suburb : null,
-      zip : editData?.zip ? editData.zip : null,
-      homephone : editData?.homephone ? editData.homephone : null,
-      addressline2 : editData?.addressline2 ? editData.addressline2 : null,
-      notes : editData?.notes ? editData.notes : null,
+      suburb: editData.suburb ? editData.suburb : null,
+      zip: editData?.zip ? editData.zip : null,
+      homephone: editData?.homephone ? editData.homephone : null,
+      addressline2: editData?.addressline2 ? editData.addressline2 : null,
+      notes: editData?.notes ? editData.notes : null,
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -153,26 +148,25 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   });
 
   const handleConfirm = async () => {
-    
-      // "user_id": 1234,
-      // "builderid": 101,
-      // "contactname": "Alice Smith",
-      // "email1": "alice.smith@example.com",
-      // "jobtitle": "Project Engineer",
-      // "businessphone": "123-456-7890",
-      // "homephone": "987-654-3210",
-      // "mobilephone": "555-123-4567",
-      // "addressline1": "456 Oak Street",
-      // "addressline2": "Suite 200",
-      // "suburb": "Downtown",
-      // "city": 456,
-      // "state": "New York",
-      // "country": 2,
-      // "zip": "54321",
-      // "notes": "Some notes about Alice Smith",
-      // "dated": "2024-03-14T08:00:00",
-      // "createdby": 5678,
-      // "isdeleted": false
+    // "user_id": 1234,
+    // "builderid": 101,
+    // "contactname": "Alice Smith",
+    // "email1": "alice.smith@example.com",
+    // "jobtitle": "Project Engineer",
+    // "businessphone": "123-456-7890",
+    // "homephone": "987-654-3210",
+    // "mobilephone": "555-123-4567",
+    // "addressline1": "456 Oak Street",
+    // "addressline2": "Suite 200",
+    // "suburb": "Downtown",
+    // "city": 456,
+    // "state": "New York",
+    // "country": 2,
+    // "zip": "54321",
+    // "notes": "Some notes about Alice Smith",
+    // "dated": "2024-03-14T08:00:00",
+    // "createdby": 5678,
+    // "isdeleted": false
     try {
       const data = {
         user_id: 1234,
@@ -194,7 +188,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
       };
 
       if (editData?.id) {
-        data.id = editData.id
+        data.id = editData.id;
         await dispatch(editContact(data));
         openSucess();
       } else {
@@ -227,16 +221,16 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    console.log(e.target.value)
+    console.log(e.target.value);
     // console.log(e.target)
     // setFieldValue(e.target.name, e.target.value);
     const { type, name, value, checked } = e.target;
     // const fieldValue = type === 'checkbox' ? checked : value;
     console.log(name, checked);
-    if(type == 'checkbox') {
-      setFieldValue(name,checked)
-    }else {
-      console.log(name,value)
+    if (type == "checkbox") {
+      setFieldValue(name, checked);
+    } else {
+      console.log(name, value);
       setFieldValue(name, value);
     }
   };
@@ -245,7 +239,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
     setFieldValue("countryId", e.target.value);
     setFieldValue("city", null);
     setFieldValue("state", null);
-    setCityData([])
+    setCityData([]);
     fetchStateData(e.target.value);
   };
 
@@ -269,11 +263,14 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                 <Form className="space-y-4" onSubmit={handleSubmit}>
                   <div className="w-[1100px] h-auto bg-white rounded-lg">
                     <div className="move cursor-move">
-
-                    <ModalHeader
-                      onClose={handleClose}
-                      title={editData.id ? "Edit Builder Contact" : "New Builder Contact"}
-                    />
+                      <ModalHeader
+                        onClose={handleClose}
+                        title={
+                          editData.id
+                            ? "Edit Builder Contact"
+                            : "New Builder Contact"
+                        }
+                      />
                     </div>
                     <div className="h-auto w-full mt-[5px] ">
                       <div className="flex gap-[48px] justify-center items-start">
@@ -291,7 +288,6 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               name="employername"
                               value={editData.buildername}
                               onBlur={handleBlur}
-                              
                               readOnly
                             />
                             <div className="inputValidationError">
@@ -340,7 +336,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               )}
                             </div> */}
                           </div>
-                          
+
                           <div className="">
                             {/* <div className="text-[13px]">
                               Suburb <label className="text-red-500">*</label>
@@ -370,7 +366,6 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 Business Phone
                               </label>
-                              
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
@@ -391,7 +386,6 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 Mobile Phone
                               </label>
-                              
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
@@ -412,7 +406,6 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 Address Line 1
                               </label>
-                              
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
@@ -428,15 +421,11 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               )}
                             </div> */}
                           </div>
-
-                          
                         </div>
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
-                        <div className="">
+                          <div className="">
                             <div className="flex">
-                              <label className="inputFieldLabel">
-                                Country 
-                              </label>
+                              <label className="inputFieldLabel">Country</label>
                               <span className="requiredError">*</span>
                             </div>
                             {console.log(countryData)}
@@ -462,9 +451,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           </div>
                           <div className="">
                             <div className="flex">
-                              <label className="inputFieldLabel">
-                                State 
-                              </label>
+                              <label className="inputFieldLabel">State</label>
                               <span className="requiredError">*</span>
                             </div>
                             <CustomSelectNative
@@ -487,26 +474,26 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           </div>
                           <div className="">
                             <div className="flex">
-                              <label className="inputFieldLabel">
-                                City 
-                              </label>
+                              <label className="inputFieldLabel">City</label>
                               <span className="requiredError">*</span>
                             </div>
                             {console.log(cityData[formik.values.city])}
                             <CustomSelectNative
                               name="city"
                               data={Object.keys(cityData)}
+                              value={
+                                cityData[formik.values.city]
+                                  ? cityData[formik.values.city]
+                                  : ""
+                              }
                               placeholder="Select City"
                               renderData={(item) => {
-                                
                                 return (
-                                  
                                   <MenuItem value={item} key={item}>
-                                    {cityData[item]}
+                                    {cityData[item] ? cityData[item] : ""}
                                   </MenuItem>
                                 );
-                                }}
-                              value={cityData[formik.values.city]}
+                              }}
                               onChange={handleChange}
                             />
                             <div className="inputValidationError">
@@ -534,9 +521,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              ZIP Code
-                            </label>
+                            <label className="inputFieldLabel">ZIP Code</label>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
@@ -546,7 +531,6 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                             
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
@@ -578,12 +562,10 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                             />
                           </div>
-                          
+
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Notes
-                            </label>
+                            <label className="inputFieldLabel">Notes</label>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
@@ -594,12 +576,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                             />
                           </div>
-                          
                         </div>
-
-
-
-                        
                       </div>
                     </div>
 
@@ -644,7 +621,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title={`${editData?.id ?  "Save Contact" : "Add Contact"}`}
+          title={`${editData?.id ? "Save Contact" : "Add Contact"}`}
           description={
             <div className="flex flex-col items-center">
               <p className="">Employer: {values.employername}</p>
@@ -658,7 +635,8 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Contact?
+                Are you sure you want to {editData?.id ? "Save" : "Add"} this
+                Contact?
               </Typography>
             </div>
           }
