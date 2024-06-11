@@ -9,8 +9,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useIdleTimer } from "react-idle-timer";
-
 import { isValidToken, setSession } from "../utils/jwt";
 import { env_URL_SERVER } from "../Redux/helper";
 import { replaceKeys } from "./routeMap";
@@ -65,23 +63,26 @@ const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(JWTReducer, initialState);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [countdown, setCountdown] = useState(10);
-  // const countdownRef = useRef(null);
-  // const [idleTimeout, setIdleTimeout] = useState(() =>
-  //   sessionStorage.getItem("idleTimeOut")
-  //     ? sessionStorage.getItem("idleTimeOut")
-  //     : 10 * 60 * 1000
-  // );
-  // const [idleTimer, setIdleTimer] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [countdown, setCountdown] = useState(10);
+  const countdownRef = useRef(null);
+  const idleTimeoutRef = useRef(null);
+  const idleEvents = ["mousemove", "keydown", "mousedown", "touchstart"];
   const navigate = useNavigate();
+
+  const getInitialIdleTimeout = () => {
+    const storedIdleTimeout = sessionStorage.getItem("idleTimeout");
+    return storedIdleTimeout ? parseInt(storedIdleTimeout, 10) : null;
+  };
+
+  const [idleTimeout, setIdleTimeout] = useState(getInitialIdleTimeout);
 
   useEffect(() => {
     const initialize = async () => {
       try {
         const accessToken = sessionStorage.getItem("accessToken");
         const user = sessionStorage.getItem("user");
-        // const storedIdleTimeout = sessionStorage.getItem("idleTimeOut");
+
         if (accessToken && isValidToken(accessToken)) {
           setSession(JSON.parse(user), accessToken);
           dispatch({
@@ -91,9 +92,6 @@ function AuthProvider({ children }) {
               user: JSON.parse(user),
             },
           });
-          // if (storedIdleTimeout) {
-          //   setIdleTimeout(parseInt(storedIdleTimeout, 10));
-          // }
         } else {
           dispatch({
             type: Types.Initial,
@@ -104,7 +102,7 @@ function AuthProvider({ children }) {
           });
         }
       } catch (err) {
-        // console.log("err", err);
+        console.log("err", err);
         dispatch({
           type: Types.Initial,
           payload: {
@@ -118,34 +116,70 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  // const handleOnIdle = () => {
-  //   if (state.isAuthenticated) {
-  //     setIsModalOpen(true);
-  //     let countdownValue = 10;
-  //     setCountdown(countdownValue);
-  //     countdownRef.current = setInterval(() => {
-  //       countdownValue -= 1;
-  //       setCountdown(countdownValue);
-  //       if (countdownValue <= 0) {
-  //         clearInterval(countdownRef.current);
-  //         logout();
-  //       }
-  //     }, 1000);
-  //   }
-  // };
+  useEffect(() => {
+    if (idleTimeout !== null) {
+      sessionStorage.setItem("idleTimeout", idleTimeout);
+    }
+  }, [idleTimeout]);
+  
+ 
+
+  const handleOnIdle = () => {
+    if (state.isAuthenticated) {
+      setIsModalOpen(true);
+      let countdownValue = 10;
+      setCountdown(countdownValue);
+      countdownRef.current = setInterval(() => {
+        countdownValue -= 1;
+        setCountdown(countdownValue);
+        if (countdownValue <= 0) {
+          clearInterval(countdownRef.current);
+          logout();
+        }
+      }, 1000);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    clearInterval(countdownRef.current);
+    resetIdleTimer(); // Reset idle timer when modal is closed by user
+  };
+
+  const resetIdleTimer = () => {
+    if (idleTimeoutRef.current) {
+      clearTimeout(idleTimeoutRef.current);
+    }
+    if (idleTimeout !== null) {
+      idleTimeoutRef.current = setTimeout(handleOnIdle, idleTimeout);
+    }
+  };
+
+  useEffect(() => {
+    if (state.isAuthenticated && idleTimeout !== null) {
+      idleEvents.forEach((event) => {
+        window.addEventListener(event, resetIdleTimer);
+      });
+      resetIdleTimer();
+    }
+    return () => {
+      idleEvents.forEach((event) => {
+        window.removeEventListener(event, resetIdleTimer);
+      });
+      if (idleTimeoutRef.current) {
+        clearTimeout(idleTimeoutRef.current);
+      }
+    };
+  }, [state.isAuthenticated, idleTimeout]);
 
   const login = async (username, password, company_key) => {
     try {
-      const response = await axios.post(
-        `${env_URL_SERVER}validateCredentials`,
-        {
-          username,
-          password,
-          company_key,
-        }
-      );
-      const { token, user_id, role_id, access_rights, idleTimeOut } =
-        response.data;
+      const response = await axios.post(`${env_URL_SERVER}validateCredentials`, {
+        username,
+        password,
+        company_key,
+      });
+      const { token, user_id, role_id, access_rights, idleTimeOut } = response.data;
       if (token) {
         let userObj = {
           id: user_id,
@@ -160,10 +194,11 @@ function AuthProvider({ children }) {
             },
           },
         };
-        const idleTimeoutInMs = idleTimeOut * 1000; // Convert seconds to milliseconds
-        // sessionStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
-        // setIdleTimeout(idleTimeoutInMs); // Set idleTimeout state
-        // setSession(userObj, token, idleTimeoutInMs);
+        const idleTimeoutInMs = idleTimeOut ? idleTimeOut * 1000 : null;
+        if (idleTimeoutInMs !== null) {
+          sessionStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
+          setIdleTimeout(idleTimeoutInMs); // Set idleTimeout state
+        }
         setSession(userObj, token);
         dispatch({
           type: Types.Login,
@@ -173,51 +208,28 @@ function AuthProvider({ children }) {
         });
       }
     } catch (error) {
-      throw new Error(
-        "Failed to login. Please check your credentials and try again."
-      );
+      throw new Error("Failed to login. Please check your credentials and try again.");
     }
   };
 
   const logout = async () => {
-    // setIsModalOpen(false);
-    // clearInterval(countdownRef.current);
+    setIsModalOpen(false);
+    clearInterval(countdownRef.current);
     setSession(null);
+    sessionStorage.clear();
     dispatch({ type: Types.Logout });
     toast.success("Logged out successfully");
     navigate("/login");
   };
-  // const handleContinueSession = () => {
-  //   // clearInterval(countdownRef.current);
-  //   resetIdleTimer(); // Reset idle timer on user activity
-  //   // setIsModalOpen(false);
-  // };
 
-  // const handleCloseModal = (event, reason) => {
-  //   if (reason && reason === "backdropClick") return;
-  //   // setIsModalOpen(false);
-  // };
+  const handleContinueSession = () => {
+    clearInterval(countdownRef.current);
+    resetIdleTimer(); // Reset idle timer on user activity
+    setIsModalOpen(false);
+  };
+
   const resetPassword = (email) => console.log(email);
-
   const updateProfile = () => {};
-
-  // Use react-idle-timer hook
-  // const { reset: resetIdleTimer, getRemainingTime } = useIdleTimer({
-  //   timeout: idleTimeout, // 5 minutes
-  //   onIdle: handleOnIdle,
-  //   debounce: 500,
-  //   events: ["mousemove", "keydown", "mousedown", "touchstart"], // User activity events
-  // });
-
-  // useEffect(() => {
-  //   if (state.isAuthenticated) {
-  //     resetIdleTimer(); // Reset idle timer when user logs in
-  //   }
-  // }, [state.isAuthenticatedI]);
-
-  // useEffect(() => {
-  //   console.log("getRemainingTime", getRemainingTime());
-  // });
 
   return (
     <AuthContext.Provider
@@ -231,15 +243,15 @@ function AuthProvider({ children }) {
       }}
     >
       {children}
-      {/* {state.isAuthenticated && (
+      {state.isAuthenticated && (
         <SessionTimeoutModal
           open={isModalOpen}
           onContinue={handleContinueSession}
           onLogout={logout}
           countdown={countdown}
-          onClose={handleCloseModal}
+          onClose={handleModalClose}
         />
-    )} */}
+      )}
     </AuthContext.Provider>
   );
 }
@@ -248,10 +260,7 @@ export { AuthContext, AuthProvider };
 
 const useAuth = () => {
   const context = useContext(AuthContext);
-
-  if (!context)
-    throw new Error("Auth context must be used inside AuthProvider");
-
+  if (!context) throw new Error("Auth context must be used inside AuthProvider");
   return context;
 };
 

@@ -35,7 +35,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "4.813rem",
+        minWidth: "8rem",
       },
     },
     {
@@ -46,8 +46,8 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "4rem",
-        maxWidth:"6rem"
+        minWidth: "8rem",
+        maxWidth:"11rem"
       },
     },
     {
@@ -58,7 +58,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "6rem",
+        minWidth: "8rem",
         maxWidth: "9rem",
 
       },
@@ -71,7 +71,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "3rem",
+        minWidth: "8rem",
         maxWidth: "9rem",
 
       },
@@ -84,7 +84,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "3rem",
+        minWidth: "8rem",
         maxWidth: "9rem",
 
       },
@@ -100,7 +100,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "5.063rem",
+        minWidth: "8rem",
         maxWidth:"11rem"
 
       },
@@ -113,7 +113,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "5.063rem",
+        minWidth: "8rem",
         maxWidth: "7rem",
 
       },
@@ -126,8 +126,8 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "5.063rem",
-        maxWidth: "7rem",
+        minWidth: "8rem",
+        maxWidth: "9rem",
       },
     },
     {
@@ -139,8 +139,8 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "5.063rem",
-        maxWidth: "7rem",
+        minWidth: "8rem",
+        maxWidth: "11rem",
       },
     },
   ];
