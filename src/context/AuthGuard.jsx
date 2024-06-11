@@ -11,6 +11,7 @@ const AuthGuard = ({ children }) => {
     toast.warning("Session expired");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
+  return <>{children}</>
   if (location.pathname.includes("reports")) {
     // if(user.roleId ===1)
     // routeMapObj.getLobEntityPayments

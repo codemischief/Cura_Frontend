@@ -49,6 +49,7 @@ export const routeMapObj = Object.freeze({
   ClientInfo: PATH_DASHBOARD.manage.clientInfo,
   LLAgreement: PATH_DASHBOARD.manage.llAgreement,
   VendorPayment: PATH_DASHBOARD.manage.vendorPayment,
+  // VendorPayment : PATH_DASHBOARD.manage.orderVendorPayment,
   ClientInvoice: PATH_DASHBOARD.manage.clientInvoice,
   ClientReceipt: PATH_DASHBOARD.manage.clientReceipt,
   VendorInvoice: PATH_DASHBOARD.manage.vendorInvoice,
