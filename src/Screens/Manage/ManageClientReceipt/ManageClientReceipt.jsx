@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link , useNavigate } from "react-router-dom";
+import { Outlet, Link , useNavigate, useParams, useLocation } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -36,6 +36,8 @@ import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientReceipt = () => {
+    const location = useLocation()
+    console.log(location)
     const navigate = useNavigate()
     const initialRows = [
         "clientname",
@@ -519,6 +521,7 @@ const ManageClientReceipt = () => {
             "pg_no": 0,
             "pg_size": 0,
             "downloadType" : type,
+            "routename" : location?.pathname,
             "search_key": searchInput,
             "colmap" : {
                 "clientname" : "Client Name",

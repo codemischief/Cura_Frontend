@@ -37,7 +37,7 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 const ManageClientProperty = () => {
     const menuRef = useRef();
-    const { state } = useLocation()
+    const { state, pathname } = useLocation()
     console.log(state)
     // we have the module here
     const navigate = useNavigate()
@@ -813,6 +813,7 @@ const ManageClientProperty = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
+            "routename" : pathname,
             "downloadType" : type,
             "colmap" : {
                 "client" : "Client Name",
