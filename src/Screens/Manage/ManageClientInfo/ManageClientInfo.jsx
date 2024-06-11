@@ -1473,7 +1473,7 @@ const ManageClientInfo = () => {
 
                             <div className='w-1/2  flex'>
                            {/* <div className='p-3'> */}
-                                                        <div
+                                                        {/* <div
                                 className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
                                 onClick={() => {}}
                                 >
@@ -1481,7 +1481,7 @@ const ManageClientInfo = () => {
                                     <p>Filters</p>
                                 </button>
                                 <Refresh sx={{ height: "16px", width: "16px" }} />
-                                </div>
+                                </div> */}
                                 </div>
                             {/* </div> */}
                         </div>
