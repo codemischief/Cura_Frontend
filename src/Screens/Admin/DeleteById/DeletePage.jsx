@@ -12,6 +12,7 @@ import Draggable from "react-draggable"
 import { CrossIcon } from "../../../Components/Svg/CrossIcon"
 import DeleteIcon from "../../../Components/Svg/DeleteIcon"
 import CancelModel from "../../../Components/modals/CancelModel"
+import SucessfullModal from "../../../Components/modals/SucessfullModal"
 const DeletePage = () => {
     let { state } = useLocation();
     console.log(state)
@@ -21,10 +22,17 @@ const DeletePage = () => {
     const [openDialog,setOpenDialog] = useState(false)
     const [data,setData] = useState({})
     const [showCancelModel,setShowCancelModel] = useState(false)
+    const [showSuccess,setShowSuccess] = useState(false)
     const openCancelModal = () => {
         setShowCancelModel(true);
         setTimeout(function () {
             setShowCancelModel(false)
+        }, 2000)
+    }
+    const openSuccess = () => {
+      setShowSuccess(true);
+        setTimeout(function () {
+            setShowSuccess(false)
         }, 2000)
     }
     const handleCheck = async () => {
@@ -53,9 +61,27 @@ const DeletePage = () => {
         }
         
     }
+    const handleDelete = async () => {
+      // we do the hard delete here
+      const data = {
+        "user_id":1234,
+        "table_name":state.tablename,
+        "id": id
+       }
+       const response = await APIService.deleteFromTable(data)
+       const res = await response.json()
+       console.log(res)
+       if(res.result == 'success') {
+        openSuccess()
+       }else {
+        // do the failure case
+        
+       }
+    }
     return (
         <div className='font-medium'>
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="No ID Found."/>}
+            {showSuccess && <SucessfullModal/>}
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}

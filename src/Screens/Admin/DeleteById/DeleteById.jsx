@@ -37,11 +37,11 @@ const DeleteById = () => {
                 </div>
 
             <div class="grid grid-cols-3 grid-rows-4 gap-[18px] w-full h-60 ">
-                  <Link to="deleteclient" state={{tablename : "client" }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deleteclient" state={{tablename : "client" , entityname : "Client", fielduiname : "Name", fieldbackendname : "firstname"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Client</p>
                   </div>
                   </Link>
-                  <Link to="deleteorder" state={{tablename : "orders"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deleteorder" state={{tablename : "orders", entityname : "Order", fielduiname : "Description", fieldbackendname : "briefdescription"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Order</p>
                   </div>
                   </Link>
@@ -57,15 +57,15 @@ const DeleteById = () => {
                            <p>Delete Order Payment</p>
                   </div>
                   </Link>
-                  <Link to="deleteordertask" state={{  }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  {/* <Link to="deleteordertask" state={{  }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Order Task</p>
                   </div>
-                  </Link>
-                  <Link to="deleteclientreceipt" state={{ tablename : "client_receipt", entityname : "Client Receipt"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  </Link> */}
+                  <Link to="deleteclientreceipt" state={{ tablename : "client_receipt", entityname : "Client Receipt", fielduiname : "Description" , fieldbackendname : "receiptdesc"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Client Receipt</p>
                   </div>
                   </Link>
-                  <Link to="deletevendorinvoice" state={{tablename : "vendor_invoice", entityname : "Vendor Invoice"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deletevendorinvoice" state={{tablename : "vendor_invoice", entityname : "Vendor Invoice", fielduiname : "Description", fieldbackendname : "quotedescription"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Vendor Invoice</p>
                   </div>
                   </Link>

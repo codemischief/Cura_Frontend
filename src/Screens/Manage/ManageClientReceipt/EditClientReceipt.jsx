@@ -15,16 +15,16 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
     const [formErrors,setFormErrors] = useState({})
     const [formValues,setFormValues] = useState({
         curaoffice : 1,
-        receivedDate : currClientReceipt.recddate,
-        receivedBy : currClientReceipt.receivedby,
-        receiptMode : currClientReceipt.paymentmode,
-        client : currClientReceipt.clientid,
-        howreceived : currClientReceipt.howreceivedid,
-        serviceamount : currClientReceipt.serviceamount,
-        reimbursementAmount : currClientReceipt.reimbursementamount,
-        amountReceived : currClientReceipt.amount,
-        TDS : currClientReceipt.tds,
-        receiptDescription : currClientReceipt.receiptdesc,
+        receivedDate : null,
+        receivedBy : null,
+        receiptMode : null,
+        client : null,
+        howreceived : null,
+        serviceamount : null,
+        reimbursementAmount : null,
+        amountReceived : null,
+        TDS : null,
+        receiptDescription : null,
    })
 
     const [usersData,setUsersData] = useState([])
@@ -57,6 +57,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
         setHowReceivedData(res.data)
     }
     const validate = () => {
+        console.log(formValues)
         var res = true;
         if (!formValues.receivedDate) {
             setFormErrors((existing) => {
@@ -175,11 +176,23 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
         const d = {
             "user_id" : 1234,
             "table_name" : "client_receipt",
-            "id" : currClientReceipt.id
+            "item_id" : currClientReceipt.id
         }
         const response = await APIService.getItembyId(d)
         const res = await response.json()
         console.log(res.data)
+        const temp = {...formValues}
+        temp.receivedBy = res.data.receivedby 
+        temp.receivedDate = res.data.recddate
+        temp.receiptMode = res.data.paymentmode
+        temp.howreceived = res.data.howreceivedid
+        temp.serviceamount = res.data.serviceamount 
+        temp.reimbursementAmount = res.data.reimbursementamount 
+        temp.amountReceived = res.data.amount
+        temp.TDS = res.data.tds 
+        temp.client = res.data.clientid
+        temp.receiptDescription = res.data.receiptdesc
+        setFormValues(temp)
         
 
     }
@@ -236,6 +249,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                             value={formValues.receivedBy}
                                             onChange={handleChange}
                                         >
+                                            <option value={""} hidden>Select Received By</option>
                                             {usersData.map((item) => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
@@ -254,6 +268,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                             value={formValues.receiptMode}
                                             onChange={handleChange}
                                         >
+                                            <option value="" hidden>Select Receipt Mode</option>
                                             {modesData.map((item) => (
                                                 <option key={item[0]} value={item[0]}>
                                                     {item[1]}
@@ -330,6 +345,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                             value={formValues.howreceived}
                                             onChange={handleChange}
                                         >
+                                            <option value="" hidden> Select How Received</option>
                                             {howReceivedData.map((item) => (
                                                 <option key={item[0]} value={item[0]}>
                                                     {item[1]}
@@ -349,7 +365,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Amount Recived <label className="text-red-500">*</label></div>
+                                        <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] absolute">{formErrors.amountReceived}</div>
                                     </div>
