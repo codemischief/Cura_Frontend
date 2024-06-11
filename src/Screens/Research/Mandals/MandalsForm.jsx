@@ -68,11 +68,26 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     // setCountryData({ arr: result, obj: resultConverted });
     console.log(countryData)
   };
+  const [typeData,setTypeData] = useState([])
+  const fetchTypeData = async () => {
+    const d = {"user_id" : 1234}
+    const response = await APIService.getMandalAdmin(d)
+    const res = await response.json()
+    setTypeData(res.data)
+    console.log('hey')
+  }
   useEffect(() => {
+    fetchTypeData()
     // fetchCountryData()
-    
-    fetchStateData(5);
-    fetchCityData("Maharashtra");
+    if(editData?.id) {
+      // then its update wala case
+      fetchStateData(editData?.countryid)
+      fetchCityData(editData?.state)
+    }else {
+      // then its add wala case
+      fetchStateData(5);
+      fetchCityData("Maharashtra");
+    }
   }, []);
 
   const fetchStateData = async (id) => {
@@ -91,20 +106,20 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   const formik = useFormik({
     initialValues: {
-      type : editData?.type ? editData.type : null,
+      type : editData?.typeid ? editData.typeid : null,
       name : editData?.name ? editData.name :null,
       emailid : editData?.emailid ? editData.emailid : null,
-      phonenumber : editData?.phonenumber ? editData.phonenumber : null,
+      phonenumber : editData?.phoneno ? editData.phoneno : null,
       contactname1 : editData?.contactname1 ? editData.contactname1 : null,
-      contactemail1 : editData?.contactemail1 ? editData.contactemail1 : null,
+      contactemail1 : editData?.email1 ? editData.email1 : null,
       phone1 : editData?.phoneno1 ? editData.phoneno1 : null,
       phone2 : editData?.phoneno2 ? editData.phoneno2 : null,
-      countryId: editData?.country ? editData.country : 5,
+      countryId: editData?.countryid ? editData.countryid : 5,
       state: editData?.state ? editData.state : "Maharashtra",
-      city: editData?.city ? editData.city : "Pune",
+      city: editData?.cityid ? editData.cityid : 847,
       locality : editData?.suburb ? editData.suburb : null,
       contactname2 : editData?.contactname2 ? editData.contactname2 : null,
-      contactemail2 : editData?.contactemail2 ? editData.contactemail2 : null,
+      contactemail2 : editData?.email2 ? editData.email2 : null,
       website : editData?.website ? editData.website : null,
       excludefrommailinglist : editData?.excludefrommailinglist ? editData.excludefrommailinglist : null
       
@@ -220,14 +235,32 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
                               name="type"
                               value={formik.values.type}
-                              onBlur={handleBlur}
+                              defaultValue="Select Type"
                               onChange={handleChange}
-                            />
+                              onBlur={handleBlur}
+                            >
+                              <option value="" className="inputValidationError" hidden>
+                                Select Type
+                              </option>
+                              {typeData?.length > 0 &&
+                                typeData?.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.mandalid}
+                                      key={editData.mandalid}
+                                      
+                                    >
+                                      {editData.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            
                             {/* <div className="inputValidationError">
                               {touched.employername && errors.employername && (
                                 <div>{errors.employername}</div>
@@ -304,7 +337,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="zip"
+                              name="contactname1"
                               value={formik.values.contactname1}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -448,7 +481,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               placeholder="Select City"
                               renderData={(item) => {
                                 return (
-                                  <MenuItem value={item.city} key={item.city}>
+                                  <MenuItem value={item.id} key={item.id}>
                                     {item.city}
                                   </MenuItem>
                                 );
