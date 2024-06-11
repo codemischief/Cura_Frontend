@@ -412,7 +412,7 @@ const ManageClientInfo = () => {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-    }, []);
+    }, [filterMapState]);
 
     const handleOpenEdit = (oldItem) => {
         console.log('called');
@@ -677,14 +677,7 @@ const ManageClientInfo = () => {
         };
         // window.open("https://stackoverflow.com/questions/31079081/how-to-programmatically-navigate-using-react-router", '_blank');
         // Navigate.call()
-        const response = await APIService.getClientInfo(data)
-        const temp = await response.json();
-        const result = await temp.data.client_info;
-        const worksheet = await XLSX.utils.json_to_sheet(result);
-        const workbook = await XLSX.utils.book_new();
-        await XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        await XLSX.writeFile(workbook, "ClientInfoData.xlsx");
-        await FileSaver.saveAs(workbook, "demo.xlsx");
+     
     }
     const handleSearch = async () => {
         // console.log("clicked")
@@ -1111,7 +1104,18 @@ const ManageClientInfo = () => {
     const [employerInput, setEmployerInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idFilterInput, setidFilterInput] = useState("");
-    
+    const resetAllInputs = () => {
+        setClientNameInput("");
+        setClientTypeNameInput("");
+        setTenantOfTypeNameInput("");
+        setTenantOfPropertyInput("");
+        setCountryInput("");
+        setCityInput("");
+        setPhoneInput("");
+        setEmail1Input("");
+        setEmployerInput("");
+        setidFilterInput("");
+    };
     const handleSort = async (field) => {
         setPageLoading(true)
         setSortField(field);
@@ -1454,7 +1458,7 @@ const ManageClientInfo = () => {
                             </div> */}
 
                         </div>
-                        <div className="w-[15%] ">
+                        <div className="w-[15%] flex">
                             <div className='w-1/2   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[63%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} 
@@ -1471,19 +1475,24 @@ const ManageClientInfo = () => {
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                             </div>
 
-                            <div className='w-1/2  flex'>
-                           {/* <div className='p-3'> */}
-                                                        {/* <div
-                                className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
-                                onClick={() => {}}
-                                >
-                                <button>
-                                    <p>Filters</p>
-                                </button>
-                                <Refresh sx={{ height: "16px", width: "16px" }} />
-                                </div> */}
-                                </div>
-                            {/* </div> */}
+                               <div className='w-1/2  flex items-center'>
+                                  <div
+                                    className="border-solid border-black border-[0.5px] rounded-md w-28 h-8 flex items-center justify-center space-x-1 p-2 cursor-pointer"
+                                    onClick={() => {
+                                        setFilterMapState((prev) => {
+                                           return  filterMapping
+                                        })
+                                        fetchData()
+                                        resetAllInputs()
+
+                                    }}
+                                    >
+                                    <button>
+                                        <p>Filters</p>
+                                    </button>
+                                    <Refresh sx={{ height: "16px", width: "16px" }} />
+                                    </div>
+                              </div>  
                         </div>
                     </div>
                 </div>

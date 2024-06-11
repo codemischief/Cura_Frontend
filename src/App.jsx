@@ -268,7 +268,7 @@ const App = () => {
                 element={<ManageVendorPayment />}
               />
               <Route
-                path="/manage/sendClientStatement"
+                path="/manage/sendclientstatement"
                 element={<SendClientStatement />}
               />
               <Route

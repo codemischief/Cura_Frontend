@@ -345,6 +345,7 @@ MenuDesktop.propTypes = {
 
 const isResourceAccessible = (modules, pathToCheck) => {
   console.log(pathToCheck)
+  return pathToCheck
   if (pathToCheck?.includes("reports")) return pathToCheck;
   return modules[pathToCheck] && modules[pathToCheck]?.get ? pathToCheck : null;
 

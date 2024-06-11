@@ -27,13 +27,13 @@ const DeletePage = () => {
         setShowCancelModel(true);
         setTimeout(function () {
             setShowCancelModel(false)
-        }, 2000)
+        }, 3000)
     }
     const openSuccess = () => {
       setShowSuccess(true);
         setTimeout(function () {
             setShowSuccess(false)
-        }, 2000)
+        }, 3000)
     }
     const handleCheck = async () => {
         // here we check if the id actually exists or not
@@ -72,16 +72,18 @@ const DeletePage = () => {
        const res = await response.json()
        console.log(res)
        if(res.result == 'success') {
+        setId("")
+        setOpenDialog(false)
         openSuccess()
        }else {
         // do the failure case
-        
+
        }
     }
     return (
         <div className='font-medium'>
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="No ID Found."/>}
-            {showSuccess && <SucessfullModal/>}
+            {showSuccess && <SucessfullModal isOpen={showSuccess} message={`Successfully Deleted ${state.entityname}`}/>}
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -170,7 +172,7 @@ const DeletePage = () => {
                     false ? "bg-gray-500 cursor-not-allowed" : "bg-red-700"
                   } text-white`}
                   disabled={false}
-                  onClick={() => {}}
+                  onClick={handleDelete}
                 >
                   {/* {isloading ? "Deleting..." : "Delete"} */} Delete
                 </button>
