@@ -149,6 +149,7 @@ export const activePmaAgreement = (data) => {
     lnlstartdate: billing.lnlstartdate ? formatDate(billing.lnlstartdate) : "",
     lnlenddate: billing.lnlenddate ? formatDate(billing.lnlenddate) : "",
     poastartdate: billing.poastartdate ? formatDate(billing.poastartdate) : "",
+    rentamount: billing.rentamount ? floorDecimal(billing.rentamount) : "0.00",
   }));
 };
 export const projectContacts = (data) => {
@@ -367,7 +368,7 @@ export const updatedServiceApartmentData = (data) => {
 export const receiptToInvoice = (data) => {
   return data.map((ele, index) => ({
     ...ele,
-    date: formatDate(ele.date) ? formatDate(ele.date) : ""
+    vch_date: formatDate(ele.vch_date) ? formatDate(ele.vch_date) : ""
   }));
 };
 
