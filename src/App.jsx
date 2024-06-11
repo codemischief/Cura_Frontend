@@ -133,6 +133,7 @@ import VendorSummary from "./Screens/Reports/VendorReport/vendorSummary/index.js
 import ClientPhoneNo from "./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx";
 import OwnerPhoneNo from "./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx";
 import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation/index.jsx";
+import AgedOrders from "./Screens/Reports/Order/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -573,6 +574,10 @@ const App = () => {
               <Route
                 path="reports/bankbalancereconciliation"
                 element={<BankBalanceReconcilation />}
+              />
+              <Route
+                path="reports/agedOrders"
+                element={<AgedOrders />}
               />
             </Route>
 

@@ -512,4 +512,9 @@ export const sendClientStatement = (data) => {
     date: billing.date ? formatDate(billing.date) : "",
   }));
 }
+export const agedOrderFormat = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
