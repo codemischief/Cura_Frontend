@@ -51,7 +51,7 @@ const ResearchMandals = () => {
     try {
       let dataItem = {
         user_id: 1234,
-        table_name: "get_research_employer_view",
+        table_name: "get_research_mandalas_view",
         item_id: data.id,
       };
       const response = await APIService.getItembyId(dataItem);

@@ -40,7 +40,7 @@ export const routeMapObj = Object.freeze({
   ProjectInfo: PATH_DASHBOARD.manage.projectManagementInfo,
   // send client-statement is pending....
   BankStatement: PATH_DASHBOARD.manage.bankStatement,
-  manageOrder: PATH_DASHBOARD.manage.manageOrder,
+  Order: PATH_DASHBOARD.manage.manageOrder,
   OrderReceipt: PATH_DASHBOARD.manage.orderReceipt,
   ClientProperty: PATH_DASHBOARD.manage.clientProperty,
   Vendor: PATH_DASHBOARD.manage.vendor,
@@ -49,6 +49,7 @@ export const routeMapObj = Object.freeze({
   ClientInfo: PATH_DASHBOARD.manage.clientInfo,
   LLAgreement: PATH_DASHBOARD.manage.llAgreement,
   VendorPayment: PATH_DASHBOARD.manage.vendorPayment,
+  // VendorPayment : PATH_DASHBOARD.manage.orderVendorPayment,
   ClientInvoice: PATH_DASHBOARD.manage.clientInvoice,
   ClientReceipt: PATH_DASHBOARD.manage.clientReceipt,
   VendorInvoice: PATH_DASHBOARD.manage.vendorInvoice,

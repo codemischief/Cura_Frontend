@@ -280,11 +280,11 @@ const helper = (index, obj, pageName) => {
   }
   else if (pageName == "bankReceiptReconciliation") {
     if (index == 2) {
-      return ` Total: ${obj[0].bankst_cr}`
+      return ` Total: ${obj.bankst_cr}`
     } else if (index == 3) {
-      return `Total: ${obj[0].client_receipt}`
+      return `Total: ${obj.client_receipt}`
     } else if (index == 4) {
-      return `Total: ${obj[0].order_receipt}`
+      return `Total: ${obj.order_receipt}`
     } else {
       return ""
     }

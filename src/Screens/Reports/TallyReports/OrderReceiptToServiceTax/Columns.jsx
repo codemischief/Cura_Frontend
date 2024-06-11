@@ -28,7 +28,7 @@ export default function connectionDataColumn(onQuery) {
       field: "uniqueid",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem" ,maxWidth:"7rem"  },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "6rem" ,maxWidth:"9rem"  },
     },
     {
       title: "Base-Vch-Type",
@@ -48,7 +48,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Voucher Number",
       field: "vch_no",
       sorting: true,
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "6rem" ,maxWidth:"13rem" },
     },
     {
@@ -62,14 +62,14 @@ export default function connectionDataColumn(onQuery) {
         title: "Ref No.",
         field: "ref_no",
         sorting: true,
-        filterComponent: NumberFilterField,
+        filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "6rem" ,maxWidth:"9rem" },
       },
       {
         title: "Ref Date",
         field: "ref_date",
         sorting: true,
-        filterComponent: DateFilterField,
+        filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "6rem" ,maxWidth:"10.2rem" },
       },
 
@@ -84,7 +84,7 @@ export default function connectionDataColumn(onQuery) {
         title: "GTSIN",
         field: "gstin",
         sorting: true,
-        filterComponent: NumberFilterField,
+        filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "6rem" ,maxWidth:"9rem" },
       },
       {
@@ -119,21 +119,21 @@ export default function connectionDataColumn(onQuery) {
         title: "Qty",
         field: "item_qty",
         sorting: true,
-        filterComponent: NumberFilterField,
+        filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "6rem" ,maxWidth:"9rem" },
       },
       {
         title: "Rate",
         field: "item_rate",
         sorting: true,
-        filterComponent: NumberFilterField,
+        filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "6rem" ,maxWidth:"9rem" },
       },
       {
         title: "Disc (%)",
         field: "item_discountpercentage",
         sorting: true,
-        filterComponent: NumberFilterField,
+        filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "6rem" ,maxWidth:"9rem" },
       }
   ];

@@ -144,14 +144,14 @@ const ShowAllOdersInformation = () => {
                             return <tr>
                                  
                                     <td className={commonStylesData}>{item.clientname}</td>
-                                    <td className={commonStylesData}>{item.property}</td>
+                                    <td className={commonStylesData}>{item.clientproperty}</td>
                                     <td className={commonStylesData}>{item.briefdescription}</td>
                                     <td className={commonStylesData}>{item.amount}</td>
                                     <td className={commonStylesData}>{item.tds}</td>
                                     <td className={commonStylesData}>{item.receivedbyname}</td>
                                     <td className={commonStylesData}>{item.recddate}</td>
                                     <td className={commonStylesData}>{item.paymentmodename}</td>
-                                    <td className={commonStylesData}>Payment Status</td>
+                                    <td className={commonStylesData}></td>
                             </tr>
                         })}
                        

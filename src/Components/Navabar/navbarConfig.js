@@ -352,15 +352,11 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.tally.OrderPaymentBanktoBank,
             },
             {
-              title: "Order Receipt-C2B",
-              path: PATH_DASHBOARD.report.tally.OrderPaymentWithTds,
-            },
-            {
               title: "CR-GST Invoice",
               path: PATH_DASHBOARD.report.tally.OrderReceiptToInvoiceTax,
             },
             {
-              title: "Order Payment Without TDS",
+              title: "Order Payment To Vendor",
               path: PATH_DASHBOARD.report.tally.OrderPaymentWithoutTds,
             },
           ],
