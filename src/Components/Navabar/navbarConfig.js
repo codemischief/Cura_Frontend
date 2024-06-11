@@ -148,7 +148,7 @@ export const navMenuConfig = [
         {
           subheader: "Order",
           items: [
-            { title: "Manage Order", path: PATH_DASHBOARD.manage.manageOrder },
+            { title: "Manage Order", path: PATH_DASHBOARD.manage.manageOrder},
             {
               title: "Manage Order Receipt",
               path: PATH_DASHBOARD.manage.orderReceipt,

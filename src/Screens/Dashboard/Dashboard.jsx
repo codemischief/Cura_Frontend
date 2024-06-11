@@ -82,7 +82,7 @@ const Dashboard = () => {
 
               {/* map the items here */}
               <div className="h-44 overflow-auto">
-                {myOrder.map((item,index) => {
+                {myOrder?.map((item,index) => {
                   return (
                     <div className=" w-full h-[35px] flex border-gray-400 border-b-[1px] text-[14px]">
                       {/* this will have the index */}
