@@ -564,17 +564,18 @@ const EditClientInfoModal = (props) => {
             className='flex justify-center items-center'
         >
             <div className='flex justify-center'>
-                <Draggable>
+                <Draggable handle='div.move'>
                     <div className="w-[1300px] h-auto  bg-white rounded-lg relative">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Edit Client : Client Id : {props.currClient}</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
-                                <button onClick={() => {close()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                        <div className='move cursor-move'>
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">Edit Client : Client Id : {props.currClient}</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                    <button onClick={() => {close()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
                         </div>
-
                         <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9 ">
                             <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
                                 <div>Client Information</div>
