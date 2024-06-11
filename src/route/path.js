@@ -101,6 +101,7 @@ export const PATH_DASHBOARD = {
         ROOTS.report,
         "/bankPaymentsReconciliation"
       ),
+      bankBalanceReconciliation:path(ROOTS.report,"/bankbalancereconciliation")
     },
     monthlyMargin: {
       clientStatementAll: path(ROOTS.report, "/clientStatementAll"),

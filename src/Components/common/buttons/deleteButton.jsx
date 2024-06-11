@@ -8,7 +8,7 @@ const DeleteButton = ({ handleDelete, sx, rowData }) => {
   const { user } = useAuth();
   const { pathname } = useLocation();
 
-  if (!user.allowedModules[pathname]?.delete) return null;
+  // if (!user.allowedModules[pathname]?.delete) return null;
 
   return (
     <Delete
