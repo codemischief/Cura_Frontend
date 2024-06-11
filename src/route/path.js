@@ -159,6 +159,8 @@ export const PATH_DASHBOARD = {
       ownerMailId: path(ROOTS.report, "/ownerMailId"),
       tenantEmail: path(ROOTS.report, "/tenantEmail"),
       clientContactDetails: path(ROOTS.report, "/clientContactDetails"),
+      clientphoneno: path(ROOTS.report , "/clientphoneno"),
+      ownerphoneno: path(ROOTS.report , "/ownerphoneno"),
     },
     exceptions: {
       paymentUnderSuspenseOrder: path(ROOTS.report,"/paymentUnderSuspenseOrder"),
