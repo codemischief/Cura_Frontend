@@ -162,7 +162,7 @@ export const store = configureStore({
     ownerPhoneNo:OwnerPhoneNoReducer,
     bankBalanceReconcilation:BankBalanceReconciliationReducer,
     educationalInstitute:EducationalInstitute,
-    sendClientStatement:SendClientStatement
+    sendClientStatement:SendClientStatement,
     contact : contact
   },
   // Add the RTK Query API middleware
