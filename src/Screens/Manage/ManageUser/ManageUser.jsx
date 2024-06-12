@@ -37,6 +37,7 @@ import eyeIcon from "../../../assets/eye.jpg";
 import bcrypt from 'bcryptjs';
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 
 const ManageUser = () => {
 
@@ -682,41 +683,43 @@ const ManageUser = () => {
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
-        if (temp.result == 'success') {
+        if (temp.result == "success") {
             const d = {
-                "filename": temp.filename,
-                "user_id": 1234
-            }
-            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
+              filename: temp.filename,
+              user_id: 1234,
+            };
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+              method: "POST", // or the appropriate HTTP method
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(d), // Convert the object to a JSON string
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
-                })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'UserData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'UserData.pdf');
-                    }
-                    console.log('Success:', result);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(
+                    "Network response was not ok " + response.statusText
+                  );
+                }
+                return response.blob();
+              })
+              .then((result) => {
+                if (type == "excel") {
+                  FileSaver.saveAs(result, "UserData.xlsx");
+                } else if (type == "pdf") {
+                  FileSaver.saveAs(result, "UserData.pdf");
+                }
+                console.log("Success:", result);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+      
             setTimeout(() => {
-                setPageLoading(false)
-                setBackDropLoading(false)
-            }, 1000)
-        }
+              // setBackDropLoading(false)
+              setPageLoading(false);
+            }, 1000);
+          }
     }
     const handleSearch = async () => {
         // console.log("clicked")

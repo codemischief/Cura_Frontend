@@ -530,7 +530,7 @@ const Payments = () => {
     }
     if (!formValues.paymentfor) {
       setFormErrors((existing) => {
-        return { ...existing, paymentfor: "Select Payment For" };
+        return { ...existing, paymentfor: "Select Tally ledger" };
       });
       res = false;
     } else {
@@ -580,7 +580,7 @@ const Payments = () => {
     }
     if (!formValues.tds) {
       setFormErrors((existing) => {
-        return { ...existing, tds: "Enter Tds" };
+        return { ...existing, tds: "Enter TDS" };
       });
       res = false;
     } else {
@@ -687,25 +687,14 @@ const Payments = () => {
     const data = {
       user_id: 1234,
       rows: [
-        "id",
         "paymentto",
         "paymentby",
         "amount",
         "paidon",
         "paymentmode",
-        "paymentstatus",
-        "description",
-        "banktransactionid",
         "paymentfor",
-        "dated",
-        "createdby",
-        "isdeleted",
         "entity",
-        "officeid",
-        "tds",
-        "professiontax",
-        "month",
-        "deduction",
+        "id",
       ],
       filters: filterState,
       sort_by: [sortField],
@@ -775,7 +764,6 @@ const Payments = () => {
         "paidon",
         "paymentmode",
         "paymentfor",
-        "paymentstatus",
         "entity",
         "id",
       ],
@@ -794,7 +782,6 @@ const Payments = () => {
         paidon: "Paid On",
         paymentmode: "Payment Mode",
         paymentfor: "Payment For",
-        paymentstatus: "Status",
         entity: "Entity",
         id: "ID",
       },
@@ -1128,7 +1115,7 @@ const Payments = () => {
       {showDeleteSuccess && (
         <SucessfullModal
           isOpen={showDeleteSuccess}
-          message="SuccessFully Deleted Payment"
+          message="Contractual Payment Deleted Successfully"
         />
       )}
       {openAddConfirmation && (
@@ -1895,7 +1882,7 @@ const Payments = () => {
                           value={formValues.paymentto}
                           idName="id"
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentto}
                         </div>
                       </div>
@@ -1939,7 +1926,7 @@ const Payments = () => {
                           value={formValues.paymentby}
                           idName="id"
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute ">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentby}
                         </div>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
@@ -1955,7 +1942,7 @@ const Payments = () => {
                           value={formValues.amount}
                           onChange={handleChange}
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.amount}
                         </div>
                       </div>
@@ -1986,7 +1973,7 @@ const Payments = () => {
                             </option>
                           ))}
                         </select>
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentfor}
                         </div>
                       </div>
@@ -2019,7 +2006,7 @@ const Payments = () => {
                             </option>
                           ))}
                         </select>
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentmode}
                         </div>
                       </div>
@@ -2052,7 +2039,7 @@ const Payments = () => {
                           value={formValues.paidon}
                           onChange={handleChange}
                         />
-                        <div className="text-[10px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paidon}
                         </div>
                       </div>
@@ -2073,7 +2060,7 @@ const Payments = () => {
                             </option>
                           ))}
                         </select>
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.month}
                         </div>
                       </div>
@@ -2088,7 +2075,7 @@ const Payments = () => {
                           value={formValues.tds}
                           onChange={handleChange}
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.tds}
                         </div>
                       </div>
@@ -2104,7 +2091,7 @@ const Payments = () => {
                           value={formValues.professiontax}
                           onChange={handleChange}
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.professiontax}
                         </div>
                       </div>

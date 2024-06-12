@@ -206,7 +206,7 @@ const EditPayments = (props) => {
         }
         if (!formValues.paymentfor) {
             setFormErrors((existing) => {
-                return { ...existing, paymentfor: "Select Payment For" }
+                return { ...existing, paymentfor: "Select Tally ledger" }
             })
             res = false;
         } else {
@@ -216,7 +216,7 @@ const EditPayments = (props) => {
         }
         if (!formValues.paymentmode) {
             setFormErrors((existing) => {
-                return { ...existing, paymentmode: "Select a payment mode" }
+                return { ...existing, paymentmode: "Select a Payment mode" }
             })
             res = false;
         } else {
@@ -226,7 +226,7 @@ const EditPayments = (props) => {
         }
         if (!formValues.entityid) {
             setFormErrors((existing) => {
-                return { ...existing, entityid: "Select entity" }
+                return { ...existing, entityid: "Select Entity" }
             })
             res = false;
         } else {
@@ -236,7 +236,7 @@ const EditPayments = (props) => {
         }
         if (!formValues.paidon) {
             setFormErrors((existing) => {
-                return { ...existing, paidon: "Enter payment date" }
+                return { ...existing, paidon: "Enter Payment Date" }
             })
             res = false;
         } else {
@@ -246,7 +246,7 @@ const EditPayments = (props) => {
         }
         if (!formValues.month) {
             setFormErrors((existing) => {
-                return { ...existing, month: "Select payment month" }
+                return { ...existing, month: "Select Payment Month" }
             })
             res = false;
         } else {
@@ -256,7 +256,7 @@ const EditPayments = (props) => {
         }
         if (!formValues.tds) {
             setFormErrors((existing) => {
-                return { ...existing, tds: "Enter Tds" }
+                return { ...existing, tds: "Enter TDS" }
             })
             res = false;
         } else {
@@ -360,7 +360,7 @@ const EditPayments = (props) => {
                                         <div className=" space-y-5 py-[20px] px-[10px]">
                                             <div className="">
                                                 <div className="text-[13px] text-[#787878] mb-0.5">Cura Office </div>
-                                                <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                                <div className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                             </div>
                                             <div className="pt-0.5">
                                                 <div className="text-[13px] mb-1">Payment To <label className="text-red-500">*</label></div>
@@ -379,7 +379,7 @@ const EditPayments = (props) => {
                                             ))}
                                         </select> */}
                                                 <PaymentDropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto} idName="id" />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentto}</div>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.paymentto}</div>
                                             </div>
                                             <div className="pt-0.5">
                                                 <div className="text-[13px] mb-1">Payment By <label className="text-red-500">*</label></div>
@@ -400,20 +400,20 @@ const EditPayments = (props) => {
                                             ))}
                                         </select> */}
                                                 <PaymentDropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentby}</div>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.paymentby}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Amount <label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="amount" value={formValues.amount} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
+                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="amount" value={formValues.amount} onChange={handleChange} />
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.amount}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Deduction </div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="deduction" value={formValues.deduction} onChange={handleChange} />
+                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="deduction" value={formValues.deduction} onChange={handleChange} />
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Payment For <label className="text-red-500">*</label></div>
-                                                <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
+                                                <select className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
                                                     <option hidden>Select Payment For</option>
                                                     {paymentFor.map(item => (
                                                         <option key={item.id} value={item.id}>
@@ -421,61 +421,61 @@ const EditPayments = (props) => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentfor}</div>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.paymentfor}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Description </div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                             </div>
                                         </div>
                                         <div className=" space-y-5 py-[20px] px-[10px]">
                                             <div className="">
                                                 <div className="text-[13px]">Payment Mode <label className="text-red-500">*</label></div>
-                                                <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
+                                                <select className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
                                                     {paymentMode.map(item => (
                                                         <option key={item[0]} value={item[0]}>
                                                             {item[1]}
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentmode}</div>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.paymentmode}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Entity <label className="text-red-500">*</label></div>
-                                                <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entityid" value={formValues.entityid} onChange={handleChange} >
+                                                <select className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entityid" value={formValues.entityid} onChange={handleChange} >
                                                     {allEntities.map(item => (
                                                         <option key={item[0]} value={item[0]}>
                                                             {item[1]}
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.entityid}</div>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.entityid}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Paid On <label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paidon}</div>
+                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.paidon}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Month <label className="text-red-500">*</label></div>
-                                                <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
+                                                <select className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
                                                     {selectedMonth.map(item => (
                                                         <option key={item.id} value={item.month}>
                                                             {item.month}
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.month}</div>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.month}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">TDS <label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="tds" value={formValues.tds} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.tds}</div>
+                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="tds" value={formValues.tds} onChange={handleChange} />
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.tds}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Profession Tax <label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.professiontax}</div>
+                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.professiontax}</div>
                                             </div>
                                         </div>
                                     </div>

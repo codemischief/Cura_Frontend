@@ -456,7 +456,9 @@ const Service = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "*"
+                "lob",
+                "service",
+                "id"
             ],
             "filters": filterState,
             "sort_by": [sortField],
