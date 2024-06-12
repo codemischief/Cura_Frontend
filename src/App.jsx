@@ -32,7 +32,7 @@ import ResearchAgent from "./Screens/Research/Agent/index.jsx";
 import GovernmentDepartment from "./Screens/Research/Government Department/GovernmentDepartment";
 import ManageBankStatement from "./Screens/Manage/ManageBankStatement/ManageBankStatement";
 import ManageBuilderProject from "./Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject";
-import ManageBuilderContact from "./Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact";
+import ManageBuilderContact from "./Screens/Manage/ManageBuilder/ManageBuilderContact/index.jsx";
 import Temp from "./Screens/Admin/temp";
 import ManageClientPropertyByClientName from "./Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName";
 import ClientPmaArgreement from "./Screens/Manage/ManageClientProperty/ClientPmaAgreement/ClientPmaAgreement";
@@ -133,6 +133,7 @@ import VendorSummary from "./Screens/Reports/VendorReport/vendorSummary/index.js
 import ClientPhoneNo from "./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx";
 import OwnerPhoneNo from "./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx";
 import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation/index.jsx";
+import AgedOrders from "./Screens/Reports/AgedOrders/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -173,6 +174,10 @@ const App = () => {
               <Route path="/manage/managebuilder" element={<ManageBuilder />} />
               <Route
                 path="/manage/manageprojectinfo"
+                element={<ManageProjectInfo />}
+              />
+              <Route
+                path="/manage/managebuilder/manageproject/:id"
                 element={<ManageProjectInfo />}
               />
               <Route path="/admin/deleteById" element={<DeleteById />} />
@@ -262,6 +267,10 @@ const App = () => {
               <Route
                 path="/manage/managevendorpayment"
                 element={<ManageVendorPayment />}
+              />
+              <Route
+                path="/manage/sendclientstatement"
+                element={<SendClientStatement />}
               />
               <Route
                 path="manage/managebuilder/projects/:buildername"
@@ -569,7 +578,10 @@ const App = () => {
               <Route
                 path="reports/bankbalancereconciliation"
                 element={<BankBalanceReconcilation />}
-
+              />
+              <Route
+                path="reports/agedOrders"
+                element={<AgedOrders />}
               />
             </Route>
 

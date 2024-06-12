@@ -6,7 +6,7 @@ const initialState = {
   countryData: [],
   status: "",
 };
-function convertToIdNameObject(countries) {
+export function convertToIdNameObject(countries) {
   const idNameObject = {};
   countries.forEach((country) => {
     idNameObject[country.id] = country.name;
@@ -32,7 +32,7 @@ export const { setCountriesData, setStatus } = commonApis.actions;
 export const getCountries = () => async (dispatch) => {
   try {
     const data = {
-      user_id: userId,
+      user_id: userId ?? 1234,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],

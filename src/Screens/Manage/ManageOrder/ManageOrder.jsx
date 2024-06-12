@@ -1493,7 +1493,7 @@ const ManageOrder = () => {
                                 <p>Edit</p>
                             </div>
                         </div>
-                        <div className='h-[calc(100vh_-_14rem)] w-full overflow-auto '>
+                        <div className='h-[calc(100vh_-_14rem)] w-full overflow-auto bg-white'>
                             {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                             {!pageLoading && existingOrder.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                                 <h1 className='ml-10'>No Records To Show</h1>

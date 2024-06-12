@@ -119,11 +119,11 @@ export const navMenuConfig = [
               title: "Bank Statement",
               path: PATH_DASHBOARD.manage.bankStatement,
             },
-            { title: "Send Client Statement", path: "#" },
+            { title: "Send Client Statement", path: PATH_DASHBOARD.manage.sendClientStatement },
           ],
         },
       ],
-
+      
       [
         {
           subheader: "Client",
@@ -200,7 +200,8 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.bankRecords
                 .clientOrderReceiptMismatchDetails,
             },
-            { title: "Bank Balance Reconciliation", path: "" },
+            { title: "Bank Balance Reconciliation", 
+              path: PATH_DASHBOARD.report.bankRecords.bankBalanceReconciliation},
             {
               title: "Monthly Bank Summary",
               path: PATH_DASHBOARD.report.bankRecords.monthlyBankSummary,
@@ -220,6 +221,7 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.bankRecords
                 .dailyBankPaymentsReconciliation,
             },
+            
           ],
         },
         {
@@ -450,7 +452,7 @@ export const navMenuConfig = [
         {
           subheader: "Orders",
           items: [
-            { title: "Aged Order", path: "" },
+            { title: "Aged Order", path: PATH_DASHBOARD.report.orders.agedOrders },
             { title: "Order Analysis", path: PATH_DASHBOARD.report.orders.orderanalysis },
           ],
         },

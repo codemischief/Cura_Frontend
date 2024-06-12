@@ -152,7 +152,7 @@ export const FilterField = (props) => {
   };
   return (
     <div style={{ minWidth: "8rem", maxWidth: "8.5rem" }}>
-      <div className="w-full  h-full flex justify-start py-3 px-1">
+      <div className="w-full  h-full flex justify-start  px-1">
         <div className="w-full h-[1.75rem] flex justify-start items-center bg-[#F5F5F5] rounded-md">
           <input
             className="w-full min-w-[3rem] h-full bg-[#F5F5F5] rounded-md font-normal pl-2 outline-none"
@@ -177,14 +177,14 @@ export const FilterField = (props) => {
 
           <Tooltip title={isDisabled ? "filter disabled" : "Filters"}>
             <button
-              className="h-full flex items-center justify-center"
+              className="h-full flex items-center justify-center w-[30%] px-1 py-2"
               onClick={handleClick}
             >
               <FilterAlt
                 sx={
                   filter && filter[columnfield] && filter[columnfield]?.[0]
-                    ? { height: "16px", width: "16px", color: "#004DD7" }
-                    : { height: "16px", width: "16px", color: "#C6C6C6" }
+                    ? { height: "13px", width: "13px", color: "#004DD7" }
+                    : { height: "13px", width: "13px", color: "#C6C6C6" }
                 }
                 // color="#C6C6C6"
               />

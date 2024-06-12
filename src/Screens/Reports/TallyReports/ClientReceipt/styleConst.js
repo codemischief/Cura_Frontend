@@ -6,7 +6,7 @@ const styleConst = {
   cellStyleCommon: { wordBreak: 'break-word', padding: '4px', fontFamily: "Open Sans",
   fontSize: '11px',
   fontStyle: 'normal',
-  fontWeight: 400,
+  fontWeight: 500,
   lineHeight: '150%'
   ,}
 }

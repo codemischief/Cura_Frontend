@@ -150,7 +150,7 @@ function MenuDesktopItem({
           width: "98%",
           position: "absolute",
           padding: title === "Research" ? "28px 10rem" : "28px",
-          top: 80,
+          top: 70,
           left: 18,
           maxHeight: "calc(100vh - 6.8rem)",
           borderRadius: "15px",
@@ -344,7 +344,7 @@ MenuDesktop.propTypes = {
 };
 
 const isResourceAccessible = (modules, pathToCheck) => {
-  console.log(pathToCheck)
+  return pathToCheck
   if (pathToCheck?.includes("reports")) return pathToCheck;
   return modules[pathToCheck] && modules[pathToCheck]?.get ? pathToCheck : null;
 

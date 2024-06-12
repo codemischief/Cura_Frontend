@@ -9,7 +9,7 @@ const AddButton = ({ onClick = () => {}, title = "Add new", sx, icon }) => {
   const { user } = useAuth();
   const { pathname } = useLocation();
 
-  if (!user.allowedModules[pathname]?.add) return null;
+  // if (!user.allowedModules[pathname]?.add) return null;
   return (
     <Button
       sx={{

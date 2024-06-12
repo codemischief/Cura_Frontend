@@ -82,6 +82,7 @@ export const downloadbankBalanceReconcillation =
             dispatch(setLoading(false))
           
         } catch (err) {
+            dispatch(setLoading(false))
             console.log(err);
 
         }
@@ -101,7 +102,7 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
         const blob = new Blob([response.data], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
-        FileSaver.saveAs(blob, "AdvanceHoldingAmount.xlsx");
+        FileSaver.saveAs(blob, "BankBalanceReconcilation.xlsx");
     } catch (error) {
         console.log("error", error);
     }

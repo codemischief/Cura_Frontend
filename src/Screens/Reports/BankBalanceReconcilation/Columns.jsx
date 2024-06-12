@@ -2,7 +2,7 @@ import { Stack } from "@mui/material";
 import styleConst from "./styleConst";
 
 
-export default function connectionDataColumn(onQuery) {
+export  function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
 
   const columns = [
@@ -28,11 +28,6 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
     },
     {
-      title: "Balance",
-      field: "balance",
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
-    },
-    {
       title: "Payment",
       field: "payment",
       cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
@@ -42,7 +37,61 @@ export default function connectionDataColumn(onQuery) {
       field: "receipt",
       sorting: true,
       cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
-    }
+    },
+    {
+      title: "Total Balance",
+      field: "balance",
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
+    },
+    
+    
   ];
   return columns;
+}
+
+export  function connectionDataColumn1() {
+  const { cellStyleCommon } = styleConst;
+
+  const columns1 = [
+    {
+      title: "Sr No",
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "5%" },
+      sorting: false,
+      
+      render: (index) => {
+        return (
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "center", minWidth: "50px" }}
+          >
+            1
+          </Stack>
+        );
+      },
+    },
+    {
+      title: "Bank Name",
+      field: "bankname",
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
+    },
+    {
+      title: "Payment (DR)",
+      field: "payment",
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
+    },
+    {
+      title: "Receipt (CR)",
+      field: "receipt",
+      sorting: true,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
+    },
+    {
+      title: "Total Balance",
+      field: "balance",
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
+    },
+    
+    
+  ];
+  return columns1;
 }

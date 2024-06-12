@@ -737,7 +737,7 @@ const ManageBuilder = () => {
         }
     }
     return (
-        <div className="h-screen font-medium">
+        <div className="font-medium">
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -753,7 +753,7 @@ const ManageBuilder = () => {
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new builder created." />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved succesfully " />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
-            <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
+            <div className='h-[calc(100vh_-_123px)] w-full px-10'>
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -952,11 +952,12 @@ const ManageBuilder = () => {
                                         <p>{item.suburb}</p>
                                     </div>
                                     <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                        <Link to={`contacts/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{ builderid: item.id }}><p>Contacts</p></Link>
+                                        <Link to={`contacts/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{ builderid: item.id , buildername : item.buildername}}><p>Contacts</p></Link>
                                     </div>
                                     <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
                                     {/* admin/managebuilder/projects/:buildername */}
-                                        <Link to={`/admin/managebuilder/projects/${item.buildername}`} state={{builderid : item.id}}>
+                                    
+                                        <Link to={`/manage/managebuilder/manageproject/${item.buildername}`} state={{builderid : item.id, buildername : item.buildername ,hyperlinked : true}}>
                                             Projects
                                         </Link>
                                         {/* <Link to={`projects/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{ builderid: item.id }}><p>Projects</p></Link> */}
@@ -983,7 +984,7 @@ const ManageBuilder = () => {
             </div>
 
 
-            <div className='w-full h-12 flex justify-between px-6'>
+            <div className='w-full h-12 flex justify-between px-6 bg-white fixed'>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Link , useNavigate} from "react-router-dom";
+import { Outlet, Link , useNavigate, useLocation} from "react-router-dom";
 import backLink from "../../assets/back.png";
 import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
@@ -34,6 +34,7 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const City = () => {
     const menuRef = useRef();
     const navigate = useNavigate();
+    const {pathname} = useLocation()
     // we have the module here
 
     const [existingCities, setExistingCities] = useState([]);
@@ -320,6 +321,7 @@ const City = () => {
             pg_size: 0,
             search_key: searchInput,
             downloadType: type,
+            routename : pathname,
             colmap: {
                 "country": "Country",
                 "state": "State",
@@ -690,7 +692,7 @@ const City = () => {
         }
     }
     return (
-        <div className="h-screen font-medium">
+        <div className="font-medium">
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -708,7 +710,7 @@ const City = () => {
             {showEditModal && <EditCityModal handleClose={() => { setShowEditModal(false); openCancel() }} initialCountry={allCountry} initialData={currentCityData} openSuccess={openEditSuccess} />}
             {showCancelModal && <CancelModel isOpen={showCancelModal} message={errorMessage} />}
 
-            <div className="h-[calc(100vh_-_7rem)] w-full px-10">
+            <div className="h-[calc(100vh_-_123px)] w-full px-10">
                 <div className="h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2">
                     <div className="flex items-center space-x-3">
                         <div className="rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center">
@@ -954,7 +956,7 @@ const City = () => {
                 </div>
             </div>
 
-            <div className="w-full h-12 flex justify-between justify-self-end px-6 ">
+            <div className="w-full h-12 flex justify-between justify-self-end px-6 fixed bg-white">
                 {/* footer component */}
                 <div className="ml-2">
                     <div className="flex items-center w-auto h-full">

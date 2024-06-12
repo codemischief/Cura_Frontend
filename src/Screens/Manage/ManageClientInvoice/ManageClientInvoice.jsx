@@ -35,6 +35,7 @@ import ActiveFilter from "../../../assets/active_filter.png"
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const ManageClientInvoice = () => {
     const dataRows = [
         "clientname",
@@ -103,7 +104,17 @@ const ManageClientInvoice = () => {
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
     // const [filterArray,setFilterArray] = useState([]);
-
+    const resetAllInputs = () => {
+        setClientNameFilterInput("");
+        setOrderDescriptionFilterInput("");
+        setEstimateAmountFilterInput("");
+        setEstimateDateFilterInput("");
+        setInvoiceAmountFilterInput("");
+        setInvoiceDateFilterInput("");
+        setEntityFilterInput("");
+        setCreatedByFilterInput("");
+        setIdFilterInput("");
+    };
 
     const [selectedOption, setSelectedOption] = useState({
         label: "Select Client",
@@ -291,30 +302,6 @@ const ManageClientInvoice = () => {
 
         }
     }
-    useEffect(() => {
-        setHyperLinkData()
-        fetchData();
-
-        const handler = (e) => {
-            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
-                setClientNameFilter(false)
-                setOrderDescriptionFilter(false)
-                setEstimateAmountFilter(false)
-                setEstimateDateFilter(false)
-                setInvoiceDateFilter(false)
-                setInvoiceAmountFilter(false)
-                setEntityFilter(false)
-                setCreatedByFilter(false)
-                setIdFilter(false)
-                setDownloadModal(false)
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
     const [invoiceId, setInvoiceId] = useState(0);
     const handleEdit = (id) => {
         setInvoiceId(id)
@@ -665,8 +652,8 @@ const ManageClientInvoice = () => {
         setShowCancelModelAdd(true);
         setTimeout(function () {
             setShowCancelModelAdd(false)
-        }, 2000)
-    }
+            }, 2000)
+            }
     const openCancelModal = () => {
         // set the state for true for some time
 
@@ -882,14 +869,38 @@ const ManageClientInvoice = () => {
                         setFilterMapState(temp)
                         // fetchCityData()
                         fetchData()
-                    }else {
-                        newHandleFilter(inputVariable,
-                            setInputVariable,
-                            type,
-                            columnName)
-                    }
-              }
-      }
+                        }else {
+                            newHandleFilter(inputVariable,
+                                setInputVariable,
+                                type,
+                                columnName)
+                                }
+                                }
+                                }
+                                    useEffect(() => {
+                                        setHyperLinkData()
+                                        fetchData();
+                                
+                                        const handler = (e) => {
+                                            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                                                setClientNameFilter(false)
+                                                setOrderDescriptionFilter(false)
+                                                setEstimateAmountFilter(false)
+                                                setEstimateDateFilter(false)
+                                                setInvoiceDateFilter(false)
+                                                setInvoiceAmountFilter(false)
+                                                setEntityFilter(false)
+                                                setCreatedByFilter(false)
+                                                setIdFilter(false)
+                                                setDownloadModal(false)
+                                            }
+                                        }
+                                
+                                        document.addEventListener("mousedown", handler);
+                                        return () => {
+                                            document.removeEventListener("mousedown", handler);
+                                        };
+                                    }, [state,filterMapState]);
 
     const [orderText, setOrderText] = useState("Select Order")
     return (
@@ -1082,7 +1093,7 @@ const ManageClientInvoice = () => {
                             </div>
                         </div>
                         <div className="w-[10%] flex">
-                            <div className='w-[65%] p-3'>
+                            <div className='w-[55%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
@@ -1096,10 +1107,13 @@ const ManageClientInvoice = () => {
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                             </div>
 
-                            <div className='w-[35%]  flex'>
-                                <div className='p-3'>
-
-                                </div>
+                            <div className='w-[45%]  flex items-center'>
+                                <RefreshFilterButton
+                                 fetchData={fetchData}
+                                 filterMapping={filterMapping}
+                                 setFilterMapState={setFilterMapState}
+                                 resetAllInputs={resetAllInputs}
+                                />
                             </div>
                         </div>
                     </div>

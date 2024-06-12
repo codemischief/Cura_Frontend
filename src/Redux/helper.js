@@ -391,6 +391,11 @@ export const orderAnalysisFromat = (data) => {
     totalorderreceipt: floorDecimal(ele.totalorderreceipt) ? floorDecimal(ele.totalorderreceipt) : "0.00",
   }));
 }
+export const agedOrder = (data) => {
+  return data.map((ele, index) => ({
+    ...ele,
+  }));
+}
 export const updatedFriendsData = (data) => {
   return data.map((ele, index) => ({
     ...ele,
@@ -503,6 +508,13 @@ export const updateOrderStatisticsReport = (data)=>{
 export const updatedMandalsData = (data) => {
   return data.map((billing, index) => ({
     ...billing,
+  }));
+}
+export const sendClientStatement = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+    amount: billing.amount ? floorDecimal(billing.amount) : "0.00",
+    date: billing.date ? formatDate(billing.date) : "",
   }));
 }
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

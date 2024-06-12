@@ -49,11 +49,12 @@ export const PATH_DASHBOARD = {
   manage: {
     manageBuilder: {
       root: path(ROOTS.manage, "/manageBuilder"),
-      contact: "/managebuilder/projects/:buildername",
-      projects: "/managebuilder/contacts/:buildername",
+      contact: "/managebuilder/contact/:buildername",
+      projects: "/managebuilder/projects/:buildername",
     },
     bankStatement: path(ROOTS.manage, "/bankstatement"),
     projectManagementInfo: path(ROOTS.manage, "/manageprojectinfo"),
+    projectManagementId: path(ROOTS.manage, "/manageprojectinfo/:id"),
     manageOrder: path(ROOTS.manage, "/manageOrder"),
     clientInfo: path(ROOTS.manage, "/manageclientinfo"),
     clientProperty: path(ROOTS.manage, "/manageclientproperty"),
@@ -67,6 +68,7 @@ export const PATH_DASHBOARD = {
     vendorPayment: path(ROOTS.manage, "/managevendorpayment"),
     orderVendorPayment : path(ROOTS.manage, "/managevendorpayment/:orderId"),
     pmaBilling: path(ROOTS.manage, "/pmaBilling"),
+    sendClientStatement : path(ROOTS.manage, "/sendclientstatement"),
   },
   report: {
     list: {
@@ -79,6 +81,7 @@ export const PATH_DASHBOARD = {
     },
     orders: {
       orderanalysis: path(ROOTS.report , "/orderanalysis"),
+      agedOrders: path(ROOTS.report , "/agedOrders"),
     },
     legal : {
       activellagreement: path(ROOTS.report , "/activellagreement"),
@@ -101,6 +104,7 @@ export const PATH_DASHBOARD = {
         ROOTS.report,
         "/bankPaymentsReconciliation"
       ),
+      bankBalanceReconciliation:path(ROOTS.report,"/bankbalancereconciliation")
     },
     monthlyMargin: {
       clientStatementAll: path(ROOTS.report, "/clientStatementAll"),

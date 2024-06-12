@@ -13,7 +13,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "50px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5%" },
       sorting: false,
       render: (index) => {
         return (
@@ -28,40 +28,39 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: " Date",
-      field: "recddate",
+      field: "date",
       sorting: true,
-      cellStyle: { minWidth: "20px", maxWidth: "34px" },
       filterComponent: DateFilterField,
       // filterComponent:TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%"},
     },
     {
       title: "Type",
-      field: "monthyear",
+      field: "type",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%" },
     },
     {
       title: "Desciption",
-      field: "fy",
+      field: "description",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%" },
     },
     {
       title: "Property",
       field: "entityname",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%" },
     },
     {
       title: "Amount",
       field: "amount",
       sorting: true,
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%" },
     },
   ];
   return columns;

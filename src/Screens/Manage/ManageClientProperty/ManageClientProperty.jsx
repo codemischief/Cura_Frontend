@@ -35,6 +35,7 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const ManageClientProperty = () => {
     const menuRef = useRef();
     const { state, pathname } = useLocation()
@@ -80,7 +81,74 @@ const ManageClientProperty = () => {
     const [idFilter, setIdFilter] = useState(false);
     const [idFilterInput, setIdFilterInput] = useState("");
     const [clientTypeData, setClientTypeData] = useState([]);
+    const filterMapping = {
+        client: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        suburb: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        city: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        propertytype: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        status: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        project: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        description: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
+        },
+        clientid: {
+            filterType: state ? "equalTo" : "",
+            filterValue: state?.clientid,
+            filterData: "Numeric",
+            filterInput: state?.clientid
+        }
+    }
 
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
+    const resetAllInputs = () => {
+        setClientNameFilterInput("");
+        setPropertyTypeFilterInput("");
+        setPropertySuburbFilterInput("");
+        setPropertyCityFilterInput("");
+        setPropertyStatusFilterInput("");
+        setPropertyDescriptionFilterInput("");
+        setPorjectNameFilterInput("");
+        setIdFilterInput("");
+    };
     const fetchCountryData = async () => {
         setPageLoading(true);
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
@@ -448,6 +516,8 @@ const ManageClientProperty = () => {
         }
     }
     useEffect(() => {
+        
+        
         setHyperLinkData()
         fetchClientData();
         fetchData();
@@ -481,7 +551,7 @@ const ManageClientProperty = () => {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-    }, []);
+    }, [state,filterMapState]);
 
     const handleOpenEdit = (oldItem) => {
         console.log('called');
@@ -813,7 +883,7 @@ const ManageClientProperty = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            "routename" : pathname,
+            
             "downloadType" : type,
             "colmap" : {
                 "client" : "Client Name",
@@ -1219,64 +1289,6 @@ const ManageClientProperty = () => {
         }, 2000)
     }
 
-    const filterMapping = {
-        client: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        suburb: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        city: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        propertytype: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        status: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        project: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        description: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        id: {
-            filterType: "",
-            filterValue: null,
-            filterData: "Numeric",
-            filterInput: ""
-        },
-        clientid: {
-            filterType: state ? "equalTo" : "",
-            filterValue: state?.clientid,
-            filterData: "Numeric",
-            filterInput: state?.clientid
-        }
-    }
-
-    const [filterMapState, setFilterMapState] = useState(filterMapping);
 
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
@@ -1678,7 +1690,7 @@ const ManageClientProperty = () => {
                                 {porjectNameFilter && <CharacterFilter inputVariable={porjectNameFilterInput} setInputVariable={setPorjectNameFilterInput} handleFilter={newHandleFilter} filterColumn='project' menuRef={menuRef} filterType={filterMapState.project.filterType} />}
                             </div>
                         </div>
-                        <div className="w-[15%] ">
+                        <div className="w-[15%] flex">
                             <div className='w-1/2   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
@@ -1694,9 +1706,14 @@ const ManageClientProperty = () => {
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                             </div>
 
-                            <div className='w-1/2  flex'>
-                                <div className='p-3'>
-
+                            <div className='w-1/2  flex items-center justify-center'>
+                                <div className=''>
+                                   <RefreshFilterButton
+                                    fetchData={fetchData}
+                                    setFilterMapState={setFilterMapState}
+                                    resetAllInputs={resetAllInputs}
+                                    filterMapping={filterMapping}
+                                   />
                                 </div>
                             </div>
                         </div>
