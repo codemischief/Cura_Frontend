@@ -82,13 +82,13 @@ const BankBalanceReconcilation = () => {
             user_id: 1234,
             startdate: startDate ?? "2021-01-01",
             bankName: bankName,
-            rows: ["bankname", "balance", "payment", "receipt"],
+            rows: ["bankname", "payment", "receipt","balance"],
             downloadType: "excel",
             colmap: {
                 "bankname": "Bank Name",
-                "balance": "Balance",
                 "payment": "Payment",
                 "receipt": "Receipt",
+                "balance": "Total Balance",
             },
         }
         dispatch(downloadbankBalanceReconcillation(obj));
