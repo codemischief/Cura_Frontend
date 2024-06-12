@@ -67,7 +67,7 @@ const Login = () => {
     <AuthLayout>
       <div className="w-[26.5rem] h-fit flex flex-col gap-[2.63rem]">
         <div className="text-center text-[#282828] text-[21px]">
-          Welcome back!
+          Login Panel
         </div>
         <FormikProvider value={values}>
           <Form

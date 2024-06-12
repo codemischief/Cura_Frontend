@@ -690,7 +690,7 @@ const City = () => {
         }
     }
     return (
-        <div className="h-screen font-medium">
+        <div className="font-medium">
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -708,7 +708,7 @@ const City = () => {
             {showEditModal && <EditCityModal handleClose={() => { setShowEditModal(false); openCancel() }} initialCountry={allCountry} initialData={currentCityData} openSuccess={openEditSuccess} />}
             {showCancelModal && <CancelModel isOpen={showCancelModal} message={errorMessage} />}
 
-            <div className="h-[calc(100vh_-_7rem)] w-full px-10">
+            <div className="h-[calc(100vh_-_123px)] w-full px-10">
                 <div className="h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2">
                     <div className="flex items-center space-x-3">
                         <div className="rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center">
@@ -954,7 +954,7 @@ const City = () => {
                 </div>
             </div>
 
-            <div className="w-full h-12 flex justify-between justify-self-end px-6 ">
+            <div className="w-full h-12 flex justify-between justify-self-end px-6 fixed bg-white">
                 {/* footer component */}
                 <div className="ml-2">
                     <div className="flex items-center w-auto h-full">

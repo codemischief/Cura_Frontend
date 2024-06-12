@@ -1207,7 +1207,7 @@ const ManageClientReceipt = () => {
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no New Client Receipt added." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_123px)] w-full  px-10'>
-                <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+                <div className='h-14 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
                             <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
@@ -1413,7 +1413,7 @@ const ManageClientReceipt = () => {
                 </div>
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
-                    <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-t-[1px]'>
+                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-t-[1px]'>
                         <div className="w-[87%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='px-3 py-5'>
@@ -1489,7 +1489,7 @@ const ManageClientReceipt = () => {
                      */}
 
 
-                    <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
+                    <div className='w-full h-[calc(100vh_-_16rem)] overflow-auto'>
 
 
                         {/* we map our items here */}
@@ -1498,7 +1498,7 @@ const ManageClientReceipt = () => {
                                         <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
                         {!pageLoading && existingClientReceipt.map((item, index) => {
-                            return <div className='w-full min-h-10 py-1 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
+                            return <div className='w-full min-h-9 py-1 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[87%] flex items-center">
                                     <div className='w-[3%] flex'>
                                         <div className='px-3 overflow-x-hidden'>

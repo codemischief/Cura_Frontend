@@ -262,8 +262,8 @@ const OrderReceiptList = () => {
 
       filters: formatedFilterData(filter),
       search_key: search,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
+      pg_no: 0,
+      pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
     };
     dispatch(getData(obj));

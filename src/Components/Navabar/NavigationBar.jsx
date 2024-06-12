@@ -34,7 +34,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const isHome = pathname === "/";
   return (
-    <div className="w-full px-[36px] items-center justify-between flex h-[75px] gap-[36px] bg-blue-700 text-white">
+    <div className="w-full px-[36px] items-center justify-between flex h-[65px] gap-[36px] bg-blue-700 text-white">
       <MainLogo />
       <MenuDesktop isHome={isHome} isOffset={100} />
       <Stack

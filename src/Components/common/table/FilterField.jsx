@@ -152,7 +152,7 @@ export const FilterField = (props) => {
   };
   return (
     <div style={{ minWidth: "8rem", maxWidth: "8.5rem" }}>
-      <div className="w-full  h-full flex justify-start py-3 px-1">
+      <div className="w-full  h-full flex justify-start  px-1">
         <div className="w-full h-[1.75rem] flex justify-start items-center bg-[#F5F5F5] rounded-md">
           <input
             className="w-full min-w-[3rem] h-full bg-[#F5F5F5] rounded-md font-normal pl-2 outline-none"
