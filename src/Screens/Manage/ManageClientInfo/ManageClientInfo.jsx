@@ -37,6 +37,8 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
     const {pathname} = useLocation()
@@ -51,35 +53,7 @@ const ManageClientInfo = () => {
         "email2",
         "email1",
         "employername",
-        "id",
-                // "firstname",
-                // "middlename",
-                // "lastname",
-                // "salutation",
-                // "clienttype",
-                // "addressline1",
-                // "addressline2",
-                // "suburb",
-                // "state",
-                // "zip",
-                // "homephone",
-                // "workphone",
-                // "comments",
-                // "photo",
-                // "onlineaccreated",
-                // "localcontact1name",
-                // "localcontact1address",
-                // "localcontact1details",
-                // "localcontact2name",
-                // "localcontact2address",
-                // "localcontact2details",
-                // "includeinmailinglist",
-                // "dated",
-                // "createdby",
-                // "isdeleted",
-                // "entityid",
-                // "tenantof",
-                // "tenantofproperty",
+        "id"
     ]
     // const history = useHistory()
     const navigate = useNavigate();
@@ -1049,8 +1023,8 @@ const ManageClientInfo = () => {
         }
         fetchData()
     }
-    const openDelete = (id) => {
-        setCurrItem(id)
+    const openDelete = (item) => {
+        setCurrItem(item)
         setShowDelete(true);
     }
     // const [showAddSuccess,setShowAddSuccess] = useState(false);
@@ -1665,8 +1639,16 @@ const ManageClientInfo = () => {
                                     </div>
                                     <div className='w-1/2  flex'>
                                         <div className='p-3 flex space-x-2'>
-                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => { openDelete(item.id) }} />
+                                            <EditButton
+                                             rowData={item.id}
+                                             handleEdit={handleEdit}
+                                            />
+                                            <DeleteButton
+                                              
+                                              handleDelete={openDelete}
+                                              rowData={item}
+                                            />
+                                            {/* <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => { openDelete(item.id) }} /> */}
                                         </div>
                                     </div>
                                 </div>

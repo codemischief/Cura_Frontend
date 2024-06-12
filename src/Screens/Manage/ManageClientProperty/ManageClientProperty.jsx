@@ -36,6 +36,8 @@ import Draggable from 'react-draggable';
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const ManageClientProperty = () => {
     const menuRef = useRef();
     const { state, pathname } = useLocation()
@@ -1875,8 +1877,15 @@ const ManageClientProperty = () => {
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex items-center px-3 space-x-2'>
-                                        <button onClick={() => { handleOpenEdit(item.id) }}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                                        <EditButton
+                                          handleEdit={handleOpenEdit}
+                                          rowData={item.id}
+                                        />
+                                        <DeleteButton
+                                         handleDelete={handleDelete}
+                                         rowData={item.id}
+                                        />
+                                       
                                     </div>
                                 </div>
 
@@ -1892,7 +1901,7 @@ const ManageClientProperty = () => {
             </div>
 
 
-            <div className='w-full h-12 flex justify-between px-6 bg-white fixed'>
+            <div className='w-full h-12 flex justify-between px-6 bg-white fixed bottom-0'>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>

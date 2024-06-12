@@ -91,7 +91,7 @@ const fetchCityData = async (id) => {
               }})
               }
             }>
-              <option >Select city</option>
+              <option value="" hidden>Select city</option>
               {allCity && allCity.map(item => (
                 <option key={item.id} value={item.city}>
                   {item.city}
@@ -138,7 +138,7 @@ const fetchCityData = async (id) => {
                 fetchCityData(e.target.value)
               }
             }>
-              <option >Select state</option>
+              <option value="" hidden>Select state</option>
               {allStates && allStates.map(item => {
                 if(item[0] == "Maharashtra") {
                   return <option key={item[0]} selected>
