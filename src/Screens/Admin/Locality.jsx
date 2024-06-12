@@ -721,7 +721,7 @@ const Locality = () => {
         }
     }
     return (
-        <div className='h-screen font-medium'>
+        <div className='font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -740,7 +740,7 @@ const Locality = () => {
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false)} message="Locality Deleted Successfully" />}
             {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem} showCancel={openCancelModal} />}
             {addConfirmation && <SaveConfirmationLocality handleClose={() => setAddConfirmation(false)} currentLocality={formValues.locality} addLocality={addLocality} setDefault={initials} showCancel={openAddCancelModal} />}
-            <div className='h-[calc(100vh_-_7rem)] w-full px-7'>
+            <div className='h-[calc(100vh_-_123px)] w-full px-7'>
                 {/* search component */}
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>

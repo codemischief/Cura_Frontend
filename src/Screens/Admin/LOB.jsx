@@ -559,7 +559,7 @@ const LOB = () => {
         }
     }
     return (
-        <div className='h-screen font-medium'>
+        <div className='font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -578,7 +578,7 @@ const LOB = () => {
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Lob Deleted Successfully!" />}
             {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} showCancel={openCancelModal} />}
             {openAddConfirmation && <SaveConfirmationLob handleClose={() => setOpenAddConfirmation(false)} currLob={lobName} addLob={addLob} setDefault={initials} showCancel={openAddCancelModal} />}
-            <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
+            <div className='h-[calc(100vh_-_123px)] w-full px-10'>
                 {/* we need the first banner */}
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>

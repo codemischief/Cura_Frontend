@@ -1484,7 +1484,6 @@ const ManageClientInfo = () => {
                                         })
                                         fetchData()
                                         resetAllInputs()
-
                                     }}
                                     >
                                     <button>

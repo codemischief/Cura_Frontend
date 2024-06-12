@@ -41,7 +41,7 @@ const ClientReceiptView = () => {
   const [intialFields, setIntialFields] = useState({
     start_date: "",
     end_date: "",
-    mode: "",
+    mode: 5,
     entity: "",
   });
 
