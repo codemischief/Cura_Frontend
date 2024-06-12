@@ -35,6 +35,7 @@ import Draggable from 'react-draggable';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
     const dataRows = [
@@ -1475,22 +1476,14 @@ const ManageClientInfo = () => {
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                             </div>
 
-                               <div className='w-1/2  flex items-center'>
-                                  <div
-                                    className="border-solid border-black border-[0.5px] rounded-md w-28 h-8 flex items-center justify-center space-x-1 p-2 cursor-pointer"
-                                    onClick={() => {
-                                        setFilterMapState((prev) => {
-                                           return  filterMapping
-                                        })
-                                        fetchData()
-                                        resetAllInputs()
-                                    }}
-                                    >
-                                    <button>
-                                        <p>Filters</p>
-                                    </button>
-                                    <Refresh sx={{ height: "16px", width: "16px" }} />
-                                    </div>
+                               <div className='w-1/2 p-3 flex items-center'>
+                                 <RefreshFilterButton
+                                   fetchData={fetchData}
+                                   resetAllInputs={resetAllInputs}
+                                   setFilterMapState={setFilterMapState}
+                                   filterMapping={filterMapping}
+                                 />
+                                 
                               </div>  
                         </div>
                     </div>

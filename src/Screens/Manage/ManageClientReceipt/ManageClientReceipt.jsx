@@ -34,6 +34,7 @@ import Draggable from 'react-draggable';
 import ActiveFilter from "../../../assets/active_filter.png"
 import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientReceipt = () => {
     const location = useLocation()
@@ -113,7 +114,17 @@ const ManageClientReceipt = () => {
     const [existingClientReceipt, setExistingClientReceipt] = useState([]);
     // const [howReceivedData,setHowReceivedData] = useState([])
     // const [filterArray,setFilterArray] = useState([]);
-
+    const resetAllInputs = () => {
+        setClientNameFilterInput("");
+        setAmountFilterInput("");
+        setServiceAmountFilterInput("");
+        setReimbusmentAmountFilterInput("");
+        setReceivedDateFilterInput("");
+        setReceivedModeFilterInput("");
+        setReceivedByFilterInput("");
+        setTDSFilterInput("");
+        setIdFilterInput("");
+    };
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -308,38 +319,7 @@ const ManageClientReceipt = () => {
         setExistingClientReceipt(result);
         setPageLoading(false);
     }
-    useEffect(() => {
-        fetchData();
-        fetchHowReceivedData()
-        fetchModesData()
-        fetchCountryData();
-        fetchStateData(5)
-        fetchCityData("Maharashtra");
-        fetchEntitiesData();
-        fetchRoleData();
-        fetchUsersData();
-
-
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setClientNameFilter(false);
-                setAmountFilter(false);
-                setServiceAmountFilter(false);
-                setReimbusmentAmountFilter(false);
-                setReceivedDateFilter(false);
-                setReceivedModeFilter(false);
-                setReceivedByFilter(false);
-                setTDSFilter(false);
-                setIdFilter(false);
-                setDownloadModal(false)
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+    
 
     const handleOpenEdit = (oldItem) => {
         console.log('called');
@@ -1183,6 +1163,39 @@ const ManageClientReceipt = () => {
        temp.orderstatus = res.data.orderstatus
        setOrderData(temp)
     }
+
+    useEffect(() => {
+        fetchData();
+        fetchHowReceivedData()
+        fetchModesData()
+        fetchCountryData();
+        fetchStateData(5)
+        fetchCityData("Maharashtra");
+        fetchEntitiesData();
+        fetchRoleData();
+        fetchUsersData();
+
+
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setClientNameFilter(false);
+                setAmountFilter(false);
+                setServiceAmountFilter(false);
+                setReimbusmentAmountFilter(false);
+                setReceivedDateFilter(false);
+                setReceivedModeFilter(false);
+                setReceivedByFilter(false);
+                setTDSFilter(false);
+                setIdFilter(false);
+                setDownloadModal(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     return (
         <div className='font-medium'>
             <Backdrop
@@ -1404,10 +1417,15 @@ const ManageClientReceipt = () => {
                             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                         </div>
 
-                        <div className='w-1/2  flex'>
-                            <div className='p-3'>
+                        <div className='w-1/2  flex items-center justify-center'>
+                            <RefreshFilterButton
 
-                            </div>
+                              fetchData={fetchData}
+                              filterMapping={filterMapping}
+                              setFilterMapState={setFilterMapState}
+                              resetAllInputs={resetAllInputs}
+                            
+                            />
                         </div>
                     </div>
                 </div>

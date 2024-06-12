@@ -157,6 +157,7 @@ const ManageBuilderContact = () => {
 
     let obj = {
       user_id: 1234,
+      builderid :state.builderid,
       rows: [
         "contactname",
         "buildername",
