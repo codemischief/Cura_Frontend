@@ -269,7 +269,7 @@ const BankBalanceReconcilation = () => {
                                                             <p>1</p>
                                                         </div>
                                                     ) : (
-                                                        bankBalanceReconcilation.bankstbalance && column.field === "balance"
+                                                        bankBalanceReconcilation.bankstbalance && (column.field === "balance" || column.field === "payment" || column.field === "receipt")
                                                             ? floorDecimal(bankBalanceReconcilation.bankstbalance[column.field])
                                                             : bankBalanceReconcilation?.bankstbalance?.[column.field]
                                                     )
@@ -337,7 +337,7 @@ const BankBalanceReconcilation = () => {
                                                             <p>1</p>
                                                         </div>
                                                     ) : (
-                                                        bankBalanceReconcilation.bankpmtrcps && column.field === "balance"
+                                                        bankBalanceReconcilation.bankpmtrcps && (column.field === "balance" || column.field === "payment" ||column.field === "receipt")
                                                             ? floorDecimal(bankBalanceReconcilation.bankpmtrcps[column.field])
                                                             : bankBalanceReconcilation?.bankpmtrcps?.[column.field]
                                                     )

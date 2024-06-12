@@ -40,7 +40,7 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Type",
-      field: "type",
+      field: "voucher",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth:"8rem" ,maxWidth:"6rem"},

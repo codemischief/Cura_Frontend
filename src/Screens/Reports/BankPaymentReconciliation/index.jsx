@@ -47,7 +47,7 @@ const LobReceiptPayments = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [paymentMode, setPaymentMode] = useState([]);
-  const [bankName, setBankName] = useState("");
+  const [bankName, setBankName] = useState("DAP-ICICI-42");
 
   const fetchPaymentMode = async () => {
     const data = {

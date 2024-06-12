@@ -77,7 +77,7 @@ export const navMenuConfig = [
           subheader: "Margin Report",
           items: [
             {
-              title: "LOB- Receipts - Payments",
+              title: "LOB-Service-Receipts-Payments",
               path: PATH_DASHBOARD.admin.lobReceiptPayments,
             },
             {
@@ -85,7 +85,7 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.admin.entityReceiptPayment,
             },
             {
-              title: "LOB - Receipts-Payments-Consolidated",
+              title: "LOB-Receipts-Payments-Consolidated",
               path: PATH_DASHBOARD.admin.lobReceiptPaymentsConsolidated,
             },
           ],

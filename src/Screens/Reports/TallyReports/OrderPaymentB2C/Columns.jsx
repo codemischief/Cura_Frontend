@@ -11,7 +11,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"3rem"},
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "3rem" },
       render: (index) => {
         return (
           <Stack
@@ -28,22 +28,28 @@ export default function connectionDataColumn(onQuery) {
       field: "uniqueid",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"6rem"},
+      cellStyle: {
+        ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8.2rem"
+      },
     },
     {
       title: "Date",
       field: "date",
       sorting: true,
       filterComponent: DateFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"6rem"},
+      cellStyle: {
+        ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8.2rem"
+      },
 
     },
     {
       title: "Type",
-      field: "type",
+      field: "voucher",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"6rem"},
+      cellStyle: {
+        ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8.2rem"
+      },
 
     },
     {
@@ -51,7 +57,9 @@ export default function connectionDataColumn(onQuery) {
       field: "vouchertype",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"6rem" },
+      cellStyle: {
+        ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8.2rem"
+      },
 
     },
     {
@@ -59,50 +67,60 @@ export default function connectionDataColumn(onQuery) {
       field: "vouchernumber",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"6rem"},
+      cellStyle: {
+        ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8.2rem"
+      },
     },
     {
-        title: "DR. Ledger",
-        field: "drledger",
-        sorting: true,
-        filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"6rem" },
+      title: "DR. Ledger",
+      field: "drledger",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: {
+        ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8.2rem"
       },
-      {
-        title: "CR. Ledger",
-        field: "crledger",
-        sorting: true,
-        filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"8rem" },
+    },
+    {
+      title: "CR. Ledger",
+      field: "crledger",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8rem" },
+    },
+    {
+      title: "Ledger Amount",
+      field: "ledgeramount",
+      sorting: true,
+      filterComponent: NumberFilterField,
+      cellStyle: {
+        ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8.2rem"
       },
-      {
-        title: "Ledger Amount",
-        field: "ledgeramount",
-        sorting: true,
-        filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"6rem"},
+    },
+    {
+      title: "Narration",
+      field: "narration",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8rem" },
+    },
+    {
+      title: "Instrument Number",
+      field: "instrumentno",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: {
+        ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8.2rem"
       },
-      {
-        title: "Narration",
-        field: "narration",
-        sorting: true,
-        filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"8rem" },
+    },
+    {
+      title: "Instrument Date",
+      field: "instrumentdate",
+      sorting: true,
+      filterComponent: DateFilterField,
+      cellStyle: {
+        ...cellStyleCommon, justifyContent: "center", minWidth: "8rem", maxWidth: "8.2rem"
       },
-      {
-        title: "Instrument Number",
-        field: "instrumentno",
-        sorting: true,
-        filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"6rem"},
-      },
-      {
-        title: "Instrument Date",
-        field: "instrumentdate",
-        sorting: true,
-        filterComponent: DateFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth:"6rem" },
-      }
+    }
   ];
   return columns;
 }
