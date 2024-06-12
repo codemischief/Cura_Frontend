@@ -80,6 +80,7 @@ export const PATH_DASHBOARD = {
     },
     orders: {
       orderanalysis: path(ROOTS.report , "/orderanalysis"),
+      agedOrders: path(ROOTS.report , "/agedOrders"),
     },
     legal : {
       activellagreement: path(ROOTS.report , "/activellagreement"),

@@ -452,7 +452,7 @@ export const navMenuConfig = [
         {
           subheader: "Orders",
           items: [
-            { title: "Aged Order", path: "" },
+            { title: "Aged Order", path: PATH_DASHBOARD.report.orders.agedOrders },
             { title: "Order Analysis", path: PATH_DASHBOARD.report.orders.orderanalysis },
           ],
         },

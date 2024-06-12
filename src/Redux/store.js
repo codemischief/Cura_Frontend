@@ -78,6 +78,7 @@ import OwnerPhoneNoReducer from "./slice/reporting/Group13/OwnerPhoneNo"
 import BankBalanceReconciliationReducer from "./slice/reporting/BankBalanceReconcilation";
 import EducationalInstitute from "./slice/Research/EducationalInstitute";
 import SendClientStatement from "./slice/SendClientStatement";
+import AgedOrder from "./slice/reporting/AgedOrder";
 
 import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportSlice";
 import professionals  from "./slice/Research/ProfessionalsSlice";
@@ -163,7 +164,8 @@ export const store = configureStore({
     bankBalanceReconcilation:BankBalanceReconciliationReducer,
     educationalInstitute:EducationalInstitute,
     sendClientStatement:SendClientStatement,
-    contact : contact
+    contact : contact,
+    agedOrder:AgedOrder,
   },
   // Add the RTK Query API middleware
 });
