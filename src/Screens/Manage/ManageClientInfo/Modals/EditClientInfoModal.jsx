@@ -440,7 +440,10 @@ const EditClientInfoModal = (props) => {
         }
 
         setInitialClientData(res.data);
-        setPageLoading(false);
+        setTimeout(() => {
+            setPageLoading(false);
+        },1000)
+        
         //  setFormValues(res.data);
     }
     const fetchClientData = async () => {

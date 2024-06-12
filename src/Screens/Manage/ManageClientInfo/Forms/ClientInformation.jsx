@@ -30,7 +30,11 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         },
         {
             id : 6,
-            name : "Smt MS"
+            name : "Smt"
+        },
+        {
+            id : 7,
+            name : "MS"
         }
 
     ]);
@@ -435,7 +439,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     </div>
 
                 </div>
-                <div className="space-y-3 py-2">
+                <div className="space-y-3 py-2 mt-[10px] ">
                 <div className="">
                         <div className="text-[12px]">Last Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="lastname" onChange={handleChange} value={formValues.client_info.lastname} />
@@ -486,6 +490,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
 
                     <div className="">
                         <div className="text-[13px]">Tenant Of Property</div>
+                        {console.log()}
                         <PropertyDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
                             setFormValues({
                                 ...formValues, client_info: {

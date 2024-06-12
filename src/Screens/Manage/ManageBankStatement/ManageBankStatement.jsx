@@ -33,6 +33,7 @@ import AddButton from "../../../Components/common/CustomButton";
 // import DayJS from 'react-dayjs';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png"
+import EditButton from "../../../Components/common/buttons/EditButton";
 const ManageBankStatement = () => {
     // we have the module here
     const {pathname} = useLocation()
@@ -1486,6 +1487,7 @@ const ManageBankStatement = () => {
                                         <p>{item.id}</p>
                                     </div>
                                     <div className='w-1/2 p-4 flex justify-between items-center'>
+                                        
                                         <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editStatement(item, vendorList, howReceived, mode)} />
                                         <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteStatement(item.id)} />
                                     </div>

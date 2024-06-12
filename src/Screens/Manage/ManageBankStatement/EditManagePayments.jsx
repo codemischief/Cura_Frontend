@@ -84,13 +84,13 @@ const EditManageStatement = (props) => {
     };
     console.log(props)
     const initialValues = {
-        modeofpayment: props.bankStatement.item.modeofpayment ,
-        particulars: props.bankStatement.item.particulars,
-        amount: props.bankStatement.item.amount,
-        vendor: props.bankStatement.item.vendorid,
-        date: props.bankStatement.item.date,
-        crdr: props.bankStatement.item.crdr,
-        how: props.bankStatement.item.receivedhow,
+        modeofpayment: props.bankStatement.item?.modeofpayment ,
+        particulars: props.bankStatement.item?.particulars,
+        amount: props.bankStatement.item?.amount,
+        vendor: props.bankStatement.item?.vendorid,
+        date: props.bankStatement.item?.date,
+        crdr: props.bankStatement.item?.crdr,
+        how: props.bankStatement.item?.receivedhow,
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});

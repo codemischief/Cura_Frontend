@@ -4,7 +4,7 @@ import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import { addNewInvoices, getPmaBilling , setPageNumber , setCountPerPage , setSorting , downloadXlsEndpoint} from "../../../Redux/slice/pmaSlice";
+import { addNewInvoices, getPmaBilling , setPageNumber , setCountPerPage , setSorting , downloadPmaBillingDataXls} from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
@@ -175,15 +175,15 @@ const PmaBilling = () => {
       month: +selectedMonth,
       year: +selectedYear,
       filters: convertData(filter),
-      pg_no: +pageNo,
+      pg_no: 0,
       insertIntoDB: false,
       downloadType : 'excel',
       routename : '/manage/pmaBilling',
-      pg_size: +countPerPage,
+      pg_size: 0,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadXlsEndpoint(obj))
+    dispatch(downloadPmaBillingDataXls(obj))
   };
 
   return (
@@ -302,6 +302,7 @@ const PmaBilling = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            height="calc(100vh - 16rem)"
           />
         )}
       </Stack>
