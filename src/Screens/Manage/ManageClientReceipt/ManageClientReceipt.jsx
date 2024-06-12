@@ -361,11 +361,7 @@ const ManageClientReceipt = () => {
             "user_id": 1234
         }
         const response = await APIService.getUsers(data)
-        const res = await response.json()
-        const existing = { ...formValues }
-        existing.receivedBy = res.data[0].id,
-            console.log(existing.receivedBy)
-        setFormValues(existing)
+        const res = await response.json();
         setUsersData(res.data)
     }
     const handleAddClientReceipt = () => {
@@ -1712,7 +1708,7 @@ const ManageClientReceipt = () => {
                                                 value={formValues.receivedBy}
                                                 onChange={handleChange}
                                             >
-                                                {/* <option value="none" hidden >Select Received By</option> */}
+                                                <option value="none" hidden >Select Received By</option>
                                                 {usersData.map((item) => (
                                                     <option key={item.id} value={item.id}>
                                                         {item.name}
@@ -1967,7 +1963,7 @@ const ManageClientReceipt = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">TDS </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={null} onChange={handleOrChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="TDS" value={null} onChange={handleOrChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px] mb-0.5">Receipt Description </div>

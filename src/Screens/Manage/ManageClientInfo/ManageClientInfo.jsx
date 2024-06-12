@@ -7,6 +7,7 @@ import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
+import { toast } from "react-toastify";
 import { Refresh } from '@mui/icons-material';
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress , Backdrop , CircularProgress } from "@mui/material";
@@ -1106,6 +1107,7 @@ const ManageClientInfo = () => {
     const [idFilter, setIdFilter] = useState(false);
     const [idFilterInput, setidFilterInput] = useState("");
     const resetAllInputs = () => {
+        // toast.success('Filters Resetted!')
         setClientNameInput("");
         setClientTypeNameInput("");
         setTenantOfTypeNameInput("");
