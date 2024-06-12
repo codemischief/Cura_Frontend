@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Link , useNavigate} from "react-router-dom";
+import { Outlet, Link , useNavigate, useLocation} from "react-router-dom";
 import backLink from "../../assets/back.png";
 import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
@@ -34,6 +34,7 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const City = () => {
     const menuRef = useRef();
     const navigate = useNavigate();
+    const {pathname} = useLocation()
     // we have the module here
 
     const [existingCities, setExistingCities] = useState([]);
@@ -320,6 +321,7 @@ const City = () => {
             pg_size: 0,
             search_key: searchInput,
             downloadType: type,
+            routename : pathname,
             colmap: {
                 "country": "Country",
                 "state": "State",

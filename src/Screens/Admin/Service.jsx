@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../assets/back.png";
 import searchIcon from "../../assets/searchIcon.png";
 import refreshIcon from "../../assets/refresh.png";
@@ -34,6 +34,7 @@ const Service = () => {
 
     const menuRef = useRef();
     const navigate = useNavigate();
+    const {pathname} = useLocation()
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingService, setExistingService] = useState([]);
@@ -400,6 +401,7 @@ const Service = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : pathname,
             "colmap": {
                 "lob": "LOB Name",
                 "service": "Service",

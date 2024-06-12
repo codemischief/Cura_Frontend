@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -40,6 +40,7 @@ const ManageEmployees = () => {
 
     const menuRef = useRef();
     const navigate = useNavigate();
+    const {pathname} = useLocation()
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -664,6 +665,7 @@ const ManageEmployees = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : pathname,
             "colmap": {
                 "employeename": "Employee",
                 "employeeid": "Employee ID",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -44,6 +44,7 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 const Payments = () => {
   const menuRef = useRef();
   const navigate = useNavigate();
+  const {pathname} = useLocation()
   const [totalItems, setTotalItems] = useState(0);
   const [currentPages, setCurrentPages] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
@@ -785,6 +786,7 @@ const Payments = () => {
       pg_size: 0,
       search_key: searchInput,
       downloadType: type,
+      routemap : pathname,
       colmap: {
         paymentto: "Payment To",
         paymentby: "Payment By",

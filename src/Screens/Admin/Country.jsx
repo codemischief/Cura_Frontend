@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../assets/back.png";
 import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
@@ -36,6 +36,7 @@ const Country = () => {
   // we have the module here
   const menuRef = useRef();
   const navigate = useNavigate();
+  const {pathname} = useLocation()
   const [existingCountries, setCountryValues] = useState([]);
   //   const [isSubmit, setIsSubmit] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
@@ -445,6 +446,7 @@ const Country = () => {
       "pg_size": 0,
       "search_key": searchQuery,
       "downloadType": type,
+      "routename" : pathname,
       "colmap": {
         "name": "Country",
         "id": "ID"
