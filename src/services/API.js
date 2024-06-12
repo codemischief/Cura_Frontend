@@ -4,11 +4,11 @@ const accessToken = sessionStorage.getItem("accessToken");
 const API = {
   LOGIN: "$env_URL_SERVERvalidateCredentials",
 };
-
+import { userId } from "../utils/axios";
 const USER_ID = "";
 const METHOD_POST = (data) => ({
   method: "POST",
-  body: JSON.stringify(data),
+  body: JSON.stringify({...data,user_id : userId }),
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,

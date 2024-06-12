@@ -8,8 +8,24 @@ import { PlusOutlined } from "@ant-design/icons";
 const AddButton = ({ onClick = () => {}, title = "Add new", sx, icon }) => {
   const { user } = useAuth();
   const { pathname } = useLocation();
+  const hasAccess = (path) => {
+   
 
-  // if (!user.allowedModules[pathname]?.add) return null;
+    // Check if the exact path is allowed
+    if (user.allowedModules[pathname]?.add) {
+      return true;
+    }
+
+    // Check for dynamic route access
+    return Object.keys(user.allowedModules).some(
+      (allowedPath) =>
+        path.startsWith(allowedPath) && user.allowedModules[allowedPath].add
+    );
+  };
+  if(!hasAccess(pathname)) {
+    return null
+  }
+    
   return (
     <Button
       sx={{
