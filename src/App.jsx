@@ -152,7 +152,6 @@ const App = () => {
           <Route path="/" element={<Outlet />}>
             <Route path="" element={<Login />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/user" element={<Userscreen />} />
             <Route path="/unauthorized" element={<UnAuthorized />} />
             <Route path="/reset/:token" element={<ResetPassword />} />
             <Route path="/reset" element={<RequestResetPassword />} />

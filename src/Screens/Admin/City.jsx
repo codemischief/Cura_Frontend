@@ -260,7 +260,7 @@ const City = () => {
 
         const data = {
             user_id: 1234,
-            rows: ["id", "city", "state", "countryid", "country"],
+            rows: ["id", "city", "state", "country"],
             filters: filterState,
             sort_by: [sortField],
             order: flag ? "asc" : "desc",

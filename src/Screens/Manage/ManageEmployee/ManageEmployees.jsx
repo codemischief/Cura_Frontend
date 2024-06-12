@@ -405,7 +405,7 @@ const ManageEmployees = () => {
     const initialValues = {
         employeeName: null,
         panNo: null,
-        userName: 1234,
+        userName: null,
         doj: null,
         designation: null,
         email: null,
@@ -439,7 +439,7 @@ const ManageEmployees = () => {
         var res = true;
         if (!formValues.employeeName) {
             setFormErrors((existing) => {
-                return { ...existing, employeeName: "Enter Employee name" }
+                return { ...existing, employeeName: "Enter Employee Name" }
             })
             res = false;
         } else {
@@ -464,7 +464,7 @@ const ManageEmployees = () => {
         if (!formValues.doj) {
             console.log('issue is in doj')
             setFormErrors((existing) => {
-                return { ...existing, doj: "Enter date of joining" }
+                return { ...existing, doj: "Enter Date Of Joining" }
             })
             res = false;
         } else {
@@ -488,7 +488,7 @@ const ManageEmployees = () => {
         if (!formValues.email) {
             console.log('issue is in email')
             setFormErrors((existing) => {
-                return { ...existing, email: "Enter email address" }
+                return { ...existing, email: "Enter Email Address" }
             })
             res = false;
         } else {
@@ -513,7 +513,7 @@ const ManageEmployees = () => {
         if (!formValues.dob) {
             console.log('issue is in dob')
             setFormErrors((existing) => {
-                return { ...existing, dob: "enter date of birth" }
+                return { ...existing, dob: "Enter Date Of Birth" }
             })
             res = false;
         } else {
@@ -522,22 +522,22 @@ const ManageEmployees = () => {
             })
         }
         console.log('dob ok')
-        if (!formValues.role) {
-            console.log('issue is in role')
-            setFormErrors((existing) => {
-                return { ...existing, role: "Select Role" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, role: "" }
-            })
-        }
+        // if (!formValues.role) {
+        //     console.log('issue is in role')
+        //     setFormErrors((existing) => {
+        //         return { ...existing, role: "Select Role" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, role: "" }
+        //     })
+        // }
         console.log('role ok')
         if (!formValues.phNo) {
             console.log('issue is in phoneno')
             setFormErrors((existing) => {
-                return { ...existing, phNo: "Enter phone number" }
+                return { ...existing, phNo: "Enter Phone Number" }
             })
             res = false;
         } else {
@@ -549,7 +549,7 @@ const ManageEmployees = () => {
         if (!formValues.country) {
             console.log('issue is in country')
             setFormErrors((existing) => {
-                return { ...existing, country: "Select country" }
+                return { ...existing, country: "Select Country" }
             })
             res = false;
         } else {
@@ -561,7 +561,7 @@ const ManageEmployees = () => {
         if (formValues.state == "") {
             console.log('issue is in state')
             setFormErrors((existing) => {
-                return { ...existing, state: "Select state" }
+                return { ...existing, state: "Select State" }
             })
             res = false;
         } else {
@@ -573,7 +573,7 @@ const ManageEmployees = () => {
         if (!formValues.city) {
             console.log('issue is in city')
             setFormErrors((existing) => {
-                return { ...existing, city: "Select city" }
+                return { ...existing, city: "Select City" }
             })
             res = false;
         } else {
@@ -735,7 +735,7 @@ const ManageEmployees = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "status", "id",],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -1656,7 +1656,7 @@ const ManageEmployees = () => {
                                             <div className="text-sm">Last Date of Working</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
                                         </div>
-                                        <div className="">
+                                        {/* <div className="">
                                             <div className="text-sm">Assign Role <label className="text-red-500">*</label></div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="role"
@@ -1680,6 +1680,10 @@ const ManageEmployees = () => {
                                                 ))}
                                             </select>
                                             <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.role}</div>
+                                        </div> */}
+                                        <div className="">
+                                            <div className="text-sm">Zip Code</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
@@ -1788,10 +1792,7 @@ const ManageEmployees = () => {
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
                                             <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.suburb}</div>
                                         </div>
-                                        <div className="">
-                                            <div className="text-sm">Zip Code</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
-                                        </div>
+                                        
                                         <div className="">
                                             <div className="text-sm">Entities <label className="text-red-500">*</label></div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"

@@ -386,7 +386,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-sm text-[#787878] mb-0.5">Office </div>
-                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                            <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Effective Date <label className="text-red-500">*</label></div>

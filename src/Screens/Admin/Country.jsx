@@ -312,7 +312,7 @@ const Country = () => {
   const validate = () => {
     const errors = {};
     if (!formValues.countryName) {
-      errors.countryName = "Enter A Country Name"
+      errors.countryName = "Enter a Country Name"
     }
     return errors;
   }

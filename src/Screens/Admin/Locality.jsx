@@ -483,7 +483,7 @@ const Locality = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "country", "cityid", "city", "state", "locality"],
+            "rows": ["id", "country", "city", "state", "locality"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -781,7 +781,7 @@ const Locality = () => {
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
                             </button> */}
-                            <AddButton title="Add New City" onClick={handleOpen} />
+                            <AddButton title="Add New Locality" onClick={handleOpen} />
                         </div>
 
                     </div>

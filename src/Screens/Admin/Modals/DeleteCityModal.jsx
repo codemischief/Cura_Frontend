@@ -26,7 +26,7 @@ const DeleteCityModal = (props) => {
             <div className='bg-white rounded-lg'>
                 <div className="w-auto h-auto flex flex-col justify-center items-center ">
                     <div className="h-[40px] bg-[#EDF3FF] flex justify-center items-center">
-                        <div className="ml-56 mr-52">
+                        <div className="ml-56 mr-52 px-5">
                             <div className="text-[16px]">Delete</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
@@ -36,7 +36,7 @@ const DeleteCityModal = (props) => {
                     <div className="mt-2 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">
                         <img className="h-10 w-10" src={DeleteImage} alt="delete photo" />
                     </div>
-                    <div className="mt-4 w-full text-center">
+                    <div className="mt-4 w-full text-center w-auto">
                         <p>Are you sure you want to delete the city '{props.currentCityName}' ?</p>
                     </div>
                     <div className="my-5 flex justify-center items-center gap-[10px]">
