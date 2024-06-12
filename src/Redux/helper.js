@@ -391,6 +391,11 @@ export const orderAnalysisFromat = (data) => {
     totalorderreceipt: floorDecimal(ele.totalorderreceipt) ? floorDecimal(ele.totalorderreceipt) : "0.00",
   }));
 }
+export const agedOrder = (data) => {
+  return data.map((ele, index) => ({
+    ...ele,
+  }));
+}
 export const updatedFriendsData = (data) => {
   return data.map((ele, index) => ({
     ...ele,
