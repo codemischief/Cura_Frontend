@@ -371,7 +371,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                     </div>
                                     <div className="">
                                         <div className="text-sm">TDS </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="TDS" value={formValues.TDS} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Receipt Description</div>
