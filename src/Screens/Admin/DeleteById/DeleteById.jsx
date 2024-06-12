@@ -65,7 +65,7 @@ const DeleteById = () => {
                            <p>Delete Client Receipt</p>
                   </div>
                   </Link>
-                  <Link to="deletevendorinvoice" state={{tablename : "vendor_invoice", entityname : "Vendor Invoice", fielduiname : "Description", fieldbackendname : "quotedescription"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deletevendorinvoice" state={{tablename : "order_vendorestimate", entityname : "Vendor Invoice", fielduiname : "Description", fieldbackendname : "quotedescription"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Vendor Invoice</p>
                   </div>
                   </Link>
