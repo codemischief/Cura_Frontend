@@ -49,11 +49,12 @@ export const PATH_DASHBOARD = {
   manage: {
     manageBuilder: {
       root: path(ROOTS.manage, "/manageBuilder"),
-      contact: "/managebuilder/projects/:buildername",
-      projects: "/managebuilder/contacts/:buildername",
+      contact: "/managebuilder/contact/:buildername",
+      projects: "/managebuilder/projects/:buildername",
     },
     bankStatement: path(ROOTS.manage, "/bankstatement"),
     projectManagementInfo: path(ROOTS.manage, "/manageprojectinfo"),
+    projectManagementId: path(ROOTS.manage, "/manageprojectinfo/:id"),
     manageOrder: path(ROOTS.manage, "/manageOrder"),
     clientInfo: path(ROOTS.manage, "/manageclientinfo"),
     clientProperty: path(ROOTS.manage, "/manageclientproperty"),

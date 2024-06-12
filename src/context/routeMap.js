@@ -56,15 +56,35 @@ export const routeMapObj = Object.freeze({
 });
 
 export const replaceKeys = (access_rights) => {
-  return Object.keys(access_rights).reduce((acc, key) => {
+  let accessRoute = Object.keys(access_rights).reduce((acc, key) => {
     const newKey = routeMapObj[key] || key;
     acc[newKey] = access_rights[key];
     return acc;
   }, {});
-};
 
-// 173 | deletebyid
-//  172 | deletebyid
-//  171 | getLobEntityPayments
-//  170 | LOBReceiptPayments
-//  168 | EntityReceiptPayments
+  allowSpecialRoutes(accessRoute);
+  return accessRoute;
+};
+let defaultpermission = { add: true, delete: true, edit: true, get: true };
+
+const allowSpecialRoutes = (routes) => {
+  routes["/dashboard"] = defaultpermission;
+  if (routes[PATH_DASHBOARD.manage.manageBuilder.root]) {
+    routes["/manage/managebuilder/manageproject/"] = defaultpermission;
+    routes["/manage/manageBuilder/contacts/"] = defaultpermission;
+  }
+  if (routes[PATH_DASHBOARD.manage.clientInfo]) {
+    routes["/manage/manageclientinfo/properties/"] = defaultpermission;
+    routes["/manage/manageclientinfo/orders/"] = defaultpermission;
+  }
+  if (routes[PATH_DASHBOARD.manage.clientProperty]) {
+    routes["/manage/manageclientproperty/pmaagreement/"] = defaultpermission;
+    routes["/manage/manageclientproperty/llagreement/"] = defaultpermission;
+  }
+  if (routes[PATH_DASHBOARD.manage.manageOrder]) {
+    routes["/manage/managevendorpayment/"] = defaultpermission;
+    routes["/manage/manageorderreceipt/"] = defaultpermission;
+    routes["/manage/manageclientinvoice/"] = defaultpermission;
+    routes["/manage/manageclientinfo/orders/showall/"] = defaultpermission;
+  }
+};

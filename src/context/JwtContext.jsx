@@ -150,15 +150,7 @@ function AuthProvider({ children }) {
         let userObj = {
           id: user_id,
           roleId: role_id,
-          allowedModules: {
-            ...replaceKeys(access_rights),
-            "/dashboard": {
-              add: true,
-              delete: true,
-              edit: true,
-              get: true,
-            },
-          },
+          allowedModules: replaceKeys(access_rights),
         };
         const idleTimeoutInMs = idleTimeOut * 1000; // Convert seconds to milliseconds
         // sessionStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds

@@ -1,7 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "./JwtContext";
 import { toast } from "react-toastify";
-import { routeMapObj } from "./routeMap";
 
 const AuthGuard = ({ children }) => {
   const location = useLocation();
@@ -11,17 +10,25 @@ const AuthGuard = ({ children }) => {
     toast.warning("Session expired");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-  return <>{children}</>
-  if (location.pathname.includes("reports")) {
-    // if(user.roleId ===1)
-    // routeMapObj.getLobEntityPayments
-    return <>{children}</>;
-  }
 
-  if (
-    user?.allowedModules[location.pathname] &&
-    user?.allowedModules[location.pathname]?.get
-  ) {
+  const hasAccess = (path) => {
+    if (path.includes("reports")) {
+      return true;
+    }
+
+    // Check if the exact path is allowed
+    if (user.allowedModules[path] && user.allowedModules[path].get) {
+      return true;
+    }
+
+    // Check for dynamic route access
+    return Object.keys(user.allowedModules).some(
+      (allowedPath) =>
+        path.startsWith(allowedPath) && user.allowedModules[allowedPath].get
+    );
+  };
+
+  if (hasAccess(location.pathname)) {
     return <>{children}</>;
   } else {
     return <Navigate to="/unauthorized" state={{ from: location }} replace />;
