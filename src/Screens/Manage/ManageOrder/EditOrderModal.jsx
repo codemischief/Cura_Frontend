@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal } from '@mui/material'
+import { Modal , CircularProgress} from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import EditOrderInformation from './Dialog/EditOrderInformation'
 import EditPhotos from './Dialog/EditPhotos'
@@ -383,6 +383,11 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                                 <div>Order Status history</div>
                             </div>
                         </div>
+                        {pageLoading && <div className='flex items-center justify-center space-x-4 my-3'>
+                            <h1>Fetching Data</h1>
+                            <CircularProgress />
+                        </div>
+                        }
                         {!pageLoading && <>
                             {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} setClientName={setClientName} orderText={orderText} setOrderText={setOrderText} />}
                             {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} currOrderId={currOrderId} />}

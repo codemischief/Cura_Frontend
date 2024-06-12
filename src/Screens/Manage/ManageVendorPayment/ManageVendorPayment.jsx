@@ -36,6 +36,8 @@ import DropDown from '../../../Components/Dropdown/Dropdown';
 import { formatDate } from "../../../utils/formatDate";
 import { useNavigate, useLocation } from "react-router-dom";
 import AddButton from "../../../Components/common/CustomButton";
+import EditButton from "../../../Components/common/buttons/EditButton";
+import DeleteButton from "../../../Components/common/buttons/deleteButton";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageVendorPayment = () => {
 
@@ -1468,8 +1470,9 @@ const ManageVendorPayment = () => {
                                     </div>
                                     <div className='w-1/2 flex ml-4'>
                                         <div className='flex space-x-2'>
-                                            <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
-                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                            <EditButton handleEdit={handleEdit} rowData={item.id}/>
+                                            <DeleteButton handleDelete={handleDelete} rowData={item.id}/>
+                                           
                                         </div>
                                     </div>
                                 </div>

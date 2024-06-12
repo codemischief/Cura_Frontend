@@ -35,6 +35,8 @@ import ActiveFilter from "../../../assets/active_filter.png"
 import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientReceipt = () => {
     const location = useLocation()
@@ -51,18 +53,6 @@ const ManageClientReceipt = () => {
         "tds",
         "clientid",
         "id",
-        // "receivedby",
-        // "paymentmode",
-        // "receiptdesc",
-        // "dated",
-        // "createdby",
-        // "isdeleted",
-        // "entityid",
-        // "entity",
-        // "howreceived",
-        // "howreceivedid",
-        // "officeid",
-        // "office"
     ]
     const menuRef = useRef();
     // we have the module here
@@ -1577,8 +1567,16 @@ const ManageClientReceipt = () => {
                                     </div>
                                     <div className='w-1/2  flex'>
                                         <div className='px-3 flex space-x-2'>
-                                            <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)} />
-                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                            <EditButton
+                                               handleEdit={handleEdit}
+                                               rowData={item}
+                                            />
+                                            <DeleteButton
+                                               handleDelete={handleDelete}
+                                               rowData={item.id}
+                                            />
+                                            {/* <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)} />
+                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} /> */}
                                         </div>
                                     </div>
                                 </div>

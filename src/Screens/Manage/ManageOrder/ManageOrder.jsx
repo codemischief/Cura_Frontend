@@ -36,6 +36,8 @@ import { formatDate } from '../../../utils/formatDate';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
@@ -1332,7 +1334,7 @@ const ManageOrder = () => {
                                 </div>
                                 {startDateFilter && <DateFilter inputVariable={startDateFilterInput} setInputVariable={setStartDateFilterInput} handleFilter={newHandleFilter} columnName='earlieststartdate' menuRef={menuRef} filterType={filterMapState.earlieststartdate.filterType} />}
                             </div>
-                            <div className='w-[130px] px-4  py-2.5'>
+                            <div className='w-[170px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={completionDateFilterInput} onChange={(e) => setCompletionDateFilterInput(e.target.value)} type='date'
 
@@ -1347,7 +1349,7 @@ const ManageOrder = () => {
                                 </div>
                                 {completionDateFilter && <DateFilter inputVariable={completionDateFilterInput} setInputVariable={setCompletionDateFilterInput} handleFilter={newHandleFilter} columnName='expectedcompletiondate' menuRef={menuRef} filterType={filterMapState.expectedcompletiondate.filterType} />}
                             </div>
-                            <div className='w-[100px] px-4  py-2.5'>
+                            <div className='w-[130px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDateFilterInput} onChange={(e) => setOrderDateFilterInput(e.target.value)} type='date'
 
@@ -1362,7 +1364,7 @@ const ManageOrder = () => {
                                 </div>
                                 {orderDateFilter && <DateFilter inputVariable={orderDateFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='orderdate' menuRef={menuRef} filterType={filterMapState.orderdate.filterType} />}
                             </div>
-                            <div className='w-[80px] px-4  py-2.5'>
+                            <div className='w-[120px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={agingFilterInput} onChange={(e) => setAgingFilterInput(e.target.value)}
 
@@ -1415,7 +1417,7 @@ const ManageOrder = () => {
                                 </div> */}
 
                             </div>
-                            <div className='w-[70px] px-4  py-2.5'>
+                            <div className='w-[100px] px-4  py-2.5'>
                                 {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1464,13 +1466,13 @@ const ManageOrder = () => {
                             <div className='w-[120px] p-4'>
                                 <p> Start Date <button onClick={() => handleSort('earlieststartdate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-[130px] p-4'>
+                            <div className='w-[170px] p-4'>
                                 <p> Completion Date <button onClick={() => handleSort('expectedcompletiondate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-[100px] p-4'>
+                            <div className='w-[130px] p-4'>
                                 <p>Order Date <button onClick={() => handleSort('orderdate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-[80px] p-4'>
+                            <div className='w-[120px] p-4'>
                                 <p>Ageing <button onClick={() => handleSort('ageing')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[120px] p-4'>
@@ -1485,7 +1487,7 @@ const ManageOrder = () => {
                             <div className='w-[70px] p-4'>
                                 {/* <p>Temp</p> */}
                             </div>
-                            <div className='w-[70px] p-4'>
+                            <div className='w-[100px] p-4'>
                                 {/* <p>Temp</p> */}
                             </div>
                             <div className='w-[110px] p-4'>
@@ -1495,7 +1497,7 @@ const ManageOrder = () => {
                                 <p>Edit</p>
                             </div>
                         </div>
-                        <div className='h-[calc(100vh_-_14rem)] w-full overflow-auto bg-white'>
+                        <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto bg-white'>
                             {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                             {!pageLoading && existingOrder.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                                 <h1 className='ml-10'>No Records To Show</h1>
@@ -1527,13 +1529,13 @@ const ManageOrder = () => {
                                         <div className='w-[120px] p-4'>
                                             <p>{formatDate(item.earlieststartdate)}</p>
                                         </div>
-                                        <div className='w-[130px] p-4'>
+                                        <div className='w-[170px] p-4'>
                                             <p>{formatDate(item.expectedcompletiondate)}</p>
                                         </div>
-                                        <div className='w-[100px] p-4'>
+                                        <div className='w-[130px] p-4'>
                                             <p>{formatDate(item.orderdate)}</p>
                                         </div>
-                                        <div className='w-[80px] p-4'>
+                                        <div className='w-[120px] p-4'>
                                             <p>{item.ageing}</p>
                                         </div>
                                         <div className='w-[120px] p-4'>
@@ -1560,7 +1562,7 @@ const ManageOrder = () => {
                                         <Link to={`/manage/manageclientinfo/orders/showall/${item.id}`} state={{orderid : item.id , orderdescription : item.briefdescription}}>
 
                                         
-                                        <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                        <div className='w-[100px] p-4 text-blue-500 cursor-pointer'>
                                             <p>Show All</p>
                                         </div>
                                         </Link>
@@ -1569,8 +1571,16 @@ const ManageOrder = () => {
                                         </div>
                                         <div className='w-[110px] p-4'>
                                             <div className='flex space-x-3'>
-                                                <button onClick={() => handleEdit(item.id)}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                                <EditButton
+                                                   handleEdit={handleEdit}
+                                                   rowData={item.id}
+                                                />
+                                                <DeleteButton
+                                                  handleDelete={handleDelete}
+                                                  rowData={item.id}
+                                                />
+                                                {/* <button onClick={() => handleEdit(item.id)}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                                <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
                                             </div>
                                         </div>
                                     </div>
@@ -1590,7 +1600,7 @@ const ManageOrder = () => {
             </div>
 
 
-            <div className='w-full h-12 flex justify-between px-6 '>
+            <div className='w-full h-12 flex justify-between px-6 fixed bottom-0 '>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>

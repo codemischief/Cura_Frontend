@@ -160,14 +160,14 @@ const ManageClientInfo = () => {
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
+        const data = {  "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
@@ -177,7 +177,7 @@ const ManageClientInfo = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = {  "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -249,7 +249,7 @@ const ManageClientInfo = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -284,7 +284,7 @@ const ManageClientInfo = () => {
         setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -307,7 +307,7 @@ const ManageClientInfo = () => {
 
         setCurrentPage((prev) => pageNumber)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -332,7 +332,7 @@ const ManageClientInfo = () => {
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -557,7 +557,7 @@ const ManageClientInfo = () => {
         setDownloadModal(false)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "clientname",
                 "clienttypename",
@@ -633,7 +633,7 @@ const ManageClientInfo = () => {
     }
     const handleExcelDownload = async () => {
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "clientname",
                 "clienttypename",
@@ -664,7 +664,7 @@ const ManageClientInfo = () => {
 
         setIsSearchOn(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -688,7 +688,7 @@ const ManageClientInfo = () => {
         setSearchInput("");
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -917,7 +917,7 @@ const ManageClientInfo = () => {
         // setButtonLoading(true);
 
         const data = {
-            "user_id": 1234,
+            
             "client_info": {
                 "firstname": formValues.client_info.firstname,
                 "middlename": formValues.client_info.middlename,
@@ -1011,7 +1011,7 @@ const ManageClientInfo = () => {
     const handleDelete = async (id) => {
 
         const data = {
-            "user_id": 1234,
+            
             "id": id
         }
         const response = await APIService.deleteClientInfo(data)
@@ -1101,7 +1101,7 @@ const ManageClientInfo = () => {
         setSortField(field);
         setFlag((prev) => !prev)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
@@ -1169,7 +1169,7 @@ const ManageClientInfo = () => {
         setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],

@@ -30,6 +30,8 @@ import { ScreenSearchDesktopTwoTone } from "@mui/icons-material";
 import Draggable from "react-draggable";
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from "../../../Components/common/CustomButton";
+import EditButton from "../../../Components/common/buttons/EditButton";
+import DeleteButton from "../../../Components/common/buttons/deleteButton";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageBuilder = () => {
     // we have the module here
@@ -969,9 +971,10 @@ const ManageBuilder = () => {
                                     <div className='w-1/2  p-4 ml-1'>
                                         <p>{item.id}</p>
                                     </div>
-                                    <div className='w-1/2 0 p-4 flex justify-between items-center ml-0.5'>
-                                        <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editBuilder(item)} />
-                                        <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteBuilder(item.id)} />
+                                    <div className='w-1/2 flex justify-center items-center gap-2 ml-0.5'>
+                                        <EditButton handleEdit={editBuilder} rowData={item}/>
+                                        <DeleteButton handleDelete={deleteBuilder} rowData={item.id}/>
+                        
                                     </div>
                                 </div>
                             </div>

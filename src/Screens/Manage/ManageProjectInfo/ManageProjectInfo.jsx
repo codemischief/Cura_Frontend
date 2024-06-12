@@ -35,6 +35,8 @@ import Draggable from 'react-draggable';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const ManageProjectInfo = () => {
     const {pathname} = useLocation()
     console.log(pathname)
@@ -1314,8 +1316,14 @@ const ManageProjectInfo = () => {
                                         </div>
                                     </div>
                                     <div className='w-1/2 flex overflow-hidden items-center px-3 justify-around '>
-                                        <button onClick={() => handleEdit(item.id)}><img className=' w-4 h-4' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item)}><img className=' w-4 h-4' src={Trash} alt="trash" /></button>
+                                        <EditButton
+                                           handleEdit={handleEdit}
+                                           rowData={item.id}
+                                        />
+                                        <DeleteButton
+                                           handleDelete={handleDelete}
+                                           rowData={item}
+                                        />
                                     </div>
                                 </div>
 

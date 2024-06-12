@@ -34,6 +34,8 @@ import AsyncSelect from "react-select/async"
 import EditVendor from './EditVendor';
 import Draggable from 'react-draggable';
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
 const ManageVendor = () => {
@@ -501,9 +503,10 @@ const ManageVendor = () => {
     }
     const [currVendorId, setCurrVendorId] = useState("");
     const [currVendorName, setCurrVendorName] = useState("");
-    const handleDelete = (id, name) => {
-        setCurrVendorId(id);
-        setCurrVendorName(name);
+    const handleDelete = (item) => {
+
+        setCurrVendorId(item.id);
+        setCurrVendorName(item.vendorname);
         showDeleteConfirmation(true);
     }
     const deleteVendor = async (id) => {
@@ -1164,8 +1167,16 @@ const ManageVendor = () => {
                                     <div className='w-[35%]  flex'>
                                         <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-3'>
-                                                <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id, item.vendorname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                                <EditButton
+                                                   handleEdit={handleEdit}
+                                                   rowData={item.id}
+                                                />
+                                                <DeleteButton
+                                                   handleDelete={handleDelete}
+                                                   rowData={item}
+                                                />
+                                                {/* <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                                <button onClick={() => handleDelete(item.id, item.vendorname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
                                             </div>
                                         </div>
                                     </div>

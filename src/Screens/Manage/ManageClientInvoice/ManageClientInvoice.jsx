@@ -36,6 +36,8 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const ManageClientInvoice = () => {
     const {pathname} = useLocation()
     console.log(pathname)
@@ -1249,9 +1251,17 @@ const ManageClientInvoice = () => {
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex ml-4'>
-                                        <div className='flex space-x-1'>
-                                            <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                            <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                        <div className='flex space-x-1 items-center'>
+                                            <EditButton
+                                              handleEdit={handleEdit}
+                                              rowData={item.id}
+                                            />
+                                            <DeleteButton
+                                              handleDelete={handleDelete}
+                                              rowData={item.id}
+                                            />
+                                            {/* <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                            <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
                                         </div>
                                     </div>
                                 </div>

@@ -34,6 +34,8 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageLLAgreement = () => {
     const navigate = useNavigate();
@@ -1628,8 +1630,16 @@ const ManageLLAgreement = () => {
                                         {item.id}
                                     </div>
                                     <div className='w-[35%]  flex overflow-hidden items-center space-x-4 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-4 w-4 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className=' h-4 w-4' src={Trash} alt="trash" /></button>
+                                        <EditButton
+                                           handleEdit={handleOpenEdit}
+                                           rowData={item}
+                                        />
+                                        <DeleteButton
+                                           handleDelete={handleDelete}
+                                           rowData={item.id}
+                                         />
+                                        {/* <button onClick={() => handleOpenEdit(item)}><img className=' h-4 w-4 ml-3' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item.id)}><img className=' h-4 w-4' src={Trash} alt="trash" /></button> */}
                                     </div>
                                 </div>
 
