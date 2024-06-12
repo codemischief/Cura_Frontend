@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -37,6 +37,8 @@ import AddButton from '../../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
 const ManageVendor = () => {
+    const {pathname} = useLocation()
+    console.log(pathname)
     const dataRows = [
         "vendorname",
         "tdssection",
@@ -548,6 +550,7 @@ const ManageVendor = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : "/manage/managevendor",
             "colmap": {
                 "vendorname": "Vendor Name",
                 "tdssection": "TDS Section",

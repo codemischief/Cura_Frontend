@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -39,6 +39,8 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 const ManageVendorInvoice = () => {
+    const {pathname} = useLocation()
+    console.log(pathname)
     const dataRows = [
         "vendorname",
         "clientname",
@@ -551,6 +553,7 @@ const ManageVendorInvoice = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : '/manage/managevendorinvoice',
             "colmap": {
                 "vendorname": "Vendor Name",
                 "clientname": "Client Name",

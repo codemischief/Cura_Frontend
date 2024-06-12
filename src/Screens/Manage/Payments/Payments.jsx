@@ -786,7 +786,7 @@ const Payments = () => {
       pg_size: 0,
       search_key: searchInput,
       downloadType: type,
-      routemap : pathname,
+      routename : pathname,
       colmap: {
         paymentto: "Payment To",
         paymentby: "Payment By",

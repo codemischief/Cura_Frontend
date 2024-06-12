@@ -10,6 +10,7 @@ import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
+import { useLocation } from "react-router-dom";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -35,6 +36,8 @@ const MONTHS = [
   "December",
 ];
 const PmaBilling = () => {
+  const {pathname} = useLocation()
+  console.log(pathname)
   const dispatch = useDispatch();
   const {
     pmaBillingData,
@@ -175,6 +178,7 @@ const PmaBilling = () => {
       pg_no: +pageNo,
       insertIntoDB: false,
       downloadType : 'excel',
+      routename : '/manage/pmaBilling',
       pg_size: +countPerPage,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,

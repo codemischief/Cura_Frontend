@@ -1,7 +1,7 @@
 import { CircularProgress, Modal, Pagination } from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';
 import React, { useEffect, useState, useRef } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
@@ -33,6 +33,7 @@ import AddButton from "../../../Components/common/CustomButton";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageBuilder = () => {
     // we have the module here
+    const {pathname} = useLocation()
     const menuRef = useRef();
     const navigate = useNavigate();
 
@@ -457,6 +458,7 @@ const ManageBuilder = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : pathname,
             "colmap": {
                 "buildername": "Builder Name",
                 "country": "Country",

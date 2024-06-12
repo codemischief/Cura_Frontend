@@ -40,7 +40,8 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageVendorPayment = () => {
 
     const menuRef = useRef();
-    const { state } = useLocation()
+    const { state , pathname } = useLocation()
+    console.log(pathname)
     const navigate = useNavigate();
     console.log(state)
     // console.log(state?.orderid)
@@ -661,6 +662,7 @@ const ManageVendorPayment = () => {
                 "id",
             ],
             "downloadType": type,
+            "routename" : '/manage/managevendorpayment',
             "colmap": {
                 "vendorname": "Vendor Name",
                 "clientname": "Client Name",

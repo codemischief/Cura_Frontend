@@ -68,7 +68,7 @@ export const PATH_DASHBOARD = {
     vendorPayment: path(ROOTS.manage, "/managevendorpayment"),
     orderVendorPayment : path(ROOTS.manage, "/managevendorpayment/:orderId"),
     pmaBilling: path(ROOTS.manage, "/pmaBilling"),
-    sendClientStatement : path(ROOTS.manage, "/sendclientstatement"),
+    ClientStatement : path(ROOTS.manage, "/sendclientstatement"),
   },
   report: {
     list: {

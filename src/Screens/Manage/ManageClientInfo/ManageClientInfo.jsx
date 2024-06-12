@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, Navigate, useNavigate } from "react-router-dom";
+import { Outlet, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -39,6 +39,7 @@ import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
+    const {pathname} = useLocation()
     const dataRows = [
         "clientname",
         "clienttypename",
@@ -602,6 +603,7 @@ const ManageClientInfo = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType" : type,
+            "routename" : pathname,
             "colmap" : {
                 "clientname" : "Client Name",
                 "clienttypename" : "Client Type",
@@ -1108,6 +1110,7 @@ const ManageClientInfo = () => {
     const [idFilterInput, setidFilterInput] = useState("");
     const resetAllInputs = () => {
         // toast.success('Filters Resetted!')
+        
         setClientNameInput("");
         setClientTypeNameInput("");
         setTenantOfTypeNameInput("");

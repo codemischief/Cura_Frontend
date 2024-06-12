@@ -36,7 +36,8 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 const ManageProjectInfo = () => {
-    
+    const {pathname} = useLocation()
+    console.log(pathname)
     const dataRows = [
         "projectname", 
         "buildername", 
@@ -485,6 +486,7 @@ const ManageProjectInfo = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : "/manage/manageprojectinfo",
             "colmap": {
                 "projectname": "Project Name",
                 "buildername" : "Builder Name",
