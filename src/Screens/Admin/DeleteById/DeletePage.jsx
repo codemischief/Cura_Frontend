@@ -117,7 +117,7 @@ const DeletePage = () => {
               <label>Enter ID </label>
               <div className="flex space-x-10 items-center ">
 
-                <input className="h-[30px] p-2 font-normal" value={id} onChange={(e) => setId(e.target.value)} type="number" />
+                <input className="h-[30px] p-2 font-normal" value={id} onChange={(e) => setId(e.target.value)} type="number" onKeyDown={handleCheck} />
 
                 <Button
                 variant="outlined"
