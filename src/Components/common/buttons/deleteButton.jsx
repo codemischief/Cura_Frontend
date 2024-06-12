@@ -9,7 +9,23 @@ const DeleteButton = ({ handleDelete, sx, rowData }) => {
   const { pathname } = useLocation();
 
   // if (!user.allowedModules[pathname]?.delete) return null;
+  const hasAccess = (path) => {
+   
 
+    // Check if the exact path is allowed
+    if (user.allowedModules[pathname]?.delete) {
+      return true;
+    }
+
+    // Check for dynamic route access
+    return Object.keys(user.allowedModules).some(
+      (allowedPath) =>
+        path.startsWith(allowedPath) && user.allowedModules[allowedPath].delete
+    );
+  };
+  if(!hasAccess(pathname)) {
+    return null
+  }
   return (
     <Delete
       sx={{
