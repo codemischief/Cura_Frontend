@@ -38,8 +38,8 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManagePmaArgreement = () => {
-    const {state} = useLocation();
-
+    const {state, pathname} = useLocation();
+    console.log(pathname)
     const navigate = useNavigate()
     console.log(state)
     const dataRows = [
@@ -645,6 +645,7 @@ const ManagePmaArgreement = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType" : type,
+            "routename" : '/manage/managepmaagreement',
             "colmap" : {
                 "clientname" : "Client Name",
                 "propertydescription" : "Property Description",

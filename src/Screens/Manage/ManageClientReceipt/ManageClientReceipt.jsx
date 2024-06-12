@@ -499,6 +499,7 @@ const ManageClientReceipt = () => {
             "downloadType" : type,
             "routename" : location?.pathname,
             "search_key": searchInput,
+            "routename" : '/manage/manageclientreceipt',
             "colmap" : {
                 "clientname" : "Client Name",
                 "amount" : "Amount",

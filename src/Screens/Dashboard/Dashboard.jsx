@@ -36,7 +36,7 @@ const Dashboard = () => {
   }
   useEffect(() => {
      console.log(user)
-     console.log('rendered')
+     console.log("render")
      fetchDashboardData(user.id)
   },[])
   return (

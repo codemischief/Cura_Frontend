@@ -41,7 +41,8 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageOrderReceipt = () => {
 
     const menuRef = useRef();
-    const { state } = useLocation();
+    const { state , pathname} = useLocation();
+    console.log(pathname)
     const navigate = useNavigate();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -673,6 +674,7 @@ const ManageOrderReceipt = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : "/manage/manageorderreceipt",
             "colmap": {
                 "clientname": "Client Name",
                 "briefdescription": "Order Description",

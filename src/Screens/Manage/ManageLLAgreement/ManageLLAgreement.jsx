@@ -37,8 +37,8 @@ import AddButton from '../../../Components/common/CustomButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageLLAgreement = () => {
     const navigate = useNavigate();
-    const { state } =  useLocation();
-
+    const { state , pathname} =  useLocation();
+    console.log(pathname)
     console.log(state)
 
     // const initialRows = [
@@ -856,6 +856,7 @@ const ManageLLAgreement = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType" : type,
+            "routename" : '/manage/managellagreement',
             "colmap" : {
                 "clientname" : "Client Name",
                 "propertydescription" : "Property Description",

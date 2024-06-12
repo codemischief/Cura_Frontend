@@ -39,6 +39,7 @@ import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilte
 const ManageClientProperty = () => {
     const menuRef = useRef();
     const { state, pathname } = useLocation()
+    console.log(pathname)
     console.log(state)
     // we have the module here
     const navigate = useNavigate()
@@ -883,7 +884,7 @@ const ManageClientProperty = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            
+            "routename" : '/manage/manageclientproperty',
             "downloadType" : type,
             "colmap" : {
                 "client" : "Client Name",

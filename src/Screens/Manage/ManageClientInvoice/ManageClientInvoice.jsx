@@ -37,6 +37,8 @@ import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const ManageClientInvoice = () => {
+    const {pathname} = useLocation()
+    console.log(pathname)
     const dataRows = [
         "clientname",
         "quotedescription",
@@ -498,6 +500,7 @@ const ManageClientInvoice = () => {
             "pg_size": 0,
             "downloadType" : type,
             "search_key": searchInput,
+            "routename" : '/manage/manageclientinvoice',
             "colmap" : {
                 "clientname" : "Client Name",
                 "quotedescription" : "Quote/Invoice Description",

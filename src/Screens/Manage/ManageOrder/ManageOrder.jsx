@@ -40,7 +40,8 @@ const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
     const navigate = useNavigate()
-    const { state } = useLocation()
+    const { state , pathname} = useLocation()
+    console.log(pathname)
     console.log(state)
     const [existingOrder, setExistingOrder] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
@@ -511,6 +512,7 @@ const ManageOrder = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : '/manage/manageOrder',
             "colmap": {
                 "clientname": "Client Name",
                 "ownername": "Assigned To",

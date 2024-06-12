@@ -1,6 +1,6 @@
 import { CircularProgress, Modal, Pagination , LinearProgress, Backdrop} from "@mui/material";
 import React, { useEffect, useState, useRef } from 'react';
-import { Link , useNavigate} from "react-router-dom";
+import { Link , useLocation, useNavigate} from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
 import AsyncSelect from "react-select/async"
@@ -35,6 +35,7 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png"
 const ManageBankStatement = () => {
     // we have the module here
+    const {pathname} = useLocation()
     const navigate = useNavigate()
     const dataRows = [
         "mode",
@@ -629,6 +630,7 @@ const ManageBankStatement = () => {
             "pg_size": 0,
             "search_key": searchQuery,
             "downloadType": type,
+            "routename" : pathname,
             "colmap" : {
                 "mode" : "Mode",
                 "date" : "Date",
