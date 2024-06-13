@@ -31,12 +31,14 @@ import CancelModel from './../../Components/modals/CancelModel';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
 import AddButton from '../../Components/common/CustomButton';
+import EditButton from '../../Components/common/buttons/EditButton';
+import DeleteButton from '../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Country = () => {
   // we have the module here
   const menuRef = useRef();
   const navigate = useNavigate();
-  const {pathname} = useLocation()
+  const { pathname } = useLocation()
   const [existingCountries, setCountryValues] = useState([]);
   //   const [isSubmit, setIsSubmit] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
@@ -125,7 +127,7 @@ const Country = () => {
     setCurrentPage(pageNumber);
     // const user_id = await authService.getUserID();
     const data = {
-      
+
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -152,7 +154,7 @@ const Country = () => {
     setCurrentPages(quantity);
     setCurrentPage((prev) => 1)
     const data = {
-      
+
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -199,7 +201,7 @@ const Country = () => {
     });
     setFilterState((prev) => tempArray)
     const data = {
-      
+
       "rows": ["id", "name"],
       "filters": tempArray,
       "sort_by": [sortField],
@@ -219,7 +221,7 @@ const Country = () => {
 
   const addCountry = async () => {
 
-    const data = {  "country_name": formValues.countryName };
+    const data = { "country_name": formValues.countryName };
     const response = await APIService.addCountries(data);
     const res = await response.json();
     console.log(res)
@@ -348,7 +350,7 @@ const Country = () => {
       return !prev
     })
     const data = {
-      
+
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [field],
@@ -372,7 +374,7 @@ const Country = () => {
     setCurrentPage(1);
     console.log('hey')
     const data = {
-      
+
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -435,7 +437,7 @@ const Country = () => {
     setBackDropLoading(true)
     setPageLoading(true)
     const data = {
-      
+
       "rows": ["name", "id"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -444,7 +446,7 @@ const Country = () => {
       "pg_size": 0,
       "search_key": searchQuery,
       "downloadType": type,
-      "routename" : pathname,
+      "routename": pathname,
       "colmap": {
         "name": "Country",
         "id": "ID"
@@ -458,12 +460,12 @@ const Country = () => {
       const d = {
         "filename": temp.filename,
       }
-      APIService.download(d,temp.filename).then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.blob();
-        })
+      APIService.download(d, temp.filename).then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.blob();
+      })
         .then(result => {
           if (type == "excel") {
             FileSaver.saveAs(result, 'CountryData.xlsx');
@@ -560,7 +562,7 @@ const Country = () => {
     setCurrentPage((prev) => 1)
     setPageLoading(true);
     const data = {
-      
+
       "rows": ["id", "name"],
       "filters": tempArray,
       "sort_by": [sortField],
@@ -750,8 +752,16 @@ const Country = () => {
                     <p>{item.id}</p>
                   </div>
                   <div className='w-1/2 px-3 flex items-center gap-5'>
-                    <button onClick={() => editCountry(item)} > <img className='w-5 h-5' src={Edit} alt="edit" /> </button>
-                    <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                    <EditButton
+                      rowData={item}
+                      handleEdit={editCountry}
+                    />
+                    <DeleteButton
+                      handleDelete={deleteCountry}
+                      rowData={item}
+                    />
+                    {/* <button onClick={() => editCountry(item)} > <img className='w-5 h-5' src={Edit} alt="edit" /> </button>
+                    <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash" /></button> */}
                   </div>
                 </div>
               </div>

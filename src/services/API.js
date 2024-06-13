@@ -5,7 +5,9 @@ const API = {
   LOGIN: "$env_URL_SERVERvalidateCredentials",
 };
 // import { userId } from "../utils/axios";
-const userId = JSON.parse(sessionStorage.getItem("user"))?.id;
+// const userId = JSON.parse(sessionStorage.getItem("user"))?.id;
+
+const userId = 1234
 
 console.log(userId , "hello")
 const METHOD_POST = (data) => ({

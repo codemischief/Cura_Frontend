@@ -35,12 +35,14 @@ import DropDown from '../../../Components/Dropdown/Dropdown';
 import { formatDate } from "../../../utils/formatDate";
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageEmployees = () => {
 
     const menuRef = useRef();
     const navigate = useNavigate();
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -621,9 +623,9 @@ const ManageEmployees = () => {
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
     const [currEmployeeName, setCurrEmployeeName] = useState("");
-    const handleDelete = (id, name) => {
-        setCurrEmployeeId(id);
-        setCurrEmployeeName(name);
+    const handleDelete = (item) => {
+        setCurrEmployeeId(item.id);
+        setCurrEmployeeName(item.employeename);
         showDeleteConfirmation(true);
     }
     const deleteEmployee = async (id) => {
@@ -665,7 +667,7 @@ const ManageEmployees = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
-            "routename" : pathname,
+            "routename": pathname,
             "colmap": {
                 "employeename": "Employee",
                 "employeeid": "Employee ID",
@@ -676,7 +678,7 @@ const ManageEmployees = () => {
                 "dateofjoining": "Date of Joining",
                 "lastdateofworking": "Last Date of Working",
                 "status": "Status",
-                "id" : "ID"
+                "id": "ID"
             }
         };
         const response = await APIService.getEmployees(data)
@@ -688,14 +690,8 @@ const ManageEmployees = () => {
                 "filename": temp.filename,
                 "user_id": 1234
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
+            APIService.download(d, temp.filename).
+                then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
@@ -963,7 +959,7 @@ const ManageEmployees = () => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-       
+
         //     if (inputVariable.toLowerCase() == 'active') {
         //         existing = {
         //             ...existing, [columnName]: {
@@ -1007,22 +1003,22 @@ const ManageEmployees = () => {
         //     }
 
         // } else {
-            var existing = filterMapState;
-            existing = {
-                ...existing, [columnName]: {
-                    ...existing[columnName],
-                    filterType: type == 'noFilter' ? "" : type
-                }
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
             }
-            existing = {
-                ...existing, [columnName]: {
-                    ...existing[columnName],
-                    filterValue: type == 'noFilter' ? "" : inputVariable
-                }
+        }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
             }
+        }
 
-            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
-        
+        if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
+
 
         fetchFiltered(existing);
     }
@@ -1280,7 +1276,7 @@ const ManageEmployees = () => {
                                     />
                                     {filterMapState.status.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {statusFilter && <CharacterFilter  inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
+                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
                             </div>
                         </div>
                         <div className="w-[10%] flex items-center">
@@ -1447,8 +1443,17 @@ const ManageEmployees = () => {
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex overflow-hidden items-center space-x-2 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-4 w-4 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id, item.employeename)}><img className=' h-4 w-4' src={Trash} alt="trash" /></button>
+                                        <EditButton
+                                            rowData={item}
+                                            handleEdit={handleOpenEdit}
+                                        />
+                                        <DeleteButton
+
+                                            handleDelete={handleDelete}
+                                            rowData={item}
+                                        />
+                                        {/* <button onClick={() => handleOpenEdit(item)}><img className=' h-4 w-4 ml-3' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item.id, item.employeename)}><img className=' h-4 w-4' src={Trash} alt="trash" /></button> */}
                                     </div>
                                 </div>
 
@@ -1788,7 +1793,7 @@ const ManageEmployees = () => {
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
                                             <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.suburb}</div>
                                         </div>
-                                        
+
                                         <div className="">
                                             <div className="text-sm">Entities <label className="text-red-500">*</label></div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
