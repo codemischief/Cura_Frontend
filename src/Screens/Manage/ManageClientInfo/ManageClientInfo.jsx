@@ -10,7 +10,7 @@ import Navbar from "../../../Components/Navabar/Navbar";
 import { toast } from "react-toastify";
 import { Refresh } from '@mui/icons-material';
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress , Backdrop , CircularProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, Backdrop, CircularProgress } from "@mui/material";
 import { APIService } from '../../../services/API';
 import ClientInformation from "./Forms/ClientInformation"
 import ClientPortal from "./Forms/ClientPortal";
@@ -44,10 +44,10 @@ import checkEditAccess from '../../../Components/common/checkRoleBase';
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
 
-    const {user} = useAuth()
+    const { user } = useAuth()
     const canEdit = checkEditAccess();
     console.log(user)
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     const dataRows = [
         "clientname",
         "clienttypename",
@@ -166,16 +166,16 @@ const ManageClientInfo = () => {
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  user.id };
-        const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries({...data,user_id : user.id})
+        const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const response = await APIService.getCountries({ ...data, user_id: user.id })
         const result = (await response.json()).data;
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = {  "country_id": id };
+        const data = { "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState({...data,user_id : user.id});
+        const response = await APIService.getState({ ...data, user_id: user.id });
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -183,8 +183,8 @@ const ManageClientInfo = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = {  "state_name": id };
-        const response = await APIService.getCities({...data,user_id : user.id});
+        const data = { "state_name": id };
+        const response = await APIService.getCities({ ...data, user_id: user.id });
         const result = (await response.json()).data;
         console.log(result);
         if (Array.isArray(result)) {
@@ -200,8 +200,8 @@ const ManageClientInfo = () => {
     const fetchUsersData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  user.id };
-        const data = {  };
-        const response = await APIService.getUsers({...data,user_id : user.id})
+        const data = {};
+        const response = await APIService.getUsers({ ...data, user_id: user.id })
         const result = (await response.json());
 
         console.log(result.data);
@@ -217,8 +217,8 @@ const ManageClientInfo = () => {
     const fetchRoleData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  user.id };
-        const data = {  };
-        const response = await APIService.getRoles({...data,user_id : user.id})
+        const data = {};
+        const response = await APIService.getRoles({ ...data, user_id: user.id })
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -232,8 +232,8 @@ const ManageClientInfo = () => {
     const fetchEntitiesData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  user.id };
-        const data = {  };
-        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
+        const data = {};
+        const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -245,9 +245,9 @@ const ManageClientInfo = () => {
     }
     const fetchRelation = async () => {
         const data = {
-            
+
         }
-        const response = await APIService.getRelationAdmin({...data,user_id : user.id})
+        const response = await APIService.getRelationAdmin({ ...data, user_id: user.id })
         const res = await response.json()
         console.log(res)
         setRelationData(res.data)
@@ -255,7 +255,7 @@ const ManageClientInfo = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            
+
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -263,7 +263,7 @@ const ManageClientInfo = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob({...data,user_id : user.id});
+        const response = await APIService.getLob({ ...data, user_id: user.id });
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -290,7 +290,7 @@ const ManageClientInfo = () => {
         setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            
+
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -299,7 +299,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo({...data,user_id : user.id});
+        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -313,7 +313,7 @@ const ManageClientInfo = () => {
 
         setCurrentPage((prev) => pageNumber)
         const data = {
-            
+
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -322,7 +322,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo({...data,user_id : user.id});
+        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -338,7 +338,7 @@ const ManageClientInfo = () => {
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
-            
+
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -347,7 +347,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo({...data,user_id : user.id});
+        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -422,9 +422,9 @@ const ManageClientInfo = () => {
     const [clientTypeData, setClientTypeData] = useState([]);
     const fetchClientTypeData = async () => {
         const data = {
-            
+
         }
-        const response = await APIService.getClientTypeAdmin({...data,user_id : user.id});
+        const response = await APIService.getClientTypeAdmin({ ...data, user_id: user.id });
         const res = await response.json()
         console.log(res)
         setClientTypeData(res.data)
@@ -432,9 +432,9 @@ const ManageClientInfo = () => {
     }
     const fetchTenentOfData = async () => {
         const data = {
-            
+
         }
-        const response = await APIService.getTenantOfPropertyAdmin({...data,user_id : user.id})
+        const response = await APIService.getTenantOfPropertyAdmin({ ...data, user_id: user.id })
         const res = await response.json()
         console.log(res)
         setTenentOfData(res.data)
@@ -494,7 +494,7 @@ const ManageClientInfo = () => {
             "entityid": 1,
             "tenantof": null,
             "tenentofproperty": null,
-            "tenantofname" : "Select Tenant Of "
+            "tenantofname": "Select Tenant Of "
         },
         "client_access": [],
         "client_bank_info": [],
@@ -563,7 +563,7 @@ const ManageClientInfo = () => {
         setDownloadModal(false)
         setPageLoading(true);
         const data = {
-            
+
             "rows": [
                 "clientname",
                 "clienttypename",
@@ -573,7 +573,6 @@ const ManageClientInfo = () => {
                 "mobilephone",
                 "email1",
                 "email2",
-                "employername",
                 "id",
             ],
             "filters": filterState,
@@ -582,64 +581,63 @@ const ManageClientInfo = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            "downloadType" : type,
-            "routename" : pathname,
-            "colmap" : {
-                "clientname" : "Client Name",
-                "clienttypename" : "Client Type",
-                "tenantofname" : "Tenant Of",
-                "tenantofpropertyname" : "Tenant Of Property",
-                "country" : "Country",
-                "mobilephone" : "Phone", 
-                "email1" : "Email1",
-                "email2" : "Email2",
-                "employername" : "Employer Name",
-                "id" : "ID",
+            "downloadType": type,
+            "routename": pathname,
+            "colmap": {
+                "clientname": "Client Name",
+                "clienttypename": "Client Type",
+                "tenantofname": "Tenant Of",
+                "tenantofpropertyname": "Tenant Of Property",
+                "country": "Country",
+                "mobilephone": "Phone",
+                "email1": "Email1",
+                "email2": "Email2",
+                "id": "ID",
             }
         };
-        const response = await APIService.getClientInfo({...data,user_id : user.id})
+        const response = await APIService.getClientInfo({ ...data, user_id: user.id })
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
-        if(temp.result == 'success') {
+        if (temp.result == 'success') {
             const d = {
-                "filename" : temp.filename,
-                
+                "filename": temp.filename,
+
             }
             fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({...d,user_id : user.id}) // Convert the object to a JSON string
+                body: JSON.stringify({ ...d, user_id: user.id }) // Convert the object to a JSON string
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.blob();
-            })
-            .then(result => {
-                if(type == "excel") {
-                    FileSaver.saveAs(result, 'ClientInfoData.xlsx');
-                }else if(type == "pdf") {
-                    FileSaver.saveAs(result, 'ClientInfoData.pdf');
-                }
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'ClientInfoData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'ClientInfoData.pdf');
+                    }
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
             setTimeout(() => {
                 // setBackDropLoading(false)
                 setPageLoading(false)
-            },1000) 
+            }, 1000)
         }
     }
     const handleExcelDownload = async () => {
         const data = {
-            
+
             "rows": [
                 "clientname",
                 "clienttypename",
@@ -661,7 +659,7 @@ const ManageClientInfo = () => {
         };
         // window.open("https://stackoverflow.com/questions/31079081/how-to-programmatically-navigate-using-react-router", '_blank');
         // Navigate.call()
-     
+
     }
     const handleSearch = async () => {
         // console.log("clicked")
@@ -670,7 +668,7 @@ const ManageClientInfo = () => {
 
         setIsSearchOn(true);
         const data = {
-            
+
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -679,7 +677,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo({...data,user_id : user.id});
+        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -694,7 +692,7 @@ const ManageClientInfo = () => {
         setSearchInput("");
         setCurrentPage((prev) => 1)
         const data = {
-            
+
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -702,7 +700,7 @@ const ManageClientInfo = () => {
             "pg_no": 1,
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getClientInfo({...data,user_id : user.id});
+        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -923,7 +921,7 @@ const ManageClientInfo = () => {
         // setButtonLoading(true);
 
         const data = {
-            
+
             "client_info": {
                 "firstname": formValues.client_info.firstname,
                 "middlename": formValues.client_info.middlename,
@@ -997,8 +995,8 @@ const ManageClientInfo = () => {
                 "scancopy": formValues.client_poa.scancopy
             }
         };
-        console.log({...data,user_id : user.id});
-        const response = await APIService.addClientInfo({...data,user_id : user.id})
+        console.log({ ...data, user_id: user.id });
+        const response = await APIService.addClientInfo({ ...data, user_id: user.id })
         const res = await response.json();
         setShowAddConfirmation(false)
 
@@ -1017,10 +1015,10 @@ const ManageClientInfo = () => {
     const handleDelete = async (id) => {
 
         const data = {
-            
+
             "id": id
         }
-        const response = await APIService.deleteClientInfo({...data,user_id : user.id})
+        const response = await APIService.deleteClientInfo({ ...data, user_id: user.id })
         const res = await response.json()
         console.log(res)
         setShowDelete(false);
@@ -1090,7 +1088,7 @@ const ManageClientInfo = () => {
     const [idFilterInput, setidFilterInput] = useState("");
     const resetAllInputs = () => {
         // toast.success('Filters Resetted!')
-        
+
         setClientNameInput("");
         setClientTypeNameInput("");
         setTenantOfTypeNameInput("");
@@ -1107,7 +1105,7 @@ const ManageClientInfo = () => {
         setSortField(field);
         setFlag((prev) => !prev)
         const data = {
-            
+
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
@@ -1117,7 +1115,7 @@ const ManageClientInfo = () => {
             "search_key": searchInput
         };
 
-        const response = await APIService.getClientInfo({...data,user_id : user.id});
+        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1149,18 +1147,18 @@ const ManageClientInfo = () => {
     const [filterState, setFilterState] = useState([])
     const fetchFiltered = async (mapState) => {
         setTenantOfPropertyFilter(false);
-                setIdFilter(false)
-                setEmployerFilter(false);
-                setEmail1Filter(false);
-                setPhoneFilter(false)
-                setCityFilter(false)
-                setClientNameFilter(false);
-                setCountryFilter(false)
-                setClientNameFilter(false);
-                setTenantOfTypeNameFilter(false)
-                setEmployerFilter(false);
-                setClientTypeNameFilter(false)
-                setTenantOfTypeNameFilter(false)
+        setIdFilter(false)
+        setEmployerFilter(false);
+        setEmail1Filter(false);
+        setPhoneFilter(false)
+        setCityFilter(false)
+        setClientNameFilter(false);
+        setCountryFilter(false)
+        setClientNameFilter(false);
+        setTenantOfTypeNameFilter(false)
+        setEmployerFilter(false);
+        setClientTypeNameFilter(false)
+        setTenantOfTypeNameFilter(false)
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
@@ -1175,7 +1173,7 @@ const ManageClientInfo = () => {
         setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            
+
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -1183,7 +1181,7 @@ const ManageClientInfo = () => {
             "pg_no": 1,
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getClientInfo({...data,user_id : user.id});
+        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1222,17 +1220,17 @@ const ManageClientInfo = () => {
 
         }
     }
-    const [orderText,setOrderText] = useState('Select Tenant Of Property')
+    const [orderText, setOrderText] = useState('Select Tenant Of Property')
     return (
         <div className='font-medium'>
-            
+
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
-                onClick={() => {}}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
             {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient} openEditSuccess={openEditSuccess} showCancel={openCancelModal} />}
@@ -1247,7 +1245,7 @@ const ManageClientInfo = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                        <button onClick={() => {navigate(-1)}}><img className='h-5 w-5' src={backLink} /></button>
+                            <button onClick={() => { navigate(-1) }}><img className='h-5 w-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
@@ -1303,48 +1301,48 @@ const ManageClientInfo = () => {
                             </div>
                             <div className='w-[13%] px-3 py-2.5 '>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientNameInput} onChange={(e) => setClientNameInput(e.target.value)} 
-                                    onKeyDown={(event) => handleEnterToFilter(event, clientNameInput,
-                                        setClientNameInput,
-                                        'contains',
-                                        'clientname')}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientNameInput} onChange={(e) => setClientNameInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, clientNameInput,
+                                            setClientNameInput,
+                                            'contains',
+                                            'clientname')}
                                     />
-                                    {filterMapState.clientname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.clientname.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button> */}
                                 </div>
 
-                                {clientNameFilter && <CharacterFilter inputVariable={clientNameInput} setInputVariable={setClientNameInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType}/>}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameInput} setInputVariable={setClientNameInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType} />}
 
                             </div>
 
                             <div className='w-[11%] px-3 py-2.5 '>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[73%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientTypeNameInput} onChange={(e) => setClientTypeNameInput(e.target.value)} 
+                                    <input className="w-[73%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientTypeNameInput} onChange={(e) => setClientTypeNameInput(e.target.value)}
 
-                                    onKeyDown={(event) => handleEnterToFilter(event, clientTypeNameInput,
-                                        setClientTypeNameInput,
-                                        'contains',
-                                        'clienttypename')}
-                                    
+                                        onKeyDown={(event) => handleEnterToFilter(event, clientTypeNameInput,
+                                            setClientTypeNameInput,
+                                            'contains',
+                                            'clienttypename')}
+
                                     />
-                                    {filterMapState.clienttypename.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientTypeNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientTypeNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.clienttypename.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setClientTypeNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setClientTypeNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[27%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientTypeNameFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {clientTypeNameFilter && <CharacterFilter inputVariable={clientTypeNameInput} setInputVariable={setClientTypeNameInput} handleFilter={newHandleFilter} filterColumn='clienttypename' menuRef={menuRef} filterType={filterMapState.clienttypename.filterType}/>}
+                                {clientTypeNameFilter && <CharacterFilter inputVariable={clientTypeNameInput} setInputVariable={setClientTypeNameInput} handleFilter={newHandleFilter} filterColumn='clienttypename' menuRef={menuRef} filterType={filterMapState.clienttypename.filterType} />}
 
                             </div>
 
                             <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfTypeNameInput} onChange={(e) => setTenantOfTypeNameInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event, tenantOfTypeNameInput,
-                                        setTenantOfTypeNameInput,
-                                        'contains',
-                                        'tenantofname')}
-                                    
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfTypeNameInput} onChange={(e) => setTenantOfTypeNameInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, tenantOfTypeNameInput,
+                                            setTenantOfTypeNameInput,
+                                            'contains',
+                                            'tenantofname')}
+
                                     />
-                                    {filterMapState.tenantofname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTenantOfTypeNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTenantOfTypeNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.tenantofname.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setTenantOfTypeNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setTenantOfTypeNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTenantOfTypeNameFilter((prev) => !prev) }} /></button> */}
                                 </div>
                                 {tenantOfTypeNameFilter && <CharacterFilter inputVariable={tenantOfTypeNameInput} setInputVariable={setTenantOfTypeNameInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofname' filterType={filterMapState.tenantofname.filterType} />}
@@ -1353,86 +1351,86 @@ const ManageClientInfo = () => {
 
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfPropertyInput} onChange={(e) => setTenantOfPropertyInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event, tenantOfPropertyInput,
-                                        setTenantOfPropertyInput,
-                                        'contains',
-                                        'tenantofpropertyname')}
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfPropertyInput} onChange={(e) => setTenantOfPropertyInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, tenantOfPropertyInput,
+                                            setTenantOfPropertyInput,
+                                            'contains',
+                                            'tenantofpropertyname')}
                                     />
-                                    {filterMapState.tenantofpropertyname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTenantOfPropertyFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTenantOfPropertyFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.tenantofpropertyname.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setTenantOfPropertyFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setTenantOfPropertyFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTenantOfPropertyFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {tenantOfPropertyFilter && <CharacterFilter inputVariable={tenantOfPropertyInput} setInputVariable={setTenantOfPropertyInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofpropertyname' filterType={filterMapState.tenantofpropertyname.filterType}/>}
+                                {tenantOfPropertyFilter && <CharacterFilter inputVariable={tenantOfPropertyInput} setInputVariable={setTenantOfPropertyInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofpropertyname' filterType={filterMapState.tenantofpropertyname.filterType} />}
                                 {/* {tenantOfPropertyFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />} } */}
 
                             </div>
 
                             <div className='w-[8%]  px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryInput} onChange={(e) => setCountryInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event, countryInput,
-                                        setCountryInput,
-                                        'contains',
-                                        'country')}
-                                    
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryInput} onChange={(e) => setCountryInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, countryInput,
+                                            setCountryInput,
+                                            'contains',
+                                            'country')}
+
                                     />
-                                    {filterMapState.country.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.country.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setCountryFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {countryFilter && <CharacterFilter inputVariable={countryInput} setInputVariable={setCountryInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} filterType={filterMapState.country.filterType}/>}
+                                {countryFilter && <CharacterFilter inputVariable={countryInput} setInputVariable={setCountryInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} filterType={filterMapState.country.filterType} />}
                             </div>
 
                             <div className='w-[8%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[50%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityInput} onChange={(e) => setCityInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event, cityInput,
-                                        setCityInput,
-                                        'contains',
-                                        'city')}
-                                    
+                                    <input className="w-[50%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityInput} onChange={(e) => setCityInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, cityInput,
+                                            setCityInput,
+                                            'contains',
+                                            'city')}
+
                                     />
-                                    {filterMapState.city.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.city.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[50%]'><img src={Filter} className='h-3 w-3' onClick={() => { setCityFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {cityFilter && <CharacterFilter inputVariable={cityInput} setInputVariable={setCityInput} filterColumn='city' menuRef={menuRef} handleFilter={newHandleFilter} filterType={filterMapState.city.filterType}/>}
+                                {cityFilter && <CharacterFilter inputVariable={cityInput} setInputVariable={setCityInput} filterColumn='city' menuRef={menuRef} handleFilter={newHandleFilter} filterType={filterMapState.city.filterType} />}
                             </div>
 
                             <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} 
-                                    
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)}
 
-                                    onKeyDown={(event) => handleEnterToFilter(event, phoneInput,
-                                        setPhoneInput,
-                                        'contains',
-                                        'mobilephone')}
-                                    
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, phoneInput,
+                                            setPhoneInput,
+                                            'contains',
+                                            'mobilephone')}
+
                                     />
-                                    {filterMapState.mobilephone.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPhoneFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPhoneFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.mobilephone.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setPhoneFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setPhoneFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[28%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {phoneFilter && <CharacterFilter inputVariable={phoneInput} setInputVariable={setPhoneInput} filterColumn='mobilephone' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.mobilephone.filterType}/>}
+                                {phoneFilter && <CharacterFilter inputVariable={phoneInput} setInputVariable={setPhoneInput} filterColumn='mobilephone' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.mobilephone.filterType} />}
 
                             </div>
 
                             <div className='w-[11%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={email1Input} onChange={(e) => setEmail1Input(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event, email1Input,
-                                        setEmail1Input,
-                                        'contains',
-                                        'email1')}
-                                    
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={email1Input} onChange={(e) => setEmail1Input(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, email1Input,
+                                            setEmail1Input,
+                                            'contains',
+                                            'email1')}
+
+
                                     />
-                                    {filterMapState.email1.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setEmail1Filter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setEmail1Filter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.email1.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setEmail1Filter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setEmail1Filter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setEmail1Filter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {email1Filter && <CharacterFilter inputVariable={email1Input} setInputVariable={setEmail1Input} filterColumn='email1' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.email1.filterType}/>}
+                                {email1Filter && <CharacterFilter inputVariable={email1Input} setInputVariable={setEmail1Input} filterColumn='email1' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.email1.filterType} />}
                             </div>
 
                             {/* <div className='w-[9%] px-3 py-2.5'>
@@ -1447,29 +1445,29 @@ const ManageClientInfo = () => {
                         <div className="w-[15%] flex">
                             <div className='w-1/2   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[63%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
-                                        setidFilterInput,
-                                        'equalTo',
-                                        'id')}
-                                    
+                                    <input className="w-[63%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                            setidFilterInput,
+                                            'equalTo',
+                                            'id')}
+
                                     />
-                                     {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.id.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[37%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
 
-                               <div className='w-1/2 p-3 flex items-center'>
-                                 <RefreshFilterButton
-                                   fetchData={fetchData}
-                                   resetAllInputs={resetAllInputs}
-                                   setFilterMapState={setFilterMapState}
-                                   filterMapping={filterMapping}
-                                 />
-                                 
-                              </div>  
+                            <div className='w-1/2 p-3 flex items-center'>
+                                <RefreshFilterButton
+                                    fetchData={fetchData}
+                                    resetAllInputs={resetAllInputs}
+                                    setFilterMapState={setFilterMapState}
+                                    filterMapping={filterMapping}
+                                />
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1504,7 +1502,7 @@ const ManageClientInfo = () => {
 
                                         <p>Tenant of </p>
                                         <p>Property</p>
-                                        
+
                                     </div>
                                     <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
                                 </div>
@@ -1557,7 +1555,7 @@ const ManageClientInfo = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>{canEdit? "Edit": "" }</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>
@@ -1625,15 +1623,15 @@ const ManageClientInfo = () => {
                                     </div> */}
                                     <div className='w-[7%]  flex'>
                                         <div className='p-3 text-[11px] text-blue-500 font-semibold'>
-                                        {/* /manage/manageclientinfo/properties/:clientname */}
-                                        <Link to={`/manage/manageclientinfo/properties/${item.clientname}`} state={{ clientid: item.id, clientname : item.clientname, hyperlinked : true}}><p>Properties</p></Link> 
+                                            {/* /manage/manageclientinfo/properties/:clientname */}
+                                            <Link to={`/manage/manageclientinfo/properties/${item.clientname}`} state={{ clientid: item.id, clientname: item.clientname, hyperlinked: true }}><p>Properties</p></Link>
                                             {/* <Link to={`properties/${item.clientname.split(` `).join(`-`).toLowerCase()}`} state={{ clientid: item.id , clientname : item.clientname}}><p>Properties</p></Link> */}
                                         </div>
                                     </div>
                                     <div className='w-[6%]  flex'>
                                         <div className='p-3 text-[11px] text-blue-500 font-semibold'>
-                                        {/* /manage/manageclientinfo/orders/:clientname */}
-                                            <Link to={`/manage/manageclientinfo/orders/${item.clientname}`} state={{clientid : item.id, clientname : item.clientname , hyperlinked : true}}>Orders</Link>
+                                            {/* /manage/manageclientinfo/orders/:clientname */}
+                                            <Link to={`/manage/manageclientinfo/orders/${item.clientname}`} state={{ clientid: item.id, clientname: item.clientname, hyperlinked: true }}>Orders</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -1646,13 +1644,13 @@ const ManageClientInfo = () => {
                                     <div className='w-1/2  flex'>
                                         <div className='p-3 flex space-x-2'>
                                             <EditButton
-                                             rowData={item.id}
-                                             handleEdit={handleEdit}
+                                                rowData={item.id}
+                                                handleEdit={handleEdit}
                                             />
                                             <DeleteButton
-                                              
-                                              handleDelete={openDelete}
-                                              rowData={item}
+
+                                                handleDelete={openDelete}
+                                                rowData={item}
                                             />
                                             {/* <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => { openDelete(item.id) }} /> */}
                                         </div>
@@ -1750,48 +1748,51 @@ const ManageClientInfo = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    {/* <Draggable> */}
-                    <div className="w-[1200px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Client</div>
+                    <Draggable handle='div.move'>
+                        <div className="w-[1200px] h-auto bg-white rounded-lg">
+                            <div className="move cursor-move">
+
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]">New Client</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                        <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
+
+                            <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
+                                <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
+                                    <div>Client Information</div>
+                                </div>
+                                <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
+                                    <div>Client Portal</div>
+                                </div>
+                                <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
+                                    <div>Bank Details</div>
+                                </div>
+                                <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectForth}>
+                                    <div>Legal Information</div>
+                                </div>
+                                <div className={`${selectedDialog == 5 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFifth}>
+                                    <div>POA details</div>
+                                </div>
                             </div>
+
+                            {selectedDialog == 1 && <ClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} formErrors={formErrorsClientInfo} orderText={orderText} setOrderText={setOrderText} />}
+                            {selectedDialog == 2 && <ClientPortal formValues={formValues} setFormValues={setFormValues} />}
+                            {selectedDialog == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
+                            {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountry={allCountry} allState={allState} initialCities={allCity} />}
+                            {selectedDialog == 5 && <POADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountries={allCountry} initialStates={allState} initialCities={allCity} />}
+
+                            <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                                <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed disabled" : "bg-[#004DD7]"} w-[100px] h-[35px]  text-white rounded-md`} onClick={handleAddClientInfo} >Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            </div>
+
                         </div>
-
-                        <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
-                            <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
-                                <div>Client Information</div>
-                            </div>
-                            <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
-                                <div>Client Portal</div>
-                            </div>
-                            <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
-                                <div>Bank Details</div>
-                            </div>
-                            <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectForth}>
-                                <div>Legal Information</div>
-                            </div>
-                            <div className={`${selectedDialog == 5 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFifth}>
-                                <div>POA details</div>
-                            </div>
-                        </div>
-
-                        {selectedDialog == 1 && <ClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} formErrors={formErrorsClientInfo} orderText={orderText} setOrderText={setOrderText}/>}
-                        {selectedDialog == 2 && <ClientPortal formValues={formValues} setFormValues={setFormValues} />}
-                        {selectedDialog == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
-                        {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountry={allCountry} allState={allState} initialCities={allCity} />}
-                        {selectedDialog == 5 && <POADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountries={allCountry} initialStates={allState} initialCities={allCity} />}
-
-                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed disabled" : "bg-[#004DD7]"} w-[100px] h-[35px]  text-white rounded-md`} onClick={handleAddClientInfo} >Add</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                        </div>
-
-                    </div>
-                    {/* </Draggable> */}
+                    </Draggable>
                 </div>
             </Modal>
         </div>

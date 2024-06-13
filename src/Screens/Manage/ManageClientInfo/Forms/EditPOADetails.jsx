@@ -100,7 +100,7 @@ const fetchCityData = async (id) => {
                     }
                 })
             }}>
-              <option >Select city</option>
+              <option value={"none"} className='hidden'>Select city</option>
               {allCity.map(item => {
                 if(item.city == formValues.client_poa.poacity) {
                     return <option value={item.city} selected>
@@ -155,7 +155,7 @@ const fetchCityData = async (id) => {
                     fetchCityData(e.target.value)
                 }
             }>
-              <option >Select state</option>
+              <option value={"none"} className='hidden'>Select state</option>
               {allState && allState.map(item => {
                 if(item[0] == formValues.client_poa.state) {
                   return <option key={item[0]} selected>
