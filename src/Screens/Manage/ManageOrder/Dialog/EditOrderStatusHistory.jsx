@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import AddFeildOrderStatusHistory from './AddFeildOrderStatusHistory';
 import { useEffect } from 'react';
 import { APIService } from '../../../../services/API';
+import useAuth from '../../../../context/JwtContext';
 const EditOrderStatusHistory = ({formValues,setFormValues,orderId}) => {
+    const {user} = useAuth()
     const [orderStatusData,setOrderStatusData] = useState([]);
     const fetchOrderStatusData = async () => {
-         const data = {"user_id":1234,"id":orderId}
-         const response = await APIService.getOrderStatusHistory(data);
+         const data = {"id":orderId}
+         const response = await APIService.getOrderStatusHistory({...data,user_id : user.id});
          const res = await response.json();
          setOrderStatusData(res.data);
          console.log(res)

@@ -19,7 +19,7 @@ const SaveConfirmationClient = (props) => {
                                 <hr class="w-60 h-1 mx-auto  bg-gray-100"></hr>
                             </div>
 
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2 top-2">
                                 <button onClick={() => {close()}}> <img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
@@ -27,7 +27,7 @@ const SaveConfirmationClient = (props) => {
                             <div className="text-[14px]">Client Name : {props.currClient}</div>
                         </div>
                         <div className="mt-4 w-full text-center">
-                            <p className="text-[14px]">Are you sure you want to Add new Client</p>
+                            <p className="text-[14px]">Are you sure you want to Add new Client?</p>
                         </div>
                         <div className="my-10 flex justify-center items-center gap-[10px]">
                             <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addClient}>Add</button>

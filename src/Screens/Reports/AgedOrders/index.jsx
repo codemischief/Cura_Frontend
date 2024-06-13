@@ -108,10 +108,10 @@ const AgedOrders = () => {
           "propertydescription",
           "briefdescription",
           "agingdays"],
-        lobName: !isNaN(+intialValue.lobname)
+        lobname: !isNaN(+intialValue.lobname)
           ? +intialValue.lobname
           : intialValue.lobname,
-        statusName: intialValue.status,
+        orderstatus: intialValue.status,
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
@@ -148,8 +148,8 @@ const AgedOrders = () => {
     if (intialValue.status && intialValue.lobname) {
       let obj = {
         user_id: 1234,
-        lobName: intialValue.lobname,
-        statusName: intialValue.status,
+        lobname: intialValue.lobname,
+        orderstatus: intialValue.status,
         rows: ["service",
           "clientname",
           "propertydescription",
@@ -195,10 +195,10 @@ const AgedOrders = () => {
         "propertydescription",
         "briefdescription",
         "agingdays"],
-      lobName: !isNaN(+intialValue.lobname)
+      lobname: !isNaN(+intialValue.lobname)
         ? +intialValue.lobname
         : intialValue.lobname,
-      statusName: intialValue.status,
+      orderstatus: intialValue.status,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       colmap: {

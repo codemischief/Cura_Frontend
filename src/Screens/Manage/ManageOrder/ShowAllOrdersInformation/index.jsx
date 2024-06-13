@@ -4,8 +4,10 @@ import { Stack, Typography } from '@mui/material'
 import { ArrowLeftOutlined ,CloseOutlined } from '@ant-design/icons'
 import { APIService } from '../../../../services/API'
 import { useLocation, useNavigate } from 'react-router-dom'
+import useAuth from '../../../../context/JwtContext'
 // import { useScroll } from 'framer-motion'
 const ShowAllOdersInformation = () => {
+    const {user} = useAuth()
     const [paymentsData,setPaymentsData] = useState([])
     const [receiptsData,setReceiptsData] = useState([])
     const [invoicesData,setInvoicesData] = useState([])
@@ -14,7 +16,7 @@ const ShowAllOdersInformation = () => {
     console.log(state)
   const fetchPaymentData = async () => {
       const data = {
-          "user_id": 1234,
+          
           "rows": [
               "clientname",
               "propertydescription",
@@ -33,7 +35,7 @@ const ShowAllOdersInformation = () => {
         "pg_size": 0
     }
     // ['orderid' , 'equalTo', state.orderid, 'Numeric']
-    const response  = await APIService.getVendorPayment(data)
+    const response  = await APIService.getVendorPayment({...data,user_id : user.id})
     const res = await response.json()
     setPaymentsData((prev) => res.data)
 
@@ -41,7 +43,7 @@ const ShowAllOdersInformation = () => {
   }
   const fetchReceiptsData = async () => {
     const data = {
-        "user_id": 1234,
+        
         "rows": [
             "clientname",
             "clientproperty",
@@ -61,14 +63,14 @@ const ShowAllOdersInformation = () => {
         "search_key": ""
     }
         ;
-    const response = await APIService.getOrderReceipt(data);
+    const response = await APIService.getOrderReceipt({...data,user_id : user.id});
     const temp = await response.json();
     console.log(temp)
     setReceiptsData(temp.data)
   }
   const fetchInvoicesData = async () => {
     const data = {
-        "user_id": 1234,
+        
         "rows": [
             "clientname",
             "quotedescription",
@@ -85,7 +87,7 @@ const ShowAllOdersInformation = () => {
         "pg_no": 0,
         "pg_size": 0,
     };
-    const response = await APIService.getClientInvoice(data);
+    const response = await APIService.getClientInvoice({...data,user_id : user.id});
     const temp = await response.json();
     setInvoicesData((prev) => temp.data)
   }

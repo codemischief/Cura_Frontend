@@ -29,6 +29,8 @@ import EditService from './Modals/EditService';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png";
 import AddButton from '../../Components/common/CustomButton';
+import EditButton from '../../Components/common/buttons/EditButton';
+import DeleteButton from '../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Service = () => {
 
@@ -354,9 +356,9 @@ const Service = () => {
     }
     const [currId, setCurrId] = useState("");
     const [currName, setCurrName] = useState("");
-    const handleDelete = (id, name) => {
-        setCurrId(id);
-        setCurrName(name);
+    const handleDelete = (item) => {
+        setCurrId(item.id);
+        setCurrName(item.service);
         showDeleteConfirmation(true);
     }
     const deleteUser = async (id) => {
@@ -417,14 +419,7 @@ const Service = () => {
                 "filename": temp.filename,
                 "user_id": 1234
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
+            APIService.download(d, temp.filename).then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
@@ -456,7 +451,9 @@ const Service = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "*"
+                "lob",
+                "service",
+                "id"
             ],
             "filters": filterState,
             "sort_by": [sortField],
@@ -919,8 +916,17 @@ const Service = () => {
                                     <div className='w-[30%]  flex'>
                                         <div className=' flex ml-4'>
                                             <div className='flex space-x-5'>
-                                                <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id, item.service)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                            <EditButton
+                                             rowData={item.id}
+                                             handleEdit={handleEdit}
+                                            />
+                                            <DeleteButton
+                                              
+                                              handleDelete={handleDelete}
+                                              rowData={item}
+                                            />
+                                                {/* <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                                <button onClick={() => handleDelete(item.id, item.service)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
                                             </div>
                                         </div>
                                     </div>

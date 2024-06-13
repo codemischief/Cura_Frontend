@@ -6,6 +6,8 @@ import MenuDesktop from "./DeskTopMenu";
 import MainLogo from "../Svg/logo";
 import useAuth from "../../context/JwtContext";
 import { ROOTS } from "../../route/path";
+import { useState } from "react";
+
 const buttonStyle = {
   color: "white",
   height: "26px",
@@ -31,6 +33,7 @@ const buttonStyle = {
 const Navbar = () => {
   const { logout } = useAuth();
   const { pathname } = useLocation();
+  const [key, setKey] = useState(Date.now());
   const navigate = useNavigate();
   const isHome = pathname === "/";
   return (
@@ -45,7 +48,10 @@ const Navbar = () => {
       >
         <Button
           sx={{ ...buttonStyle, width: "142px", textTransform: "none" }}
-          onClick={() => navigate(ROOTS.root)}
+          onClick={() => {
+            setKey(Date.now())
+            navigate(ROOTS.root, {replace : true})
+          } }
         >
           Dashboard
         </Button>

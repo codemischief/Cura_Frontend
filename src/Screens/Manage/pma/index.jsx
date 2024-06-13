@@ -4,12 +4,14 @@ import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import { addNewInvoices, getPmaBilling , setPageNumber , setCountPerPage , setSorting , downloadXlsEndpoint} from "../../../Redux/slice/pmaSlice";
+import { addNewInvoices, getPmaBilling , setPageNumber , setCountPerPage , setSorting , downloadPmaBillingDataXls} from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
+import { useLocation } from "react-router-dom";
+import useAuth from "../../../context/JwtContext";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -35,6 +37,9 @@ const MONTHS = [
   "December",
 ];
 const PmaBilling = () => {
+  const {pathname} = useLocation()
+  const {user} = useAuth()
+  console.log(pathname)
   const dispatch = useDispatch();
   const {
     pmaBillingData,
@@ -66,7 +71,7 @@ const PmaBilling = () => {
   useEffect(() => {
     if (selectedMonth && selectedYear) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         month: +selectedMonth,
         year: +selectedYear,
         filters: convertData(filter),
@@ -91,7 +96,7 @@ const PmaBilling = () => {
   const handleShow = () => {
     if (selectedYear && selectedMonth) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         month: +selectedMonth,
         year: +selectedYear,
         filters: [],
@@ -112,7 +117,7 @@ const PmaBilling = () => {
   const hadleConfirm = () => {
     if (selectedYear && selectedMonth) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         month: +selectedMonth,
         year: selectedYear,
         filters: [],
@@ -135,7 +140,7 @@ const PmaBilling = () => {
   const handleRefresh = () => {
     if (selectedMonth && selectedYear) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         month: +selectedMonth,
         year: +selectedYear,
         filters: convertData(filter),
@@ -168,18 +173,19 @@ const PmaBilling = () => {
   const downloadExcel = async () => {
     console.log('hello')
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       month: +selectedMonth,
       year: +selectedYear,
       filters: convertData(filter),
-      pg_no: +pageNo,
+      pg_no: 0,
       insertIntoDB: false,
       downloadType : 'excel',
-      pg_size: +countPerPage,
+      routename : '/manage/pmaBilling',
+      pg_size: 0,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadXlsEndpoint(obj))
+    dispatch(downloadPmaBillingDataXls(obj))
   };
 
   return (
@@ -298,6 +304,7 @@ const PmaBilling = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            height="calc(100vh - 16rem)"
           />
         )}
       </Stack>

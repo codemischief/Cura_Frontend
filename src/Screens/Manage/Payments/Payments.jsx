@@ -40,11 +40,13 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import { formatDate } from "../../../utils/formatDate.js";
 import { usernameByUserId } from "../../../utils/UsernameByUserId.js";
 import AddButton from "../../../Components/common/CustomButton.jsx";
+import EditButton from "../../../Components/common/buttons/EditButton.jsx";
+import DeleteButton from "../../../Components/common/buttons/deleteButton.jsx";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 const Payments = () => {
   const menuRef = useRef();
   const navigate = useNavigate();
-  const {pathname} = useLocation()
+  const { pathname } = useLocation()
   const [totalItems, setTotalItems] = useState(0);
   const [currentPages, setCurrentPages] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
@@ -530,7 +532,7 @@ const Payments = () => {
     }
     if (!formValues.paymentfor) {
       setFormErrors((existing) => {
-        return { ...existing, paymentfor: "Select Payment For" };
+        return { ...existing, paymentfor: "Select Tally ledger" };
       });
       res = false;
     } else {
@@ -580,7 +582,7 @@ const Payments = () => {
     }
     if (!formValues.tds) {
       setFormErrors((existing) => {
-        return { ...existing, tds: "Enter Tds" };
+        return { ...existing, tds: "Enter TDS" };
       });
       res = false;
     } else {
@@ -687,25 +689,14 @@ const Payments = () => {
     const data = {
       user_id: 1234,
       rows: [
-        "id",
         "paymentto",
         "paymentby",
         "amount",
         "paidon",
         "paymentmode",
-        "paymentstatus",
-        "description",
-        "banktransactionid",
         "paymentfor",
-        "dated",
-        "createdby",
-        "isdeleted",
         "entity",
-        "officeid",
-        "tds",
-        "professiontax",
-        "month",
-        "deduction",
+        "id",
       ],
       filters: filterState,
       sort_by: [sortField],
@@ -775,7 +766,6 @@ const Payments = () => {
         "paidon",
         "paymentmode",
         "paymentfor",
-        "paymentstatus",
         "entity",
         "id",
       ],
@@ -786,7 +776,7 @@ const Payments = () => {
       pg_size: 0,
       search_key: searchInput,
       downloadType: type,
-      routemap : pathname,
+      routename: pathname,
       colmap: {
         paymentto: "Payment To",
         paymentby: "Payment By",
@@ -794,7 +784,6 @@ const Payments = () => {
         paidon: "Paid On",
         paymentmode: "Payment Mode",
         paymentfor: "Payment For",
-        paymentstatus: "Status",
         entity: "Entity",
         id: "ID",
       },
@@ -808,14 +797,7 @@ const Payments = () => {
         filename: temp.filename,
         user_id: 1234,
       };
-      fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-        method: "POST", // or the appropriate HTTP method
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(d), // Convert the object to a JSON string
-      })
-        .then((response) => {
+      APIService.download(d, temp.filename).then((response) => {
           if (!response.ok) {
             throw new Error(
               "Network response was not ok " + response.statusText
@@ -1128,7 +1110,7 @@ const Payments = () => {
       {showDeleteSuccess && (
         <SucessfullModal
           isOpen={showDeleteSuccess}
-          message="SuccessFully Deleted Payment"
+          message="Contractual Payment Deleted Successfully"
         />
       )}
       {openAddConfirmation && (
@@ -1713,12 +1695,21 @@ const Payments = () => {
                         <p>{item.id}</p>
                       </div>
                       <div className="w-1/2 0 px-4 flex space-x-2">
-                        <button onClick={() => editStatement(item)}>
+                        <EditButton
+                          rowData={item}
+                          handleEdit={editStatement}
+                        />
+                        <DeleteButton
+
+                          handleDelete={handleDelete}
+                          rowData={item.id}
+                        />
+                        {/* <button onClick={() => editStatement(item)}>
                           <img className=" w-5 h-5" src={Edit} alt="edit" />
                         </button>
                         <button onClick={() => handleDelete(item.id)}>
                           <img className=" w-5 h-5" src={Trash} alt="trash" />
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
@@ -1895,7 +1886,7 @@ const Payments = () => {
                           value={formValues.paymentto}
                           idName="id"
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentto}
                         </div>
                       </div>
@@ -1939,7 +1930,7 @@ const Payments = () => {
                           value={formValues.paymentby}
                           idName="id"
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute ">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentby}
                         </div>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
@@ -1955,7 +1946,7 @@ const Payments = () => {
                           value={formValues.amount}
                           onChange={handleChange}
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.amount}
                         </div>
                       </div>
@@ -1986,7 +1977,7 @@ const Payments = () => {
                             </option>
                           ))}
                         </select>
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentfor}
                         </div>
                       </div>
@@ -2019,7 +2010,7 @@ const Payments = () => {
                             </option>
                           ))}
                         </select>
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentmode}
                         </div>
                       </div>
@@ -2052,7 +2043,7 @@ const Payments = () => {
                           value={formValues.paidon}
                           onChange={handleChange}
                         />
-                        <div className="text-[10px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paidon}
                         </div>
                       </div>
@@ -2073,7 +2064,7 @@ const Payments = () => {
                             </option>
                           ))}
                         </select>
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.month}
                         </div>
                       </div>
@@ -2088,7 +2079,7 @@ const Payments = () => {
                           value={formValues.tds}
                           onChange={handleChange}
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.tds}
                         </div>
                       </div>
@@ -2104,7 +2095,7 @@ const Payments = () => {
                           value={formValues.professiontax}
                           onChange={handleChange}
                         />
-                        <div className="text-[9px] text-[#CD0000] absolute">
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.professiontax}
                         </div>
                       </div>

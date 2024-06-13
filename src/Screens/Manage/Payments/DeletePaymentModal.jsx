@@ -25,8 +25,8 @@ const DeletePaymentModal = (props) => {
             <>
                 <Draggable>
                     <div className='bg-white rounded-lg'>
-                        <div className="w-auto h-auto flex flex-col justify-center items-center ">
-                            <div className="h-[40px] flex justify-center items-center">
+                        <div className="w-auto h-auto flex flex-col justify-center items-center  ">
+                            <div className="h-[40px] flex justify-center items-center bg-[#EDF3FF] rounded-t-lg">
                                 <div className="ml-56 mr-52">
                                     <div className="text-[16px]">Delete</div>
                                 </div>
@@ -38,7 +38,7 @@ const DeletePaymentModal = (props) => {
                                 <img className="h-10 w-10" src={DeleteImage} alt="delete photo" />
                             </div>
                             <div className="mt-4 w-full text-center">
-                                <p>Are you sure you want to delete the Contractual Payments?</p>
+                                <p>Are you sure you want to delete the Contractual Payment ?</p>
                             </div>
                             <div className="my-5 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={handleDeleteClick}>Delete</button>

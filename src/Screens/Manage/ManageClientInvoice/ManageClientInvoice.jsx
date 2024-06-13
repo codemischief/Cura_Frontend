@@ -36,7 +36,13 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const ManageClientInvoice = () => {
+    const {pathname} = useLocation()
+    const {user} = useAuth()
+    console.log(pathname)
     const dataRows = [
         "clientname",
         "quotedescription",
@@ -148,10 +154,9 @@ const ManageClientInvoice = () => {
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -169,12 +174,11 @@ const ManageClientInvoice = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data, user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {
@@ -211,7 +215,7 @@ const ManageClientInvoice = () => {
         setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -219,7 +223,7 @@ const ManageClientInvoice = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -240,7 +244,6 @@ const ManageClientInvoice = () => {
         })
         setCurrentPage((prev) => pageNumber)
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -249,7 +252,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -271,7 +274,6 @@ const ManageClientInvoice = () => {
         setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -280,7 +282,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -357,8 +359,6 @@ const ManageClientInvoice = () => {
         }
         // setPageLoading(true);
         const data = {
-
-            "user_id": 1234,
             "clientid": Number(formValues.client),
             "orderid": Number(formValues.order),
             "estimatedate": formValues.estimateDate,
@@ -372,7 +372,7 @@ const ManageClientInvoice = () => {
             "entity": 1
 
         }
-        const response = await APIService.addClientInvoice(data);
+        const response = await APIService.addClientInvoice({...data, user_id : user.id});
 
         const result = (await response.json())
 
@@ -387,7 +387,7 @@ const ManageClientInvoice = () => {
             setErrorMessage(result.message)
         }
 
-        console.log(data);
+        console.log({...data, user_id : user.id});
         console.log(result);
     }
 
@@ -454,10 +454,9 @@ const ManageClientInvoice = () => {
     }
     const deleteClientInvoice = async (id) => {
         const data = {
-            "user_id": 1234,
             "id": id
         }
-        const response = await APIService.deleteClientInvoice(data);
+        const response = await APIService.deleteClientInvoice({...data, user_id : user.id});
         showDeleteConfirmation(false);
 
         openDeleteSuccess();
@@ -481,7 +480,6 @@ const ManageClientInvoice = () => {
         setDownloadModal(false)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
             "rows": [
                 "clientname",
                 "quotedescription",
@@ -498,6 +496,7 @@ const ManageClientInvoice = () => {
             "pg_size": 0,
             "downloadType" : type,
             "search_key": searchInput,
+            "routename" : '/manage/manageclientinvoice',
             "colmap" : {
                 "clientname" : "Client Name",
                 "quotedescription" : "Quote/Invoice Description",
@@ -508,14 +507,14 @@ const ManageClientInvoice = () => {
                 "id" : "ID",
             }
         };
-        const response = await APIService.getClientInvoice(data)
+        const response = await APIService.getClientInvoice({...data, user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
-                "user_id" : 1234
+                "user_id" : user.id
             }
             // fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
                 //     method: 'POST', // or the appropriate HTTP method
@@ -559,7 +558,6 @@ const ManageClientInvoice = () => {
             }
         })
         const data = {
-            "user_id": 1234,
             "rows": [
                 "clientname",
                 "quotedescription",
@@ -579,7 +577,7 @@ const ManageClientInvoice = () => {
             "pg_size": 0,
             "search_key": searchInput
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
@@ -594,7 +592,6 @@ const ManageClientInvoice = () => {
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -603,7 +600,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -618,7 +615,6 @@ const ManageClientInvoice = () => {
         setSearchInput("");
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -627,7 +623,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -774,7 +770,6 @@ const ManageClientInvoice = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -783,7 +778,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -829,7 +824,6 @@ const ManageClientInvoice = () => {
         })
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [field],
@@ -839,7 +833,7 @@ const ManageClientInvoice = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
         // setFlag((prev) => !prev);
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1246,9 +1240,17 @@ const ManageClientInvoice = () => {
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex ml-4'>
-                                        <div className='flex space-x-1'>
-                                            <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                            <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                        <div className='flex space-x-1 items-center'>
+                                            <EditButton
+                                              handleEdit={handleEdit}
+                                              rowData={item.id}
+                                            />
+                                            <DeleteButton
+                                              handleDelete={handleDelete}
+                                              rowData={item.id}
+                                            />
+                                            {/* <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                            <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
                                         </div>
                                     </div>
                                 </div>

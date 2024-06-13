@@ -30,7 +30,11 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         },
         {
             id : 6,
-            name : "Smt MS"
+            name : "Smt"
+        },
+        {
+            id : 7,
+            name : "MS"
         }
 
     ]);
@@ -435,7 +439,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     </div>
 
                 </div>
-                <div className="space-y-3 py-2">
+                <div className="space-y-3 py-2 mt-[5px] ">
                 <div className="">
                         <div className="text-[12px]">Last Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="lastname" onChange={handleChange} value={formValues.client_info.lastname} />
@@ -486,14 +490,31 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
 
                     <div className="">
                         <div className="text-[13px]">Tenant Of Property</div>
-                        <PropertyDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
+                        {console.log(tenantOfProperty)}
+                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.tenentofproperty} name="city" onChange={(e) => {
                             setFormValues({
                                 ...formValues, client_info: {
                                     ...formValues.client_info,
                                     tenentofproperty: e.target.value
                                 }
                             })
-                        }} formValueName="tenentofproperty" value={formValues.client_info.tenentofproperty}  />
+                        }}>
+                            
+                            <option value="none" > Select Tenant Of Property</option>
+                            {tenantOfProperty && tenantOfProperty.map(item => (
+                                <option value={item.id}>
+                                    {item.propertyname}
+                                </option>
+                            ))}
+                        </select>
+                        {/* <PropertyDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
+                            setFormValues({
+                                ...formValues, client_info: {
+                                    ...formValues.client_info,
+                                    tenentofproperty: e.target.value
+                                }
+                            })
+                        }} formValueName="tenentofproperty" value={formValues.client_info.tenentofproperty}  /> */}
                         {/* <select className="text-[10px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentof" value={formValues.client_info.tenentofproperty} onChange={
                             (e) => {
                                 setFormValues({

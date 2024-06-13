@@ -35,8 +35,13 @@ import ActiveFilter from "../../../assets/active_filter.png"
 import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
+import useAuth from '../../../context/JwtContext';
 const ManageClientReceipt = () => {
+    const {user} = useAuth()
+
     const location = useLocation()
     console.log(location)
     const navigate = useNavigate()
@@ -51,18 +56,6 @@ const ManageClientReceipt = () => {
         "tds",
         "clientid",
         "id",
-        // "receivedby",
-        // "paymentmode",
-        // "receiptdesc",
-        // "dated",
-        // "createdby",
-        // "isdeleted",
-        // "entityid",
-        // "entity",
-        // "howreceived",
-        // "howreceivedid",
-        // "officeid",
-        // "office"
     ]
     const menuRef = useRef();
     // we have the module here
@@ -128,8 +121,8 @@ const ManageClientReceipt = () => {
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
+        const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
         console.log(result.data);
         if (Array.isArray(result.data)) {
@@ -138,9 +131,9 @@ const ManageClientReceipt = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
+        const data = {  "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
+        const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -151,25 +144,25 @@ const ManageClientReceipt = () => {
     const [modesData, setModesData] = useState([]);
     const fetchHowReceivedData = async () => {
         const data = {
-            "user_id": 1234
+            
         }
-        const response = await APIService.getHowReceivedAdmin(data)
+        const response = await APIService.getHowReceivedAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setHowReceivedData(res.data)
     }
     const fetchModesData = async () => {
         const data = {
-            "user_id": 1234
+            
         }
-        const response = await APIService.getModesAdmin(data)
+        const response = await APIService.getModesAdmin({...data,user_id : user.id})
         const res = await response.json()
         setModesData(res.data)
         console.log(res)
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
-        const response = await APIService.getCities(data);
+        const data = {  "state_name": id };
+        const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result);
         if (Array.isArray(result)) {
@@ -186,7 +179,7 @@ const ManageClientReceipt = () => {
     //     setPageLoading(true);
     //     // const data = { "user_id":  1234 };
     //     const data = { "user_id": 1234 };
-    //     const response = await APIService.getUsers(data)
+    //     const response = await APIService.getUsers({...data,user_id : user.id})
     //     const result = (await response.json());
 
     //     console.log(result.data);
@@ -202,8 +195,8 @@ const ManageClientReceipt = () => {
     const fetchRoleData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getRoles(data)
+        const data = { };
+        const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -217,8 +210,8 @@ const ManageClientReceipt = () => {
     const fetchEntitiesData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getEntityAdmin(data)
+        const data = {  };
+        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -256,7 +249,7 @@ const ManageClientReceipt = () => {
         setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": initialRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -265,7 +258,7 @@ const ManageClientReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientReceipt(data);
+        const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -278,7 +271,7 @@ const ManageClientReceipt = () => {
         setPageLoading(true);
         setCurrentPage((prev) => pageNumber)
         const data = {
-            "user_id": 1234,
+            
             "rows": initialRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -287,7 +280,7 @@ const ManageClientReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getClientReceipt(data);
+        const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -301,7 +294,7 @@ const ManageClientReceipt = () => {
         console.log(searchInput);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": initialRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -310,7 +303,7 @@ const ManageClientReceipt = () => {
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getClientReceipt(data);
+        const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -358,9 +351,9 @@ const ManageClientReceipt = () => {
     const [usersData, setUsersData] = useState([]);
     const fetchUsersData = async () => {
         const data = {
-            "user_id": 1234
+            
         }
-        const response = await APIService.getUsers(data)
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const res = await response.json();
         setUsersData(res.data)
     }
@@ -380,7 +373,7 @@ const ManageClientReceipt = () => {
 
     const initialValues = {
         receivedDate: null,
-        receivedBy: 1234,
+        receivedBy: user.id,
         receiptMode: 5,
         client: "",
         howReceived: null,
@@ -478,7 +471,7 @@ const ManageClientReceipt = () => {
           setPageLoading(true)
           setDownloadModal(false)
           const data = {
-            "user_id": 1234,
+            
             "rows":
                 [
                     "clientname",
@@ -499,6 +492,7 @@ const ManageClientReceipt = () => {
             "downloadType" : type,
             "routename" : location?.pathname,
             "search_key": searchInput,
+            "routename" : '/manage/manageclientreceipt',
             "colmap" : {
                 "clientname" : "Client Name",
                 "amount" : "Amount",
@@ -511,23 +505,16 @@ const ManageClientReceipt = () => {
                 "id" : "ID",
             }
         };
-        const response = await APIService.getClientReceipt(data)
+        const response = await APIService.getClientReceipt({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
-                "user_id" : 1234
+                "user_id" : user.id
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-            .then(response => {
+            APIService.download(d,temp.filename).then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
@@ -551,44 +538,13 @@ const ManageClientReceipt = () => {
             },1000) 
         }
     }
-    const handleExcelDownload = async () => {
-        const data = {
-            "user_id": 1234,
-            "rows":
-                [
-                    "clientname",
-                    "amount",
-                    "serviceamount",
-                    "reimbursementamount",
-                    "recddate",
-                    "paymentmodename",
-                    "receivedbyname",
-                    "tds",
-                    "id"
-                ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientReceipt(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "ClientReceiptData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
-    }
+    
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
             "rows": initialRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -597,7 +553,7 @@ const ManageClientReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientReceipt(data);
+        const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -612,7 +568,6 @@ const ManageClientReceipt = () => {
         setSearchInput("");
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
             "rows": initialRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -621,7 +576,7 @@ const ManageClientReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getClientReceipt(data);
+        const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -716,12 +671,11 @@ const ManageClientReceipt = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {
@@ -739,10 +693,9 @@ const ManageClientReceipt = () => {
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id" :1234,
             "client_id" : id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -763,7 +716,6 @@ const ManageClientReceipt = () => {
     }
     const addClientReceipt = async () => {
         const data = {
-            "user_id": 1234,
             "receivedby": formValues.receivedBy,
             "amount": Number(formValues.amountReceived),
             "tds": Number(formValues.TDS),
@@ -778,7 +730,7 @@ const ManageClientReceipt = () => {
             "officeid": 2,
             "banktransactionid" : null
         }
-        const response = await APIService.addClientReceipt(data)
+        const response = await APIService.addClientReceipt({...data,user_id : user.id})
         const res = await response.json()
         if (res.result == 'success') {
             setFormValues(initialValues)
@@ -786,16 +738,15 @@ const ManageClientReceipt = () => {
             openAddSuccess()
             fetchData()
         }
-        console.log(data)
+        console.log({...data,user_id : user.id})
 
     }
     const deleteClientReceipt = async (id) => {
         const data = {
-            "user_id": 1234,
             "id": id
         }
 
-        const response = await APIService.deleteClientReceipt(data)
+        const response = await APIService.deleteClientReceipt({...data,user_id : user.id})
         const res = await response.json()
         setDeleteConfirmation(false)
         if (res.result == 'success') {
@@ -900,7 +851,6 @@ const ManageClientReceipt = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
             "rows": initialRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -909,7 +859,7 @@ const ManageClientReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getClientReceipt(data);
+        const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -932,7 +882,6 @@ const ManageClientReceipt = () => {
         })
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
             "rows": initialRows,
             "filters": filterState,
             "sort_by": [field],
@@ -942,7 +891,7 @@ const ManageClientReceipt = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
         // setFlag((prev) => !prev);
-        const response = await APIService.getClientReceipt(data);
+        const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -972,7 +921,7 @@ const ManageClientReceipt = () => {
             client: null,
             order: null,
             receiptMode: 5,
-            receivedBy: 1234,
+            receivedBy: user.id,
             TDS: null,
             receiptDescription: null,
             receivedDate: null,
@@ -987,7 +936,7 @@ const ManageClientReceipt = () => {
             client: null,
             order: null,
             receiptMode: 5,
-            receivedBy: 1234,
+            receivedBy: user.id,
             TDS: null,
             receiptDescription: null,
             receivedDate: null,
@@ -1071,7 +1020,6 @@ const ManageClientReceipt = () => {
             return ;
         }
         const data = {
-            "user_id": 1234,
             "clientid" : Number(orFormValues.client),
             "receivedby": Number(orFormValues.receivedBy),
             "amount": Number(orFormValues.amountReceived),
@@ -1083,7 +1031,7 @@ const ManageClientReceipt = () => {
             "entityid": 1,
             "officeid" : 1
         }
-        const response = await APIService.addOrderReceipt(data)
+        const response = await APIService.addOrderReceipt({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         if(res.result == 'success') {
@@ -1104,10 +1052,9 @@ const ManageClientReceipt = () => {
     const getOrOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id" :1234,
             "client_id" : id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrOrders(res.data)
@@ -1149,8 +1096,8 @@ const ManageClientReceipt = () => {
         orderstatus : null
     })
     const getOrderData = async  (id) => {
-       const data = {"user_id":1234,"orderid": Number(id)}
-       const response = await APIService.getOrderPending(data)
+       const data = {"orderid": Number(id)}
+       const response = await APIService.getOrderPending({...data,user_id : user.id})
        const res = await response.json()
        console.log(res)
        const temp = {...orderData}
@@ -1576,8 +1523,16 @@ const ManageClientReceipt = () => {
                                     </div>
                                     <div className='w-1/2  flex'>
                                         <div className='px-3 flex space-x-2'>
-                                            <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)} />
-                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                            <EditButton
+                                               handleEdit={handleEdit}
+                                               rowData={item}
+                                            />
+                                            <DeleteButton
+                                               handleDelete={handleDelete}
+                                               rowData={item.id}
+                                            />
+                                            {/* <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)} />
+                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} /> */}
                                         </div>
                                     </div>
                                 </div>

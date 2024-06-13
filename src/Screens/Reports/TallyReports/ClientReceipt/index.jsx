@@ -13,7 +13,6 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus,
 } from "../../../../Redux/slice/reporting/TallyReports/ClientReceipt/ClientReceipt";
 import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
@@ -232,11 +231,11 @@ const ClientReceiptView = () => {
 
       setShowTable(true);
     } else {
-      setError((prev) => ({
-        ...prev,
-        year: selectedYear ? prev.year : "please select a year first",
-        month: selectedMonth ? prev.month : "please select a year first",
-      }));
+      // setError((prev) => ({
+      //   ...prev,
+      //   year: selectedYear ? prev.year : "please select a year first",
+      //   month: selectedMonth ? prev.month : "please select a year first",
+      // }));
     }
   };
 

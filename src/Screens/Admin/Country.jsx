@@ -31,12 +31,16 @@ import CancelModel from './../../Components/modals/CancelModel';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
 import AddButton from '../../Components/common/CustomButton';
+import EditButton from '../../Components/common/buttons/EditButton';
+import DeleteButton from '../../Components/common/buttons/deleteButton';
+import useAuth from '../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Country = () => {
   // we have the module here
+  const { user } = useAuth()
   const menuRef = useRef();
   const navigate = useNavigate();
-  const {pathname} = useLocation()
+  const { pathname } = useLocation()
   const [existingCountries, setCountryValues] = useState([]);
   //   const [isSubmit, setIsSubmit] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
@@ -125,7 +129,7 @@ const Country = () => {
     setCurrentPage(pageNumber);
     // const user_id = await authService.getUserID();
     const data = {
-      "user_id": 1234,
+
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -134,7 +138,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -152,7 +156,7 @@ const Country = () => {
     setCurrentPages(quantity);
     setCurrentPage((prev) => 1)
     const data = {
-      "user_id": 1234,
+
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -161,7 +165,7 @@ const Country = () => {
       "pg_size": Number(quantity),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -199,7 +203,7 @@ const Country = () => {
     });
     setFilterState((prev) => tempArray)
     const data = {
-      "user_id": 1234,
+
       "rows": ["id", "name"],
       "filters": tempArray,
       "sort_by": [sortField],
@@ -208,7 +212,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -219,14 +223,14 @@ const Country = () => {
 
   const addCountry = async () => {
 
-    const data = { "user_id": userId || 1234, "country_name": formValues.countryName };
-    const response = await APIService.addCountries(data);
+    const data = { "country_name": formValues.countryName };
+    const response = await APIService.addCountries({...data,user_id : user.id});
     const res = await response.json();
     console.log(res)
     // {
     //   "result": "error",
     //   "message": "Already Exists",
-    //   "user_id": 1234,
+    //   
     //   "role_id": 1,
     //   "data": []
     // }
@@ -312,14 +316,13 @@ const Country = () => {
   const validate = () => {
     const errors = {};
     if (!formValues.countryName) {
-      errors.countryName = "Enter A Country Name"
+      errors.countryName = "Enter a Country Name"
     }
     return errors;
   }
   const fetchSomeData = async (number) => {
     setPageLoading(true);
     const data = {
-      "user_id": userId || 1234,
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": [],
@@ -327,7 +330,7 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(number)
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -349,7 +352,7 @@ const Country = () => {
       return !prev
     })
     const data = {
-      "user_id": 1234,
+
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [field],
@@ -357,7 +360,7 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(currentPages)
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -373,7 +376,7 @@ const Country = () => {
     setCurrentPage(1);
     console.log('hey')
     const data = {
-      "user_id": 1234,
+
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -382,7 +385,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": searchQuery
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -408,7 +411,6 @@ const Country = () => {
     setCurrentPage(1);
     setPageLoading(true)
     const data = {
-      "user_id": userId || 1234,
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -417,7 +419,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -437,7 +439,7 @@ const Country = () => {
     setBackDropLoading(true)
     setPageLoading(true)
     const data = {
-      "user_id": 1234,
+
       "rows": ["name", "id"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -446,34 +448,27 @@ const Country = () => {
       "pg_size": 0,
       "search_key": searchQuery,
       "downloadType": type,
-      "routename" : pathname,
+      "routename": pathname,
       "colmap": {
         "name": "Country",
         "id": "ID"
       }
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const temp = await response.json();
     const result = temp.data;
     console.log(temp)
     if (temp.result == 'success') {
       const d = {
         "filename": temp.filename,
-        "user_id": 1234
+        "user_id" : user.id
       }
-      fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-        method: 'POST', // or the appropriate HTTP method
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(d) // Convert the object to a JSON string
+      APIService.download(d, temp.filename).then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.blob();
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.blob();
-        })
         .then(result => {
           if (type == "excel") {
             FileSaver.saveAs(result, 'CountryData.xlsx');
@@ -570,7 +565,7 @@ const Country = () => {
     setCurrentPage((prev) => 1)
     setPageLoading(true);
     const data = {
-      "user_id": 1234,
+
       "rows": ["id", "name"],
       "filters": tempArray,
       "sort_by": [sortField],
@@ -579,7 +574,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
     console.log(res)
     setTotalItems(res.total_count);
@@ -760,8 +755,16 @@ const Country = () => {
                     <p>{item.id}</p>
                   </div>
                   <div className='w-1/2 px-3 flex items-center gap-5'>
-                    <button onClick={() => editCountry(item)} > <img className='w-5 h-5' src={Edit} alt="edit" /> </button>
-                    <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                    <EditButton
+                      rowData={item}
+                      handleEdit={editCountry}
+                    />
+                    <DeleteButton
+                      handleDelete={deleteCountry}
+                      rowData={item}
+                    />
+                    {/* <button onClick={() => editCountry(item)} > <img className='w-5 h-5' src={Edit} alt="edit" /> </button>
+                    <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash" /></button> */}
                   </div>
                 </div>
               </div>

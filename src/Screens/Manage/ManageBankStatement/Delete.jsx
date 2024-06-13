@@ -8,7 +8,9 @@ import { APIService } from '../../../services/API';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import SucessImage from "../../../assets/SuccessImage.png";
 import Draggable from 'react-draggable';
+import useAuth from '../../../context/JwtContext';
 const Delete = (props) => {
+    const { user } = useAuth()
     const [showLoading,setShowLoading] = useState(false);
     const [showSucess,setShowSucess] = useState(false);
     const deleteStatement = async (item) =>{
@@ -16,7 +18,7 @@ const Delete = (props) => {
         
         console.log(props);
         setShowLoading(true);
-        const data = {"user_id":1234,"id": props.currentStatement};
+        const data = {"user_id":user.id,"id": props.currentStatement};
         console.log(data);
         const response = await APIService.deleteBankStatement(data);
         props.closeDialog(false);

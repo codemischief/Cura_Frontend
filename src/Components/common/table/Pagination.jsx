@@ -14,7 +14,8 @@ const PaginationComponent = ({
   handlePageCountChange,
   handleRefresh,
   downloadExcel,
-  disabled
+  disabled,
+  downloadPDF = () => {}
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -65,7 +66,7 @@ const PaginationComponent = ({
           </div>
           <MenuItem
             className="flex space-x-2 justify-center items-center ml-3 mt-3"
-            // onClick={downloadPDF}/
+            onClick={downloadPDF}
             disabled={disabled}
           >
             <p>Download as Pdf</p>

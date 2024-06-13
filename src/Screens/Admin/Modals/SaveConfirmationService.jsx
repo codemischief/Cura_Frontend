@@ -28,7 +28,7 @@ const SaveConfirmationService = (props) => {
                             <div className="text-[14px]">Service : {props.currName}</div>
                         </div>
                         <div className="mt-4 w-full text-center">
-                            <p className="text-[14px]">Are you sure you want to Add this Service?</p>
+                            <p className="text-[14px]">Are you sure you want to Add this Service ?</p>
                         </div>
                         <div className="my-10 flex justify-center items-center gap-[10px]">
                             <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.add}>Add</button>

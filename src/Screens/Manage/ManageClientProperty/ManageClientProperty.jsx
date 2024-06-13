@@ -36,9 +36,14 @@ import Draggable from 'react-draggable';
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const ManageClientProperty = () => {
     const menuRef = useRef();
+    const {user} = useAuth()
     const { state, pathname } = useLocation()
+    console.log(pathname)
     console.log(state)
     // we have the module here
     const navigate = useNavigate()
@@ -151,8 +156,8 @@ const ManageClientProperty = () => {
     };
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
+        const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
         console.log(result.data);
         if (Array.isArray(result.data)) {
@@ -161,9 +166,9 @@ const ManageClientProperty = () => {
     }
     const fetchClientTypeData = async () => {
         const data = {
-            "user_id": 1234
+            
         }
-        const response = await APIService.getClientTypeAdmin(data);
+        const response = await APIService.getClientTypeAdmin({...data,user_id : user.id});
         const res = await response.json()
         console.log(res)
         setClientTypeData(res.data)
@@ -171,9 +176,9 @@ const ManageClientProperty = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
+        const data = {  "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
+        const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -181,8 +186,8 @@ const ManageClientProperty = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
-        const response = await APIService.getCities(data);
+        const data = {  "state_name": id };
+        const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result);
         if (Array.isArray(result)) {
@@ -198,8 +203,8 @@ const ManageClientProperty = () => {
     const fetchUsersData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getUsers(data)
+        const data = {  };
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
 
         console.log(result.data);
@@ -215,8 +220,8 @@ const ManageClientProperty = () => {
     const fetchRoleData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getRoles(data)
+        const data = {  };
+        const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         // setFormValues((existing) => {
@@ -230,8 +235,8 @@ const ManageClientProperty = () => {
     const fetchEntitiesData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getEntityAdmin(data)
+        const data = {  };
+        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         // setFormValues((existing) => {
@@ -245,7 +250,7 @@ const ManageClientProperty = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -253,7 +258,7 @@ const ManageClientProperty = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob(data);
+        const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
         console.log(result.data);
         // setFormValues((existing) => {
@@ -265,32 +270,32 @@ const ManageClientProperty = () => {
     }
     const [existingSociety, setExistingSociety] = useState([]);
     const getBuildersAndProjectsList = async () => {
-        const data = { "user_id": 1234 };
-        const response = await APIService.getBuildersAndProjectsList(data);
+        const data = {  };
+        const response = await APIService.getBuildersAndProjectsList({...data,user_id : user.id});
         const res = await response.json();
         console.log(res.data);
         setExistingSociety(res.data);
     }
     const [propertyStatus, setPropertyStatus] = useState([]);
     const fetchPropertyStatus = async () => {
-        const data = { "user_id": 1234 };
-        const response = await APIService.getPropertyStatusAdmin(data);
+        const data = { };
+        const response = await APIService.getPropertyStatusAdmin({...data,user_id : user.id});
         const res = await response.json();
         console.log(res);
         setPropertyStatus(res);
     }
     const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
     const fetchLevelOfFurnishing = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getLevelOfFurnishingAdmin(data);
+        const data = {  }
+        const response = await APIService.getLevelOfFurnishingAdmin({...data,user_id : user.id});
         const res = await response.json()
         console.log(res);
         setLevelOfFurnishing(res);
     }
     const [propertyType, setPropertyType] = useState([]);
     const fetchPropertyType = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getPropertyType(data)
+        const data = {  }
+        const response = await APIService.getPropertyType({...data,user_id : user.id})
         const res = await response.json();
         console.log(res);
         setPropertyType(res);
@@ -321,7 +326,7 @@ const ManageClientProperty = () => {
         setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "client",
                 "suburb",
@@ -368,7 +373,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -382,7 +387,7 @@ const ManageClientProperty = () => {
         setPageLoading(true);
         setCurrentPage(() => page);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "id",
                 "client",
@@ -429,7 +434,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -446,7 +451,7 @@ const ManageClientProperty = () => {
         setCurrentPages(quantity);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "id",
                 "client",
@@ -493,7 +498,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -576,47 +581,7 @@ const ManageClientProperty = () => {
         setFormErrors({});
     }
 
-    const addEmployee = async () => {
-
-        if (!validate()) {
-            return;
-        }
-        // setPageLoading(true);
-        const data = {
-            "user_id": 1234,
-            "employeename": formValues.employeeName,
-            "employeeid": formValues.employeeId,
-            "userid": 1236,
-            "roleid": formValues.role,
-            "dateofjoining": formValues.doj,
-            "dob": formValues.dob,
-            "panno": formValues.panNo,
-            "status": false,
-            "phoneno": Number(formValues.phNo),
-            "email": formValues.email,
-            "addressline1": formValues.addressLine1,
-            "addressline2": formValues.addressLine2,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": Number(formValues.state),
-            "country": Number(formValues.country),
-            "zip": formValues.zipCode,
-            "dated": "20-01-2020  00:00:00",
-            "createdby": 1234,
-            "isdeleted": false,
-            "entityid": formValues.entity,
-            "lobid": formValues.lob == null ? "" : formValues.lob,
-            "lastdateofworking": formValues.lastDOW,
-            "designation": formValues.designation
-        }
-        const response = await APIService.addEmployee(data);
-
-        const result = (await response.json())
-        setIsClientInfoDialogue(false);
-        openAddSuccess();
-        console.log(data);
-        console.log(result);
-    }
+    
 
     const [selectedDialog, setSelectedDialogue] = useState(1);
 
@@ -638,9 +603,9 @@ const ManageClientProperty = () => {
     const [clientData, setClientData] = useState([]);
     const fetchClientData = async () => {
         const data = {
-            "user_id": 1234,
+            
         }
-        const response = await APIService.getClientAdmin(data)
+        const response = await APIService.getClientAdmin({...data,user_id : user.id})
         const res = await response.json();
         console.log(res)
         setClientData(res.data);
@@ -866,7 +831,7 @@ const ManageClientProperty = () => {
         setDownloadModal(false)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "client",
                 "suburb",
@@ -883,7 +848,7 @@ const ManageClientProperty = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            
+            "routename" : '/manage/manageclientproperty',
             "downloadType" : type,
             "colmap" : {
                 "client" : "Client Name",
@@ -896,23 +861,17 @@ const ManageClientProperty = () => {
                 "id" : "ID",
             }
         };
-        const response = await APIService.getClientProperty(data)
+        const response = await APIService.getClientProperty({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
-                "user_id" : 1234
+                "user_id" : user.id
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-            .then(response => {
+           
+            APIService.download(d,temp.filename).then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
@@ -936,71 +895,12 @@ const ManageClientProperty = () => {
             },1000) 
         }
     }
-    const handleExcelDownload = async () => {
-        const data = {
-            "user_id": 1234,
-            "rows": [
-                "id",
-                "client",
-                "clientid",
-                "project",
-                "projectid",
-                "propertytypeid",
-                "propertytype",
-                "suburb",
-                "cityid",
-                "city",
-                "state",
-                "countryid",
-                "country",
-                "layoutdetails",
-                "numberofparkings",
-                "internalfurnitureandfittings",
-                "leveloffurnishing",
-                "propertystatus",
-                "status",
-                "initialpossessiondate",
-                "poagiven",
-                "poaid",
-                "electricityconsumernumber",
-                "electricitybillingunit",
-                "otherelectricitydetails",
-                "gasconnectiondetails",
-                "propertytaxnumber",
-                "clientservicemanager",
-                "propertymanager",
-                "comments",
-                "propertyownedbyclientonly",
-                "textforposting",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "electricitybillingduedate",
-                "description"
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientProperty(data);
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result)
-        const worksheet = XLSX.utils.json_to_sheet(result.client_info);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "ClientPropertyData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
-    }
+   
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "client",
@@ -1047,7 +947,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -1062,7 +962,6 @@ const ManageClientProperty = () => {
         setSearchInput("");
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "client",
@@ -1109,7 +1008,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -1159,7 +1058,6 @@ const ManageClientProperty = () => {
     }
     const addClientProperty = async () => {
         const data = {
-            "user_id": 1234,
             "client_property": {
                 "clientid": formValues.client_property.clientid,
                 "propertytype": Number(formValues.client_property.propertytype),
@@ -1234,10 +1132,10 @@ const ManageClientProperty = () => {
             }
         }
 
-        console.log(data);
+        console.log({...data,user_id : user.id});
 
         console.log('hey')
-        const response = await APIService.addClientProperty(data)
+        const response = await APIService.addClientProperty({...data,user_id : user.id})
         const res = await (response.json())
         console.log(res);
         if (res.result == "success") {
@@ -1252,10 +1150,9 @@ const ManageClientProperty = () => {
     }
     const deleteClientProperty = async (id) => {
         const data = {
-            "user_id": 1234,
             "id": id
         }
-        const response = await APIService.deleteClientProperty(data)
+        const response = await APIService.deleteClientProperty({...data,user_id : user.id})
         const res = await response.json()
         console.log(res);
         if (res.result == 'success') {
@@ -1337,7 +1234,6 @@ const ManageClientProperty = () => {
         console.log(tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "client",
@@ -1384,7 +1280,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         }
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -1407,7 +1303,6 @@ const ManageClientProperty = () => {
         })
         setFlag((prev) => !prev)
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "client",
@@ -1455,7 +1350,7 @@ const ManageClientProperty = () => {
             "search_key": searchInput
         };
         // setFlag((prev) => !prev);
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -1874,8 +1769,15 @@ const ManageClientProperty = () => {
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex items-center px-3 space-x-2'>
-                                        <button onClick={() => { handleOpenEdit(item.id) }}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                                        <EditButton
+                                          handleEdit={handleOpenEdit}
+                                          rowData={item.id}
+                                        />
+                                        <DeleteButton
+                                         handleDelete={handleDelete}
+                                         rowData={item.id}
+                                        />
+                                       
                                     </div>
                                 </div>
 
@@ -1891,7 +1793,7 @@ const ManageClientProperty = () => {
             </div>
 
 
-            <div className='w-full h-12 flex justify-between px-6 bg-white fixed'>
+            <div className='w-full h-12 flex justify-between px-6 bg-white fixed bottom-0'>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>

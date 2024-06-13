@@ -36,10 +36,14 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManagePmaArgreement = () => {
-    const {state} = useLocation();
-
+    const {state, pathname} = useLocation();
+    const {user} = useAuth()
+    console.log(pathname)
     const navigate = useNavigate()
     console.log(state)
     const dataRows = [
@@ -48,7 +52,7 @@ const ManagePmaArgreement = () => {
         "orderdescription",
         "propertystatusname",
         "description",
-        "active",
+        "activemap",
         "startdate",
         "enddate",
         "poaenddate",
@@ -113,8 +117,8 @@ const ManagePmaArgreement = () => {
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
+        const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
         console.log(result.data);
         if (Array.isArray(result.data)) {
@@ -123,9 +127,9 @@ const ManagePmaArgreement = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
+        const data = {  "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
+        const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -133,8 +137,8 @@ const ManagePmaArgreement = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
-        const response = await APIService.getCities(data);
+        const data = {  "state_name": id };
+        const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result);
         if (Array.isArray(result)) {
@@ -150,8 +154,8 @@ const ManagePmaArgreement = () => {
     const fetchUsersData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getUsers(data)
+        const data = {  };
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
 
         console.log(result.data);
@@ -167,8 +171,8 @@ const ManagePmaArgreement = () => {
     const fetchRoleData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getRoles(data)
+        const data = {  };
+        const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -182,8 +186,8 @@ const ManagePmaArgreement = () => {
     const fetchEntitiesData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getEntityAdmin(data)
+        const data = {  };
+        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -197,7 +201,7 @@ const ManagePmaArgreement = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -205,7 +209,7 @@ const ManagePmaArgreement = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob(data);
+        const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -233,7 +237,7 @@ const ManagePmaArgreement = () => {
         setFilterState(tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -243,7 +247,7 @@ const ManagePmaArgreement = () => {
             "search_key": searchInput
         }
             ;
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -256,7 +260,7 @@ const ManagePmaArgreement = () => {
         setPageLoading(true);
         setCurrentPage(pageNumber)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -265,7 +269,7 @@ const ManagePmaArgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         }
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -280,7 +284,7 @@ const ManagePmaArgreement = () => {
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -290,7 +294,7 @@ const ManagePmaArgreement = () => {
             "search_key": searchInput
         }
             ;
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -302,11 +306,11 @@ const ManagePmaArgreement = () => {
     const [clientPropertyData, setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
+            
             "client_id": id
         }
 
-        const response = await APIService.getClientPropertyByClientId(data)
+        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setClientPropertyData(res.data)
@@ -322,10 +326,10 @@ const ManagePmaArgreement = () => {
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
+            
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -341,7 +345,7 @@ const ManagePmaArgreement = () => {
     const addPmaAgreement = async () => {
         console.log(formValues.order)
         const data = {
-            "user_id": 1234,
+            
             "clientpropertyid": Number(formValues.clientProperty),
             "startdate": formValues.pmaStartDate,
             "enddate": formValues.pmaEndDate,
@@ -359,7 +363,7 @@ const ManagePmaArgreement = () => {
             "poaenddate": formValues.poaEndDate,
             "poaholder": formValues.poaHolderName
         }
-        const response = await APIService.addPmaAgreement(data)
+        const response = await APIService.addPmaAgreement({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
 
@@ -583,10 +587,10 @@ const ManagePmaArgreement = () => {
 
     const deleteEmployee = async (id) => {
         const data = {
-            "user_id": 1234,
+            
             "id": id
         }
-        const response = await APIService.deleteEmployee(data);
+        const response = await APIService.deleteEmployee({...data,user_id : user.id});
         showDeleteConfirmation(false);
 
         openDeleteSuccess();
@@ -609,7 +613,7 @@ const ManagePmaArgreement = () => {
         // setDownloadModal(false)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "clientname" ,
                 "propertydescription" ,
@@ -645,6 +649,7 @@ const ManagePmaArgreement = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType" : type,
+            "routename" : '/manage/managepmaagreement',
             "colmap" : {
                 "clientname" : "Client Name",
                 "propertydescription" : "Property Description",
@@ -659,24 +664,17 @@ const ManagePmaArgreement = () => {
                 "id" : "ID",
             }
         };
-        const response = await APIService.getPmaAgreement(data)
+        const response = await APIService.getPmaAgreement({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
-                "user_id" : 1234
+                "user_id" : user.id
             }
             console.log(`${env_URL_SERVER}download/${temp.filename}`)
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-            .then(response => {
+            APIService.download(d,temp.filename).then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
@@ -702,7 +700,7 @@ const ManagePmaArgreement = () => {
     }
     const handleExcelDownload = async () => {
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -711,7 +709,7 @@ const ManagePmaArgreement = () => {
             "pg_size": 0,
             "search_key": searchInput
         };
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
@@ -727,7 +725,7 @@ const ManagePmaArgreement = () => {
         // setCurrentPages(15);
         setIsSearchOn(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -736,7 +734,7 @@ const ManagePmaArgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -751,7 +749,7 @@ const ManagePmaArgreement = () => {
         setCurrentPage((prev) => 1)
         setSearchInput("");
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -760,7 +758,7 @@ const ManagePmaArgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -777,10 +775,10 @@ const ManagePmaArgreement = () => {
     }
     const deletePma = async (id) => {
         const data = {
-            "user_id": 1234,
+            
             "id": id
         }
-        const response = await APIService.deletePmaAgreement(data)
+        const response = await APIService.deletePmaAgreement({...data,user_id : user.id})
         const res = await response.json()
         if (res.result == 'success') {
             setShowDeleteModal(false);
@@ -872,12 +870,12 @@ const ManagePmaArgreement = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {
@@ -922,10 +920,10 @@ const ManagePmaArgreement = () => {
             filterData: "String",
             filterInput: ""
         },
-        active: {
+        activemap: {
             filterType: "",
             filterValue: "",
-            filterData: "Numeric",
+            filterData: "String",
             filterInput: ""
         },
         startdate: {
@@ -978,43 +976,7 @@ const ManagePmaArgreement = () => {
         console.log('hey')
         console.log(filterMapState);
 
-        if (columnName == 'active') {
-            var existing = filterMapState;
-            if (type == 'noFilter') {
-                setInputVariable("");
-            }
-            if (inputVariable.toLowerCase() == 'active') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'true'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else if (inputVariable.toLowerCase() == 'inactive') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'false'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else {
-                return;
-            }
-
-        }
-        else {
+        
 
             var existing = filterMapState;
             existing = {
@@ -1031,7 +993,7 @@ const ManagePmaArgreement = () => {
             }
 
             if (type == 'noFilter' || type == "isNull" || type == "isNotNull") setInputVariable("");
-        }
+        
 
 
         fetchFiltered(existing);
@@ -1066,7 +1028,7 @@ const ManagePmaArgreement = () => {
         setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -1075,7 +1037,7 @@ const ManagePmaArgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1095,7 +1057,7 @@ const ManagePmaArgreement = () => {
 
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
@@ -1105,7 +1067,7 @@ const ManagePmaArgreement = () => {
             "search_key": searchInput
         };
 
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1302,13 +1264,13 @@ const ManagePmaArgreement = () => {
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event, statusFilterInput,
                                         setStatusFilterInput,
-                                        'equalTo',
-                                        'active')}
+                                        'contains',
+                                        'activemap')}
                                 />
-                                {filterMapState.active.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.activemap.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 {/* <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} columnName='active' menuRef={menuRef} filterType={filterMapState.active.filterType}/>}
+                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='active' menuRef={menuRef} filterType={filterMapState.activemap.filterType}/>}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1529,9 +1491,9 @@ const ManagePmaArgreement = () => {
                                     </div>
                                     <div className='w-[7.8%]  flex'>
                                         <div className='px-3 ml-1 flex items-center space-x-2'>
-                                            {item.active ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
+                                            {item.activemap == 'Active'? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>{item.activemap}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> {item.activemap}</p></>}
                                         </div>
                                     </div>
                                     <div className='w-[9.8%]  flex pl-1'>
@@ -1570,8 +1532,15 @@ const ManagePmaArgreement = () => {
                                     </div>
                                     <div className='w-[35%]  flex'>
                                         <div className='flex space-x-1'>
-                                            <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
-                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                            <EditButton
+                                               handleEdit={handleEdit}
+                                               rowData={item.id}
+                                            />
+                                            <DeleteButton
+                                               handleDelete={handleDelete}
+                                               rowData={item.id}
+                                            />
+                                            
                                         </div>
                                     </div>
                                 </div>

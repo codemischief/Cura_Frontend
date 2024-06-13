@@ -7,9 +7,10 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
-
+import useAuth from '../../../context/JwtContext';
 
 const EditManageBuilder = (props) => {
+    const {user} = useAuth()
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
@@ -37,7 +38,7 @@ const EditManageBuilder = (props) => {
 
     const editNewBuilder = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "builder_id": Number(props.builder.id),
             "builder_name": formValues.builderName,
             "phone_1": formValues.phone1,
@@ -79,8 +80,8 @@ const EditManageBuilder = (props) => {
     ]
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         setAllCountry(result)
@@ -90,7 +91,7 @@ const EditManageBuilder = (props) => {
     const [allCity,setAllCity] = useState([])
     const fetchStateData = async (e) => {
 
-        const data = { "user_id": 1234, "country_id": e };
+        const data = { "user_id": user.id, "country_id": e };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -169,7 +170,7 @@ const EditManageBuilder = (props) => {
     };
     // just fetch the data here
     const fetchCityData = async (d) => {
-        const data = { "user_id": 1234,"state_name": d };
+        const data = { "user_id": user.id,"state_name": d };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         if (Array.isArray(result)) {
@@ -179,7 +180,7 @@ const EditManageBuilder = (props) => {
     const getInitialData = async () => {
         setLoading(true)
         const data = {
-            "user_id":1234,
+            "user_id":user.id,
             "table_name":"builder",
             "item_id": props.builder.id
         }

@@ -77,7 +77,7 @@ useEffect(() => {
                 setAllCity([]);
               }
             }>
-              <option >Select country</option>
+              <option value="" hidden>Select country</option>
               {allCountry && allCountry.map(item => {
                 if(item.id == formValues.client_legal_info.country) {
                   return <option key={item.id} value={item.id} selected>
@@ -102,7 +102,7 @@ useEffect(() => {
               }})
               }
             }>
-              <option  hidden>Select A city</option>
+              <option value="" hidden>Select City</option>
               {allCity.map(item => {
                 if(item.city == formValues.client_legal_info.city) {
                     return <option key={item.city} value={item.city} selected>
@@ -155,7 +155,7 @@ useEffect(() => {
                 fetchCityData(e.target.value)
               }
             }>
-              <option value="none" > Select A State</option>
+              <option value="" hidden> Select State</option>
               {allState.map(item => {
                 if(item[0] == formValues.client_legal_info.state) {
                   return <option key={item[0]} selected>

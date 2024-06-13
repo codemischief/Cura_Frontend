@@ -23,7 +23,9 @@ import CustomDeleteModal from "../../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../../Components/common/ErrorHandler";
 import ContactForm from "./ContactForm"
 import { useLocation } from "react-router-dom";
+import useAuth from "../../../../context/JwtContext";
 const ManageBuilderContact = () => {
+  const {user} = useAuth()
   const dispatch = useDispatch();
   const {state} = useLocation()
   console.log(state)
@@ -51,7 +53,7 @@ const ManageBuilderContact = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "Builder_contacts",
         item_id: data.id,
       };
@@ -87,7 +89,7 @@ const ManageBuilderContact = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       builderid :state.builderid,
       rows: [
         "contactname",
@@ -156,7 +158,7 @@ const ManageBuilderContact = () => {
     
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       builderid :state.builderid,
       rows: [
         "contactname",
@@ -193,7 +195,7 @@ const ManageBuilderContact = () => {
 
   const deleteContactFnc = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteContact(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Contact Deleted Successfully");

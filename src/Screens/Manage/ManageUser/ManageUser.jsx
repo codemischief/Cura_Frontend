@@ -37,6 +37,9 @@ import eyeIcon from "../../../assets/eye.jpg";
 import bcrypt from 'bcryptjs';
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 
 const ManageUser = () => {
 
@@ -246,7 +249,7 @@ const ManageUser = () => {
                 "fullname",
                 "username",
                 "role_name",
-                "status",
+                "statusmap",
                 "id"
             ],
             "filters": tempArray,
@@ -277,7 +280,7 @@ const ManageUser = () => {
                 "fullname",
                 "username",
                 "role_name",
-                "status",
+                "statusmap",
                 "id"
             ],
             "filters": filterState,
@@ -306,7 +309,7 @@ const ManageUser = () => {
                 "fullname",
                 "username",
                 "role_name",
-                "status",
+                "statusmap",
                 "id"
             ],
             "filters": filterState,
@@ -620,9 +623,9 @@ const ManageUser = () => {
     }
     const [currId, setCurrId] = useState("");
     const [currName, setCurrName] = useState("");
-    const handleDelete = (id, name) => {
-        setCurrId(id);
-        setCurrName(name);
+    const handleDelete = (item) => {
+        setCurrId(item.id);
+        setCurrName(item.fullname);
         showDeleteConfirmation(true);
     }
     const deleteUser = async (id) => {
@@ -659,7 +662,7 @@ const ManageUser = () => {
                 "fullname",
                 "username",
                 "role_name",
-                "status",
+                "statusmap",
                 "id"
             ],
             "filters": filterState,
@@ -674,7 +677,7 @@ const ManageUser = () => {
                 "fullname" : "Name",
                 "username" : "Username",
                 "role_name" : "Role",
-                "status" : "Status",
+                "statusmap" : "Status",
                 "id" : "ID"
             }
         };
@@ -682,41 +685,36 @@ const ManageUser = () => {
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
-        if (temp.result == 'success') {
+        if (temp.result == "success") {
             const d = {
-                "filename": temp.filename,
-                "user_id": 1234
-            }
-            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
-                })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'UserData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'UserData.pdf');
-                    }
-                    console.log('Success:', result);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
+              filename: temp.filename,
+              user_id: 1234,
+            };
+            APIService.download(d, temp.filename).then((response) => {
+                if (!response.ok) {
+                  throw new Error(
+                    "Network response was not ok " + response.statusText
+                  );
+                }
+                return response.blob();
+              })
+              .then((result) => {
+                if (type == "excel") {
+                  FileSaver.saveAs(result, "UserData.xlsx");
+                } else if (type == "pdf") {
+                  FileSaver.saveAs(result, "UserData.pdf");
+                }
+                console.log("Success:", result);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+      
             setTimeout(() => {
-                setPageLoading(false)
-                setBackDropLoading(false)
-            }, 1000)
-        }
+              // setBackDropLoading(false)
+              setPageLoading(false);
+            }, 1000);
+          }
     }
     const handleSearch = async () => {
         // console.log("clicked")
@@ -729,7 +727,7 @@ const ManageUser = () => {
                 "fullname",
                 "username",
                 "role_name",
-                "status",
+                "statusmap",
                 "id"
             ],
             "filters": filterState,
@@ -759,7 +757,7 @@ const ManageUser = () => {
                 "fullname",
                 "username",
                 "role_name",
-                "status",
+                "statusmap",
                 "id"
             ],
             "filters": filterState,
@@ -847,10 +845,10 @@ const ManageUser = () => {
             filterData: "String",
             filterInput: ""
         },
-        status: {
+        statusmap: {
             filterType: "",
             filterValue: "",
-            filterData: "Numeric",
+            filterData: "String",
             filterInput: ""
         },
         id: {
@@ -888,7 +886,7 @@ const ManageUser = () => {
                 "fullname",
                 "username",
                 "role_name",
-                "status",
+                "statusmap",
                 "id"
             ],
             "filters": tempArray,
@@ -914,55 +912,8 @@ const ManageUser = () => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-        if (columnName == 'status') {
-            var existing = filterMapState;
-            if (type == 'noFilter') {
-                setInputVariable("");
-            }
-            if (inputVariable.toLowerCase() == 'active') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'true'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else if (inputVariable.toLowerCase() == 'inactive') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'false'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: ''
-                    }
-                }
-                console.log(type)
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            }
-
-        }
-        else {
+        
+        
             var existing = filterMapState;
             existing = {
                 ...existing, [columnName]: {
@@ -978,7 +929,7 @@ const ManageUser = () => {
             }
 
             if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
-        }
+        
 
         fetchFiltered(existing);
     }
@@ -993,7 +944,7 @@ const ManageUser = () => {
                 "fullname",
                 "username",
                 "role_name",
-                "status",
+                "statusmap",
                 "id"
             ],
             "filters": filterState,
@@ -1223,13 +1174,13 @@ const ManageUser = () => {
 
                                         onKeyDown={(event) => handleEnterToFilter(event, statusFilterInput,
                                             setStatusFilterInput,
-                                            'equalTo',
-                                            'status')}
+                                            'contains',
+                                            "statusmap")}
 
                                     />
-                                    {filterMapState.status.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {filterMapState.statusmap.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
+                                {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} filterColumn="statusmap" handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.statusmap.filterType} />}
                             </div>
                         </div>
                         <div className="w-[30%] flex">
@@ -1280,7 +1231,7 @@ const ManageUser = () => {
                             </div>
                             <div className='w-[20%]  flex'>
                                 <div className='px-3 py-3.5'>
-                                    <p>Status <button onClick={() => handleSort('status')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Status <button onClick={() => handleSort('statusmap')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
@@ -1331,9 +1282,9 @@ const ManageUser = () => {
                                     </div>
                                     <div className='w-[20%]  flex pl-0.5'>
                                         <div className='px-3 flex items-center space-x-2'>
-                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
+                                            {item.statusmap == 'Active' ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>{item.statusmap}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> {item.statusmap}</p></>}
                                         </div>
                                     </div>
                                 </div>
@@ -1346,8 +1297,17 @@ const ManageUser = () => {
                                     <div className='w-[30%]  flex'>
                                         <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-5'>
-                                                <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id, item.fullname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                            <EditButton
+                                             rowData={item.id}
+                                             handleEdit={handleEdit}
+                                            />
+                                            <DeleteButton
+                                              
+                                              handleDelete={handleDelete}
+                                              rowData={item}
+                                            />
+                                                {/* <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                                <button onClick={() => handleDelete(item.id, item.fullname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
                                             </div>
                                         </div>
                                     </div>

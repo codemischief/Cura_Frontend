@@ -5,7 +5,9 @@ import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import useAuth from '../../../context/JwtContext'
 const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, showCancel }) => {
+    const { user } = useAuth()
     const initialValues = {
         client: null,
         vendor: null,
@@ -37,11 +39,11 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
     const fetchInitialData = async () => {
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "item_id": currInvoice,
             "table_name": "get_vendor_invoice_view"
         }
-        // {"user_id":1234,"table_name":"employee","item_id":98}
+        // {"user_id":user.id,"table_name":"employee","item_id":98}
         console.log('called')
         const response = await APIService.getItembyId(data)
         const res = await response.json()
@@ -106,7 +108,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
             return
         }
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": currInvoice,
             "estimatedate": formValues.estimateDate,
             "amount": formValues.estimateAmount,
@@ -137,7 +139,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -182,7 +184,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e

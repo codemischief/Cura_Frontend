@@ -36,11 +36,17 @@ import { formatDate } from '../../../utils/formatDate';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import { userId } from '../../../utils/axios';
+import useAuth from '../../../context/JwtContext';
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
     const navigate = useNavigate()
-    const { state } = useLocation()
+    const {user} = useAuth()
+    const { state , pathname} = useLocation()
+    console.log(pathname)
     console.log(state)
     const [existingOrder, setExistingOrder] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
@@ -75,7 +81,6 @@ const ManageOrder = () => {
         setStateArray(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "clientid",
@@ -116,7 +121,7 @@ const ManageOrder = () => {
             "search_key": searchInput
         }
             ;
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -129,7 +134,6 @@ const ManageOrder = () => {
         setPageLoading(true);
         setCurrentPage(pageNumber)
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "clientid",
@@ -169,7 +173,7 @@ const ManageOrder = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         }
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -182,7 +186,6 @@ const ManageOrder = () => {
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "clientid",
@@ -223,7 +226,7 @@ const ManageOrder = () => {
             "search_key": searchInput
         }
             ;
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -277,7 +280,7 @@ const ManageOrder = () => {
             "earlieststartdate": null,
             "expectedcompletiondate": null,
             "actualcompletiondate": null,
-            "owner": 1234,
+            "owner": userId,
             "comments": null,
             "additionalcomments": null,
             "status": null,
@@ -390,7 +393,6 @@ const ManageOrder = () => {
     const addOrder = async () => {
         console.log(formValues)
         const data = {
-            "user_id": 1234,
             "order_info": {
                 "clientid": Number(formValues.order_info.clientid),
                 "briefdescription": formValues.order_info.briefdescription,
@@ -412,18 +414,16 @@ const ManageOrder = () => {
             "order_photos": formValues.order_photos
         }
         const d = {
-            "user_id": 1234,
             "orderid": currOrderId,
             "statusid": Number(formValues.order_info.status)
         }
         const statusresponse = await APIService.addOrderStatusChange(d);
         const statusres = await statusresponse.json();
         // console.log(res)
-        const response = await APIService.addOrder(data);
+        const response = await APIService.addOrder({...data,user_id : user.id});
         const res = await response.json();
         if (res.result == 'success') {
             const d = {
-                "user_id": 1234,
                 "orderid": res.data['inserted data'],
                 "statusid": Number(formValues.order_info.status)
             }
@@ -455,10 +455,9 @@ const ManageOrder = () => {
     }
     const deleteOrder = async (id) => {
         const data = {
-            "user_id": 1234,
             "order_id": id
         }
-        const response = await APIService.deleteOrders(data)
+        const response = await APIService.deleteOrders({...data,user_id : user.id})
         const res = await response.json()
         if (res.result == 'success') {
             setShowDeleteModal(false)
@@ -471,7 +470,6 @@ const ManageOrder = () => {
         setBackDropLoading(true);
         console.log('ugm')
         const data = {
-            "user_id": 1234,
             "rows": [
                 "clientname",
                 "ownername",
@@ -511,6 +509,7 @@ const ManageOrder = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : '/manage/manageOrder',
             "colmap": {
                 "clientname": "Client Name",
                 "ownername": "Assigned To",
@@ -527,22 +526,15 @@ const ManageOrder = () => {
             }
         }
 
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         if (temp.result == "success") {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
+            APIService.download(d,temp.filename).then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
@@ -573,7 +565,6 @@ const ManageOrder = () => {
         setCurrentPage(1);
         setIsSearchOn(true);
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "clientid",
@@ -613,7 +604,7 @@ const ManageOrder = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -628,7 +619,7 @@ const ManageOrder = () => {
         setCurrentPage(1);
         setSearchInput("");
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "id",
                 "clientid",
@@ -668,7 +659,7 @@ const ManageOrder = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -840,7 +831,7 @@ const ManageOrder = () => {
         setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "id",
                 "clientid",
@@ -880,7 +871,7 @@ const ManageOrder = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -905,7 +896,7 @@ const ManageOrder = () => {
         })
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "id",
                 "clientid",
@@ -946,7 +937,7 @@ const ManageOrder = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
 
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1036,49 +1027,49 @@ const ManageOrder = () => {
     const [usersData, setUsersData] = useState([])
     const fetchUsersData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
-        const response = await APIService.getUsers(data)
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const res = await response.json()
         setUsersData(res.data);
     }
 
     const [orderStatusData, setOrderStatusData] = useState([])
     const fetchOrderStatusData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getOrderStatusAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getOrderStatusAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setOrderStatusData(res.data)
     }
     const [clientPropertyData, setClientPropertyData] = useState([])
     const fetchClientPropertyData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getClientPropertyAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getClientPropertyAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setClientPropertyData(res.data)
     }
     const [serviceData, setServiceData] = useState([])
     const fetchServiceData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getServiceAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getServiceAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setServiceData(res.data)
     }
     const [vendorData, setVendorData] = useState([])
     const fetchVendorData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getVendorAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getVendorAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setVendorData(res.data)
     }
     const [tallyLedgerData, setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getTallyLedgerAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getTallyLedgerAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setTallyLedgerData(res.data)
@@ -1330,7 +1321,7 @@ const ManageOrder = () => {
                                 </div>
                                 {startDateFilter && <DateFilter inputVariable={startDateFilterInput} setInputVariable={setStartDateFilterInput} handleFilter={newHandleFilter} columnName='earlieststartdate' menuRef={menuRef} filterType={filterMapState.earlieststartdate.filterType} />}
                             </div>
-                            <div className='w-[130px] px-4  py-2.5'>
+                            <div className='w-[170px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={completionDateFilterInput} onChange={(e) => setCompletionDateFilterInput(e.target.value)} type='date'
 
@@ -1345,7 +1336,7 @@ const ManageOrder = () => {
                                 </div>
                                 {completionDateFilter && <DateFilter inputVariable={completionDateFilterInput} setInputVariable={setCompletionDateFilterInput} handleFilter={newHandleFilter} columnName='expectedcompletiondate' menuRef={menuRef} filterType={filterMapState.expectedcompletiondate.filterType} />}
                             </div>
-                            <div className='w-[100px] px-4  py-2.5'>
+                            <div className='w-[130px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDateFilterInput} onChange={(e) => setOrderDateFilterInput(e.target.value)} type='date'
 
@@ -1360,7 +1351,7 @@ const ManageOrder = () => {
                                 </div>
                                 {orderDateFilter && <DateFilter inputVariable={orderDateFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='orderdate' menuRef={menuRef} filterType={filterMapState.orderdate.filterType} />}
                             </div>
-                            <div className='w-[80px] px-4  py-2.5'>
+                            <div className='w-[120px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={agingFilterInput} onChange={(e) => setAgingFilterInput(e.target.value)}
 
@@ -1413,7 +1404,7 @@ const ManageOrder = () => {
                                 </div> */}
 
                             </div>
-                            <div className='w-[70px] px-4  py-2.5'>
+                            <div className='w-[100px] px-4  py-2.5'>
                                 {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1462,13 +1453,13 @@ const ManageOrder = () => {
                             <div className='w-[120px] p-4'>
                                 <p> Start Date <button onClick={() => handleSort('earlieststartdate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-[130px] p-4'>
+                            <div className='w-[170px] p-4'>
                                 <p> Completion Date <button onClick={() => handleSort('expectedcompletiondate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-[100px] p-4'>
+                            <div className='w-[130px] p-4'>
                                 <p>Order Date <button onClick={() => handleSort('orderdate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-[80px] p-4'>
+                            <div className='w-[120px] p-4'>
                                 <p>Ageing <button onClick={() => handleSort('ageing')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[120px] p-4'>
@@ -1483,7 +1474,7 @@ const ManageOrder = () => {
                             <div className='w-[70px] p-4'>
                                 {/* <p>Temp</p> */}
                             </div>
-                            <div className='w-[70px] p-4'>
+                            <div className='w-[100px] p-4'>
                                 {/* <p>Temp</p> */}
                             </div>
                             <div className='w-[110px] p-4'>
@@ -1493,7 +1484,7 @@ const ManageOrder = () => {
                                 <p>Edit</p>
                             </div>
                         </div>
-                        <div className='h-[calc(100vh_-_14rem)] w-full overflow-auto bg-white'>
+                        <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto bg-white'>
                             {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                             {!pageLoading && existingOrder.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                                 <h1 className='ml-10'>No Records To Show</h1>
@@ -1525,13 +1516,13 @@ const ManageOrder = () => {
                                         <div className='w-[120px] p-4'>
                                             <p>{formatDate(item.earlieststartdate)}</p>
                                         </div>
-                                        <div className='w-[130px] p-4'>
+                                        <div className='w-[170px] p-4'>
                                             <p>{formatDate(item.expectedcompletiondate)}</p>
                                         </div>
-                                        <div className='w-[100px] p-4'>
+                                        <div className='w-[130px] p-4'>
                                             <p>{formatDate(item.orderdate)}</p>
                                         </div>
-                                        <div className='w-[80px] p-4'>
+                                        <div className='w-[120px] p-4'>
                                             <p>{item.ageing}</p>
                                         </div>
                                         <div className='w-[120px] p-4'>
@@ -1558,7 +1549,7 @@ const ManageOrder = () => {
                                         <Link to={`/manage/manageclientinfo/orders/showall/${item.id}`} state={{orderid : item.id , orderdescription : item.briefdescription}}>
 
                                         
-                                        <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                        <div className='w-[100px] p-4 text-blue-500 cursor-pointer'>
                                             <p>Show All</p>
                                         </div>
                                         </Link>
@@ -1567,8 +1558,16 @@ const ManageOrder = () => {
                                         </div>
                                         <div className='w-[110px] p-4'>
                                             <div className='flex space-x-3'>
-                                                <button onClick={() => handleEdit(item.id)}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                                <EditButton
+                                                   handleEdit={handleEdit}
+                                                   rowData={item.id}
+                                                />
+                                                <DeleteButton
+                                                  handleDelete={handleDelete}
+                                                  rowData={item.id}
+                                                />
+                                                {/* <button onClick={() => handleEdit(item.id)}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                                <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
                                             </div>
                                         </div>
                                     </div>
@@ -1588,7 +1587,7 @@ const ManageOrder = () => {
             </div>
 
 
-            <div className='w-full h-12 flex justify-between px-6 '>
+            <div className='w-full h-12 flex justify-between px-6 fixed bottom-0 '>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>

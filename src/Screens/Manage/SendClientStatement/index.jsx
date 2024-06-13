@@ -27,9 +27,11 @@ import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
+import useAuth from "../../../context/JwtContext";
 
 const OrderReceiptList = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth()
   const {
     Data,
     status,
@@ -77,7 +79,7 @@ const OrderReceiptList = () => {
   const handleRefresh = () => {
     if (startDate && endDate && selectedOption.value) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         sendEmail:false,
@@ -122,7 +124,7 @@ const OrderReceiptList = () => {
   useEffect(() => {
     if (startDate && endDate && selectedOption.value) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         sendEmail:false,
@@ -163,7 +165,7 @@ const OrderReceiptList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       sendEmail:false,
@@ -189,16 +191,46 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
     };
-    dispatch(downloadData(obj)).then((response) => {
+    dispatch(downloadData(obj))
       // const tableData = response.data;
       // const worksheet = XLSX.utils.json_to_sheet(tableData);
       // const workbook = XLSX.utils.book_new();
       // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
       // XLSX.writeFile(workbook, "SendClientStatement.xlsx");
       // dispatch(setStatus("success"));
-    });
+    
   };
-
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      sendEmail:false,
+      clientid:selectedOption.value,
+      entityid:1,
+      rows: [
+        "date",
+        "type",
+        "description",
+        "amount",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename : "/manage/sendclientstatement",
+      colmap: {
+        "date": "Date",
+        "type": "Type",
+        "description": "Description",
+        "amount": "Amount",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadData(obj,'pdf'))
+  }
   const handleShow = () => {
     if(startDate && endDate && selectedOption.value){
       dispatch(setInitialState());
@@ -225,7 +257,7 @@ const OrderReceiptList = () => {
     console.log(e)
     if (e.length < 3) return;
     const data = {
-      "user_id": 1234,
+      "user_id": user.id,
       "pg_no": 0,
       "pg_size": 0,
       "search_key": e
@@ -246,11 +278,12 @@ const OrderReceiptList = () => {
   const sendEmail = () => {
     console.log(sorting)
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       sendEmail:true,
       clientid:selectedOption.value,
+      downloadType : 'pdf',
       entityid:1,
       rows: [
         "date",
@@ -470,6 +503,7 @@ const OrderReceiptList = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
+          downloadPdf={downloadPdf}
           height={height}
         />
       </div>

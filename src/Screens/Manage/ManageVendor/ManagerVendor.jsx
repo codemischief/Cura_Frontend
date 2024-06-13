@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -34,9 +34,15 @@ import AsyncSelect from "react-select/async"
 import EditVendor from './EditVendor';
 import Draggable from 'react-draggable';
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
 const ManageVendor = () => {
+    const {user} = useAuth()
+    const {pathname} = useLocation()
+    console.log(pathname)
     const dataRows = [
         "vendorname",
         "tdssection",
@@ -170,7 +176,7 @@ const ManageVendor = () => {
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -191,7 +197,7 @@ const ManageVendor = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -212,7 +218,7 @@ const ManageVendor = () => {
 
     const getVendorCategoryAdmin = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "order": "asc"
         }
         const response = await APIService.getVendorCategoryAdmin(data);
@@ -248,7 +254,7 @@ const ManageVendor = () => {
         setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -269,7 +275,7 @@ const ManageVendor = () => {
         setPageLoading(true);
         setCurrentPage((prev) => pageNumber)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -292,7 +298,7 @@ const ManageVendor = () => {
         setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -367,7 +373,7 @@ const ManageVendor = () => {
     }
     const addVendor = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "vendorname": formValues.vendorName,
             "addressline1": formValues.addressLine1,
             "addressline2": formValues.addressLine2,
@@ -499,14 +505,15 @@ const ManageVendor = () => {
     }
     const [currVendorId, setCurrVendorId] = useState("");
     const [currVendorName, setCurrVendorName] = useState("");
-    const handleDelete = (id, name) => {
-        setCurrVendorId(id);
-        setCurrVendorName(name);
+    const handleDelete = (item) => {
+
+        setCurrVendorId(item.id);
+        setCurrVendorName(item.vendorname);
         showDeleteConfirmation(true);
     }
     const deleteVendor = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deleteVendors(data);
@@ -532,7 +539,7 @@ const ManageVendor = () => {
         setDownloadModal(false)
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "vendorname",
                 "tdssection",
@@ -548,6 +555,7 @@ const ManageVendor = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
+            "routename" : "/manage/managevendor",
             "colmap": {
                 "vendorname": "Vendor Name",
                 "tdssection": "TDS Section",
@@ -562,7 +570,7 @@ const ManageVendor = () => {
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
             fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
@@ -599,7 +607,7 @@ const ManageVendor = () => {
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -623,7 +631,7 @@ const ManageVendor = () => {
         setSearchInput("");
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -766,7 +774,7 @@ const ManageVendor = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows":dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -814,7 +822,7 @@ const ManageVendor = () => {
         setSortField(field)
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
@@ -838,7 +846,7 @@ const ManageVendor = () => {
     //    const [allCity,setAllCity] = useState([]);
     // we need to fetch the city data
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -855,7 +863,7 @@ const ManageVendor = () => {
     const [tallyLedgerData, setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getTallyLedgerAdmin(data);
         const res = await response.json()
@@ -1161,8 +1169,16 @@ const ManageVendor = () => {
                                     <div className='w-[35%]  flex'>
                                         <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-3'>
-                                                <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id, item.vendorname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                                <EditButton
+                                                   handleEdit={handleEdit}
+                                                   rowData={item.id}
+                                                />
+                                                <DeleteButton
+                                                   handleDelete={handleDelete}
+                                                   rowData={item}
+                                                />
+                                                {/* <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                                <button onClick={() => handleDelete(item.id, item.vendorname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
                                             </div>
                                         </div>
                                     </div>

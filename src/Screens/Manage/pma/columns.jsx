@@ -14,6 +14,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Sr No",
       width: "5%",
       sorting: false,
+      cellStyle: { ...cellStyleCommon},
       render: (rowData) => {
         return (
           <Stack

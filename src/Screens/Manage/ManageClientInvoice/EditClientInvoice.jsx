@@ -5,7 +5,10 @@ import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async";
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import Draggable from 'react-draggable'
+import useAuth from '../../../context/JwtContext';
 const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel }) => {
+    const {user} = useAuth()
+
     const initialValues = {
         client: "",
         estimateAmount: "",
@@ -28,11 +31,10 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
     const fetchInitialData = async () => {
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
             "table_name": "get_orders_invoice_view",
             "item_id": invoiceId
         }
-        const response = await APIService.getItembyId(data);
+        const response = await APIService.getItembyId({...data, user_id : user.id});
         const res = await response.json();
         console.log(res);
         const existing = { ...formValues }
@@ -101,7 +103,6 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
     const handleEdit = async () => {
         if (!validate()) return;
         const data = {
-            "user_id": 1234,
             "id": invoiceId,
             "clientid": formValues.client,
             "orderid": formValues.order,
@@ -115,7 +116,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
             "tax": formValues.gst,
             "entity": 1
         }
-        const response = await APIService.editOrdersInvoice(data);
+        const response = await APIService.editOrdersInvoice({...data, user_id : user.id});
         const res = await response.json();
         console.log(res)
         if (res.result == 'success') {
@@ -166,10 +167,9 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -187,12 +187,11 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data, user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {

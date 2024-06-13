@@ -35,12 +35,14 @@ import DropDown from '../../../Components/Dropdown/Dropdown';
 import { formatDate } from "../../../utils/formatDate";
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageEmployees = () => {
 
     const menuRef = useRef();
     const navigate = useNavigate();
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -209,7 +211,7 @@ const ManageEmployees = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -238,7 +240,7 @@ const ManageEmployees = () => {
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -269,7 +271,7 @@ const ManageEmployees = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -405,7 +407,7 @@ const ManageEmployees = () => {
     const initialValues = {
         employeeName: null,
         panNo: null,
-        userName: 1234,
+        userName: null,
         doj: null,
         designation: null,
         email: null,
@@ -439,7 +441,7 @@ const ManageEmployees = () => {
         var res = true;
         if (!formValues.employeeName) {
             setFormErrors((existing) => {
-                return { ...existing, employeeName: "Enter Employee name" }
+                return { ...existing, employeeName: "Enter Employee Name" }
             })
             res = false;
         } else {
@@ -464,7 +466,7 @@ const ManageEmployees = () => {
         if (!formValues.doj) {
             console.log('issue is in doj')
             setFormErrors((existing) => {
-                return { ...existing, doj: "Enter date of joining" }
+                return { ...existing, doj: "Enter Date Of Joining" }
             })
             res = false;
         } else {
@@ -488,7 +490,7 @@ const ManageEmployees = () => {
         if (!formValues.email) {
             console.log('issue is in email')
             setFormErrors((existing) => {
-                return { ...existing, email: "Enter email address" }
+                return { ...existing, email: "Enter Email Address" }
             })
             res = false;
         } else {
@@ -513,7 +515,7 @@ const ManageEmployees = () => {
         if (!formValues.dob) {
             console.log('issue is in dob')
             setFormErrors((existing) => {
-                return { ...existing, dob: "enter date of birth" }
+                return { ...existing, dob: "Enter Date Of Birth" }
             })
             res = false;
         } else {
@@ -522,22 +524,22 @@ const ManageEmployees = () => {
             })
         }
         console.log('dob ok')
-        if (!formValues.role) {
-            console.log('issue is in role')
-            setFormErrors((existing) => {
-                return { ...existing, role: "Select Role" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, role: "" }
-            })
-        }
+        // if (!formValues.role) {
+        //     console.log('issue is in role')
+        //     setFormErrors((existing) => {
+        //         return { ...existing, role: "Select Role" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, role: "" }
+        //     })
+        // }
         console.log('role ok')
         if (!formValues.phNo) {
             console.log('issue is in phoneno')
             setFormErrors((existing) => {
-                return { ...existing, phNo: "Enter phone number" }
+                return { ...existing, phNo: "Enter Phone Number" }
             })
             res = false;
         } else {
@@ -549,7 +551,7 @@ const ManageEmployees = () => {
         if (!formValues.country) {
             console.log('issue is in country')
             setFormErrors((existing) => {
-                return { ...existing, country: "Select country" }
+                return { ...existing, country: "Select Country" }
             })
             res = false;
         } else {
@@ -561,7 +563,7 @@ const ManageEmployees = () => {
         if (formValues.state == "") {
             console.log('issue is in state')
             setFormErrors((existing) => {
-                return { ...existing, state: "Select state" }
+                return { ...existing, state: "Select State" }
             })
             res = false;
         } else {
@@ -573,7 +575,7 @@ const ManageEmployees = () => {
         if (!formValues.city) {
             console.log('issue is in city')
             setFormErrors((existing) => {
-                return { ...existing, city: "Select city" }
+                return { ...existing, city: "Select City" }
             })
             res = false;
         } else {
@@ -621,9 +623,9 @@ const ManageEmployees = () => {
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
     const [currEmployeeName, setCurrEmployeeName] = useState("");
-    const handleDelete = (id, name) => {
-        setCurrEmployeeId(id);
-        setCurrEmployeeName(name);
+    const handleDelete = (item) => {
+        setCurrEmployeeId(item.id);
+        setCurrEmployeeName(item.employeename);
         showDeleteConfirmation(true);
     }
     const deleteEmployee = async (id) => {
@@ -657,7 +659,7 @@ const ManageEmployees = () => {
         setPageLoading(true)
         const data = {
             "user_id": 1234,
-            "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "status", "id",],
+            "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "statusmap", "id",],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -665,7 +667,7 @@ const ManageEmployees = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
-            "routename" : pathname,
+            "routename": pathname,
             "colmap": {
                 "employeename": "Employee",
                 "employeeid": "Employee ID",
@@ -675,8 +677,8 @@ const ManageEmployees = () => {
                 "panno": "PAN No",
                 "dateofjoining": "Date of Joining",
                 "lastdateofworking": "Last Date of Working",
-                "status": "Status",
-                "id" : "ID"
+                "statusmap": "Status",
+                "id": "ID"
             }
         };
         const response = await APIService.getEmployees(data)
@@ -688,14 +690,8 @@ const ManageEmployees = () => {
                 "filename": temp.filename,
                 "user_id": 1234
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
+            APIService.download(d, temp.filename).
+                then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
@@ -735,7 +731,7 @@ const ManageEmployees = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "statusmap", "id",],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -765,13 +761,13 @@ const ManageEmployees = () => {
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key": searchInput
+            "search_key": ""
         };
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
@@ -880,10 +876,10 @@ const ManageEmployees = () => {
             filterData: "Date",
             filterInput: ""
         },
-        status: {
+        statusmap: {
             filterType: "",
             filterValue: "",
-            filterData: "Numeric",
+            filterData: "String",
             filterInput: ""
         },
         id: {
@@ -942,7 +938,7 @@ const ManageEmployees = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -963,70 +959,66 @@ const ManageEmployees = () => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-        if (columnName == 'status') {
-            var existing = filterMapState;
-            if (type == 'noFilter') {
-                setInputVariable("");
-            }
-            if (inputVariable.toLowerCase() == 'active') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'true'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else if (inputVariable.toLowerCase() == 'inactive') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'false'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: ""
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-                // return;
-            }
 
-        } else {
-            var existing = filterMapState;
-            existing = {
-                ...existing, [columnName]: {
-                    ...existing[columnName],
-                    filterType: type == 'noFilter' ? "" : type
-                }
-            }
-            existing = {
-                ...existing, [columnName]: {
-                    ...existing[columnName],
-                    filterValue: type == 'noFilter' ? "" : inputVariable
-                }
-            }
+        //     if (inputVariable.toLowerCase() == 'active') {
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterValue: 'true'
+        //             }
+        //         }
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterType: type == 'noFilter' ? "" : type
+        //             }
+        //         }
+        //     } else if (inputVariable.toLowerCase() == 'inactive') {
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterValue: 'false'
+        //             }
+        //         }
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterType: type == 'noFilter' ? "" : type
+        //             }
+        //         }
+        //     } else {
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterValue: ""
+        //             }
+        //         }
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterType: type == 'noFilter' ? "" : type
+        //             }
+        //         }
+        //         // return;
+        //     }
 
-            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
+        // } else {
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
         }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+
+        if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
+
 
         fetchFiltered(existing);
     }
@@ -1044,7 +1036,7 @@ const ManageEmployees = () => {
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -1279,12 +1271,12 @@ const ManageEmployees = () => {
                                         onKeyDown={(event) => handleEnterToFilter(event, statusInput,
                                             setStatusInput
                                             ,
-                                            'equalTo',
-                                            'status')}
+                                            'contains',
+                                            'statusmap')}
                                     />
-                                    {filterMapState.status.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {filterMapState.statusmap.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusInput} setInputVariable={setStatusInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
+                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='statusmap' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.statusmap.filterType} />}
                             </div>
                         </div>
                         <div className="w-[10%] flex items-center">
@@ -1438,9 +1430,9 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
                                         <div className='p-3 ml-1 flex items-center space-x-2'>
-                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
+                                            {item.statusmap == 'Active' ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>{item.statusmap}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> {item.statusmap}</p></>}
                                         </div>
                                     </div>
                                 </div>
@@ -1451,8 +1443,17 @@ const ManageEmployees = () => {
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex overflow-hidden items-center space-x-2 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-4 w-4 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id, item.employeename)}><img className=' h-4 w-4' src={Trash} alt="trash" /></button>
+                                        <EditButton
+                                            rowData={item}
+                                            handleEdit={handleOpenEdit}
+                                        />
+                                        <DeleteButton
+
+                                            handleDelete={handleDelete}
+                                            rowData={item}
+                                        />
+                                        {/* <button onClick={() => handleOpenEdit(item)}><img className=' h-4 w-4 ml-3' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item.id, item.employeename)}><img className=' h-4 w-4' src={Trash} alt="trash" /></button> */}
                                     </div>
                                 </div>
 
@@ -1656,7 +1657,7 @@ const ManageEmployees = () => {
                                             <div className="text-sm">Last Date of Working</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
                                         </div>
-                                        <div className="">
+                                        {/* <div className="">
                                             <div className="text-sm">Assign Role <label className="text-red-500">*</label></div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="role"
@@ -1680,6 +1681,10 @@ const ManageEmployees = () => {
                                                 ))}
                                             </select>
                                             <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.role}</div>
+                                        </div> */}
+                                        <div className="">
+                                            <div className="text-sm">Zip Code</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
@@ -1788,10 +1793,7 @@ const ManageEmployees = () => {
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
                                             <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.suburb}</div>
                                         </div>
-                                        <div className="">
-                                            <div className="text-sm">Zip Code</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
-                                        </div>
+
                                         <div className="">
                                             <div className="text-sm">Entities <label className="text-red-500">*</label></div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"

@@ -6,7 +6,9 @@ import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import useAuth from '../../../context/JwtContext'
 const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCancel }) => {
+    const {user} = useAuth()
     const initialValues = {
         client: "",
         clientProperty: null,
@@ -177,11 +179,10 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
     const fetchInitialData = async (id) => {
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
             "item_id": id,
             "table_name": "get_client_property_lla_view"
         }
-        const response = await APIService.getItembyId(data)
+        const response = await APIService.getItembyId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         console.log('temp')
@@ -291,7 +292,6 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
             return;
         }
         const data = {
-            "user_id": 1234,
             "id": currItem.id,
             "clientpropertyid": formValues.clientProperty,
             "orderid": formValues.order,
@@ -306,7 +306,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
             "active": formValues.status,
             "llscancopy": formValues.scan
         }
-        const response = await APIService.editClientLLAgreement(data)
+        const response = await APIService.editClientLLAgreement({...data,user_id : user.id})
         const res = await response.json()
         if (res.result == 'success') {
             openEditSuccess()
@@ -318,11 +318,10 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
     }, [])
     const getClientPropertyByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
 
-        const response = await APIService.getClientPropertyByClientId(data)
+        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setClientPropertyData(res.data)
@@ -331,10 +330,9 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -373,12 +371,11 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {

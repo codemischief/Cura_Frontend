@@ -102,6 +102,26 @@ export const addNewInvoices = (payloadObj) => async (dispatch) => {
 export const handleRefresh = (payload) => async (dispatch) => {
   
 };
+export const downloadPmaBillingDataXls = (payloadObj) => async (dispatch) => {
+  try {
+    dispatch(setStatus("loading"));
+    const response = await axios.post(
+      `${env_URL_SERVER}getPMABilling`,
+      payloadObj
+    );
+    if ((response.data.filename, payloadObj.user_id)) {
+      await dispatch(
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+      );
+    }
+    dispatch(setStatus("success"));
+    // return response.data;
+    // dispatch(setOrderPaymentData({ data: response.data, year, month }));
+    // dispatch(setStatus("success"));
+  } catch (err) {
+    dispatch(setStatus("error"));
+  }
+};
 export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
   try {
     const response = await axios.post(
@@ -122,4 +142,5 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     console.log("error", error);
   }
 };
+
 export default pmaSlice.reducer;

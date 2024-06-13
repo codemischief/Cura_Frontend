@@ -4,11 +4,15 @@ const accessToken = sessionStorage.getItem("accessToken");
 const API = {
   LOGIN: "$env_URL_SERVERvalidateCredentials",
 };
-import { userId } from "../utils/axios";
-const USER_ID = "";
+// import { userId } from "../utils/axios";
+// const userId = JSON.parse(sessionStorage.getItem("user"))?.id;
+
+const userId = 1234
+
+console.log(userId , "hello")
 const METHOD_POST = (data) => ({
   method: "POST",
-  body: JSON.stringify({...data,user_id : userId }),
+  body: JSON.stringify(data),
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,
@@ -1034,11 +1038,11 @@ const getProfessionalTypesAdmin = async (data) => {
   return response;
 }
 const dashboardData = async (data) => {
+  console.log({...data,user_id : userId})
   const response = await fetch(
     `${env_URL_SERVER}dashboardData`,
     METHOD_POST(data)
   );
-
   return response;
 }
 const getMandalAdmin = async (data) => {

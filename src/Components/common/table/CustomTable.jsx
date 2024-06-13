@@ -14,6 +14,7 @@ const SimpleTable = ({
   handleRefresh,
   handleSortingChange,
   downloadExcel,
+  downloadPdf = () => {},
   height = "calc(100vh - 19rem)",
   }) => {
     {console.log(data)}
@@ -141,6 +142,7 @@ const SimpleTable = ({
         handlePageCountChange={handlePageCountChange}
         handleRefresh={handleRefresh}
         downloadExcel={downloadExcel}
+        downloadPDF={downloadPdf}
       />
     </>
   );

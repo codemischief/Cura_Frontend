@@ -30,11 +30,15 @@ import NumericFilter from '../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
 import AddButton from '../../Components/common/CustomButton';
+import EditButton from '../../Components/common/buttons/EditButton';
+import DeleteButton from '../../Components/common/buttons/deleteButton';
+import useAuth from '../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const LOB = () => {
     const menuRef = useRef();
+    const { user } = useAuth()
     const navigate = useNavigate()
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     const [existingLOB, setExistingLOB] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
@@ -65,7 +69,7 @@ const LOB = () => {
         setPageLoading(true);
         setCurrentPage(pageNumber);
         const data = {
-            "user_id": 1234,
+
             "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -73,7 +77,7 @@ const LOB = () => {
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -85,7 +89,7 @@ const LOB = () => {
         setPageLoading(true);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
+
             "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -93,7 +97,7 @@ const LOB = () => {
             "pg_no": 1,
             "pg_size": Number(number)
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -127,7 +131,7 @@ const LOB = () => {
         });
         setFilterState((prev) => tempArray)
         const data = {
-            "user_id": 1234,
+
             "rows": ["id", "name"],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -136,7 +140,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -158,7 +162,7 @@ const LOB = () => {
         //     return !prev;
         // })
         const data = {
-            "user_id": 1234,
+
             "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [field],
@@ -167,7 +171,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -191,10 +195,10 @@ const LOB = () => {
     const addLob = async () => {
 
         const data = {
-            "user_id": 1234,
+
             "name": lobName,
         }
-        const response = await APIService.addLob(data);
+        const response = await APIService.addLob({...data,user_id : user.id});
         const res = await response.json()
         console.log(res);
         setOpenAddConfirmation(false);
@@ -210,10 +214,10 @@ const LOB = () => {
         // we write delete lob logic here
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+
             "name": String(name)
         }
-        const response = await APIService.deleteLob(data);
+        const response = await APIService.deleteLob({...data,user_id : user.id});
         setDeleteLobModal(false);
         const res = await response.json()
         console.log("this is the error")
@@ -244,7 +248,7 @@ const LOB = () => {
         setPageLoading(true);
         setBackDropLoading(true)
         const data = {
-            "user_id": 1234,
+
             rows: ["name", "id"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -253,34 +257,27 @@ const LOB = () => {
             "pg_size": 0,
             "search_key": searchQuery,
             "downloadType": type,
-            "routename" : pathname,
+            "routename": pathname,
             "colmap": {
                 "name": "LOB Name",
                 "id": "ID"
             }
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id" : user.id
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
+            APIService.download(d, temp.filename).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
-                })
                 .then(result => {
                     if (type == "excel") {
                         FileSaver.saveAs(result, 'LobData.xlsx');
@@ -313,7 +310,7 @@ const LOB = () => {
         setPageLoading(true);
         setCurrentPage(1)
         const data = {
-            "user_id": 1234,
+
             "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -322,7 +319,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -407,7 +404,7 @@ const LOB = () => {
         setSearchQuery("");
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
+
             "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -416,7 +413,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -503,7 +500,7 @@ const LOB = () => {
         console.log(tempArray)
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
+
             "rows": ["id", "name"],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -512,7 +509,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -712,9 +709,18 @@ const LOB = () => {
                                     <div className='w-1/2 p-3 flex ml-[9px]'>
                                         <p>{item.id}</p>
                                     </div>
-                                    <div className='w-1/2 p-3 flex items-center ml-[9px]'>
-                                        <img className=' h-5 mr-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
-                                        <button onClick={() => handleDelete(item)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                    <div className='w-1/2 p-3 flex items-center ml-[9px] gap-2'>
+                                        <EditButton
+                                            rowData={item}
+                                            handleEdit={handleOpenEdit}
+                                        />
+                                        <DeleteButton
+
+                                            handleDelete={handleDelete}
+                                            rowData={item}
+                                        />
+                                        {/* <img className=' h-5 mr-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
+                                        <button onClick={() => handleDelete(item)}><img className=' h-5' src={Trash} alt="trash" /></button> */}
                                     </div>
                                 </div>
                             </div>

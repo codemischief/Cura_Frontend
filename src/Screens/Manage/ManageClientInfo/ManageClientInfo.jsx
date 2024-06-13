@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, Navigate, useNavigate } from "react-router-dom";
+import { Outlet, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -37,8 +37,15 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
+import EditButton from '../../../Components/common/buttons/EditButton';
+import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
+
+    const {user} = useAuth()
+    console.log(user)
+    const {pathname} = useLocation()
     const dataRows = [
         "clientname",
         "clienttypename",
@@ -50,35 +57,7 @@ const ManageClientInfo = () => {
         "email2",
         "email1",
         "employername",
-        "id",
-                // "firstname",
-                // "middlename",
-                // "lastname",
-                // "salutation",
-                // "clienttype",
-                // "addressline1",
-                // "addressline2",
-                // "suburb",
-                // "state",
-                // "zip",
-                // "homephone",
-                // "workphone",
-                // "comments",
-                // "photo",
-                // "onlineaccreated",
-                // "localcontact1name",
-                // "localcontact1address",
-                // "localcontact1details",
-                // "localcontact2name",
-                // "localcontact2address",
-                // "localcontact2details",
-                // "includeinmailinglist",
-                // "dated",
-                // "createdby",
-                // "isdeleted",
-                // "entityid",
-                // "tenantof",
-                // "tenantofproperty",
+        "id"
     ]
     // const history = useHistory()
     const navigate = useNavigate();
@@ -185,16 +164,16 @@ const ManageClientInfo = () => {
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
+        const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
+        const data = {  "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
+        const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -202,8 +181,8 @@ const ManageClientInfo = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
-        const response = await APIService.getCities(data);
+        const data = {  "state_name": id };
+        const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result);
         if (Array.isArray(result)) {
@@ -219,8 +198,8 @@ const ManageClientInfo = () => {
     const fetchUsersData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getUsers(data)
+        const data = {  };
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
 
         console.log(result.data);
@@ -236,8 +215,8 @@ const ManageClientInfo = () => {
     const fetchRoleData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getRoles(data)
+        const data = {  };
+        const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -251,8 +230,8 @@ const ManageClientInfo = () => {
     const fetchEntitiesData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getEntityAdmin(data)
+        const data = {  };
+        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -264,9 +243,9 @@ const ManageClientInfo = () => {
     }
     const fetchRelation = async () => {
         const data = {
-            "user_id": 1234
+            
         }
-        const response = await APIService.getRelationAdmin(data)
+        const response = await APIService.getRelationAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setRelationData(res.data)
@@ -274,7 +253,7 @@ const ManageClientInfo = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -282,7 +261,7 @@ const ManageClientInfo = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob(data);
+        const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -309,7 +288,7 @@ const ManageClientInfo = () => {
         setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -318,7 +297,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -332,7 +311,7 @@ const ManageClientInfo = () => {
 
         setCurrentPage((prev) => pageNumber)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -341,7 +320,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -357,7 +336,7 @@ const ManageClientInfo = () => {
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -366,7 +345,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -441,9 +420,9 @@ const ManageClientInfo = () => {
     const [clientTypeData, setClientTypeData] = useState([]);
     const fetchClientTypeData = async () => {
         const data = {
-            "user_id": 1234
+            
         }
-        const response = await APIService.getClientTypeAdmin(data);
+        const response = await APIService.getClientTypeAdmin({...data,user_id : user.id});
         const res = await response.json()
         console.log(res)
         setClientTypeData(res.data)
@@ -451,9 +430,9 @@ const ManageClientInfo = () => {
     }
     const fetchTenentOfData = async () => {
         const data = {
-            "user_id": 1234
+            
         }
-        const response = await APIService.getTenantOfPropertyAdmin(data)
+        const response = await APIService.getTenantOfPropertyAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setTenentOfData(res.data)
@@ -582,7 +561,7 @@ const ManageClientInfo = () => {
         setDownloadModal(false)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "clientname",
                 "clienttypename",
@@ -602,6 +581,7 @@ const ManageClientInfo = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType" : type,
+            "routename" : pathname,
             "colmap" : {
                 "clientname" : "Client Name",
                 "clienttypename" : "Client Type",
@@ -615,21 +595,21 @@ const ManageClientInfo = () => {
                 "id" : "ID",
             }
         };
-        const response = await APIService.getClientInfo(data)
+        const response = await APIService.getClientInfo({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
-                "user_id" : 1234
+                
             }
             fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(d) // Convert the object to a JSON string
+                body: JSON.stringify({...d,user_id : user.id}) // Convert the object to a JSON string
             })
             .then(response => {
                 if (!response.ok) {
@@ -657,7 +637,7 @@ const ManageClientInfo = () => {
     }
     const handleExcelDownload = async () => {
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "clientname",
                 "clienttypename",
@@ -688,7 +668,7 @@ const ManageClientInfo = () => {
 
         setIsSearchOn(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -697,7 +677,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -712,7 +692,7 @@ const ManageClientInfo = () => {
         setSearchInput("");
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -720,7 +700,7 @@ const ManageClientInfo = () => {
             "pg_no": 1,
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -941,7 +921,7 @@ const ManageClientInfo = () => {
         // setButtonLoading(true);
 
         const data = {
-            "user_id": 1234,
+            
             "client_info": {
                 "firstname": formValues.client_info.firstname,
                 "middlename": formValues.client_info.middlename,
@@ -1015,8 +995,8 @@ const ManageClientInfo = () => {
                 "scancopy": formValues.client_poa.scancopy
             }
         };
-        console.log(data);
-        const response = await APIService.addClientInfo(data)
+        console.log({...data,user_id : user.id});
+        const response = await APIService.addClientInfo({...data,user_id : user.id})
         const res = await response.json();
         setShowAddConfirmation(false)
 
@@ -1035,10 +1015,10 @@ const ManageClientInfo = () => {
     const handleDelete = async (id) => {
 
         const data = {
-            "user_id": 1234,
+            
             "id": id
         }
-        const response = await APIService.deleteClientInfo(data)
+        const response = await APIService.deleteClientInfo({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setShowDelete(false);
@@ -1047,8 +1027,8 @@ const ManageClientInfo = () => {
         }
         fetchData()
     }
-    const openDelete = (id) => {
-        setCurrItem(id)
+    const openDelete = (item) => {
+        setCurrItem(item)
         setShowDelete(true);
     }
     // const [showAddSuccess,setShowAddSuccess] = useState(false);
@@ -1108,6 +1088,7 @@ const ManageClientInfo = () => {
     const [idFilterInput, setidFilterInput] = useState("");
     const resetAllInputs = () => {
         // toast.success('Filters Resetted!')
+        
         setClientNameInput("");
         setClientTypeNameInput("");
         setTenantOfTypeNameInput("");
@@ -1124,7 +1105,7 @@ const ManageClientInfo = () => {
         setSortField(field);
         setFlag((prev) => !prev)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
@@ -1134,7 +1115,7 @@ const ManageClientInfo = () => {
             "search_key": searchInput
         };
 
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1192,7 +1173,7 @@ const ManageClientInfo = () => {
         setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -1200,7 +1181,7 @@ const ManageClientInfo = () => {
             "pg_no": 1,
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1662,8 +1643,16 @@ const ManageClientInfo = () => {
                                     </div>
                                     <div className='w-1/2  flex'>
                                         <div className='p-3 flex space-x-2'>
-                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => { openDelete(item.id) }} />
+                                            <EditButton
+                                             rowData={item.id}
+                                             handleEdit={handleEdit}
+                                            />
+                                            <DeleteButton
+                                              
+                                              handleDelete={openDelete}
+                                              rowData={item}
+                                            />
+                                            {/* <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => { openDelete(item.id) }} /> */}
                                         </div>
                                     </div>
                                 </div>
