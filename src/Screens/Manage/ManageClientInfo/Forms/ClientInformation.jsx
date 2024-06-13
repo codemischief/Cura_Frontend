@@ -491,6 +491,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     <div className="">
                         <div className="text-[13px]">Tenant Of Property</div>
                         {console.log()}
+                        
                         <PropertyDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
                             setFormValues({
                                 ...formValues, client_info: {
