@@ -424,6 +424,7 @@ const ManageOrder = () => {
         const res = await response.json();
         if (res.result == 'success') {
             const d = {
+                "user_id" : user.id,
                 "orderid": res.data['inserted data'],
                 "statusid": Number(formValues.order_info.status)
             }

@@ -362,7 +362,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                                 setFormValues(existing)
                             }}
                         />
-                    Tenant woking bachlors allowed
+                    Tenant woking Bachelors allowed
                 </div>
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
                 <input
