@@ -123,7 +123,7 @@ const ManageLLAgreement = () => {
         "rentamount",
         "registrationtype",
         "noticeperiodindays",
-        "active",
+        "activemap",
         "llscancopy",
         "dated",
         "createdby",
@@ -1075,7 +1075,7 @@ const ManageLLAgreement = () => {
             filterData: "String",
             filterInput: ""
         },
-        active: {
+        activemap: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -1560,9 +1560,9 @@ const ManageLLAgreement = () => {
                                     </div>
                                     <div className='w-[15%]  flex'>
                                         <div className='px-3 ml-1 flex items-center space-x-2'>
-                                            {item.active == 'Active' ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>{item.active}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> {item.active}</p></>}
+                                            {item.activemap == 'Active' ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>{item.activemap}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> {item.activemap}</p></>}
                                         </div>
                                     </div>
                                     <div className='w-[15%]  flex pl-1'>

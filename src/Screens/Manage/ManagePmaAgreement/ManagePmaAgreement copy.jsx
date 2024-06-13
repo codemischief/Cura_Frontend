@@ -52,7 +52,7 @@ const ManagePmaArgreement = () => {
         "orderdescription",
         "propertystatusname",
         "description",
-        "active",
+        "activemap",
         "startdate",
         "enddate",
         "poaenddate",
@@ -920,7 +920,7 @@ const ManagePmaArgreement = () => {
             filterData: "String",
             filterInput: ""
         },
-        active: {
+        activemap: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -1265,12 +1265,12 @@ const ManagePmaArgreement = () => {
                                     onKeyDown={(event) => handleEnterToFilter(event, statusFilterInput,
                                         setStatusFilterInput,
                                         'contains',
-                                        'active')}
+                                        'activemap')}
                                 />
-                                {filterMapState.active.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.activemap.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 {/* <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='active' menuRef={menuRef} filterType={filterMapState.active.filterType}/>}
+                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='active' menuRef={menuRef} filterType={filterMapState.activemap.filterType}/>}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1491,9 +1491,9 @@ const ManagePmaArgreement = () => {
                                     </div>
                                     <div className='w-[7.8%]  flex'>
                                         <div className='px-3 ml-1 flex items-center space-x-2'>
-                                            {item.active == 'Active'? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>{item.active}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> {item.active}</p></>}
+                                            {item.activemap == 'Active'? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>{item.activemap}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> {item.activemap}</p></>}
                                         </div>
                                     </div>
                                     <div className='w-[9.8%]  flex pl-1'>
