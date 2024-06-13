@@ -30,11 +30,13 @@ import NumericFilter from '../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
 import AddButton from '../../Components/common/CustomButton';
+import EditButton from '../../Components/common/buttons/EditButton';
+import DeleteButton from '../../Components/common/buttons/deleteButton';
 
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Locality = () => {
     const menuRef = useRef();
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     const navigate = useNavigate()
     const [existingLocalities, setExistingLocalities] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
@@ -334,7 +336,7 @@ const Locality = () => {
         const res = await response.json();
         setAddConfirmation(false)
 
-        
+
 
 
         if (res.result == "success") {
@@ -400,7 +402,7 @@ const Locality = () => {
         fetchCityData("Maharashtra")
         setFormErrors({});
     }
-    const [backDropLoading,setBackDropLoading] = useState(false)
+    const [backDropLoading, setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
         setDownloadModal(false)
         setPageLoading(true)
@@ -414,55 +416,48 @@ const Locality = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchQuery,
-            "downloadType" : type,
-            "routename" : pathname,
-            "colmap" : {
-                "country" : "Country",
-                "state" : "State",
-                "city" : "City",
-                "locality" : "Locality",
-                "id" : "ID"
+            "downloadType": type,
+            "routename": pathname,
+            "colmap": {
+                "country": "Country",
+                "state": "State",
+                "city": "City",
+                "locality": "Locality",
+                "id": "ID"
             }
         };
         const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
-        if(temp.result == 'success') {
+        if (temp.result == 'success') {
             const d = {
-                "filename" : temp.filename,
-                "user_id" : 1234
+                "filename": temp.filename,
+                "user_id": 1234
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-            .then(response => {
+            APIService.download(d, temp.filename).then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
                 return response.blob();
             })
-            .then(result => {
-                if(type == "excel") {
-                    FileSaver.saveAs(result, 'localityData.xlsx');
-                }else if(type == "pdf") {
-                    FileSaver.saveAs(result, 'localityData.pdf');
-                }
-               
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'localityData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'localityData.pdf');
+                    }
+
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
             setTimeout(() => {
                 setBackDropLoading(false)
                 setPageLoading(false)
-            },1000) 
+            }, 1000)
         }
     }
     const [lobName, setLobName] = useState("");
@@ -726,10 +721,10 @@ const Locality = () => {
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
-                onClick={() => {}}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
             {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess} showCancel={openCancelModal} />}
@@ -766,7 +761,7 @@ const Locality = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDownCapture={handleKeyDown}
                             />
-                            
+
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                 <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
@@ -804,11 +799,11 @@ const Locality = () => {
                                         'country')}
 
                                 />
-                                {filterMapState.country.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.country.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 {/* if the filter is active */}
 
                             </div>
-                            {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} filterType={filterMapState.country.filterType}/>}
+                            {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} filterType={filterMapState.country.filterType} />}
                         </div>
                         <div className='w-[20%] px-3 py-2.5 ml-1'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
@@ -820,7 +815,7 @@ const Locality = () => {
                                         'contains',
                                         'state')}
                                 />
-                                {filterMapState.state.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.state.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {stateFilter && <CharacterFilter inputVariable={stateFilterInput} setInputVariable={setStateFilterInput} handleFilter={newHandleFilter} filterColumn='state' menuRef={menuRef} filterType={filterMapState.state.filterType} />}
                         </div>
@@ -836,7 +831,7 @@ const Locality = () => {
                                         'city')}
 
                                 />
-                                {filterMapState.city.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.city.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} filterType={filterMapState.city.filterType} />}
                         </div>
@@ -850,7 +845,7 @@ const Locality = () => {
                                         'contains',
                                         'locality')}
                                 />
-                                {filterMapState.locality.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setLocalityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.locality.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setLocalityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {localityFilter && <CharacterFilter inputVariable={localityFilterInput} setInputVariable={setLocalityFilterInput} handleFilter={newHandleFilter} filterColumn='locality' menuRef={menuRef} filterType={filterMapState.locality.filterType} />}
                         </div>
@@ -866,7 +861,7 @@ const Locality = () => {
 
 
                             />
-                            {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                            {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                         <div className='w-1/2 p-4'>
@@ -899,9 +894,9 @@ const Locality = () => {
                         </div>
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  p-4 '>
-                                <p>ID<button onClick={() => handleSort("id")}>   
-                                    <span className="font-extrabold ml-1">↑↓</span></button> 
-                                 </p>
+                                <p>ID<button onClick={() => handleSort("id")}>
+                                    <span className="font-extrabold ml-1">↑↓</span></button>
+                                </p>
                             </div>
                             <div className='w-1/2 0 p-4'>
                                 <p>Edit</p>
@@ -939,8 +934,17 @@ const Locality = () => {
                                         <p>{item.id}</p>
                                     </div>
                                     <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                                        <EditButton
+                                            rowData={item}
+                                            handleEdit={handleOpenEdit}
+                                        />
+                                        <DeleteButton
+
+                                            handleDelete={handleDelete}
+                                            rowData={item}
+                                        />
+                                        {/* <button onClick={() => handleOpenEdit(item)}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item)}><img className='w-5 h-5' src={Trash} alt="trash" /></button> */}
                                     </div>
                                 </div>
                             </div>
@@ -1025,15 +1029,15 @@ const Locality = () => {
                         <div className='flex justify-center bg-white rounded-lg'>
                             <div className=" w-[700px] h-auto bg-white rounded-lg ">
                                 <div className='move cursor-move'>
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                    <div className="mr-[250px] ml-[250px]">
-                                        <div className="text-[16px]">Add New Locality</div>
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                        <div className="mr-[250px] ml-[250px]">
+                                            <div className="text-[16px]">Add New Locality</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                            <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                        </div>
+                                        {/* </lol> */}
                                     </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                                    </div>
-                                {/* </lol> */}
-                                </div>
                                 </div>
                                 <div className="space-y-10 mb-3">
                                     <div className="h-auto w-full py-4 ">
@@ -1063,8 +1067,8 @@ const Locality = () => {
                                                         {/* <option value="none" hidden={true}>Select a Country</option> */}
                                                         {allCountry && allCountry.map(item => {
                                                             return <option value={item.id}>
-                                                                 {item.name}
-                                                                </option>
+                                                                {item.name}
+                                                            </option>
                                                             // if (item[1] == 5) {
                                                             //     return <option value={item[0]} selected>
                                                             //         {item[1]}

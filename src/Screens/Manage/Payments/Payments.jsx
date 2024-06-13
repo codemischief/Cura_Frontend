@@ -40,11 +40,13 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import { formatDate } from "../../../utils/formatDate.js";
 import { usernameByUserId } from "../../../utils/UsernameByUserId.js";
 import AddButton from "../../../Components/common/CustomButton.jsx";
+import EditButton from "../../../Components/common/buttons/EditButton.jsx";
+import DeleteButton from "../../../Components/common/buttons/deleteButton.jsx";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 const Payments = () => {
   const menuRef = useRef();
   const navigate = useNavigate();
-  const {pathname} = useLocation()
+  const { pathname } = useLocation()
   const [totalItems, setTotalItems] = useState(0);
   const [currentPages, setCurrentPages] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
@@ -774,7 +776,7 @@ const Payments = () => {
       pg_size: 0,
       search_key: searchInput,
       downloadType: type,
-      routename : pathname,
+      routename: pathname,
       colmap: {
         paymentto: "Payment To",
         paymentby: "Payment By",
@@ -795,14 +797,7 @@ const Payments = () => {
         filename: temp.filename,
         user_id: 1234,
       };
-      fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-        method: "POST", // or the appropriate HTTP method
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(d), // Convert the object to a JSON string
-      })
-        .then((response) => {
+      APIService.download(d, temp.filename).then((response) => {
           if (!response.ok) {
             throw new Error(
               "Network response was not ok " + response.statusText
@@ -1700,12 +1695,21 @@ const Payments = () => {
                         <p>{item.id}</p>
                       </div>
                       <div className="w-1/2 0 px-4 flex space-x-2">
-                        <button onClick={() => editStatement(item)}>
+                        <EditButton
+                          rowData={item}
+                          handleEdit={editStatement}
+                        />
+                        <DeleteButton
+
+                          handleDelete={handleDelete}
+                          rowData={item.id}
+                        />
+                        {/* <button onClick={() => editStatement(item)}>
                           <img className=" w-5 h-5" src={Edit} alt="edit" />
                         </button>
                         <button onClick={() => handleDelete(item.id)}>
                           <img className=" w-5 h-5" src={Trash} alt="trash" />
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>

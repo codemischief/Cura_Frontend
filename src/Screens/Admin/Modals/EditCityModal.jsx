@@ -67,7 +67,6 @@ const EditCityModal = ({ handleClose, initialCountry, initialData, openSuccess }
     const handleEdit = async () => {
         if (!validate()) return;
         const data = {
-            "user_id": 1234,
             "city": formValues.cityName,
             "state": formValues.state,
             "countryid": formValues.country,
