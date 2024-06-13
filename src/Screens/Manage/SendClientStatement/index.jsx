@@ -216,6 +216,7 @@ const OrderReceiptList = () => {
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",
+      routename : "/manage/sendclientstatement",
       colmap: {
         "date": "Date",
         "type": "Type",
