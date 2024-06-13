@@ -76,7 +76,6 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
     //   };
     const getClientPropertyByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
         const response = await APIService.getClientPropertyByClientId(data)
@@ -88,7 +87,6 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
     const [options, setOptions] = useState([]);
     const fetchClientData = async () => {
         const data = {
-            "user_id": 1234
         }
         const response = await APIService.getClientAdmin(data)
         const res = await response.json();

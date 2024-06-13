@@ -853,7 +853,7 @@ const ManageUser = () => {
         status: {
             filterType: "",
             filterValue: "",
-            filterData: "Numeric",
+            filterData: "String",
             filterInput: ""
         },
         id: {
@@ -917,55 +917,8 @@ const ManageUser = () => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-        if (columnName == 'status') {
-            var existing = filterMapState;
-            if (type == 'noFilter') {
-                setInputVariable("");
-            }
-            if (inputVariable.toLowerCase() == 'active') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'true'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else if (inputVariable.toLowerCase() == 'inactive') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'false'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: ''
-                    }
-                }
-                console.log(type)
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            }
-
-        }
-        else {
+        
+        
             var existing = filterMapState;
             existing = {
                 ...existing, [columnName]: {
@@ -981,7 +934,7 @@ const ManageUser = () => {
             }
 
             if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
-        }
+        
 
         fetchFiltered(existing);
     }
@@ -1226,13 +1179,13 @@ const ManageUser = () => {
 
                                         onKeyDown={(event) => handleEnterToFilter(event, statusFilterInput,
                                             setStatusFilterInput,
-                                            'equalTo',
+                                            'contains',
                                             'status')}
 
                                     />
                                     {filterMapState.status.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
+                                {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
                             </div>
                         </div>
                         <div className="w-[30%] flex">
@@ -1334,9 +1287,9 @@ const ManageUser = () => {
                                     </div>
                                     <div className='w-[20%]  flex pl-0.5'>
                                         <div className='px-3 flex items-center space-x-2'>
-                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
+                                            {item.status == 'Active' ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>{item.status}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> {item.status}</p></>}
                                         </div>
                                     </div>
                                 </div>

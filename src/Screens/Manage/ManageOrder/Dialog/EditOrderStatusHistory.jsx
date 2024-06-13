@@ -5,7 +5,7 @@ import { APIService } from '../../../../services/API';
 const EditOrderStatusHistory = ({formValues,setFormValues,orderId}) => {
     const [orderStatusData,setOrderStatusData] = useState([]);
     const fetchOrderStatusData = async () => {
-         const data = {"user_id":1234,"id":orderId}
+         const data = {"id":orderId}
          const response = await APIService.getOrderStatusHistory(data);
          const res = await response.json();
          setOrderStatusData(res.data);

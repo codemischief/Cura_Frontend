@@ -28,7 +28,6 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
     const fetchInitialData = async () => {
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
             "table_name": "get_orders_invoice_view",
             "item_id": invoiceId
         }
@@ -101,7 +100,6 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
     const handleEdit = async () => {
         if (!validate()) return;
         const data = {
-            "user_id": 1234,
             "id": invoiceId,
             "clientid": formValues.client,
             "orderid": formValues.order,
@@ -166,7 +164,6 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -187,7 +184,6 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e

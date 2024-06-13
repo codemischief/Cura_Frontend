@@ -80,7 +80,6 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
 
     const getClientPropertyByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
         const response = await APIService.getClientPropertyByClientId(data)
@@ -108,7 +107,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
     const [options, setOptions] = useState([]);
     const fetchClientData = async () => {
         const data = {
-            "user_id": 1234
+
         }
         const response = await APIService.getClientAdmin(data)
         const res = await response.json();
@@ -143,7 +142,6 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e

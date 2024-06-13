@@ -125,7 +125,7 @@ const Country = () => {
     setCurrentPage(pageNumber);
     // const user_id = await authService.getUserID();
     const data = {
-      "user_id": 1234,
+      
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -152,7 +152,7 @@ const Country = () => {
     setCurrentPages(quantity);
     setCurrentPage((prev) => 1)
     const data = {
-      "user_id": 1234,
+      
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -199,7 +199,7 @@ const Country = () => {
     });
     setFilterState((prev) => tempArray)
     const data = {
-      "user_id": 1234,
+      
       "rows": ["id", "name"],
       "filters": tempArray,
       "sort_by": [sortField],
@@ -219,14 +219,14 @@ const Country = () => {
 
   const addCountry = async () => {
 
-    const data = { "user_id": userId || 1234, "country_name": formValues.countryName };
+    const data = {  "country_name": formValues.countryName };
     const response = await APIService.addCountries(data);
     const res = await response.json();
     console.log(res)
     // {
     //   "result": "error",
     //   "message": "Already Exists",
-    //   "user_id": 1234,
+    //   
     //   "role_id": 1,
     //   "data": []
     // }
@@ -319,7 +319,6 @@ const Country = () => {
   const fetchSomeData = async (number) => {
     setPageLoading(true);
     const data = {
-      "user_id": userId || 1234,
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": [],
@@ -349,7 +348,7 @@ const Country = () => {
       return !prev
     })
     const data = {
-      "user_id": 1234,
+      
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [field],
@@ -373,7 +372,7 @@ const Country = () => {
     setCurrentPage(1);
     console.log('hey')
     const data = {
-      "user_id": 1234,
+      
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -408,7 +407,6 @@ const Country = () => {
     setCurrentPage(1);
     setPageLoading(true)
     const data = {
-      "user_id": userId || 1234,
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -437,7 +435,7 @@ const Country = () => {
     setBackDropLoading(true)
     setPageLoading(true)
     const data = {
-      "user_id": 1234,
+      
       "rows": ["name", "id"],
       "filters": filterState,
       "sort_by": [sortField],
@@ -459,16 +457,8 @@ const Country = () => {
     if (temp.result == 'success') {
       const d = {
         "filename": temp.filename,
-        "user_id": 1234
       }
-      fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-        method: 'POST', // or the appropriate HTTP method
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(d) // Convert the object to a JSON string
-      })
-        .then(response => {
+      APIService.download(d,temp.filename).then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
           }
@@ -570,7 +560,7 @@ const Country = () => {
     setCurrentPage((prev) => 1)
     setPageLoading(true);
     const data = {
-      "user_id": 1234,
+      
       "rows": ["id", "name"],
       "filters": tempArray,
       "sort_by": [sortField],

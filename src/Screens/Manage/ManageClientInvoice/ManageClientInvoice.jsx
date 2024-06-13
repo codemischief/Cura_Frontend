@@ -152,7 +152,6 @@ const ManageClientInvoice = () => {
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -173,7 +172,6 @@ const ManageClientInvoice = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -215,7 +213,7 @@ const ManageClientInvoice = () => {
         setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -244,7 +242,6 @@ const ManageClientInvoice = () => {
         })
         setCurrentPage((prev) => pageNumber)
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -275,7 +272,6 @@ const ManageClientInvoice = () => {
         setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -361,8 +357,6 @@ const ManageClientInvoice = () => {
         }
         // setPageLoading(true);
         const data = {
-
-            "user_id": 1234,
             "clientid": Number(formValues.client),
             "orderid": Number(formValues.order),
             "estimatedate": formValues.estimateDate,
@@ -458,7 +452,6 @@ const ManageClientInvoice = () => {
     }
     const deleteClientInvoice = async (id) => {
         const data = {
-            "user_id": 1234,
             "id": id
         }
         const response = await APIService.deleteClientInvoice(data);
@@ -485,7 +478,6 @@ const ManageClientInvoice = () => {
         setDownloadModal(false)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
             "rows": [
                 "clientname",
                 "quotedescription",
@@ -520,7 +512,6 @@ const ManageClientInvoice = () => {
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
-                "user_id" : 1234
             }
             // fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
                 //     method: 'POST', // or the appropriate HTTP method
@@ -564,7 +555,6 @@ const ManageClientInvoice = () => {
             }
         })
         const data = {
-            "user_id": 1234,
             "rows": [
                 "clientname",
                 "quotedescription",
@@ -599,7 +589,6 @@ const ManageClientInvoice = () => {
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -623,7 +612,6 @@ const ManageClientInvoice = () => {
         setSearchInput("");
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -779,7 +767,6 @@ const ManageClientInvoice = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -834,7 +821,6 @@ const ManageClientInvoice = () => {
         })
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [field],

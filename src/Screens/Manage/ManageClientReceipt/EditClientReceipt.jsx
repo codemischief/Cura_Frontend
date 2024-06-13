@@ -30,7 +30,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
     const [usersData,setUsersData] = useState([])
     const fetchUsersData = async () => {
         const data = {
-            "user_id" : 1234
+            
         }
         const response = await APIService.getUsers(data)
         const res = await response.json()
@@ -39,7 +39,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
     const [modesData,setModesData] = useState([])
     const fetchModesData = async () => {
         const data = {
-            "user_id" : 1234
+            
          }
          const response = await APIService.getModesAdmin(data)
          const res = await response.json()
@@ -49,7 +49,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
     const [howReceivedData,setHowReceivedData] = useState([])
     const fetchHowReceivedData = async () => {
         const data = {
-            "user_id" : 1234
+            
         }
         const response = await APIService.getHowReceivedAdmin(data)
         const res = await response.json()
@@ -109,7 +109,6 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
             return ;
         }
         const data = {
-            "user_id":1234,
             "receivedby":Number(formValues.receivedBy),
             "amount": Number(formValues.amountReceived),
             "tds":Number(formValues.TDS),
@@ -154,7 +153,6 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
           console.log(e)
           if(e.length < 3) return ;
           const data = {
-            "user_id" : 1234,
             "pg_no" : 0,
             "pg_size" : 0,
             "search_key" : e
@@ -174,7 +172,6 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
        }
     const fetchInitialData = async  () => {
         const d = {
-            "user_id" : 1234,
             "table_name" : "client_receipt",
             "item_id" : currClientReceipt.id
         }

@@ -928,7 +928,7 @@ const ManagePmaArgreement = () => {
         active: {
             filterType: "",
             filterValue: "",
-            filterData: "Numeric",
+            filterData: "String",
             filterInput: ""
         },
         startdate: {
@@ -981,43 +981,7 @@ const ManagePmaArgreement = () => {
         console.log('hey')
         console.log(filterMapState);
 
-        if (columnName == 'active') {
-            var existing = filterMapState;
-            if (type == 'noFilter') {
-                setInputVariable("");
-            }
-            if (inputVariable.toLowerCase() == 'active') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'true'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else if (inputVariable.toLowerCase() == 'inactive') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'false'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else {
-                return;
-            }
-
-        }
-        else {
+        
 
             var existing = filterMapState;
             existing = {
@@ -1034,7 +998,7 @@ const ManagePmaArgreement = () => {
             }
 
             if (type == 'noFilter' || type == "isNull" || type == "isNotNull") setInputVariable("");
-        }
+        
 
 
         fetchFiltered(existing);
@@ -1305,13 +1269,13 @@ const ManagePmaArgreement = () => {
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event, statusFilterInput,
                                         setStatusFilterInput,
-                                        'equalTo',
+                                        'contains',
                                         'active')}
                                 />
                                 {filterMapState.active.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 {/* <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} columnName='active' menuRef={menuRef} filterType={filterMapState.active.filterType}/>}
+                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='active' menuRef={menuRef} filterType={filterMapState.active.filterType}/>}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1532,9 +1496,9 @@ const ManagePmaArgreement = () => {
                                     </div>
                                     <div className='w-[7.8%]  flex'>
                                         <div className='px-3 ml-1 flex items-center space-x-2'>
-                                            {item.active ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
+                                            {item.active == 'Active'? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>{item.active}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> {item.active}</p></>}
                                         </div>
                                     </div>
                                     <div className='w-[9.8%]  flex pl-1'>

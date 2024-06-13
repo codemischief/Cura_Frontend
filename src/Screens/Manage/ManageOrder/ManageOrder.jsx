@@ -38,6 +38,7 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import { userId } from '../../../utils/axios';
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
@@ -78,7 +79,6 @@ const ManageOrder = () => {
         setStateArray(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "clientid",
@@ -132,7 +132,6 @@ const ManageOrder = () => {
         setPageLoading(true);
         setCurrentPage(pageNumber)
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "clientid",
@@ -185,7 +184,6 @@ const ManageOrder = () => {
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "clientid",
@@ -280,7 +278,7 @@ const ManageOrder = () => {
             "earlieststartdate": null,
             "expectedcompletiondate": null,
             "actualcompletiondate": null,
-            "owner": 1234,
+            "owner": userId,
             "comments": null,
             "additionalcomments": null,
             "status": null,
@@ -393,7 +391,6 @@ const ManageOrder = () => {
     const addOrder = async () => {
         console.log(formValues)
         const data = {
-            "user_id": 1234,
             "order_info": {
                 "clientid": Number(formValues.order_info.clientid),
                 "briefdescription": formValues.order_info.briefdescription,
@@ -415,7 +412,6 @@ const ManageOrder = () => {
             "order_photos": formValues.order_photos
         }
         const d = {
-            "user_id": 1234,
             "orderid": currOrderId,
             "statusid": Number(formValues.order_info.status)
         }
@@ -426,7 +422,6 @@ const ManageOrder = () => {
         const res = await response.json();
         if (res.result == 'success') {
             const d = {
-                "user_id": 1234,
                 "orderid": res.data['inserted data'],
                 "statusid": Number(formValues.order_info.status)
             }
@@ -458,7 +453,6 @@ const ManageOrder = () => {
     }
     const deleteOrder = async (id) => {
         const data = {
-            "user_id": 1234,
             "order_id": id
         }
         const response = await APIService.deleteOrders(data)
@@ -474,7 +468,6 @@ const ManageOrder = () => {
         setBackDropLoading(true);
         console.log('ugm')
         const data = {
-            "user_id": 1234,
             "rows": [
                 "clientname",
                 "ownername",
@@ -539,14 +532,7 @@ const ManageOrder = () => {
                 "filename": temp.filename,
                 "user_id": 1234
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
+            APIService.download(d,temp.filename).then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
@@ -577,7 +563,6 @@ const ManageOrder = () => {
         setCurrentPage(1);
         setIsSearchOn(true);
         const data = {
-            "user_id": 1234,
             "rows": [
                 "id",
                 "clientid",
@@ -632,7 +617,7 @@ const ManageOrder = () => {
         setCurrentPage(1);
         setSearchInput("");
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "id",
                 "clientid",
@@ -844,7 +829,7 @@ const ManageOrder = () => {
         setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "id",
                 "clientid",
@@ -909,7 +894,7 @@ const ManageOrder = () => {
         })
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "id",
                 "clientid",

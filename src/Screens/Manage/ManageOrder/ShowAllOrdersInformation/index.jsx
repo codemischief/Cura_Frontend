@@ -14,7 +14,7 @@ const ShowAllOdersInformation = () => {
     console.log(state)
   const fetchPaymentData = async () => {
       const data = {
-          "user_id": 1234,
+          
           "rows": [
               "clientname",
               "propertydescription",
@@ -41,7 +41,7 @@ const ShowAllOdersInformation = () => {
   }
   const fetchReceiptsData = async () => {
     const data = {
-        "user_id": 1234,
+        
         "rows": [
             "clientname",
             "clientproperty",
@@ -68,7 +68,7 @@ const ShowAllOdersInformation = () => {
   }
   const fetchInvoicesData = async () => {
     const data = {
-        "user_id": 1234,
+        
         "rows": [
             "clientname",
             "quotedescription",

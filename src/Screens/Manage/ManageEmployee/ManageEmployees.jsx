@@ -771,7 +771,7 @@ const ManageEmployees = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key": searchInput
+            "search_key": ""
         };
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
@@ -883,7 +883,7 @@ const ManageEmployees = () => {
         status: {
             filterType: "",
             filterValue: "",
-            filterData: "Numeric",
+            filterData: "String",
             filterInput: ""
         },
         id: {
@@ -963,54 +963,50 @@ const ManageEmployees = () => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-        if (columnName == 'status') {
-            var existing = filterMapState;
-            if (type == 'noFilter') {
-                setInputVariable("");
-            }
-            if (inputVariable.toLowerCase() == 'active') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'true'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else if (inputVariable.toLowerCase() == 'inactive') {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: 'false'
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-            } else {
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterValue: ""
-                    }
-                }
-                existing = {
-                    ...existing, [columnName]: {
-                        ...existing[columnName],
-                        filterType: type == 'noFilter' ? "" : type
-                    }
-                }
-                // return;
-            }
+       
+        //     if (inputVariable.toLowerCase() == 'active') {
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterValue: 'true'
+        //             }
+        //         }
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterType: type == 'noFilter' ? "" : type
+        //             }
+        //         }
+        //     } else if (inputVariable.toLowerCase() == 'inactive') {
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterValue: 'false'
+        //             }
+        //         }
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterType: type == 'noFilter' ? "" : type
+        //             }
+        //         }
+        //     } else {
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterValue: ""
+        //             }
+        //         }
+        //         existing = {
+        //             ...existing, [columnName]: {
+        //                 ...existing[columnName],
+        //                 filterType: type == 'noFilter' ? "" : type
+        //             }
+        //         }
+        //         // return;
+        //     }
 
-        } else {
+        // } else {
             var existing = filterMapState;
             existing = {
                 ...existing, [columnName]: {
@@ -1026,7 +1022,7 @@ const ManageEmployees = () => {
             }
 
             if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
-        }
+        
 
         fetchFiltered(existing);
     }
@@ -1279,12 +1275,12 @@ const ManageEmployees = () => {
                                         onKeyDown={(event) => handleEnterToFilter(event, statusInput,
                                             setStatusInput
                                             ,
-                                            'equalTo',
+                                            'contains',
                                             'status')}
                                     />
                                     {filterMapState.status.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusInput} setInputVariable={setStatusInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
+                                {statusFilter && <CharacterFilter  inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
                             </div>
                         </div>
                         <div className="w-[10%] flex items-center">
@@ -1438,9 +1434,9 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
                                         <div className='p-3 ml-1 flex items-center space-x-2'>
-                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
+                                            {item.status == 'Active' ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>{item.status}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> {item.status}</p></>}
                                         </div>
                                     </div>
                                 </div>

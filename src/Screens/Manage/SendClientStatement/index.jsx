@@ -251,6 +251,7 @@ const OrderReceiptList = () => {
       enddate: endDate ?? "2022-01-01",
       sendEmail:true,
       clientid:selectedOption.value,
+      downloadType : 'pdf',
       entityid:1,
       rows: [
         "date",

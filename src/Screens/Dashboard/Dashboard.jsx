@@ -8,8 +8,8 @@ import { userId } from "../../utils/axios";
 import { APIService } from "../../services/API";
 // import useAuth from "../../../context/JwtContext";
 const Dashboard = () => {
-  const { user } = useAuth();
-  console.log(user)
+  
+  // console.log(user)
   const [myOrder, setmyorder] = useState([]);
   const [cashBalance, setcashbalance] = useState([]);
   
@@ -35,7 +35,7 @@ const Dashboard = () => {
     setmyorder(res.data)
   }
   useEffect(() => {
-     console.log(user)
+     
      console.log("render")
      fetchDashboardData()
   },[])
