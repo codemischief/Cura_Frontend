@@ -194,7 +194,7 @@ const ManageClientInfo = () => {
     const fetchUsersData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        const data = {  };
         const response = await APIService.getUsers(data)
         const result = (await response.json());
 
@@ -211,7 +211,7 @@ const ManageClientInfo = () => {
     const fetchRoleData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        const data = {  };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
@@ -226,7 +226,7 @@ const ManageClientInfo = () => {
     const fetchEntitiesData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        const data = {  };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
@@ -239,7 +239,7 @@ const ManageClientInfo = () => {
     }
     const fetchRelation = async () => {
         const data = {
-            "user_id": 1234
+            
         }
         const response = await APIService.getRelationAdmin(data)
         const res = await response.json()
@@ -416,7 +416,7 @@ const ManageClientInfo = () => {
     const [clientTypeData, setClientTypeData] = useState([]);
     const fetchClientTypeData = async () => {
         const data = {
-            "user_id": 1234
+            
         }
         const response = await APIService.getClientTypeAdmin(data);
         const res = await response.json()
@@ -426,7 +426,7 @@ const ManageClientInfo = () => {
     }
     const fetchTenentOfData = async () => {
         const data = {
-            "user_id": 1234
+            
         }
         const response = await APIService.getTenantOfPropertyAdmin(data)
         const res = await response.json()
@@ -598,7 +598,7 @@ const ManageClientInfo = () => {
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
-                "user_id" : 1234
+                
             }
             fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method

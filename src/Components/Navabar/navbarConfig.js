@@ -119,7 +119,7 @@ export const navMenuConfig = [
               title: "Bank Statement",
               path: PATH_DASHBOARD.manage.bankStatement,
             },
-            { title: "Send Client Statement", path: PATH_DASHBOARD.manage.sendClientStatement },
+            { title: "Send Client Statement", path: PATH_DASHBOARD.manage.ClientStatement },
           ],
         },
       ],

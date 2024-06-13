@@ -39,6 +39,7 @@ export const routeMapObj = Object.freeze({
   BuilderInfo: PATH_DASHBOARD.manage.manageBuilder.root,
   ProjectInfo: PATH_DASHBOARD.manage.projectManagementInfo,
   // send client-statement is pending....
+  ClientStatement : PATH_DASHBOARD.manage.ClientStatement,
   BankStatement: PATH_DASHBOARD.manage.bankStatement,
   Order: PATH_DASHBOARD.manage.manageOrder,
   OrderReceipt: PATH_DASHBOARD.manage.orderReceipt,

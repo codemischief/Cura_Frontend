@@ -28,7 +28,7 @@ const Dashboard = () => {
   //     });
   //   }
   const fetchDashboardData = async (id) => {
-    const data = {"user_id" : id}
+    const data = {}
     const response = await APIService.dashboardData(data)
     const res = await response.json()
     console.log(res)
@@ -37,7 +37,7 @@ const Dashboard = () => {
   useEffect(() => {
      console.log(user)
      console.log("render")
-     fetchDashboardData(user.id)
+     fetchDashboardData()
   },[])
   return (
     <div className="w-full flex flex-col h-[calc(100vh-6.2rem)] overflow-x-hidden bg-[#F5F5F5]">
