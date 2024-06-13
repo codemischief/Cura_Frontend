@@ -191,16 +191,45 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
     };
-    dispatch(downloadData(obj)).then((response) => {
+    dispatch(downloadData(obj))
       // const tableData = response.data;
       // const worksheet = XLSX.utils.json_to_sheet(tableData);
       // const workbook = XLSX.utils.book_new();
       // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
       // XLSX.writeFile(workbook, "SendClientStatement.xlsx");
       // dispatch(setStatus("success"));
-    });
+    
   };
-
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      sendEmail:false,
+      clientid:selectedOption.value,
+      entityid:1,
+      rows: [
+        "date",
+        "type",
+        "description",
+        "amount",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      colmap: {
+        "date": "Date",
+        "type": "Type",
+        "description": "Description",
+        "amount": "Amount",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadData(obj,'pdf'))
+  }
   const handleShow = () => {
     if(startDate && endDate && selectedOption.value){
       dispatch(setInitialState());
@@ -473,6 +502,7 @@ const OrderReceiptList = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
+          downloadPdf={downloadPdf}
           height={height}
         />
       </div>

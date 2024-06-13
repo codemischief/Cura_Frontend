@@ -491,7 +491,19 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     <div className="">
                         <div className="text-[13px]">Tenant Of Property</div>
                         {console.log()}
-                        
+                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.city}name="city" onChange={
+                            (e) => {
+                                
+                            }
+                        }>
+                            
+                            <option value="none" > Select A City</option>
+                            {tenantOfProperty && tenantOfProperty.map(item => (
+                                <option value={item.id}>
+                                    
+                                </option>
+                            ))}
+                        </select>
                         <PropertyDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
                             setFormValues({
                                 ...formValues, client_info: {

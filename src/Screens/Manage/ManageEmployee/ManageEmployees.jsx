@@ -211,7 +211,7 @@ const ManageEmployees = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -240,7 +240,7 @@ const ManageEmployees = () => {
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -271,7 +271,7 @@ const ManageEmployees = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -659,7 +659,7 @@ const ManageEmployees = () => {
         setPageLoading(true)
         const data = {
             "user_id": 1234,
-            "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "status", "id",],
+            "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "statusmap", "id",],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -677,7 +677,7 @@ const ManageEmployees = () => {
                 "panno": "PAN No",
                 "dateofjoining": "Date of Joining",
                 "lastdateofworking": "Last Date of Working",
-                "status": "Status",
+                "statusmap": "Status",
                 "id": "ID"
             }
         };
@@ -731,7 +731,7 @@ const ManageEmployees = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "status", "id",],
+            "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "statusmap", "id",],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -761,7 +761,7 @@ const ManageEmployees = () => {
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -876,7 +876,7 @@ const ManageEmployees = () => {
             filterData: "Date",
             filterInput: ""
         },
-        status: {
+        statusmap: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -938,7 +938,7 @@ const ManageEmployees = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -1036,7 +1036,7 @@ const ManageEmployees = () => {
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -1272,11 +1272,11 @@ const ManageEmployees = () => {
                                             setStatusInput
                                             ,
                                             'contains',
-                                            'status')}
+                                            'statusmap')}
                                     />
-                                    {filterMapState.status.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {filterMapState.statusmap.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
+                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='statusmap' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.statusmap.filterType} />}
                             </div>
                         </div>
                         <div className="w-[10%] flex items-center">
@@ -1430,9 +1430,9 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
                                         <div className='p-3 ml-1 flex items-center space-x-2'>
-                                            {item.status == 'Active' ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>{item.status}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> {item.status}</p></>}
+                                            {item.statusmap == 'Active' ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>{item.statusmap}</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> {item.statusmap}</p></>}
                                         </div>
                                     </div>
                                 </div>
