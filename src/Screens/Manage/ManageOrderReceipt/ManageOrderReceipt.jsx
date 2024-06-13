@@ -1030,7 +1030,7 @@ const ManageOrderReceipt = () => {
 
         if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
 
-
+        
         fetchFiltered(existing);
     }
     const [filterState, setFilterState] = useState([]);
@@ -1049,21 +1049,21 @@ const ManageOrderReceipt = () => {
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
-        Object.keys(filterMapState).forEach((key) => {
-            if (filterMapState[key].filterType != "") {
-                if (filterMapState[key].filterData == 'Numeric') {
+        Object.keys(mapState).forEach((key) => {
+            if (mapState[key].filterType != "") {
+                if (mapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
-                        filterMapState[key].filterType,
-                        Number(filterMapState[key].filterValue),
-                        filterMapState[key].filterData,
+                        mapState[key].filterType,
+                        Number(mapState[key].filterValue),
+                        mapState[key].filterData,
                     ]);
                 } else {
                     tempArray.push([
                         key,
-                        filterMapState[key].filterType,
-                        filterMapState[key].filterValue,
-                        filterMapState[key].filterData,
+                        mapState[key].filterType,
+                        mapState[key].filterValue,
+                        mapState[key].filterData,
                     ]);
                 }
             }

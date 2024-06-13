@@ -464,6 +464,7 @@ const ManageVendorPayment = () => {
     const [formValues, setFormValues] = useState(initialValues);
     const setHyperLinkData = () => {
         if(state != null){
+            console.log(state)
             const v = {...selectedOption}
             v.label = state.clientname 
             v.value = state.clientid
@@ -560,6 +561,7 @@ const ManageVendorPayment = () => {
 
     // validate form and to throw Error message
     const validate = () => {
+        console.log(formValues)
         var res = true;
 
         if (!formValues.client) {
