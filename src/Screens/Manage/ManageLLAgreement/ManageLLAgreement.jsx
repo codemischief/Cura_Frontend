@@ -1200,7 +1200,7 @@ const ManageLLAgreement = () => {
 
         const d = {"leavelicenseid":currItem}
 
-        const r = await APIService.deleteLLTenant(d)
+        const r = await APIService.deleteLLTenant({...d,user_id : user.id})
 
         const rs = await r.json()
 

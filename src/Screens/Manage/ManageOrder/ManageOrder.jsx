@@ -43,7 +43,8 @@ import useAuth from '../../../context/JwtContext';
 const ManageOrder = () => {
     // we have the module here
     const datarows = [
-         "clientname",
+                "clientname",
+                "clientid",
                 "ownername",
                 "briefdescription",
                 "clientproperty",
@@ -55,6 +56,7 @@ const ManageOrder = () => {
                 "ageing",
                 "createdbyname",
                 "id",
+
     ]
     const menuRef = useRef();
     const navigate = useNavigate()
@@ -98,6 +100,7 @@ const ManageOrder = () => {
         const data = {
             "rows": [
                 "clientname",
+                "clientid",
                 "ownername",
                 "briefdescription",
                 "clientproperty",

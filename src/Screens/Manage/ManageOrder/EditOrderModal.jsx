@@ -111,6 +111,8 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
             }
         }
         if (formValues.order_info.status != initialOrderStatus) {
+            console.log(formValues.order_info.status)
+            console.log(initialOrderStatus)
             const d = {
                 
                 "orderid": currOrderId,
@@ -338,7 +340,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         const res = await response.json()
         console.log(res)
         setInitialOrderData(res.data)
-        setInitialOrderStatus(res.data.status);
+        setInitialOrderStatus(res.data.order_info.status);
     }
     useEffect(() => {
         fetchInitialHelper()

@@ -126,10 +126,10 @@ const ManageBankStatement = () => {
         const mode1 = await APIService.getModesAdmin(data);
         const howReceived1 = await APIService.getHowReceivedAdmin(data);
         const entity1 = await APIService.getEntityAdmin(data);
-        const client1 = await APIService.getClientAdmin(data);
+        
         setEntity((await entity1.json()).data)
         setHowReceived((await howReceived1.json()).data)
-        setClient((await client1.json()).data)
+        
         setMode((await mode1.json()).data)
 
     }
