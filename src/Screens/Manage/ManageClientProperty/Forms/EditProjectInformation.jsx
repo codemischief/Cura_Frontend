@@ -27,7 +27,10 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
   }
 
   const handleChange = (e) => {
+    
+
     const { name, value } = e.target;
+    console.log(name,value)
     setFormValues({
       ...formValues, client_property: {
         ...formValues.client_property,

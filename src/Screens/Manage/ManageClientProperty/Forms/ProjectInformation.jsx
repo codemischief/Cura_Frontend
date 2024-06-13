@@ -3,10 +3,12 @@ import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
 import { APIService } from "../../../../services/API";
 import DropDown from "../../../../Components/Dropdown/Dropdown"
+import useAuth from "../../../../context/JwtContext";
 const ProjectInformation = ({ clientData, initialSociety, initialStates, initialCities, formValues, setFormValues, propertyType, levelOfFurnishing, propertyStatus, formErrors, setCurrClientName, clientname, clientid , setClientNameText, hyperlinkState}) => {
   // console.log(levelOfFurnishing)
   // const [propertyType, setPropertyType] = useState([]);
   // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
+  const { user} = useAuth()
   useEffect(() => {
     const temp = { ...formValues }
     const ex = temp.client_property
@@ -112,11 +114,9 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     console.log(result);
-    if (Array.isArray(result)) {
-      // setAllCity(result)
-      setCity(result)
+   
+    setCity(result)
 
-    }
   }
   return (
     <div className="h-auto w-full">
@@ -227,9 +227,11 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               value={formValues.client_property.state}
               onChange={(e) => {
                 handleChange(e)
+                setCity([])
                 fetchCityData(e.target.value)
                 const temp = { ...formValues }
                 const ex = temp.client_property
+                ex.state = e.target.value
                 ex.city = null
                 temp.client_property = ex
                 setFormValues(temp)
@@ -337,7 +339,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               onChange={handleChange}
               value={formValues.client_property.city}
             >
-              <option>Select City</option>
+              <option value="" hidden >Select City</option>
               {city &&
                 city.map((item) => (
                   <option key={item.id} value={item.city}>
