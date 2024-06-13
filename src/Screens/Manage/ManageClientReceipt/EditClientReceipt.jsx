@@ -177,7 +177,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
             "table_name" : "client_receipt",
             "item_id" : currClientReceipt.id
         }
-        const response = await APIService.getItembyId(d)
+        const response = await APIService.getItembyId({...d,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         const temp = {...formValues}
