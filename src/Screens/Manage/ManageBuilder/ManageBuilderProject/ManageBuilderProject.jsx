@@ -26,9 +26,11 @@ import Contact from "../../ManageProjectInfo/ManageProjectInfoForm/Contact";
 import Photos from "../../ManageProjectInfo/ManageProjectInfoForm/Photos";
 import DeleteProjectBuilder from "./DeleteBuilderProject";
 import Draggable from "react-draggable";
+import useAuth from "../../../../context/JwtContext";
 const ManageBuilderProject = () => {
     // we have the module here
     const menuRef = useRef()
+    const { user} = useAuth()
     const params = useParams()
     let { state } = useLocation();
     console.log(state)
@@ -81,7 +83,7 @@ const ManageBuilderProject = () => {
     const fetchBuilderData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
               "buildername",
               "builderid",
@@ -137,7 +139,7 @@ const ManageBuilderProject = () => {
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1234 };
+        const data = { "user_id": user.id };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result);
@@ -148,7 +150,7 @@ const ManageBuilderProject = () => {
 
     const fetchStateData = async (e) => {
        
-        const data = { "user_id": userId || 1234, "country_id": 5 };
+        const data = { "user_id": userId || user.id, "country_id": 5 };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         // console.log(result)
@@ -158,7 +160,7 @@ const ManageBuilderProject = () => {
     }
 
     const fetchCityData = async (d) => {
-        const data = { "user_id": userId || 1234, "country_id": 5, "state_name": "Maharashtra" };
+        const data = { "user_id": userId || user.id, "country_id": 5, "state_name": "Maharashtra" };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         if(Array.isArray(result)){
@@ -174,7 +176,7 @@ const ManageBuilderProject = () => {
 
     const addNewBuilder = async () => {
         const data = {
-            "user_id": userId || 1234,
+            "user_id": userId || user.id,
             "buildername": formValues.builderName,
             "phone1": formValues.phone1,
             "phone2": formValues.phone2,
@@ -189,7 +191,7 @@ const ManageBuilderProject = () => {
             "website": formValues.website,
             "comments": formValues.comment,
             "dated": "10-03-2024 08:29:00", 
-            "createdby": 1234,
+            "createdby": user.id,
             "isdeleted": false
         };
         const response = await APIService.addNewBuilder(data);
@@ -442,7 +444,7 @@ const ManageBuilderProject = () => {
             return;
         }
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "project_info": {
                 "builderid": Number(formValues.project_info.builderid),
                 "projectname": formValues.project_info.projectname,
@@ -523,7 +525,7 @@ const ManageBuilderProject = () => {
     const deleteProject = async (id) => {
         // here we write the logic for deleting
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id":id}
             const response = await APIService.deleteProject(data)
             const res = await response.json()
@@ -539,7 +541,7 @@ const ManageBuilderProject = () => {
 
     const getProjectTypeData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getProjectTypeAdmin(data)
         const res = await response.json();
@@ -548,7 +550,7 @@ const ManageBuilderProject = () => {
     }
     const getProjectLegalData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getProjectLegalStatusAdmin(data)
         const res = await response.json();

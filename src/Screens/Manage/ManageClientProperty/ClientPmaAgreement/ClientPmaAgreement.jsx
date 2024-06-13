@@ -32,8 +32,10 @@ import DateFilter from '../../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import OrderDropDown from '../../../../Components/Dropdown/OrderDropdown';
+import useAuth from '../../../../context/JwtContext';
 const ClientPmaArgreement = () => {
     const navigate = useNavigate()
+    const { user } = useAuth()
     let { state } = useLocation();
     console.log(state);
     const dataRows = [
@@ -120,8 +122,8 @@ const ClientPmaArgreement = () => {
 
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
@@ -131,8 +133,8 @@ const ClientPmaArgreement = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -141,7 +143,7 @@ const ClientPmaArgreement = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -157,8 +159,8 @@ const ClientPmaArgreement = () => {
     }
     const fetchUsersData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getUsers(data)
         const result = (await response.json());
 
@@ -174,8 +176,8 @@ const ClientPmaArgreement = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
@@ -189,8 +191,8 @@ const ClientPmaArgreement = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
@@ -205,7 +207,7 @@ const ClientPmaArgreement = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -242,7 +244,7 @@ const ClientPmaArgreement = () => {
          setCurrentPage((prev) => 1)
         // setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -265,7 +267,7 @@ const ClientPmaArgreement = () => {
         setPageLoading(true);
         setCurrentPage(pageNumber)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "clientpropertyid",
@@ -315,7 +317,7 @@ const ClientPmaArgreement = () => {
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "clientpropertyid",
@@ -363,7 +365,7 @@ const ClientPmaArgreement = () => {
     const [clientPropertyData,setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {
        const data = {
-        "user_id" : 1234,
+        "user_id" : user.id,
         "client_id" : id
        }
 
@@ -383,7 +385,7 @@ const ClientPmaArgreement = () => {
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id" :1234,
+            "user_id" :user.id,
             "client_id" : id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -402,7 +404,7 @@ const ClientPmaArgreement = () => {
     const addPmaAgreement = async () => {
         console.log(formValues.order)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "clientpropertyid": state.clientPropertyId,
             "startdate": formValues.pmaStartDate,
             "enddate": formValues.pmaEndDate,
@@ -599,7 +601,7 @@ const ClientPmaArgreement = () => {
 
     const deleteEmployee = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deleteEmployee(data);
@@ -623,7 +625,7 @@ const ClientPmaArgreement = () => {
     }
     const handleExcelDownload = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -648,7 +650,7 @@ const ClientPmaArgreement = () => {
         // setCurrentPages(15);
         setIsSearchOn(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -672,7 +674,7 @@ const ClientPmaArgreement = () => {
         setCurrentPage((prev) => 1)
         setSearchInput("");
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -698,7 +700,7 @@ const ClientPmaArgreement = () => {
     }
     const deletePma = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deletePmaAgreement(data)
@@ -770,7 +772,7 @@ const ClientPmaArgreement = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -906,7 +908,7 @@ const ClientPmaArgreement = () => {
          setCurrentPage((prev) => 1)
          setPageLoading(true);
          const data = {
-             "user_id": 1234,
+             "user_id": user.id,
              "rows": dataRows,
              "filters": tempArray,
              "sort_by": [sortField],
@@ -935,7 +937,7 @@ const ClientPmaArgreement = () => {
         
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],

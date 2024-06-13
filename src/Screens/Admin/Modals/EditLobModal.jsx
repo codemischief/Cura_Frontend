@@ -5,7 +5,9 @@ import { useState } from 'react'
 import { APIService } from '../../../services/API'
 import SucessfullModal from '../../../Components/modals/SucessfullModal'
 import Draggable from 'react-draggable'
+import useAuth from '../../../context/JwtContext'
 const EditLobModal = (props) => {
+    const { user } = useAuth()
     // const [showSuccess,setShowSuccess] = useState(false);
     const [editModalInput, setEditModalInput] = useState(props.item.name);
     const [errorMessage, setErrorMessage] = useState("");
@@ -15,7 +17,7 @@ const EditLobModal = (props) => {
             return;
         }
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "old_name": props.item.name,
             "new_name": editModalInput,
         }

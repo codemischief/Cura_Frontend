@@ -36,7 +36,7 @@ import useAuth from "../../context/JwtContext";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const City = () => {
     const menuRef = useRef();
-    const { user } = useAuth()
+    const { user } = useAuth();
     const navigate = useNavigate();
     const {pathname} = useLocation()
     // we have the module here

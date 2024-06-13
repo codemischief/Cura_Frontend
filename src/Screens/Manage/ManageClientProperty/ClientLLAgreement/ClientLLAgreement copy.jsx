@@ -30,6 +30,7 @@ import NumericFilter from '../../../../Components/Filters/NumericFilter';
 import EditManageLLAgreement from '../../ManageLLAgreement/EditManageLLAgreement';
 import Draggable from "react-draggable"
 const ClientLLAgreement = () => {
+    const { user } = useAuth()
     let { state } = useLocation();
     // const initialRows = [
     //     "id",
@@ -116,8 +117,8 @@ const ClientLLAgreement = () => {
     ]
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
@@ -127,8 +128,8 @@ const ClientLLAgreement = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -137,7 +138,7 @@ const ClientLLAgreement = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -153,8 +154,8 @@ const ClientLLAgreement = () => {
     }
     const fetchUsersData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getUsers(data)
         const result = (await response.json());
 
@@ -170,8 +171,8 @@ const ClientLLAgreement = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
@@ -185,8 +186,8 @@ const ClientLLAgreement = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
@@ -201,7 +202,7 @@ const ClientLLAgreement = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -225,7 +226,7 @@ const ClientLLAgreement = () => {
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -237,7 +238,7 @@ const ClientLLAgreement = () => {
     const [clientPropertyData, setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_id": id
         }
 
@@ -278,7 +279,7 @@ const ClientLLAgreement = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -316,7 +317,7 @@ const ClientLLAgreement = () => {
         setCurrentPage((prev) => 1)
 
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -337,7 +338,7 @@ const ClientLLAgreement = () => {
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,    
             "filters": filterState,
             "sort_by": [sortField],
@@ -361,7 +362,7 @@ const ClientLLAgreement = () => {
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -576,7 +577,7 @@ const ClientLLAgreement = () => {
         console.log(formValues)
         // setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "clientpropertyid": Number(formValues.clientProperty),
             "orderid": Number(formValues.order),
             "durationinmonth": Number(formValues.durationInMonth),
@@ -730,7 +731,7 @@ const ClientLLAgreement = () => {
     }
     const deleteLLAgreement = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deleteLLAgreement(data);
@@ -754,7 +755,7 @@ const ClientLLAgreement = () => {
     }
     const handleExcelDownload = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -779,7 +780,7 @@ const ClientLLAgreement = () => {
         // setCurrentPages(15)
         setIsSearchOn(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -803,7 +804,7 @@ const ClientLLAgreement = () => {
         setSearchInput("");
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -865,7 +866,7 @@ const ClientLLAgreement = () => {
         // })
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
@@ -1006,7 +1007,7 @@ const ClientLLAgreement = () => {
         setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],

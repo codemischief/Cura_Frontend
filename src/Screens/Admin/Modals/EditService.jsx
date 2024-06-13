@@ -3,6 +3,7 @@ import { Modal, responsiveFontSizes } from "@mui/material";
 import Cross from "../../../assets/cross.png";
 import { APIService } from "../../../services/API";
 import Draggable from "react-draggable";
+import useAuth from "../../../context/JwtContext";
 
 const EditService = ({
   handleClose,
@@ -11,6 +12,7 @@ const EditService = ({
   showSuccess,
   showCancel,
 }) => {
+  const { user } = useAuth()
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
@@ -28,7 +30,7 @@ const EditService = ({
   const fetchInitialData = async () => {
     console.log(currService);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       item_id: currService,
       table_name: "get_services_view",
     };
@@ -75,7 +77,7 @@ const EditService = ({
       return;
     }
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       id: Number(currService),
       lob: Number(formValues.lob),
       service: formValues.serviceName,

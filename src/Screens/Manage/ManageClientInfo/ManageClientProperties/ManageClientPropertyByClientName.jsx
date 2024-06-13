@@ -33,7 +33,9 @@ import EditClientProperty from '../../ManageClientProperty/Forms/EditClientPrope
 import Select from "react-select"
 import DeleteClientProperty from '../../ManageClientProperty/DeleteClientProperty';
 import Draggable from 'react-draggable';
+import useAuth from '../../../../context/JwtContext';
 const ManageClientPropertyByClientName = () => {
+    const {user} = useAuth()
     const menuRef = useRef();
     const params = useParams()
     let { state } = useLocation();
@@ -80,7 +82,7 @@ const ManageClientPropertyByClientName = () => {
 
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
@@ -90,7 +92,7 @@ const ManageClientPropertyByClientName = () => {
     }
     const fetchClientTypeData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getClientTypeAdmin(data);
         const res = await response.json()
@@ -100,8 +102,8 @@ const ManageClientPropertyByClientName = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -110,7 +112,7 @@ const ManageClientPropertyByClientName = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -126,8 +128,8 @@ const ManageClientPropertyByClientName = () => {
     }
     const fetchUsersData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getUsers(data)
         const result = (await response.json());
 
@@ -143,8 +145,8 @@ const ManageClientPropertyByClientName = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
@@ -158,8 +160,8 @@ const ManageClientPropertyByClientName = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
@@ -174,7 +176,7 @@ const ManageClientPropertyByClientName = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -194,7 +196,7 @@ const ManageClientPropertyByClientName = () => {
     }
     const [existingSociety, setExistingSociety] = useState([]);
     const getBuildersAndProjectsList = async () => {
-        const data = { "user_id": 1234 };
+        const data = { "user_id": user.id };
         const response = await APIService.getBuildersAndProjectsList(data);
         const res = await response.json();
         console.log(res.data);
@@ -202,7 +204,7 @@ const ManageClientPropertyByClientName = () => {
     }
     const [propertyStatus, setPropertyStatus] = useState([]);
     const fetchPropertyStatus = async () => {
-        const data = { "user_id": 1234 };
+        const data = { "user_id": user.id };
         const response = await APIService.getPropertyStatusAdmin(data);
         const res = await response.json();
         console.log(res);
@@ -210,7 +212,7 @@ const ManageClientPropertyByClientName = () => {
     }
     const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
     const fetchLevelOfFurnishing = async () => {
-        const data = { "user_id": 1234 }
+        const data = { "user_id": user.id }
         const response = await APIService.getLevelOfFurnishingAdmin(data);
         const res = await response.json()
         console.log(res);
@@ -218,7 +220,7 @@ const ManageClientPropertyByClientName = () => {
     }
     const [propertyType, setPropertyType] = useState([]);
     const fetchPropertyType = async () => {
-        const data = { "user_id": 1234 }
+        const data = { "user_id": user.id }
         const response = await APIService.getPropertyType(data)
         const res = await response.json();
         console.log(res);
@@ -241,7 +243,7 @@ const ManageClientPropertyByClientName = () => {
         setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "client",
@@ -302,7 +304,7 @@ const ManageClientPropertyByClientName = () => {
         setPageLoading(true);
         setCurrentPage(() => page);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "client",
@@ -366,7 +368,7 @@ const ManageClientPropertyByClientName = () => {
         setCurrentPages(quantity);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "client",
@@ -484,7 +486,7 @@ const ManageClientPropertyByClientName = () => {
         }
         // setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "employeename": formValues.employeeName,
             "employeeid": formValues.employeeId,
             "userid": 1236,
@@ -503,7 +505,7 @@ const ManageClientPropertyByClientName = () => {
             "country": Number(formValues.country),
             "zip": formValues.zipCode,
             "dated": "20-01-2020  00:00:00",
-            "createdby": 1234,
+            "createdby": user.id,
             "isdeleted": false,
             "entityid": formValues.entity,
             "lobid": formValues.lob == null ? "" : formValues.lob,
@@ -539,7 +541,7 @@ const ManageClientPropertyByClientName = () => {
     const [clientData, setClientData] = useState([]);
     const fetchClientData = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
         }
         const response = await APIService.getClientAdmin(data)
         const res = await response.json();
@@ -763,7 +765,7 @@ const ManageClientPropertyByClientName = () => {
     }
     const handleExcelDownload = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "client",
@@ -825,7 +827,7 @@ const ManageClientPropertyByClientName = () => {
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "client",
@@ -887,7 +889,7 @@ const ManageClientPropertyByClientName = () => {
         setSearchInput("");
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "client",
@@ -985,7 +987,7 @@ const ManageClientPropertyByClientName = () => {
     }
     const addClientProperty = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_property": {
                 "clientid": formValues.client_property.clientid,
                 "propertytype": Number(formValues.client_property.propertytype),
@@ -1078,7 +1080,7 @@ const ManageClientPropertyByClientName = () => {
     }
     const deleteClientProperty = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deleteClientProperty(data)
@@ -1194,7 +1196,7 @@ const ManageClientPropertyByClientName = () => {
         console.log(tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "client",
@@ -1264,7 +1266,7 @@ const ManageClientPropertyByClientName = () => {
         })
         setFlag((prev) => !prev)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "id",
                 "client",
