@@ -1724,35 +1724,20 @@ const ManagePmaArgreement = () => {
                                                 <div className="text-[13px]">
                                                     Order <label className="text-red-500">*</label>
                                                 </div>
-                                                {/* <select
+                                                <select
                                                     className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                     name="order"
                                                     value={formValues.order}
                                                     onChange={handleChange}
                                                 >
-                                                    <option value="" hidden >Select A Order</option>
-                                                    <option value="" >
-                                                        <div className='flex justify-between'>
-                                                            <p className="float-left">Order Id</p>
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            <p className="float-right">Order Name</p>
-                                                        </div>
-                                                    </option>
-
+                                                    <option value="" hidden>Select An Order</option>
                                                     {orders.map((item) => (
                                                         <option key={item.id} value={item.id}>
-                                                            {item.id}
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
                                                             {item.ordername}
                                                         </option>
                                                     ))}
-                                                </select> */}
-                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+                                                </select>
+                                                {/* <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                             </div>
                                             <div className="">
@@ -1802,8 +1787,24 @@ const ManagePmaArgreement = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
+                                               
                                                 {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>  : 
-                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />}
+                                                 <select
+                                                 className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                 name="clientProperty"
+                                                 value={formValues.clientProperty}
+                                                 onChange={handleChange}
+                                             >
+                                                 <option value="" hidden>Select A Client Property</option>
+                                                 {clientPropertyData.map((item) => (
+                                                     <option key={item.id} value={item.id}>
+                                                         {item.propertyname}
+                                                     </option>
+                                                 ))}
+                                             </select>
+                                                // <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} width='230px'/>
+                                                
+                                                }
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
                                             </div>
                                             <div className="">

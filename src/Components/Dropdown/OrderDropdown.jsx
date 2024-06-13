@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {DownOutlined} from "@ant-design/icons"
-const OrderDropDown = ({ orderText,setOrderText,value, options, leftLabel, rightLabel ,leftAttr,rightAttr ,toSelect, handleChange,formValueName,pageLoading}) => {
+const OrderDropDown = ({ orderText,setOrderText,value, options, leftLabel, rightLabel ,leftAttr,rightAttr ,toSelect, handleChange,formValueName,pageLoading, width = '230px'}) => {
   const ref = useRef();
   const [show, setShow] = useState(false);
 //   const [text,setText] = useState(orderText)
@@ -58,7 +58,7 @@ const OrderDropDown = ({ orderText,setOrderText,value, options, leftLabel, right
     <div className="relative flex flex-col" ref={ref}>
       {/* <label className="text-[#313135]">{"Xyx"}</label> */}
       <button onClick={() => {setShow((prev) => !prev)}}>
-        <div className="w-[230px] h-5  border-[1px] border-[#C6C6C6] flex items-center justify-between">
+        <div className={`w-[${width}] h-5  border-[1px] border-[#C6C6C6] flex items-center justify-between`}>
         
                   <p className="text-[10px] text-start pl-[15px]">{orderText} </p>
                   <div className="mr-[10px]">
@@ -90,15 +90,15 @@ const OrderDropDown = ({ orderText,setOrderText,value, options, leftLabel, right
           />
         </svg>
       </button> */}
-      {show && options.length == 0 && <div className="flex text-[10px] absolute bg-[#D9D9D9] top-[22px] w-[230px] h-[50px] flex items-center justify-center">
+      {show && options.length == 0 && <div className={`flex text-[10px] absolute bg-[#D9D9D9] top-[22px] w-[${width}] h-[50px] flex items-center justify-center`}>
                    <p className="w-[70%]">Please Select a Client Before Selecting Order</p>
               </div>}
       {show && options.length > 0 &&  (
         <>
          
         <div
-          className="absolute top-[22px] flex justify-start flex-col   bg-white group
-        shadow-[0px_0px_20px_0px_rgba(3,27,89,0.20)]  rounded-md z-10  max-h-40 w-[230px]"
+          className={`absolute top-[22px] flex justify-start flex-col   bg-white group
+        shadow-[0px_0px_20px_0px_rgba(3,27,89,0.20)]  rounded-md z-10  max-h-40 w-[${width}]`}
         >
            <div
                     className="flex justify-between text-[12px] h-[37px] bg-[#D9D9D9] px-[8px] py-[8px] "
