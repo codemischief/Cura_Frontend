@@ -37,7 +37,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
   const [options, setOptions] = useState([]);
   const fetchClientData = async () => {
     const data = {
-      "user_id": 1234
+      "user_id": user.id
     }
     const response = await APIService.getClientAdmin(data)
     const res = await response.json();
@@ -86,7 +86,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
     console.log(e)
     if (e.length < 3) return;
     const data = {
-      "user_id": 1234,
+      "user_id": user.id,
       "pg_no": 0,
       "pg_size": 0,
       "search_key": e
@@ -108,7 +108,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
     console.log(value)
   }
   const fetchCityData = async (id) => {
-    const data = { "user_id": 1234, "state_name": id };
+    const data = { "user_id": user.id, "state_name": id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     console.log(result);

@@ -7,9 +7,11 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
+import useAuth from '../../../context/JwtContext';
 
 
 const EditManageStatement = (props) => {
+    const { user } = useAuth()
         const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
@@ -56,7 +58,7 @@ const EditManageStatement = (props) => {
         // setRecievedBy((formValues.how).split(",", 1))
        
             const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": Number(props.bankStatement.item.id),
             "modeofpayment": Number(formValues.modeofpayment),
             "date":String(formValues.date),
@@ -66,7 +68,7 @@ const EditManageStatement = (props) => {
             "receivedby":Number(formValues.how),
             "vendorid":Number(formValues.vendor),
             "howreceived" : Number(formValues.how)
-            // "createdby":1234
+            // "createdby":user.id
 
         }
                 const response = await APIService.editBankStatement(data);

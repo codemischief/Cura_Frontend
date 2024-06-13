@@ -3,7 +3,9 @@ import { useState } from 'react';
 import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
 import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
+import useAuth from '../../../../context/JwtContext';
 const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, serviceData, vendorData, tallyLedgerData, formErrors , hyperlinkstate, orderText,setOrderText}) => {
+    const {user} = useAuth()
     const handleClose = () => {
         setIsStateDialogue(false);
     }
@@ -78,7 +80,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
         const data = {
             "client_id": id
         }
-        const response = await APIService.getClientPropertyByClientId(data)
+        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         setClientPropertyData((prev) => res.data)
 
@@ -88,7 +90,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
     const fetchClientData = async () => {
         const data = {
         }
-        const response = await APIService.getClientAdmin(data)
+        const response = await APIService.getClientAdmin({...data,user_id : user.id})
         const res = await response.json();
         console.log(res.data)
         setOptions(res.data.map(x => ({
@@ -118,12 +120,12 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {

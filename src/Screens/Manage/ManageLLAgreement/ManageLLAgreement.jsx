@@ -36,8 +36,10 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageLLAgreement = () => {
+    const {user} = useAuth()
     const navigate = useNavigate();
     const { state , pathname} =  useLocation();
     console.log(pathname)
@@ -130,9 +132,9 @@ const ManageLLAgreement = () => {
     ]
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
+        const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
         console.log(result.data);
         if (Array.isArray(result.data)) {
@@ -143,7 +145,7 @@ const ManageLLAgreement = () => {
         console.log(id);
         const data = {  "country_id": id };
         // const data = {"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
+        const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -152,7 +154,7 @@ const ManageLLAgreement = () => {
     }
     const fetchCityData = async (id) => {
         const data = {  "state_name": id };
-        const response = await APIService.getCities(data);
+        const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result);
         if (Array.isArray(result)) {
@@ -167,9 +169,9 @@ const ManageLLAgreement = () => {
     }
     const fetchUsersData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
-        const response = await APIService.getUsers(data)
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
 
         console.log(result.data);
@@ -184,9 +186,9 @@ const ManageLLAgreement = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
-        const response = await APIService.getRoles(data)
+        const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -199,9 +201,9 @@ const ManageLLAgreement = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
-        const response = await APIService.getEntityAdmin(data)
+        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -223,7 +225,7 @@ const ManageLLAgreement = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob(data);
+        const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -242,7 +244,7 @@ const ManageLLAgreement = () => {
             
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -255,7 +257,7 @@ const ManageLLAgreement = () => {
             "client_id": id
         }
 
-        const response = await APIService.getClientPropertyByClientId(data)
+        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setClientPropertyData(res.data)
@@ -304,7 +306,7 @@ const ManageLLAgreement = () => {
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {
@@ -345,7 +347,7 @@ const ManageLLAgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getLLAgreement(data);
+        const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -366,7 +368,7 @@ const ManageLLAgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getLLAgreement(data);
+        const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -390,7 +392,7 @@ const ManageLLAgreement = () => {
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
-        const response = await APIService.getLLAgreement(data);
+        const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -478,7 +480,7 @@ const ManageLLAgreement = () => {
         setCurrItem(id);
         // here we need to fetch the existing data as well
         const data = {"leavelicenseid":id}
-        const response = await APIService.getLLTenant(data)
+        const response = await APIService.getLLTenant({...data,user_id : user.id})
         const res  = await response.json()
         const tempArray = []
         if(res.result == 'success') {
@@ -675,7 +677,7 @@ const ManageLLAgreement = () => {
             "active": formValues.status,
             "llscancopy": formValues.scan
         }
-        const response = await APIService.addLLAgreement(data);
+        const response = await APIService.addLLAgreement({...data,user_id : user.id});
 
         const result = (await response.json())
 
@@ -703,7 +705,7 @@ const ManageLLAgreement = () => {
             setErrorMessage(result.message)
         }
 
-        console.log(data);
+        console.log({...data,user_id : user.id});
         console.log(result);
     }
 
@@ -818,7 +820,7 @@ const ManageLLAgreement = () => {
             
             "id": id
         }
-        const response = await APIService.deleteLLAgreement(data);
+        const response = await APIService.deleteLLAgreement({...data,user_id : user.id});
         showDeleteConfirmation(false);
 
         openDeleteSuccess();
@@ -869,14 +871,14 @@ const ManageLLAgreement = () => {
                 "id" : "ID",
             }
         };
-        const response = await APIService.getLLAgreement(data)
+        const response = await APIService.getLLAgreement({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
-                "user_id" : 1234
+                "user_id" : user.id
             }
             APIService.download(d,filename).then(response => {
                 if (!response.ok) {
@@ -913,7 +915,7 @@ const ManageLLAgreement = () => {
             "pg_size": 0,
             "search_key": searchInput
         };
-        const response = await APIService.getLLAgreement(data);
+        const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
@@ -938,7 +940,7 @@ const ManageLLAgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getLLAgreement(data);
+        const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -962,7 +964,7 @@ const ManageLLAgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getLLAgreement(data);
+        const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1044,7 +1046,7 @@ const ManageLLAgreement = () => {
             "search_key": searchInput
         };
 
-        const response = await APIService.getLLAgreement(data);
+        const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1161,7 +1163,7 @@ const ManageLLAgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getLLAgreement(data);
+        const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1216,7 +1218,7 @@ const ManageLLAgreement = () => {
                 "leavelicenseid": currItem,
                 "tenants": temp
             }
-            const response = await APIService.addLLTenant(data)
+            const response = await APIService.addLLTenant({...data,user_id : user.id})
             const res = await response.json()
             console.log(res)
             setTenantDetails(false)

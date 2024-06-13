@@ -13,7 +13,9 @@ import EditContact from './ManageProjectInfoForm/EditContact';
 import EditPhotos from './ManageProjectInfoForm/EditPhotos';
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
+import useAuth from '../../../context/JwtContext';
 const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state}) => {
+    const { user } = useAuth()
     const [selectedDialogue,setSelectedDialogue] = useState(1)
     const initialValues = {
         "project_info": {
@@ -88,7 +90,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
     const [projectLegalData,setProjectLegalData] = useState([])
     const getBuildersData = async () => {
         const data = {
-         "user_id" : 1234
+         "user_id" : user.id
         }
         const response = await APIService.getBuildersAdmin(data);
         const res = await response.json();
@@ -97,7 +99,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
      }
      const getProjectTypeData = async () => {
          const data = {
-             "user_id" : 1234
+             "user_id" : user.id
          }
          const response = await APIService.getProjectTypeAdmin(data)
          const res = await response.json();
@@ -106,7 +108,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
      } 
      const getProjectLegalData = async () => {
          const data = {
-             "user_id" : 1234
+             "user_id" : user.id
          }
          const response = await APIService.getProjectLegalStatusAdmin(data)
          const res = await response.json();
@@ -139,7 +141,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
     const fetchInitialProjectData = async () => {
         setPageLoading(true)
         const data = {
-            "user_id" : 1234,
+            "user_id" : user.id,
             "id" : currProject
         }
         console.log(data)
@@ -153,7 +155,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
     const fetchInitialDataHelper = async () => {
         setPageLoading(true)
         const data = {
-            "user_id" : 1234,
+            "user_id" : user.id,
             "id" : currProject
         }
         console.log(data)
@@ -370,7 +372,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
         // we need to do the helper logic here
         
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "projectid": currProject,
             "project_info": {
               "id": currProject,

@@ -39,8 +39,12 @@ import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
+
+    const {user} = useAuth()
+    console.log(user)
     const {pathname} = useLocation()
     const dataRows = [
         "clientname",
@@ -161,7 +165,7 @@ const ManageClientInfo = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
+        const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
         setAllCountry(result)
     }
@@ -169,7 +173,7 @@ const ManageClientInfo = () => {
         console.log(id);
         const data = {  "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
+        const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -178,7 +182,7 @@ const ManageClientInfo = () => {
     }
     const fetchCityData = async (id) => {
         const data = {  "state_name": id };
-        const response = await APIService.getCities(data);
+        const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result);
         if (Array.isArray(result)) {
@@ -195,7 +199,7 @@ const ManageClientInfo = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  };
-        const response = await APIService.getUsers(data)
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
 
         console.log(result.data);
@@ -212,7 +216,7 @@ const ManageClientInfo = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  };
-        const response = await APIService.getRoles(data)
+        const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -227,7 +231,7 @@ const ManageClientInfo = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  };
-        const response = await APIService.getEntityAdmin(data)
+        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -241,7 +245,7 @@ const ManageClientInfo = () => {
         const data = {
             
         }
-        const response = await APIService.getRelationAdmin(data)
+        const response = await APIService.getRelationAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setRelationData(res.data)
@@ -257,7 +261,7 @@ const ManageClientInfo = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob(data);
+        const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -293,7 +297,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -316,7 +320,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -341,7 +345,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -418,7 +422,7 @@ const ManageClientInfo = () => {
         const data = {
             
         }
-        const response = await APIService.getClientTypeAdmin(data);
+        const response = await APIService.getClientTypeAdmin({...data,user_id : user.id});
         const res = await response.json()
         console.log(res)
         setClientTypeData(res.data)
@@ -428,7 +432,7 @@ const ManageClientInfo = () => {
         const data = {
             
         }
-        const response = await APIService.getTenantOfPropertyAdmin(data)
+        const response = await APIService.getTenantOfPropertyAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setTenentOfData(res.data)
@@ -591,7 +595,7 @@ const ManageClientInfo = () => {
                 "id" : "ID",
             }
         };
-        const response = await APIService.getClientInfo(data)
+        const response = await APIService.getClientInfo({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
@@ -605,7 +609,7 @@ const ManageClientInfo = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(d) // Convert the object to a JSON string
+                body: JSON.stringify({...d,user_id : user.id}) // Convert the object to a JSON string
             })
             .then(response => {
                 if (!response.ok) {
@@ -673,7 +677,7 @@ const ManageClientInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -696,7 +700,7 @@ const ManageClientInfo = () => {
             "pg_no": 1,
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -991,8 +995,8 @@ const ManageClientInfo = () => {
                 "scancopy": formValues.client_poa.scancopy
             }
         };
-        console.log(data);
-        const response = await APIService.addClientInfo(data)
+        console.log({...data,user_id : user.id});
+        const response = await APIService.addClientInfo({...data,user_id : user.id})
         const res = await response.json();
         setShowAddConfirmation(false)
 
@@ -1014,7 +1018,7 @@ const ManageClientInfo = () => {
             
             "id": id
         }
-        const response = await APIService.deleteClientInfo(data)
+        const response = await APIService.deleteClientInfo({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setShowDelete(false);
@@ -1111,7 +1115,7 @@ const ManageClientInfo = () => {
             "search_key": searchInput
         };
 
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1177,7 +1181,7 @@ const ManageClientInfo = () => {
             "pg_no": 1,
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getClientInfo(data);
+        const response = await APIService.getClientInfo({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);

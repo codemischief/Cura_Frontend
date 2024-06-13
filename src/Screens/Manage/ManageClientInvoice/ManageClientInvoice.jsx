@@ -38,8 +38,10 @@ import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const ManageClientInvoice = () => {
     const {pathname} = useLocation()
+    const {user} = useAuth()
     console.log(pathname)
     const dataRows = [
         "clientname",
@@ -154,7 +156,7 @@ const ManageClientInvoice = () => {
         const data = {
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -176,7 +178,7 @@ const ManageClientInvoice = () => {
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data, user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {
@@ -221,7 +223,7 @@ const ManageClientInvoice = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -250,7 +252,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -280,7 +282,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -370,7 +372,7 @@ const ManageClientInvoice = () => {
             "entity": 1
 
         }
-        const response = await APIService.addClientInvoice(data);
+        const response = await APIService.addClientInvoice({...data, user_id : user.id});
 
         const result = (await response.json())
 
@@ -385,7 +387,7 @@ const ManageClientInvoice = () => {
             setErrorMessage(result.message)
         }
 
-        console.log(data);
+        console.log({...data, user_id : user.id});
         console.log(result);
     }
 
@@ -454,7 +456,7 @@ const ManageClientInvoice = () => {
         const data = {
             "id": id
         }
-        const response = await APIService.deleteClientInvoice(data);
+        const response = await APIService.deleteClientInvoice({...data, user_id : user.id});
         showDeleteConfirmation(false);
 
         openDeleteSuccess();
@@ -505,13 +507,14 @@ const ManageClientInvoice = () => {
                 "id" : "ID",
             }
         };
-        const response = await APIService.getClientInvoice(data)
+        const response = await APIService.getClientInvoice({...data, user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
+                "user_id" : user.id
             }
             // fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
                 //     method: 'POST', // or the appropriate HTTP method
@@ -574,7 +577,7 @@ const ManageClientInvoice = () => {
             "pg_size": 0,
             "search_key": searchInput
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
@@ -597,7 +600,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -620,7 +623,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -775,7 +778,7 @@ const ManageClientInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -830,7 +833,7 @@ const ManageClientInvoice = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
         // setFlag((prev) => !prev);
-        const response = await APIService.getClientInvoice(data);
+        const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);

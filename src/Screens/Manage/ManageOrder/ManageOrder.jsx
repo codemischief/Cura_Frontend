@@ -39,10 +39,12 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import { userId } from '../../../utils/axios';
+import useAuth from '../../../context/JwtContext';
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
     const navigate = useNavigate()
+    const {user} = useAuth()
     const { state , pathname} = useLocation()
     console.log(pathname)
     console.log(state)
@@ -119,7 +121,7 @@ const ManageOrder = () => {
             "search_key": searchInput
         }
             ;
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -171,7 +173,7 @@ const ManageOrder = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         }
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -224,7 +226,7 @@ const ManageOrder = () => {
             "search_key": searchInput
         }
             ;
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -418,7 +420,7 @@ const ManageOrder = () => {
         const statusresponse = await APIService.addOrderStatusChange(d);
         const statusres = await statusresponse.json();
         // console.log(res)
-        const response = await APIService.addOrder(data);
+        const response = await APIService.addOrder({...data,user_id : user.id});
         const res = await response.json();
         if (res.result == 'success') {
             const d = {
@@ -455,7 +457,7 @@ const ManageOrder = () => {
         const data = {
             "order_id": id
         }
-        const response = await APIService.deleteOrders(data)
+        const response = await APIService.deleteOrders({...data,user_id : user.id})
         const res = await response.json()
         if (res.result == 'success') {
             setShowDeleteModal(false)
@@ -524,13 +526,13 @@ const ManageOrder = () => {
             }
         }
 
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         if (temp.result == "success") {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
             APIService.download(d,temp.filename).then(response => {
                     if (!response.ok) {
@@ -602,7 +604,7 @@ const ManageOrder = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -657,7 +659,7 @@ const ManageOrder = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -869,7 +871,7 @@ const ManageOrder = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -935,7 +937,7 @@ const ManageOrder = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
 
-        const response = await APIService.getOrder(data);
+        const response = await APIService.getOrder({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1025,49 +1027,49 @@ const ManageOrder = () => {
     const [usersData, setUsersData] = useState([])
     const fetchUsersData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
-        const response = await APIService.getUsers(data)
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const res = await response.json()
         setUsersData(res.data);
     }
 
     const [orderStatusData, setOrderStatusData] = useState([])
     const fetchOrderStatusData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getOrderStatusAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getOrderStatusAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setOrderStatusData(res.data)
     }
     const [clientPropertyData, setClientPropertyData] = useState([])
     const fetchClientPropertyData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getClientPropertyAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getClientPropertyAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setClientPropertyData(res.data)
     }
     const [serviceData, setServiceData] = useState([])
     const fetchServiceData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getServiceAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getServiceAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setServiceData(res.data)
     }
     const [vendorData, setVendorData] = useState([])
     const fetchVendorData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getVendorAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getVendorAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setVendorData(res.data)
     }
     const [tallyLedgerData, setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getTallyLedgerAdmin(data)
+        const data = { "user_id": user.id }
+        const response = await APIService.getTallyLedgerAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setTallyLedgerData(res.data)

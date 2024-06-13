@@ -3,7 +3,9 @@ import { useState } from 'react';
 import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
 import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
+import useAuth from '../../../../context/JwtContext';
 const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, clientPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors ,setClientName, orderText, setOrderText }) => {
+    const {user} = useAuth()
     const [propertyData,setPropertyData] = useState(clientPropertyData)
     const handleClose = () => {
         setIsStateDialogue(false);
@@ -82,7 +84,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
         const data = {
             "client_id": id
         }
-        const response = await APIService.getClientPropertyByClientId(data)
+        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         // setClientPropertyData((prev) => res.data)
         setPropertyData((prev) => res.data)
@@ -109,7 +111,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
         const data = {
 
         }
-        const response = await APIService.getClientAdmin(data)
+        const response = await APIService.getClientAdmin({...data,user_id : user.id})
         const res = await response.json();
         console.log(res.data)
         setOptions(res.data.map(x => ({
@@ -146,7 +148,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {

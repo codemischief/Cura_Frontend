@@ -5,7 +5,10 @@ import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async";
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import Draggable from 'react-draggable'
+import useAuth from '../../../context/JwtContext';
 const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel }) => {
+    const {user} = useAuth()
+
     const initialValues = {
         client: "",
         estimateAmount: "",
@@ -31,7 +34,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
             "table_name": "get_orders_invoice_view",
             "item_id": invoiceId
         }
-        const response = await APIService.getItembyId(data);
+        const response = await APIService.getItembyId({...data, user_id : user.id});
         const res = await response.json();
         console.log(res);
         const existing = { ...formValues }
@@ -113,7 +116,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
             "tax": formValues.gst,
             "entity": 1
         }
-        const response = await APIService.editOrdersInvoice(data);
+        const response = await APIService.editOrdersInvoice({...data, user_id : user.id});
         const res = await response.json();
         console.log(res)
         if (res.result == 'success') {
@@ -166,7 +169,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         const data = {
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -188,7 +191,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data, user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {

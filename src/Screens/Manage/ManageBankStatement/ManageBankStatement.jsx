@@ -34,8 +34,10 @@ import AddButton from "../../../Components/common/CustomButton";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png"
 import EditButton from "../../../Components/common/buttons/EditButton";
+import useAuth from "../../../context/JwtContext";
 const ManageBankStatement = () => {
     // we have the module here
+    const { user } = useAuth()
     const {pathname} = useLocation()
     const navigate = useNavigate()
     const dataRows = [
@@ -61,7 +63,7 @@ const ManageBankStatement = () => {
     const [currentStatement, setCurrentStatement] = useState({});
     const [currentStatementId, setCurrentStatementId] = useState();
     const [deleted, setDeleted] = useState(false);
-    const [userId, setUserId] = useState(1234);
+    const [userId, setUserId] = useState(user.id);
     const crdr = ["CR", "DR"];
     const [order, setOrder] = useState("asc");
     const [vendorList, setVendorList] = useState([]);
@@ -89,7 +91,7 @@ const ManageBankStatement = () => {
     const [existingUsers,setExistingUsers] = useState([])
     const fetchUsersData = async () => {
         const data = {
-        "user_id" : 1234
+        "user_id" : user.id
         }
         const response = await APIService.getUsers(data)
         const res = await response.json()
@@ -100,7 +102,7 @@ const ManageBankStatement = () => {
     
     const getEmployees = async () => {
         const data = {
-            "user_id": userId || 1234,
+            "user_id": userId || user.id,
             "rows": ["employeename"],
             "filters": [],
             "sort_by": [],
@@ -119,7 +121,7 @@ const ManageBankStatement = () => {
 
     const getCRDetails = async () => {
         const data = {
-            "user_id": userId || 1234,
+            "user_id": userId || user.id,
         }
         const mode1 = await APIService.getModesAdmin(data);
         const howReceived1 = await APIService.getHowReceivedAdmin(data);
@@ -136,7 +138,7 @@ const ManageBankStatement = () => {
         setUserId(response)
     }
     const getVendorAdmin = async () => {
-        const data = { "user_id": userId || 1234 }
+        const data = { "user_id": userId || user.id }
         const response = await APIService.getVendorAdmin(data);
         const result = (await response.json()).data;
         setVendorList(result)
@@ -196,7 +198,7 @@ const ManageBankStatement = () => {
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => 15)
         const data = {
-            "user_id": userId || 1234,
+            "user_id": userId || user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -234,7 +236,7 @@ const ManageBankStatement = () => {
         // console.log(modeEdit, vendorId)
         console.log('called')
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "modeofpayment": Number(formValues.modeofpayment),
             "date": formValues.date,
             "amount": Number(formValues.amount),
@@ -242,7 +244,7 @@ const ManageBankStatement = () => {
             "crdr": formValues.crdr,
             "vendorid": Number(formValues.vendor),
             'howreceived' : formValues.how
-            // "createdby": userId || 1234
+            // "createdby": userId || user.id
         }
 
         const response = await APIService.addBankStatement(data);
@@ -262,7 +264,7 @@ const ManageBankStatement = () => {
             return ;
         }
         const data = {
-            "user_id": userId || 1234,
+            "user_id": userId || user.id,
             "receivedby": Number(crFormValues.receivedBy),
             "paymentmode": Number(crFormValues.receiptMode),
             "recddate": crFormValues.receivedDate,
@@ -295,7 +297,7 @@ const ManageBankStatement = () => {
         setPageLoading(true);
         setCurrentPage((prev) => pageNumber);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -317,7 +319,7 @@ const ManageBankStatement = () => {
         setCurrentPages((prev) => number);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -341,7 +343,7 @@ const ManageBankStatement = () => {
             return !prev;
         })
         const data = {
-            "user_id": userId || 1234,
+            "user_id": userId || user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
@@ -595,7 +597,7 @@ const ManageBankStatement = () => {
     }
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
-    const editStatement = (item, vendor, howReceived, mode) => {
+    const editStatement = (item) => {
         const items = { item, "vendorList": vendor, "how": howReceived, "mode": mode }
         setCurrentStatement(items);
         setIsEditDialogue(true);
@@ -614,7 +616,7 @@ const ManageBankStatement = () => {
         setDownloadModal(false)
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "mode" ,
                 "date",
@@ -649,7 +651,7 @@ const ManageBankStatement = () => {
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
             fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
@@ -688,7 +690,7 @@ const ManageBankStatement = () => {
         setPageLoading(true);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": userId || 1234,
+            "user_id": userId || user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -712,7 +714,7 @@ const ManageBankStatement = () => {
         setSearchQuery("");
         setCurrentPage(1);
         const data = {
-            "user_id": userId || 1234,
+            "user_id": userId || user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -844,7 +846,7 @@ const ManageBankStatement = () => {
         console.log('this is getting called')
         console.log(tempArray)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -881,7 +883,7 @@ const ManageBankStatement = () => {
 
     const handleExcelDownload = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["modeofpayment", "date", "crdr", "amount", "particulars", "clientid", "id"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -913,7 +915,7 @@ const ManageBankStatement = () => {
     const [currentMode, setCurrentMode] = useState("")
     const [crFormValues,setCrFormValues] = useState({
         receivedDate: null,
-        receivedBy: 1234,
+        receivedBy: user.id,
         receiptMode: 5,
         client: null,
         howReceived: null,
@@ -968,7 +970,7 @@ const ManageBankStatement = () => {
         setCrFormErrors({})
         setCrFormValues({
             receivedDate: null,
-            receivedBy: 1234,
+            receivedBy: user.id,
             receiptMode: 5,
             client: null,
             howReceived: null,
@@ -1128,7 +1130,7 @@ const ManageBankStatement = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -1451,7 +1453,7 @@ const ManageBankStatement = () => {
                                         {/* <p>{item.date}</p> */}
                                         {formatDate(item.date)}
                                         {/* total : {
-                                            'amount' : 1234
+                                            'amount' : user.id
                                         } */}
                                         {/* {item.date} */}
                                         {/* <p>{dayjs(item.date, "dd-mmm-yyyy")}</p> */}
@@ -1487,7 +1489,10 @@ const ManageBankStatement = () => {
                                         <p>{item.id}</p>
                                     </div>
                                     <div className='w-1/2 p-4 flex justify-between items-center'>
-                                        
+                                        <EditButton
+                                          handleEdit={editStatement}
+                                          rowData={item}
+                                        />
                                         <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editStatement(item, vendorList, howReceived, mode)} />
                                         <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteStatement(item.id)} />
                                     </div>

@@ -5,7 +5,9 @@ import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import useAuth from '../../../context/JwtContext'
 const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => {
+    const {user} = useAuth();
     console.log(currPma)
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -36,7 +38,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
             "item_id": currPma,
             "table_name": "get_client_property_pma_view"
         }
-        const response = await APIService.getItembyId(data)
+        const response = await APIService.getItembyId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         const existing = { ...formValues }
@@ -164,7 +166,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
             "poaholder": formValues.poaHolderName,
             "id": currPma
         }
-        const response = await APIService.editClientPMAAgreement(data)
+        const response = await APIService.editClientPMAAgreement({...data,user_id : user.id})
         const res = await response.json()
         console.log(res);
         handleClose();
@@ -177,7 +179,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
             "client_id": id
         }
 
-        const response = await APIService.getClientPropertyByClientId(data)
+        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setClientPropertyData(res.data)
@@ -189,7 +191,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
         const data = {
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -230,7 +232,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {

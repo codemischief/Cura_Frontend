@@ -32,9 +32,11 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from "../../../Components/common/CustomButton";
 import EditButton from "../../../Components/common/buttons/EditButton";
 import DeleteButton from "../../../Components/common/buttons/deleteButton";
+import useAuth from "../../../context/JwtContext";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageBuilder = () => {
     // we have the module here
+    const {user} = useAuth()
     const {pathname} = useLocation()
     const menuRef = useRef();
     const navigate = useNavigate();
@@ -110,7 +112,7 @@ const ManageBuilder = () => {
         });
         setFilterState((prev) => tempArray)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -133,7 +135,7 @@ const ManageBuilder = () => {
         setPageLoading(true);
         setCurrentPage(page)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -157,7 +159,7 @@ const ManageBuilder = () => {
         setCurrentPages(quantity);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -179,8 +181,8 @@ const ManageBuilder = () => {
 
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         setAllCountry(result)
@@ -188,7 +190,7 @@ const ManageBuilder = () => {
 
     const fetchStateData = async (e) => {
 
-        const data = { "user_id": 1234, "country_id": e };
+        const data = { "user_id": user.id, "country_id": e };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         // console.log(result)
@@ -198,7 +200,7 @@ const ManageBuilder = () => {
     }
 
     const fetchCityData = async (d) => {
-        const data = { "user_id": 1234, "state_name": d };
+        const data = { "user_id": user.id, "state_name": d };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         if (Array.isArray(result)) {
@@ -211,7 +213,7 @@ const ManageBuilder = () => {
         setIsSearchOn(true);
         setCurrentPage(1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -237,7 +239,7 @@ const ManageBuilder = () => {
         setIsSearchOn(false);
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -273,7 +275,7 @@ const ManageBuilder = () => {
     }
     const addNewBuilder = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "buildername": formValues.builderName,
             "phone1": formValues.phone1,
             "phone2": formValues.phone2,
@@ -451,7 +453,7 @@ const ManageBuilder = () => {
         setDownloadModal(false)
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["buildername", "country", "city", "suburb", "id",],
             "filters": filterState,
             "sort_by": [sortField],
@@ -476,7 +478,7 @@ const ManageBuilder = () => {
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
             fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
@@ -625,7 +627,7 @@ const ManageBuilder = () => {
         setFilterState(tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -681,7 +683,7 @@ const ManageBuilder = () => {
             }
         })
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": filterState,
             "sort_by": [field],

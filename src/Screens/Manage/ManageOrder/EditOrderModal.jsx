@@ -6,7 +6,9 @@ import EditPhotos from './Dialog/EditPhotos'
 import EditOrderStatusHistory from './Dialog/EditOrderStatusHistory'
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable'
+import useAuth from '../../../context/JwtContext'
 const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) => {
+    const {user} = useAuth()
     const initialValues = {
         "order_info": {
             "clientid": null,
@@ -114,12 +116,12 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                 "orderid": currOrderId,
                 "statusid": Number(formValues.order_info.status)
             }
-            const response = await APIService.addOrderStatusChange(d);
+            const response = await APIService.addOrderStatusChange({...d,user_id : user.id});
             const res = await response.json();
             console.log(res)
 
         }
-        const response = await APIService.editOrder(data);
+        const response = await APIService.editOrder({...data,user_id : user.id});
         const res = await response.json()
         console.log(res);
         if (res.result == 'success') {
@@ -133,7 +135,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     const fetchInitialData = async () => {
         setPageLoading(true);
         const data = {  "id": currOrderId }
-        const response = await APIService.getOrderDataById(data)
+        const response = await APIService.getOrderDataById({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         // setFormValues(res.data)
@@ -156,7 +158,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
             "table_name": "get_client_info_view",
             "item_id": id
         }
-        const response = await APIService.getItembyId(data)
+        const response = await APIService.getItembyId({...data,user_id : user.id})
         const res = await (response.json());
         console.log(res);
         if (id != null) {
@@ -168,8 +170,8 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     }
     // const fetchInitialData = async () => {
     //    const data = {"user_id":1234,"id": currOrderId}
-    // //    console.log(data)
-    //    const response = await APIService.getOrderById(data);
+    // //    console.log({...data,user_id : user.id})
+    //    const response = await APIService.getOrderById({...data,user_id : user.id});
     //    const res = await response.json()
     //    console.log(res)
     //    console.log(res.data)
@@ -183,7 +185,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         const data = {
             
         }
-        const response = await APIService.getUsers(data)
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const res = await response.json()
         setUsersData(res.data);
     }
@@ -191,7 +193,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     // const [orderStatusData,setOrderStatusData] = useState([])
     const fetchOrderStatusData = async () => {
         const data = {  }
-        const response = await APIService.getOrderStatusAdmin(data)
+        const response = await APIService.getOrderStatusAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setOrderStatusData(res.data)
@@ -202,7 +204,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
             
             "client_id": id
         }
-        const response = await APIService.getClientPropertyByClientId(data)
+        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setClientPropertyData((prev) => res.data)
@@ -211,7 +213,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     // const [serviceData,setServiceData] = useState([])
     const fetchServiceData = async () => {
         const data = {  }
-        const response = await APIService.getServiceAdmin(data)
+        const response = await APIService.getServiceAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setServiceData(res.data)
@@ -219,7 +221,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     // const [vendorData,setVendorData] = useState([])
     const fetchVendorData = async () => {
         const data = {  }
-        const response = await APIService.getVendorAdmin(data)
+        const response = await APIService.getVendorAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setVendorData(res.data)
@@ -227,7 +229,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     // const [tallyLedgerData,setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
         const data = {  }
-        const response = await APIService.getTallyLedgerAdmin(data)
+        const response = await APIService.getTallyLedgerAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setTallyLedgerData(res.data)
@@ -331,7 +333,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     const fetchInitialHelper = async () => {
         const data = {  "id": currOrderId }
 
-        const response = await APIService.getOrderDataById(data)
+        const response = await APIService.getOrderDataById({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setInitialOrderData(res.data)

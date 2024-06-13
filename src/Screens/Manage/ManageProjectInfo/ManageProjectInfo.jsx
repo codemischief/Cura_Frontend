@@ -37,8 +37,10 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const ManageProjectInfo = () => {
     const {pathname} = useLocation()
+    const {user} = useAuth()
     console.log(pathname)
     const dataRows = [
         "projectname", 
@@ -106,7 +108,7 @@ const ManageProjectInfo = () => {
         // setFilterState((prev) => tempArray)
         setStateArray((prev) => tempArray)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -130,7 +132,7 @@ const ManageProjectInfo = () => {
         setCurrentPage((prev) => pageNumber)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": stateArray,
             "sort_by": [sortField],
@@ -154,7 +156,7 @@ const ManageProjectInfo = () => {
         setCurrentPages((prev) => quantity)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": stateArray,
             "sort_by": [sortField],
@@ -212,7 +214,7 @@ const ManageProjectInfo = () => {
     const deleteProject = async (id) => {
 
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deleteProject(data);
@@ -372,7 +374,7 @@ const ManageProjectInfo = () => {
     const addProjectInfo = async () => {
         
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "project_info": {
                 "builderid": Number(formValues.project_info.builderid),
                 "projectname": formValues.project_info.projectname,
@@ -478,7 +480,7 @@ const ManageProjectInfo = () => {
         setDownloadModal(false)
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["projectname","buildername","suburb","otherdetails","mailgroup1","mailgroup2","rules","tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed"
             ],
             "filters": stateArray,
@@ -510,7 +512,7 @@ const ManageProjectInfo = () => {
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
             fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
@@ -549,7 +551,7 @@ const ManageProjectInfo = () => {
         setSortField((prev) => field)
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": stateArray,
             "sort_by": [sortField],
@@ -569,7 +571,7 @@ const ManageProjectInfo = () => {
         setIsSearchOn(true);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": stateArray,
             "sort_by": [sortField],
@@ -592,7 +594,7 @@ const ManageProjectInfo = () => {
         setSearchInput("")
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": stateArray,
             "sort_by": [sortField],
@@ -695,7 +697,7 @@ const ManageProjectInfo = () => {
     const [projectLegalData, setProjectLegalData] = useState([])
     const getBuildersData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getBuildersAdmin(data);
         const res = await response.json();
@@ -704,7 +706,7 @@ const ManageProjectInfo = () => {
     }
     const getProjectTypeData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getProjectTypeAdmin(data)
         const res = await response.json();
@@ -713,7 +715,7 @@ const ManageProjectInfo = () => {
     }
     const getProjectLegalData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getProjectLegalStatusAdmin(data)
         const res = await response.json();
@@ -888,7 +890,7 @@ const ManageProjectInfo = () => {
         setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],

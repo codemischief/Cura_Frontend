@@ -5,7 +5,10 @@ import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import Draggable from 'react-draggable'
+import useAuth from '../../../context/JwtContext'
 const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, showSuccess, showCancel }) => {
+    const {user} = useAuth()
+    
     const initialValues = {
         client: null,
         paymentby: null,
@@ -32,7 +35,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
     const [modesData, setModesData] = useState([])
     const fetchModesData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getModesAdmin(data)
         const res = await response.json()
@@ -50,7 +53,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
     const fetchInitialData = async () => {
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "table_name": "get_vendor_payment_view",
             "item_id": currPayment
         }
@@ -87,7 +90,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
     const getOrdersByClientId = async (id) => {
         // console.log('hello')
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -97,7 +100,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
     }
     const [tempFormValues, setTempFormValues] = useState({})
     const getOrdersData = async (id) => {
-        const data = { "user_id": 1234, "orderid": id }
+        const data = { "user_id": user.id, "orderid": id }
         const response = await APIService.getOrderPending(data)
         const res = await response.json()
         const existing = { ...tempFormValues }
@@ -143,7 +146,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -168,7 +171,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         }
         console.log(formValues)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": currPayment,
             "paymentby": Number(formValues.paymentby),
             "amount": Number(formValues.amount),

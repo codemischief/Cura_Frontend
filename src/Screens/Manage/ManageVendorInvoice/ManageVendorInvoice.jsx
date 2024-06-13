@@ -40,7 +40,9 @@ import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const ManageVendorInvoice = () => {
+    const { user } = useAuth()
     const {pathname} = useLocation()
     console.log(pathname)
     const dataRows = [
@@ -109,8 +111,8 @@ const ManageVendorInvoice = () => {
 
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
@@ -120,8 +122,8 @@ const ManageVendorInvoice = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -130,7 +132,7 @@ const ManageVendorInvoice = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -147,8 +149,8 @@ const ManageVendorInvoice = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
@@ -162,8 +164,8 @@ const ManageVendorInvoice = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
@@ -178,7 +180,7 @@ const ManageVendorInvoice = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -200,7 +202,7 @@ const ManageVendorInvoice = () => {
     const [modesData, setModesData] = useState([]);
     const fetchModesData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getModesAdmin(data)
         const res = await response.json()
@@ -211,7 +213,7 @@ const ManageVendorInvoice = () => {
     const [usersData, setUsersData] = useState([]);
     const fetchUsersData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getUsers(data)
         const res = await response.json()
@@ -224,7 +226,7 @@ const ManageVendorInvoice = () => {
 
     const [vendorData, setVendorData] = useState([])
     const fetchVendorData = async () => {
-        const data = { "user_id": 1234 }
+        const data = { "user_id": user.id }
         const response = await APIService.getVendorAdmin(data)
         const res = await response.json()
         console.log(res)
@@ -259,7 +261,7 @@ const ManageVendorInvoice = () => {
         setFilterState(tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -283,7 +285,7 @@ const ManageVendorInvoice = () => {
         console.log(pageNumber)
         setCurrentPage(() => pageNumber)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -306,7 +308,7 @@ const ManageVendorInvoice = () => {
         console.log(searchInput);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -327,7 +329,7 @@ const ManageVendorInvoice = () => {
     const [clientPropertyData, setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_id": id
         }
 
@@ -340,7 +342,7 @@ const ManageVendorInvoice = () => {
 
     const getOrdersByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -351,7 +353,7 @@ const ManageVendorInvoice = () => {
     const addVendorInvoice = async () => {
 
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "estimatedate": formValues.estimateDate,
             "amount": Number(formValues.estimateAmount),
             "estimatedesc": formValues.invoicedescription,
@@ -535,7 +537,7 @@ const ManageVendorInvoice = () => {
         setDownloadModal(false)
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "vendorname",
                 "clientname",
@@ -574,7 +576,7 @@ const ManageVendorInvoice = () => {
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
             fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
@@ -612,7 +614,7 @@ const ManageVendorInvoice = () => {
         // setCurrentPages(15);
         setIsSearchOn(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -636,7 +638,7 @@ const ManageVendorInvoice = () => {
         setSearchInput("");
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -662,7 +664,7 @@ const ManageVendorInvoice = () => {
     }
     const deleteVendorInvoice = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deleteVendorsInvoice(data)
@@ -754,7 +756,7 @@ const ManageVendorInvoice = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -902,7 +904,7 @@ const ManageVendorInvoice = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -929,7 +931,7 @@ const ManageVendorInvoice = () => {
         setSortField(field)
         setFlag((prev) => !prev)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],

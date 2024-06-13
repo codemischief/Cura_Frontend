@@ -10,7 +10,7 @@ const userId = JSON.parse(sessionStorage.getItem("user"))?.id;
 console.log(userId , "hello")
 const METHOD_POST = (data) => ({
   method: "POST",
-  body: JSON.stringify({...data, user_id : userId}),
+  body: JSON.stringify(data),
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,

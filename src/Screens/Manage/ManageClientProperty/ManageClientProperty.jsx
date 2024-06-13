@@ -38,8 +38,10 @@ import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const ManageClientProperty = () => {
     const menuRef = useRef();
+    const {user} = useAuth()
     const { state, pathname } = useLocation()
     console.log(pathname)
     console.log(state)
@@ -155,7 +157,7 @@ const ManageClientProperty = () => {
     const fetchCountryData = async () => {
         setPageLoading(true);
         const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
+        const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
         console.log(result.data);
         if (Array.isArray(result.data)) {
@@ -166,7 +168,7 @@ const ManageClientProperty = () => {
         const data = {
             
         }
-        const response = await APIService.getClientTypeAdmin(data);
+        const response = await APIService.getClientTypeAdmin({...data,user_id : user.id});
         const res = await response.json()
         console.log(res)
         setClientTypeData(res.data)
@@ -176,7 +178,7 @@ const ManageClientProperty = () => {
         console.log(id);
         const data = {  "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
+        const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -185,7 +187,7 @@ const ManageClientProperty = () => {
     }
     const fetchCityData = async (id) => {
         const data = {  "state_name": id };
-        const response = await APIService.getCities(data);
+        const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result);
         if (Array.isArray(result)) {
@@ -202,7 +204,7 @@ const ManageClientProperty = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  };
-        const response = await APIService.getUsers(data)
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
 
         console.log(result.data);
@@ -219,7 +221,7 @@ const ManageClientProperty = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  };
-        const response = await APIService.getRoles(data)
+        const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         // setFormValues((existing) => {
@@ -234,7 +236,7 @@ const ManageClientProperty = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  };
-        const response = await APIService.getEntityAdmin(data)
+        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         // setFormValues((existing) => {
@@ -256,7 +258,7 @@ const ManageClientProperty = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob(data);
+        const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
         console.log(result.data);
         // setFormValues((existing) => {
@@ -269,7 +271,7 @@ const ManageClientProperty = () => {
     const [existingSociety, setExistingSociety] = useState([]);
     const getBuildersAndProjectsList = async () => {
         const data = {  };
-        const response = await APIService.getBuildersAndProjectsList(data);
+        const response = await APIService.getBuildersAndProjectsList({...data,user_id : user.id});
         const res = await response.json();
         console.log(res.data);
         setExistingSociety(res.data);
@@ -277,7 +279,7 @@ const ManageClientProperty = () => {
     const [propertyStatus, setPropertyStatus] = useState([]);
     const fetchPropertyStatus = async () => {
         const data = { };
-        const response = await APIService.getPropertyStatusAdmin(data);
+        const response = await APIService.getPropertyStatusAdmin({...data,user_id : user.id});
         const res = await response.json();
         console.log(res);
         setPropertyStatus(res);
@@ -285,7 +287,7 @@ const ManageClientProperty = () => {
     const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
     const fetchLevelOfFurnishing = async () => {
         const data = {  }
-        const response = await APIService.getLevelOfFurnishingAdmin(data);
+        const response = await APIService.getLevelOfFurnishingAdmin({...data,user_id : user.id});
         const res = await response.json()
         console.log(res);
         setLevelOfFurnishing(res);
@@ -293,7 +295,7 @@ const ManageClientProperty = () => {
     const [propertyType, setPropertyType] = useState([]);
     const fetchPropertyType = async () => {
         const data = {  }
-        const response = await APIService.getPropertyType(data)
+        const response = await APIService.getPropertyType({...data,user_id : user.id})
         const res = await response.json();
         console.log(res);
         setPropertyType(res);
@@ -371,7 +373,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -432,7 +434,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -496,7 +498,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -603,7 +605,7 @@ const ManageClientProperty = () => {
         const data = {
             
         }
-        const response = await APIService.getClientAdmin(data)
+        const response = await APIService.getClientAdmin({...data,user_id : user.id})
         const res = await response.json();
         console.log(res)
         setClientData(res.data);
@@ -859,13 +861,14 @@ const ManageClientProperty = () => {
                 "id" : "ID",
             }
         };
-        const response = await APIService.getClientProperty(data)
+        const response = await APIService.getClientProperty({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if(temp.result == 'success') {
             const d = {
-                "filename" : temp.filename
+                "filename" : temp.filename,
+                "user_id" : user.id
             }
            
             APIService.download(d,temp.filename).then(response => {
@@ -944,7 +947,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -1005,7 +1008,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -1129,10 +1132,10 @@ const ManageClientProperty = () => {
             }
         }
 
-        console.log(data);
+        console.log({...data,user_id : user.id});
 
         console.log('hey')
-        const response = await APIService.addClientProperty(data)
+        const response = await APIService.addClientProperty({...data,user_id : user.id})
         const res = await (response.json())
         console.log(res);
         if (res.result == "success") {
@@ -1149,7 +1152,7 @@ const ManageClientProperty = () => {
         const data = {
             "id": id
         }
-        const response = await APIService.deleteClientProperty(data)
+        const response = await APIService.deleteClientProperty({...data,user_id : user.id})
         const res = await response.json()
         console.log(res);
         if (res.result == 'success') {
@@ -1277,7 +1280,7 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         }
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)
@@ -1347,7 +1350,7 @@ const ManageClientProperty = () => {
             "search_key": searchInput
         };
         // setFlag((prev) => !prev);
-        const response = await APIService.getClientProperty(data);
+        const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result)

@@ -3,8 +3,10 @@ import { Modal, responsiveFontSizes } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import Draggable from 'react-draggable'
+import useAuth from '../../../context/JwtContext'
 
 const EditVendor = ({ handleClose, currVendor, allCity, tallyLedgerData, allCategory, typeOfOrganization, showSuccess, showCancel }) => {
+    const { user } = useAuth()
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -43,7 +45,7 @@ const EditVendor = ({ handleClose, currVendor, allCity, tallyLedgerData, allCate
     const fetchInitialData = async () => {
         console.log(currVendor)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "item_id": currVendor,
             "table_name": "get_vendor_view"
         }
@@ -134,7 +136,7 @@ const EditVendor = ({ handleClose, currVendor, allCity, tallyLedgerData, allCate
             return;
         }
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": currVendor,
             "vendorname": formValues.vendorName,
             "addressline1": formValues.addressLine1,

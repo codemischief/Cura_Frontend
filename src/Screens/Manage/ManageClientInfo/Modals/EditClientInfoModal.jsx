@@ -14,8 +14,10 @@ import EditPOADetails from '../Forms/EditPOADetails';
 import EditLegalInformation from '../Forms/EditLegalInformation';
 import { APIService } from '../../../../services/API';
 import Draggable from 'react-draggable';
+import useAuth from '../../../../context/JwtContext';
 const EditClientInfoModal = (props) => {
-
+    const {user} = useAuth()
+    console.log(user)
     const initalValues = {
         "client_info": {
             "firstname": "ABC",
@@ -87,7 +89,7 @@ const EditClientInfoModal = (props) => {
         }],
         "client_legal_info": {
             "fulllegalname": "ABC DEF GHI",
-            "panno": "12345670",
+            "panno": "user.id5670",
             "addressline1": "hcegfegf efhiuhf",
             "addressline2": "frufhruigh fhirf",
             "suburb": "frhufh",
@@ -378,7 +380,7 @@ const EditClientInfoModal = (props) => {
         helper1(updateArrayAccess, insertArrayAccess, deleteArrayAccess)
         helper2(updateArrayBank, insertArrayBank, deleteArrayBank)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             client_id: props.currClient,
             client_info: formValues.client_info,
             client_access: {
@@ -411,7 +413,7 @@ const EditClientInfoModal = (props) => {
     });
     const fetchTenantOfData = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "table_name": "get_client_info_view",
             "item_id": id
         }
@@ -431,7 +433,7 @@ const EditClientInfoModal = (props) => {
     }
     const fetchInitialClientData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1234, "id": props.currClient };
+        const data = { "user_id": user.id, "id": props.currClient };
         const response = await APIService.getClientInfoByClientId(data)
         const res = await response.json();
         console.log(res.data)
@@ -447,7 +449,7 @@ const EditClientInfoModal = (props) => {
         //  setFormValues(res.data);
     }
     const fetchClientData = async () => {
-        const data = { "user_id": 1234, "id": props.currClient };
+        const data = { "user_id": user.id, "id": props.currClient };
         const response = await APIService.getClientInfoByClientId(data)
         const res = await response.json();
         console.log(res.data);
@@ -458,15 +460,15 @@ const EditClientInfoModal = (props) => {
     }
     const fetchCountryData = async () => {
         // setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
+        const data = { "user_id": user.id, "country_id": id };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -476,7 +478,7 @@ const EditClientInfoModal = (props) => {
     }
     const fetchRelation = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getRelationAdmin(data)
         const res = await response.json()
@@ -485,7 +487,7 @@ const EditClientInfoModal = (props) => {
     }
     const fetchClientTypeData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getClientTypeAdmin(data);
         const res = await response.json()
@@ -514,7 +516,7 @@ const EditClientInfoModal = (props) => {
         props.handleClose();
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -524,8 +526,8 @@ const EditClientInfoModal = (props) => {
     }
     const fetchEntitiesData = async () => {
         // setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
 
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
@@ -537,7 +539,7 @@ const EditClientInfoModal = (props) => {
 
     const fetchTenentOfData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getTenantOfPropertyAdmin(data)
         const res = await response.json()

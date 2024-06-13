@@ -9,7 +9,9 @@ import EditPOADetails from './EditPoaDetails'
 import EditOwnerDetails from './EditOwnerDetails'
 import { APIService } from '../../../../services/API'
 import Draggable from 'react-draggable'
+import useAuth from '../../../../context/JwtContext'
 const EditClientProperty = (props) => {
+    const {user} = useAuth()
     useEffect(() => {
         fetchLevelOfFurnishing();
         getBuildersAndProjectsList();
@@ -26,7 +28,7 @@ const EditClientProperty = (props) => {
     })
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
@@ -36,7 +38,7 @@ const EditClientProperty = (props) => {
     }
     const fetchClientName = async (id) => { 
             const data = {
-                "user_id":1234,
+                "user_id":user.id,
                 "table_name":"get_client_info_view",
                 "item_id": id
             }
@@ -55,7 +57,7 @@ const EditClientProperty = (props) => {
         setPageLoading(true);
         // in this we fetch the data of the existing
         const data = {
-            "user_id" : 1234,
+            "user_id" : user.id,
             "id" : props.clientId
         }
         const response = await APIService.getClientPropertyById(data);
@@ -72,7 +74,7 @@ const EditClientProperty = (props) => {
     }
     const fetchClientData = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
           }
           const response =  await APIService.getClientAdmin(data)
           const res =   await response.json();
@@ -172,28 +174,28 @@ const EditClientProperty = (props) => {
     const [levelOfFurnishing,setLevelOfFurnishing] = useState([])
     const [propertyStatus,setPropertyStatus] = useState([])
     const fetchLevelOfFurnishing = async () => {
-        const data = {"user_id" : 1234}
+        const data = {"user_id" : user.id}
         const response = await APIService.getLevelOfFurnishingAdmin(data);
         const res = await response.json()
         console.log(res);
         setLevelOfFurnishing(res);
     }
     const getBuildersAndProjectsList = async () => {
-        const data = {"user_id" : 1234};
+        const data = {"user_id" : user.id};
         const response = await APIService.getBuildersAndProjectsList(data);
         const res = await response.json();
         console.log(res.data);
         setExistingSociety(res.data);
     }
     const fetchPropertyType = async () => {
-        const data = {"user_id" : 1234}
+        const data = {"user_id" : user.id}
         const response = await APIService.getPropertyType(data)
         const res = await response.json();
         console.log(res);
         setPropertyType(res);
     }
     const fetchPropertyStatus = async () => {
-        const data = {"user_id" : 1234};
+        const data = {"user_id" : user.id};
         const response = await APIService.getPropertyStatusAdmin(data);
         const res = await response.json();
         console.log(res);
@@ -201,8 +203,8 @@ const EditClientProperty = (props) => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -212,7 +214,7 @@ const EditClientProperty = (props) => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -356,7 +358,7 @@ const EditClientProperty = (props) => {
         console.log(initialClientPropertyData)
         console.log(formValues.client_property_owner.owner1name)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_property_id": props.clientId,
             "client_property_info": {
               "clientid": Number(formValues.client_property.clientid),

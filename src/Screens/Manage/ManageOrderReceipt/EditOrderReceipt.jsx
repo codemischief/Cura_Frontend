@@ -4,7 +4,9 @@ import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
+import useAuth from '../../../context/JwtContext'
 const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, usersData, showCancel }) => {
+    const {user} = useAuth()
     const initialValues = {
         client: "",
         clientname: "",
@@ -114,7 +116,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
             "officeid": 2
         }
 
-        const response = await APIService.editOrdersReceipt(data);
+        const response = await APIService.editOrdersReceipt({...data,user_id : user.id});
         const res = await response.json();
         console.log(res)
         if (res.result == 'success') {
@@ -129,7 +131,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
             "table_name": "get_orders_receipt_view",
             "item_id": receiptId
         }
-        const response = await APIService.getItembyId(data);
+        const response = await APIService.getItembyId({...data,user_id : user.id});
         const res = await response.json();
         console.log(res)
         const existing = { ...formValues };
@@ -174,7 +176,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
     //     const data = {
     //         "user_id": 1234
     //     }
-    //     const response = await APIService.getModesAdmin(data)
+    //     const response = await APIService.getModesAdmin({...data,user_id : user.id})
     //     const res = await response.json()
     //     setModesData(res.data)
     //     console.log(res)
@@ -183,7 +185,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
     //     const data = {
     //         "user_id": 1234
     //     }
-    //     const response = await APIService.getUsers(data)
+    //     const response = await APIService.getUsers({...data,user_id : user.id})
     //     const res = await response.json()
     //     const existing = { ...formValues }
     //     existing.receivedBy = res.data[0].id,
@@ -196,7 +198,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         const data = {
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -236,7 +238,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {
@@ -255,7 +257,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
     }
     const getOrderData = async (id) => {
         const data = { "orderid": Number(id) }
-        const response = await APIService.getOrderPending(data)
+        const response = await APIService.getOrderPending({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         const temp = { ...orderData }

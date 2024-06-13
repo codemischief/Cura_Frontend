@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
 import DropDown from "../../../../Components/Dropdown/Dropdown";
+import useAuth from "../../../../context/JwtContext";
 const EditProjectInformation = ({ clientData, initialSociety, initialStates, initialCities, formValues, setFormValues, propertyType, levelOfFurnishing, propertyStatus, clientNameOption, formErrors }) => {
   // console.log(levelOfFurnishing)
+  const {user} = useAuth()
   console.log(clientNameOption);
   console.log(formValues)
   console.log(formValues.client_property.leveloffurnishing)
@@ -50,7 +52,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
     console.log(e)
     if (e.length < 3) return;
     const data = {
-      "user_id": 1234,
+      "user_id": user.id,
       "pg_no": 0,
       "pg_size": 0,
       "search_key": e

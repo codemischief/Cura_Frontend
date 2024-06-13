@@ -6,7 +6,9 @@ import { APIService } from '../../../services/API';
 import { useEffect } from 'react';
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable';
+import useAuth from '../../../context/JwtContext';
 const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCancel}) => {
+    const {user} = useAuth()
     console.log(currClientReceipt)
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,7 +34,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
         const data = {
             
         }
-        const response = await APIService.getUsers(data)
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const res = await response.json()
         setUsersData(res.data)
     }
@@ -41,7 +43,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
         const data = {
             
          }
-         const response = await APIService.getModesAdmin(data)
+         const response = await APIService.getModesAdmin({...data,user_id : user.id})
          const res = await response.json()
          setModesData(res.data)
          console.log(res)
@@ -51,7 +53,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
         const data = {
             
         }
-        const response = await APIService.getHowReceivedAdmin(data)
+        const response = await APIService.getHowReceivedAdmin({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setHowReceivedData(res.data)
@@ -123,7 +125,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
             "officeid":2,
             "id":currClientReceipt.id
         }
-        const response = await APIService.editClientReceipt(data)
+        const response = await APIService.editClientReceipt({...data,user_id : user.id})
         const res = await response.json()
         if(res.result == 'success') {
             console.log('updated')
@@ -157,7 +159,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
             "pg_size" : 0,
             "search_key" : e
           }
-          const response = await APIService.getClientAdminPaginated(data)
+          const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
           const res = await response.json()
           const results = res.data.map(e => {
             return {

@@ -39,10 +39,10 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
-import { userId } from '../../../utils/axios';
+import useAuth from '../../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageOrderReceipt = () => {
-
+    const {user} = useAuth()
     const menuRef = useRef();
     const { state , pathname} = useLocation();
     console.log(pathname)
@@ -99,7 +99,7 @@ const ManageOrderReceipt = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
+        const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
         console.log(result.data);
         if (Array.isArray(result.data)) {
@@ -110,7 +110,7 @@ const ManageOrderReceipt = () => {
         console.log(id);
         const data = {  "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
+        const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -119,7 +119,7 @@ const ManageOrderReceipt = () => {
     }
     const fetchCityData = async (id) => {
         const data = {  "state_name": id };
-        const response = await APIService.getCities(data);
+        const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result);
         if (Array.isArray(result)) {
@@ -137,7 +137,7 @@ const ManageOrderReceipt = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  };
-        const response = await APIService.getRoles(data)
+        const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -152,7 +152,7 @@ const ManageOrderReceipt = () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = {  };
-        const response = await APIService.getEntityAdmin(data)
+        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -174,7 +174,7 @@ const ManageOrderReceipt = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob(data);
+        const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
@@ -190,7 +190,7 @@ const ManageOrderReceipt = () => {
         const data = {
             
         }
-        const response = await APIService.getModesAdmin(data)
+        const response = await APIService.getModesAdmin({...data,user_id : user.id})
         const res = await response.json()
         setModesData(res.data)
         console.log(res)
@@ -201,7 +201,7 @@ const ManageOrderReceipt = () => {
         const data = {
             
         }
-        const response = await APIService.getUsers(data)
+        const response = await APIService.getUsers({...data,user_id : user.id})
         const res = await response.json()
         const existing = { ...formValues }
         existing.receivedBy = res.data[0].id,
@@ -274,7 +274,7 @@ const ManageOrderReceipt = () => {
             "search_key": searchInput
         }
             ;
-        const response = await APIService.getOrderReceipt(data);
+        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -321,7 +321,7 @@ const ManageOrderReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         }
-        const response = await APIService.getOrderReceipt(data);
+        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -368,7 +368,7 @@ const ManageOrderReceipt = () => {
             "search_key": searchInput
         }
             ;
-        const response = await APIService.getOrderReceipt(data);
+        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -384,7 +384,7 @@ const ManageOrderReceipt = () => {
             "client_id": id
         }
 
-        const response = await APIService.getClientPropertyByClientId(data)
+        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         setClientPropertyData(res.data)
@@ -403,7 +403,7 @@ const ManageOrderReceipt = () => {
             
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
+        const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
@@ -440,7 +440,7 @@ const ManageOrderReceipt = () => {
         // "orderid": 34,
         // "entityid": 1,
         // "officeid": 1
-        const response = await APIService.addOrderReceipt(data)
+        const response = await APIService.addOrderReceipt({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
 
@@ -466,7 +466,7 @@ const ManageOrderReceipt = () => {
         client: state?.clientid,
         order: state?.orderid,
         receiptMode: 5,
-        receivedBy: userId,
+        receivedBy: user.id,
         TDS: null,
         receiptDescription: null,
         receivedDate: null,
@@ -636,7 +636,7 @@ const ManageOrderReceipt = () => {
             
             "id": id
         }
-        const response = await APIService.deleteEmployee(data);
+        const response = await APIService.deleteEmployee({...data,user_id : user.id});
         showDeleteConfirmation(false);
 
         openDeleteSuccess();
@@ -690,14 +690,14 @@ const ManageOrderReceipt = () => {
                 "id": "ID"
             }
         };
-        const response = await APIService.getOrderReceipt(data)
+        const response = await APIService.getOrderReceipt({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                
+                "user_id" : user.id
             }
             fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST',
@@ -769,7 +769,7 @@ const ManageOrderReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getOrderReceipt(data);
+        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -817,7 +817,7 @@ const ManageOrderReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getOrderReceipt(data);
+        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -837,7 +837,7 @@ const ManageOrderReceipt = () => {
             
             "id": id
         }
-        const response = await APIService.deleteOrderReceipt(data)
+        const response = await APIService.deleteOrderReceipt({...data,user_id : user.id})
         const res = await response.json()
         if (res.result == 'success') {
             setShowDeleteModal(false);
@@ -931,7 +931,7 @@ const ManageOrderReceipt = () => {
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
+        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
         const res = await response.json()
         const results = res.data.map(e => {
             return {
@@ -1105,7 +1105,7 @@ const ManageOrderReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getOrderReceipt(data);
+        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1159,7 +1159,7 @@ const ManageOrderReceipt = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
         // setFlag((prev) => !prev);
-        const response = await APIService.getOrderReceipt(data);
+        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -1175,7 +1175,7 @@ const ManageOrderReceipt = () => {
     })
     const getOrderData = async (id) => {
         const data = {  "orderid": Number(id) }
-        const response = await APIService.getOrderPending(data)
+        const response = await APIService.getOrderPending({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
         const temp = { ...orderData }

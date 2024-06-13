@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState } from 'react';
-
+import { APIService } from '../../../../services/API';
+import useAuth from '../../../../context/JwtContext';
 const EditPOADetails = ({initialCountries,initialStates,initialCities,formValues,setFormValues}) => {
+  const {user} = useAuth()
   console.log(initialCountries)
   const [country, setCountry] = useState(initialCountries);
   const [city, setCity] = useState(initialCities);
@@ -16,8 +18,8 @@ const EditPOADetails = ({initialCountries,initialStates,initialCities,formValues
    }
    const fetchStateData = async (id) => {
     console.log(id);
-    const data = { "user_id": 1234, "country_id": id };
-    // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+    const data = { "user_id": user.id, "country_id": id };
+    // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
     const response = await APIService.getState(data);
     const result = (await response.json()).data;
     console.log(result)
@@ -26,7 +28,7 @@ const EditPOADetails = ({initialCountries,initialStates,initialCities,formValues
     }
 }
 const fetchCityData = async (id) => {
-  const data = { "user_id": 1234, "state_name": id };
+  const data = { "user_id": user.id, "state_name": id };
   const response = await APIService.getCities(data);
   const result = (await response.json()).data;
   console.log(result);
