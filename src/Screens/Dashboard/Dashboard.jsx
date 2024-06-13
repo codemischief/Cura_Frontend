@@ -3,10 +3,11 @@ import searchIcon from "../../assets/searchIcon.png";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navabar/Navbar";
-import useAuth from "../../context/JwtContext";
+// import useAuth from "../../context/JwtContext";
 import { userId } from "../../utils/axios";
 import { APIService } from "../../services/API";
-import useAuth from "../../../context/JwtContext";
+// import useAuth from "../../../context/JwtContext";
+import useAuth from "../../context/JwtContext";
 const Dashboard = () => {
   const {user} = useAuth()
   // console.log(user)
