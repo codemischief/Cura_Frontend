@@ -598,7 +598,7 @@ const ManageBankStatement = () => {
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const editStatement = (item) => {
-        const items = { item, "vendorList": vendor, "how": howReceived, "mode": mode }
+        const items = { item, "vendorList": vendorList, "how": howReceived, "mode": mode }
         setCurrentStatement(items);
         setIsEditDialogue(true);
     }
