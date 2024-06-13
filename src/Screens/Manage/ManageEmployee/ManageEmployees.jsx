@@ -1795,7 +1795,7 @@ const ManageEmployees = () => {
                                         </div>
 
                                         <div className="">
-                                            <div className="text-sm">Entities <label className="text-red-500">*</label></div>
+                                            <div className="text-sm">Entity<label className="text-red-500">*</label></div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="entity"
                                                 value={formValues.entity}

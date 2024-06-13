@@ -650,7 +650,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         
                                         <div className="">
-                                            <div className="text-[13px]">Entities <label className="text-red-500">*</label></div>
+                                            <div className="text-[13px]">Entity <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="entityid"
                                                 value={formValues.entityid}

@@ -263,7 +263,7 @@ const EditManageStatement = (props) => {
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.crdr}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">How Recieved(CR)? </div>
+                                            <div className="text-[13px]">How Received(CR)? </div>
                                             <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="how" value={formValues.how} onChange={handleChange} >
                                                 <option hidden>Select How Received</option>
                                                 {howReceived && howReceived.map(item => (

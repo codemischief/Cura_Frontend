@@ -1443,7 +1443,7 @@ const ManageOrder = () => {
                                 <p> Order Description <button onClick={() => handleSort('briefdescription')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[215px] p-4'>
-                                <p> Proper Description <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
+                                <p> Property Description <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[150px] p-4'>
                                 <p> Service <button onClick={() => handleSort('servicename')}><span className="font-extrabold">↑↓</span></button></p>

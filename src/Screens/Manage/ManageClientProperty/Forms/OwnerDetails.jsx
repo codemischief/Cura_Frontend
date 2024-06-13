@@ -25,12 +25,12 @@ const OwnerDetails = ({formValues,setFormValues}) => {
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[13px]"> PAN NO </div>
+            <div className="text-[13px]"> PAN No. </div>
             <input className="text-[12px] pl-4 w-[160px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="owner1panno" onChange={handleChange} value={formValues.client_property_owner.owner1panno}/>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[13px]"> Aadhar No </div>
+            <div className="text-[13px]"> Aadhaar No </div>
             <input className="text-[12px] pl-4 w-[160px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" value={formValues.client_property_owner.owner1aadhaarno} name="owner1aadhaarno" onChange={handleChange}/>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -44,7 +44,7 @@ const OwnerDetails = ({formValues,setFormValues}) => {
                               existing.client_property_owner = temp;
                               setFormValues(existing) 
             }}/>
-            Pan Collected</div>
+            PAN Collected</div>
           <div className="flex items-center text-[14px] pt-3">
           <input type='checkbox' className='mr-3 h-4 w-4' checked={formValues.client_property_owner.owner1aadhaarcollected}  onClick={(e) => {
                               
@@ -54,7 +54,7 @@ const OwnerDetails = ({formValues,setFormValues}) => {
                               existing.client_property_owner = temp;
                               setFormValues(existing) 
             }}/>
-            Aadhar Collected</div>
+            Aadhaar Collected</div>
         </div>
 
         <div className="flex  gap-4 mb-3">
@@ -65,12 +65,12 @@ const OwnerDetails = ({formValues,setFormValues}) => {
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[13px]"> PAN NO </div>
+            <div className="text-[13px]"> PAN No. </div>
             <input className="text-[12px] pl-4 w-[160px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="owner2panno" onChange={handleChange} value={formValues.client_property_owner.owner2panno} />
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[13px]"> Aadhar No </div>
+            <div className="text-[13px]"> Aadhaar No </div>
             <input className="text-[12px] pl-4 w-[160px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" value={formValues.client_property_owner.owner2aadhaarno} name="owner2aadhaarno" onChange={handleChange}/>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -84,7 +84,7 @@ const OwnerDetails = ({formValues,setFormValues}) => {
                               setFormValues(existing) 
             }}/>
             
-            Pan Collected</div>
+            PAN Collected</div>
           <div className="flex items-center text-[14px] pt-3">
           <input type='checkbox' className='mr-3 h-4 w-4' checked={formValues.client_property_owner.owner2aadhaarcollected}  onClick={(e) => {
                               
@@ -95,7 +95,7 @@ const OwnerDetails = ({formValues,setFormValues}) => {
                               setFormValues(existing) 
             }}/>
             
-            Aadhar Collected</div>
+            Aadhaar Collected</div>
         </div>
 
         <div className="flex  gap-4 mb-3">
@@ -106,12 +106,12 @@ const OwnerDetails = ({formValues,setFormValues}) => {
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[13px]"> PAN NO </div>
+            <div className="text-[13px]"> PAN No. </div>
             <input className="text-[12px] pl-4 w-[160px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="owner3panno" onChange={handleChange} value={formValues.client_property_owner.owner3panno} />
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[13px]"> Aadhar No </div>
+            <div className="text-[13px]"> Aadhaar No </div>
             <input className="text-[12px] pl-4 w-[160px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" value={formValues.client_property_owner.owner3aadhaarno} name="owner3aadhaarno" onChange={handleChange}/>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -127,7 +127,7 @@ const OwnerDetails = ({formValues,setFormValues}) => {
             
             
             
-            Pan Collected</div>
+            PAN Collected</div>
           <div className="flex items-center text-[14px] pt-3">
           <input type='checkbox' className='mr-3 h-4 w-4' checked={formValues.client_property_owner.owner3aadhaarcollected}  onClick={(e) => {
                               
@@ -138,7 +138,7 @@ const OwnerDetails = ({formValues,setFormValues}) => {
                               setFormValues(existing) 
             }}/>
             
-            Aadhar Collected</div>
+            Aadhaar Collected</div>
         </div>
       </div>
       <div className="ml-48">
