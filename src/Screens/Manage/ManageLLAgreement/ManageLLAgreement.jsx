@@ -848,7 +848,7 @@ const ManageLLAgreement = () => {
                 "clientname" ,
                 "propertydescription" ,
                 "propertystatusname",
-                "active",
+                "activemap",
                 "startdate" ,
                 "actualenddate" ,
                 "id",
@@ -865,7 +865,7 @@ const ManageLLAgreement = () => {
                 "clientname" : "Client Name",
                 "propertydescription" : "Property Description",
                 "propertystatusname" : "Property Status",
-                "active" : "Status",
+                "activemap" : "Status",
                 "startdate" : "Start Date",
                 "actualenddate" : "End Date",
                 "id" : "ID",
@@ -1399,12 +1399,12 @@ const ManageLLAgreement = () => {
                                     onKeyDown={(event) => handleEnterToFilter(event,statusFilterInput,
                                         setStatusFilterInput,
                                         'contains',
-                                        'active')}
+                                        'activemap')}
                                          />
-                                         {filterMapState.active.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                         {filterMapState.activemap.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                     
                                 </div>
-                                {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} filterColumn='active' handleFilter={newHandleFilter} menuRef={menuRef} type={filterMapState.active.filterType}/>}
+                                {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} filterColumn='activemap' handleFilter={newHandleFilter} menuRef={menuRef} type={filterMapState.activemap.filterType}/>}
                             </div>
 
                             <div className='w-[15%]  px-3 py-2.5'>
@@ -1490,7 +1490,7 @@ const ManageLLAgreement = () => {
                             </div>
                             <div className='w-[15%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Status <button onClick={() => handleSort('active')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Status <button onClick={() => handleSort('activemap')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[15%]  flex'>

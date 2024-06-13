@@ -7,8 +7,24 @@ import { useLocation } from "react-router-dom";
 const EditButton = ({ handleEdit, sx, rowData }) => {
   const { user } = useAuth();
   const { pathname } = useLocation();
+  const hasAccess = (path) => {
    
-  if (!user.allowedModules[pathname]?.edit) return null;
+
+    // Check if the exact path is allowed
+    if (user.allowedModules[pathname]?.edit) {
+      return true;
+    }
+
+    // Check for dynamic route access
+    return Object.keys(user.allowedModules).some(
+      (allowedPath) =>
+        path.startsWith(allowedPath) && user.allowedModules[allowedPath].edit
+    );
+  };
+  if(!hasAccess(pathname)) {
+    return null
+  }
+  // if (!user.allowedModules[pathname]?.edit) return null;
   return (
     <Create
       sx={{
