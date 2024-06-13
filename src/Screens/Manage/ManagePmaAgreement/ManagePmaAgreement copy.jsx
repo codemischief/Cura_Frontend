@@ -653,7 +653,7 @@ const ManagePmaArgreement = () => {
             "colmap" : {
                 "clientname" : "Client Name",
                 "propertydescription" : "Property Description",
-                "orderdescription" : "Property Description",
+                "orderdescription" : "Order Description",
                 "propertystatusname" : "Property Status",
                 "description" : "Description",
                 "status" : "Status",
@@ -1270,7 +1270,7 @@ const ManagePmaArgreement = () => {
                                 {filterMapState.activemap.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 {/* <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='active' menuRef={menuRef} filterType={filterMapState.activemap.filterType}/>}
+                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='activemap' menuRef={menuRef} filterType={filterMapState.activemap.filterType}/>}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">

@@ -454,7 +454,8 @@ const ManageBuilder = () => {
         setPageLoading(true)
         const data = {
             "user_id": user.id,
-            "rows": ["buildername", "country", "city", "suburb", "id",],
+            
+            "rows": ["buildername", "country", "city", "suburb", "id"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",

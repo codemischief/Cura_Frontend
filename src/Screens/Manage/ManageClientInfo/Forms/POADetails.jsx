@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { APIService } from '../../../../services/API';
 import useAuth from '../../../../context/JwtContext';
@@ -34,6 +34,10 @@ const fetchCityData = async (id) => {
       setAllCity(result)
   }
 }
+ useEffect(() => {
+   fetchStateData(formValues.client_poa.poacountry)
+   fetchCityData(formValues.client_poa.poastate)
+ },[])
   return (
     <div className="mt-5 h-auto pt-2 pb-5 w-full">
       <div className="flex gap-10 justify-center">
@@ -165,7 +169,7 @@ const fetchCityData = async (id) => {
           <div className="">
             <div className="text-[14px]">Relation </div>
             <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="poarelation" value={formValues.client_poa.poarelation} onChange={handleChange}>
-              <option >Select Relation</option>
+              <option value="" hidden>Select Relation</option>
               {relationData && relationData.map(item => (
                 <option key={item.id} value={item.id}>
                   {item.name}

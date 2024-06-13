@@ -1879,8 +1879,8 @@ const ManageBankStatement = () => {
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Receipt Description</div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="desc" value={formValues.desc} onChange={handleChange} />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.desc}</div>
+                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="receiptDescription" value={crFormValues.receiptDescription} onChange={handleCrChange} />
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.desc}</div>
                                                 </div>
                                                 {/* <div className="">
                                                     <div className="text-[14px]">Pending Amount </div>

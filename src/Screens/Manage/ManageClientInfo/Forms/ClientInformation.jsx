@@ -174,7 +174,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                             onChange={
                                 handleChange
                             }>
-                            <option >Select Salutation</option>
+                            <option value="" hidden>Select Salutation</option>
                             {Salutation && Salutation.map(item => (
                                 <option key={item.id} value={item.name}>
                                     {item.name}
@@ -195,7 +195,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 })
                             }
                         } >
-                            <option >Select Client Type </option>
+                            <option value="" hidden>Select Client Type </option>
                             {clientTypeData && clientTypeData.map(item => (
                                 <option key={item.id} value={item.id}>
                                     {item.name}
@@ -281,7 +281,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                         }
                             // value={formValues.client_info.country}
                         >
-                            <option >Select Country</option>
+                            <option value="" hidden>Select Country</option>
                             {allCountry && allCountry.map(item => {
                                 if (item[0] == formValues.client_info.country) {
                                     return <option key={item.id} value={item.id} selected>
@@ -343,7 +343,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 fetchCityData(e.target.value)
                             }
                         }>
-                            <option >Select State </option>
+                            <option value="" hidden>Select State </option>
 
                             {allState && allState.map(item => {
                                 if (item[0] == "Maharashtra") {
@@ -460,7 +460,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                             }
                         }>
                             
-                            <option value="none" > Select A City</option>
+                            <option value="none" hidden> Select A City</option>
                             {allCity && allCity.map(item => (
                                 <option value={item.city}>
                                     {item.city}

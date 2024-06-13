@@ -298,7 +298,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                         }
                             value={formValues.client_info.country}
                         >
-                            <option value={null} > Select Country</option>
+                            <option value={null} hidden> Select Country</option>
                             {allCountry && allCountry.map(item => {
                                 if (item.id == formValues.client_info.country) {
                                     return <option key={item.id} value={item.id} selected>
@@ -362,6 +362,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 fetchCityData(e.target.value)
                             }
                         }>
+                            <option value="">Select State</option>
                             {allState.map(item => {
                                 if (item[0] == formValues.client_info.state) {
                                     return <option key={item[0]} selected>
@@ -474,6 +475,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 })
                             }
                         }>
+                            <option value="" hidden>Select City</option>
                             {allCity && allCity.map(item => {
                                 if(item.city == formValues.client_info.city) {
                                      return <option value={item.city} selected>

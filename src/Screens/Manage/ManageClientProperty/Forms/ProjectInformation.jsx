@@ -128,7 +128,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
             </div>
             
             {hyperlinkState?.hyperlinked ?
-                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{hyperlinkState.clientname}</div> : 
+                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] overflow-hidden" type="text" name="curaoffice" >{hyperlinkState.clientname}</div> : 
             <AsyncSelect
               onChange={handleClientNameChange}
               value={selectedOption}

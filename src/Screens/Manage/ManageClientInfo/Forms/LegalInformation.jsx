@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { APIService } from '../../../../services/API';
 import useAuth from '../../../../context/JwtContext';
@@ -6,9 +6,9 @@ const LegalInformation = ({formValues,setFormValues,relationData,allCountry,allS
   const {user} = useAuth()
   const [country, setCountry] = useState(allCountry);
   // const [state,setState] = useState(allState);
-  const [allStates,setAllStates] = useState(allState);
+  const [allStates,setAllStates] = useState([]);
   // console.log(initialCities)
-  const [allCity, setAllCity] = useState(initialCities);
+  const [allCity, setAllCity] = useState([]);
   // const [allState, setAllState] = useState([]);
   const handleChange = (e) => {
     const {name,value} = e.target;
@@ -35,6 +35,10 @@ const fetchCityData = async (id) => {
       setAllCity(result)
   }
 }
+ useEffect(() => { 
+    fetchStateData(formValues.client_legal_info.country)
+    fetchCityData(formValues.client_legal_info.state)
+ },[])
   return (
     <div className="h-auto w-full pt-2 pb-5">
       <div className="flex gap-10 justify-center">
@@ -69,16 +73,8 @@ const fetchCityData = async (id) => {
             }>
               <option value={"none"} className='hidden'>Select country</option>
               {country && country.map(item => {
-                if(item.id == 5) {
-                  return <option key={item.id} value={item.id} selected>
-                  {item.name}
-                  </option>
-                  }else {
-                      return <option key={item.id} value={item.id} >
-                      {item.name}
-                  </option>
-                  }
-})}
+                   return <option value={item.id} key={item.id}>{item.name}</option>  
+             })}
             </select>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
@@ -130,7 +126,7 @@ const fetchCityData = async (id) => {
           </div>
           <div className="">
             <div className="text-[14px]">State </div>
-            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" onChange={
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.client_legal_info.state} onChange={
               (e) => {
                 setFormValues({...formValues,client_legal_info : {
                   ...formValues.client_legal_info,
@@ -141,15 +137,7 @@ const fetchCityData = async (id) => {
             }>
               <option value="none" className='hidden'>Select state</option>
               {allStates && allStates.map(item => {
-                if(item[0] == "Maharashtra") {
-                  return <option key={item[0]} selected>
-                         {item[0]}
-                  </option>
-               }else {
-                   return <option key={item[0]}>
-                       {item[0]}
-                   </option>
-               }
+                return <option value={item[0]}>{item[0]}</option>
 })}
             </select>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
@@ -167,7 +155,7 @@ const fetchCityData = async (id) => {
           <div className="">
             <div className="text-[14px]">Relation </div>
             <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="relation" value={formValues.client_legal_info.relation} onChange={handleChange} >
-              <option >Select Relation</option>
+              <option value="" hidden >Select Relation</option>
               {relationData && relationData.map(item => (
                 <option key={item.id} value={item.id}>
                   {item.name}

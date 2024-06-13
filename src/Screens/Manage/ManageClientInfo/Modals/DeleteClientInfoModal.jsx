@@ -29,7 +29,7 @@ const DeleteClientInfo = (props) => {
         >
             <>
                 <Draggable>
-                    <div className='bg-white rounded-lg'>
+                    <div className='bg-white p-5 rounded-lg'>
 
                         <div className="w-auto h-auto flex flex-col justify-center items-center ">
                             <div className="h-[40px] flex justify-center items-center">

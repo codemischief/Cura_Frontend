@@ -222,13 +222,13 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
                           <div className="">
                             <div className="flex">
-                              <label className="inputFieldLabel">
+                              <label className="inputFieldLabel  ">
                                 Builder Name
                               </label>
                               
                             </div>
                             <input
-                              className="inputFieldBorder inputFieldValue"
+                              className="inputFieldBorder inputFieldValue border-[1px] border-[#C6C6C6] rounded-sm bg-[#F5F5F5]"
                               type="text"
                               name="employername"
                               value={editData.buildername}

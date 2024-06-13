@@ -56,7 +56,6 @@ const ManageClientInfo = () => {
         "country",
         "city",
         "mobilephone",
-        "email2",
         "email1",
         "employername",
         "id"
@@ -570,9 +569,9 @@ const ManageClientInfo = () => {
                 "tenantofname",
                 "tenantofpropertyname",
                 "country",
+                "city",
                 "mobilephone",
                 "email1",
-                "email2",
                 "id",
             ],
             "filters": filterState,
@@ -589,9 +588,9 @@ const ManageClientInfo = () => {
                 "tenantofname": "Tenant Of",
                 "tenantofpropertyname": "Tenant Of Property",
                 "country": "Country",
+                "city" : "City",
                 "mobilephone": "Phone",
-                "email1": "Email1",
-                "email2": "Email2",
+                "email1": "Email",
                 "id": "ID",
             }
         };
@@ -1613,7 +1612,7 @@ const ManageClientInfo = () => {
                                     </div>
                                     <div className='w-[11%]  flex items-center '>
                                         <div className='p-3 overflow-hidden '>
-                                            <p>{item.email1 || item.email2}</p>
+                                            <p>{item.email1}</p>
                                         </div>
                                     </div>
                                     {/* <div className='w-[9%]  flex ml-2 items-center justify-center'>
