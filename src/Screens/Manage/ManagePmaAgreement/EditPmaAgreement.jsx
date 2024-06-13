@@ -413,7 +413,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                     existing.gst1 = !existing.gst1;
                                                     setFormValues(existing)
                                                 }}
-                                            />Gst Additional ?</div>
+                                            />GST Additional ?</div>
                                         </div>
                                         <div className=" space-y-3 py-5">
                                             <div className="">
@@ -471,7 +471,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                     existing.gst2 = !existing.gst2;
                                                     setFormValues(existing)
                                                 }}
-                                            />Gst Additional ?</div>
+                                            />GST Additional ?</div>
                                         </div>
                                     </div>
                                 </div>

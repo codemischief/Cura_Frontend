@@ -1724,7 +1724,7 @@ const ManageVendorPayment = () => {
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.vendorid}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[13px]">TDS Deduction </div>
+                                                <div className="text-[13px]">TDS Deducted </div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
                                             </div>
                                             <div className="">

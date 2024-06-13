@@ -544,7 +544,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.order}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[13px]">Duration in Month <label className="text-red-500">*</label></div>
+                                                <div className="text-[13px]">Duration in Months <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.durationInMonth}</div>
                                             </div>
@@ -555,7 +555,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">
-                                                    Rent payment Date
+                                                    Rent Payment Date
                                                 </div>
                                                 <select
                                                     className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"

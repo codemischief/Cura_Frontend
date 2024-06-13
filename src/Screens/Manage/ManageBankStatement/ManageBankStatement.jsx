@@ -1704,7 +1704,7 @@ const ManageBankStatement = () => {
                                                     <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.crdr}</div>
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[13px]">How Recieved(CR)?</div>
+                                                    <div className="text-[13px]">How Received(CR)?</div>
                                                     <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
                                                         <option hidden>Select how Received</option>
                                                         {howReceived && howReceived.map(item => (

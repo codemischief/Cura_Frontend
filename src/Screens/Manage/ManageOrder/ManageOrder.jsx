@@ -424,6 +424,7 @@ const ManageOrder = () => {
         const res = await response.json();
         if (res.result == 'success') {
             const d = {
+                "user_id" : user.id,
                 "orderid": res.data['inserted data'],
                 "statusid": Number(formValues.order_info.status)
             }
@@ -1442,7 +1443,7 @@ const ManageOrder = () => {
                                 <p> Order Description <button onClick={() => handleSort('briefdescription')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[215px] p-4'>
-                                <p> Proper Description <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
+                                <p> Property Description <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[150px] p-4'>
                                 <p> Service <button onClick={() => handleSort('servicename')}><span className="font-extrabold">↑↓</span></button></p>
