@@ -39,10 +39,11 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 
 const ManageUser = () => {
-
+    const { user } = useAuth()
     const menuRef = useRef();
     const navigate = useNavigate();
     const {pathname} = useLocation()
@@ -91,7 +92,7 @@ const ManageUser = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "name"],
             "filters": [],
             "sort_by": ["name"],
@@ -162,7 +163,7 @@ const ManageUser = () => {
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -183,7 +184,7 @@ const ManageUser = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -204,7 +205,7 @@ const ManageUser = () => {
 
     const getVendorCategoryAdmin = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "order": "asc"
         }
         const response = await APIService.getVendorCategoryAdmin(data);
@@ -215,8 +216,8 @@ const ManageUser = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
@@ -246,7 +247,7 @@ const ManageUser = () => {
         // we need to query thru the object
         // setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "fullname",
                 "username",
@@ -277,7 +278,7 @@ const ManageUser = () => {
         // we need to query thru the object
         setCurrentPage((prev) => pageNumber)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "fullname",
                 "username",
@@ -306,7 +307,7 @@ const ManageUser = () => {
         setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "fullname",
                 "username",
@@ -403,7 +404,7 @@ const ManageUser = () => {
 
 
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "username": formValues.userName,
             "roleid": Number(formValues.role),
             "password": btoa(formValues.password),
@@ -632,7 +633,7 @@ const ManageUser = () => {
     }
     const deleteUser = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deleteUser(data);
@@ -659,7 +660,7 @@ const ManageUser = () => {
         setDownloadModal(false)
         setBackDropLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "fullname",
                 "username",
@@ -690,7 +691,7 @@ const ManageUser = () => {
         if (temp.result == "success") {
             const d = {
               filename: temp.filename,
-              user_id: 1234,
+              user_id: user.id,
             };
             APIService.download(d, temp.filename).then((response) => {
                 if (!response.ok) {
@@ -724,7 +725,7 @@ const ManageUser = () => {
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "fullname",
                 "username",
@@ -754,7 +755,7 @@ const ManageUser = () => {
         setSearchInput("");
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "fullname",
                 "username",
@@ -883,7 +884,7 @@ const ManageUser = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "fullname",
                 "username",
@@ -941,7 +942,7 @@ const ManageUser = () => {
         setSortField(field)
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "fullname",
                 "username",
@@ -971,7 +972,7 @@ const ManageUser = () => {
     //    const [allCity,setAllCity] = useState([]);
     // we need to fetch the city data
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -988,7 +989,7 @@ const ManageUser = () => {
     const [tallyLedgerData, setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getTallyLedgerAdmin(data);
         const res = await response.json()

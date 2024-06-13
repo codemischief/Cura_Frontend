@@ -37,9 +37,10 @@ import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
+import useAuth from '../../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageEmployees = () => {
-
+    const { user } = useAuth()
     const menuRef = useRef();
     const navigate = useNavigate();
     const { pathname } = useLocation()
@@ -93,16 +94,16 @@ const ManageEmployees = () => {
 
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -111,7 +112,7 @@ const ManageEmployees = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -127,8 +128,8 @@ const ManageEmployees = () => {
     }
     const fetchUsersData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getUsers(data)
         const result = (await response.json());
 
@@ -142,8 +143,8 @@ const ManageEmployees = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
@@ -155,8 +156,8 @@ const ManageEmployees = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
@@ -169,7 +170,7 @@ const ManageEmployees = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "name"],
             "filters": [],
             "sort_by": ["name"],
@@ -210,7 +211,7 @@ const ManageEmployees = () => {
         setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -239,7 +240,7 @@ const ManageEmployees = () => {
             }
         })
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -270,7 +271,7 @@ const ManageEmployees = () => {
         setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -359,7 +360,7 @@ const ManageEmployees = () => {
         }
         // setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "employeename": formValues.employeeName,
             "employeeid": formValues.employeeId,
             "userid": Number(formValues.userName),
@@ -378,7 +379,7 @@ const ManageEmployees = () => {
             "country": Number(formValues.country),
             "zip": formValues.zipCode,
             "dated": "20-01-2020  00:00:00",
-            "createdby": 1234,
+            "createdby": user.id,
             "isdeleted": false,
             "entityid": formValues.entity,
             "lobid": Number(formValues.lob),
@@ -630,7 +631,7 @@ const ManageEmployees = () => {
     }
     const deleteEmployee = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deleteEmployee(data);
@@ -658,7 +659,7 @@ const ManageEmployees = () => {
         setDownloadModal(false)
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "statusmap", "id",],
             "filters": filterState,
             "sort_by": [sortField],
@@ -688,7 +689,7 @@ const ManageEmployees = () => {
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
             APIService.download(d, temp.filename).
                 then(response => {
@@ -730,7 +731,7 @@ const ManageEmployees = () => {
         setIsSearchOn(true);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "statusmap", "id",],
             "filters": filterState,
             "sort_by": [sortField],
@@ -760,7 +761,7 @@ const ManageEmployees = () => {
             }
         })
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -937,7 +938,7 @@ const ManageEmployees = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -1035,7 +1036,7 @@ const ManageEmployees = () => {
             }
         })
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
             "filters": filterState,
             "sort_by": [field],

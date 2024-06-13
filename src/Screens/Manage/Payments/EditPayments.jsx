@@ -7,8 +7,10 @@ import Checkbox from '@mui/material/Checkbox';
 import Draggable from 'react-draggable';
 import PaymentDropDown from '../../../Components/Dropdown/PaymentDropDown';
 import DropDown from '../../../Components/Dropdown/Dropdown';
+import useAuth from '../../../context/JwtContext';
 // import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
 const EditPayments = (props) => {
+    const { user } = useAuth()
     console.log(props.item.item);
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
@@ -29,8 +31,8 @@ const EditPayments = (props) => {
 
     const fetchAllData = async () => {
         // setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getUsers(data)
         const result = (await response.json()).data;
         if (Array.isArray(result)) {
@@ -49,8 +51,8 @@ const EditPayments = (props) => {
         setEntity(result3)
     }
     const fetchUsersData = async () => {
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, };
         const response = await APIService.getUsers(data)
         const result = (await response.json()).data;
         console.log(result);
@@ -62,8 +64,8 @@ const EditPayments = (props) => {
 
 
     const fetchEntitiesData = async () => {
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json()).data;
         console.log(result);
@@ -75,7 +77,7 @@ const EditPayments = (props) => {
 
     const fetchLobData = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -93,7 +95,7 @@ const EditPayments = (props) => {
     }
     const fetchPaymentData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1234, "table_name": "ref_contractual_payments", "item_id": props.item.item.id };
+        const data = { "user_id": user.id, "table_name": "ref_contractual_payments", "item_id": props.item.item.id };
         const response = await APIService.getItembyId(data);
         const result = await response.json();
         setFormValues((existing) => result.data);
@@ -120,7 +122,7 @@ const EditPayments = (props) => {
             return;
         }
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": props.item.item.id,
             "paymentto": formValues.paymentto,
             "paymentby": formValues.paymentby,
