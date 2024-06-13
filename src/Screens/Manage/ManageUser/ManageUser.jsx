@@ -84,6 +84,8 @@ const ManageUser = () => {
     const [statusFilterInput, setStatusFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
+
+    
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchLobData = async () => {
@@ -1592,7 +1594,7 @@ const ManageUser = () => {
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Zip Code <label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
                                                 <div className="text-[9px] text-[#CD0000] absolute">{formErrors.zipCode}</div>
                                             </div>
                                         </div>
