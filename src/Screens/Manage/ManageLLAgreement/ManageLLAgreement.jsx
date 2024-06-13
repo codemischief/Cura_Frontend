@@ -880,7 +880,7 @@ const ManageLLAgreement = () => {
                 "filename" : temp.filename,
                 "user_id" : user.id
             }
-            APIService.download(d,filename).then(response => {
+            APIService.download(d,temp.filename).then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
