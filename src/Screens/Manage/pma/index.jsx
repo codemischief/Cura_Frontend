@@ -11,6 +11,7 @@ import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import { useLocation } from "react-router-dom";
+import { userId } from "../../../utils/axios";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -69,7 +70,7 @@ const PmaBilling = () => {
   useEffect(() => {
     if (selectedMonth && selectedYear) {
       let obj = {
-        user_id: 1234,
+        user_id: userId,
         month: +selectedMonth,
         year: +selectedYear,
         filters: convertData(filter),
@@ -94,7 +95,7 @@ const PmaBilling = () => {
   const handleShow = () => {
     if (selectedYear && selectedMonth) {
       let obj = {
-        user_id: 1234,
+        user_id: userId,
         month: +selectedMonth,
         year: +selectedYear,
         filters: [],
@@ -115,7 +116,7 @@ const PmaBilling = () => {
   const hadleConfirm = () => {
     if (selectedYear && selectedMonth) {
       let obj = {
-        user_id: 1234,
+        user_id: userId,
         month: +selectedMonth,
         year: selectedYear,
         filters: [],
@@ -138,7 +139,7 @@ const PmaBilling = () => {
   const handleRefresh = () => {
     if (selectedMonth && selectedYear) {
       let obj = {
-        user_id: 1234,
+        user_id: userId,
         month: +selectedMonth,
         year: +selectedYear,
         filters: convertData(filter),
@@ -171,7 +172,7 @@ const PmaBilling = () => {
   const downloadExcel = async () => {
     console.log('hello')
     let obj = {
-      user_id: 1234,
+      user_id: userId,
       month: +selectedMonth,
       year: +selectedYear,
       filters: convertData(filter),

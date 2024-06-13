@@ -115,7 +115,7 @@ const ManagePmaArgreement = () => {
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
@@ -125,7 +125,7 @@ const ManagePmaArgreement = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
+        const data = {  "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
@@ -135,7 +135,7 @@ const ManagePmaArgreement = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = {  "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -152,7 +152,7 @@ const ManagePmaArgreement = () => {
     const fetchUsersData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        const data = {  };
         const response = await APIService.getUsers(data)
         const result = (await response.json());
 
@@ -169,7 +169,7 @@ const ManagePmaArgreement = () => {
     const fetchRoleData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        const data = {  };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
@@ -184,7 +184,7 @@ const ManagePmaArgreement = () => {
     const fetchEntitiesData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        const data = {  };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
@@ -199,7 +199,7 @@ const ManagePmaArgreement = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -235,7 +235,7 @@ const ManagePmaArgreement = () => {
         setFilterState(tempArray)
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -258,7 +258,7 @@ const ManagePmaArgreement = () => {
         setPageLoading(true);
         setCurrentPage(pageNumber)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -282,7 +282,7 @@ const ManagePmaArgreement = () => {
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -304,7 +304,7 @@ const ManagePmaArgreement = () => {
     const [clientPropertyData, setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
+            
             "client_id": id
         }
 
@@ -324,7 +324,7 @@ const ManagePmaArgreement = () => {
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
+            
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -343,7 +343,7 @@ const ManagePmaArgreement = () => {
     const addPmaAgreement = async () => {
         console.log(formValues.order)
         const data = {
-            "user_id": 1234,
+            
             "clientpropertyid": Number(formValues.clientProperty),
             "startdate": formValues.pmaStartDate,
             "enddate": formValues.pmaEndDate,
@@ -585,7 +585,7 @@ const ManagePmaArgreement = () => {
 
     const deleteEmployee = async (id) => {
         const data = {
-            "user_id": 1234,
+            
             "id": id
         }
         const response = await APIService.deleteEmployee(data);
@@ -611,7 +611,7 @@ const ManagePmaArgreement = () => {
         // setDownloadModal(false)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": [
                 "clientname" ,
                 "propertydescription" ,
@@ -669,17 +669,9 @@ const ManagePmaArgreement = () => {
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
-                "user_id" : 1234
             }
             console.log(`${env_URL_SERVER}download/${temp.filename}`)
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-            .then(response => {
+            APIService.download(d,temp.filename).then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
@@ -705,7 +697,7 @@ const ManagePmaArgreement = () => {
     }
     const handleExcelDownload = async () => {
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -730,7 +722,7 @@ const ManagePmaArgreement = () => {
         // setCurrentPages(15);
         setIsSearchOn(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -754,7 +746,7 @@ const ManagePmaArgreement = () => {
         setCurrentPage((prev) => 1)
         setSearchInput("");
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
@@ -780,7 +772,7 @@ const ManagePmaArgreement = () => {
     }
     const deletePma = async (id) => {
         const data = {
-            "user_id": 1234,
+            
             "id": id
         }
         const response = await APIService.deletePmaAgreement(data)
@@ -875,7 +867,7 @@ const ManagePmaArgreement = () => {
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
+            
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -1033,7 +1025,7 @@ const ManagePmaArgreement = () => {
         setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
@@ -1062,7 +1054,7 @@ const ManagePmaArgreement = () => {
 
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            
             "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],

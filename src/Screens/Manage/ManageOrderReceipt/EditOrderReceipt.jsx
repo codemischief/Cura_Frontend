@@ -102,7 +102,6 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
             return
         }
         const data = {
-            "user_id": 1234,
             "id": receiptId,
             "receivedby": formValues.receivedBy,
             "amount": formValues.pendingAmount - formValues.amountReceived,
@@ -127,7 +126,6 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         setPageLoading(true);
         // we need to fetch the initial data here
         const data = {
-            "user_id": 1234,
             "table_name": "get_orders_receipt_view",
             "item_id": receiptId
         }
@@ -196,7 +194,6 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -235,7 +232,6 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
@@ -258,7 +254,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         showCancel();
     }
     const getOrderData = async (id) => {
-        const data = { "user_id": 1234, "orderid": Number(id) }
+        const data = { "orderid": Number(id) }
         const response = await APIService.getOrderPending(data)
         const res = await response.json()
         console.log(res)

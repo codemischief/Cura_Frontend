@@ -33,7 +33,6 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
     const fetchInitialData = async () => {
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
             "item_id": currPma,
             "table_name": "get_client_property_pma_view"
         }
@@ -147,7 +146,6 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
         }
 
         const data = {
-            "user_id": 1234,
             "clientpropertyid": formValues.clientProperty,
             "startdate": formValues.pmaStartDate,
             "enddate": formValues.pmaEndDate,
@@ -176,7 +174,6 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
     const [propertyText, setPropertyText] = useState("Select Client Property");
     const getClientPropertyByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
 
@@ -190,7 +187,6 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -230,7 +226,6 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e

@@ -177,7 +177,6 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
     const fetchInitialData = async (id) => {
         setPageLoading(true)
         const data = {
-            "user_id": 1234,
             "item_id": id,
             "table_name": "get_client_property_lla_view"
         }
@@ -291,7 +290,6 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
             return;
         }
         const data = {
-            "user_id": 1234,
             "id": currItem.id,
             "clientpropertyid": formValues.clientProperty,
             "orderid": formValues.order,
@@ -318,7 +316,6 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
     }, [])
     const getClientPropertyByClientId = async (id) => {
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
 
@@ -331,7 +328,6 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id": 1234,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
@@ -373,7 +369,6 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
         console.log(e)
         if (e.length < 3) return;
         const data = {
-            "user_id": 1234,
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
