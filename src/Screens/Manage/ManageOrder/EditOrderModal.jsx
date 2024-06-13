@@ -134,6 +134,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     const [initialOrderStatus, setInitialOrderStatus] = useState(null)
     const fetchInitialData = async () => {
         setPageLoading(true);
+        console.log(currOrderId)
         const data = {  "id": currOrderId }
         const response = await APIService.getOrderDataById({...data,user_id : user.id})
         const res = await response.json()
@@ -332,7 +333,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     // finish it here
     const fetchInitialHelper = async () => {
         const data = {  "id": currOrderId }
-
+        
         const response = await APIService.getOrderDataById({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
@@ -391,7 +392,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                         </div>
                         }
                         {!pageLoading && <>
-                            {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} setClientName={setClientName} orderText={orderText} setOrderText={setOrderText} />}
+                            {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} propertyData={clientPropertyData} setPropertyData={setClientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} setClientName={setClientName} orderText={orderText} setOrderText={setOrderText} />}
                             {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} currOrderId={currOrderId} />}
                             {selectedDialog == 3 && <EditOrderStatusHistory formValues={formValues} setFormValues={setFormValues} orderId={currOrderId} />}
                         </>
