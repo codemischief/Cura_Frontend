@@ -1,8 +1,9 @@
 import React from 'react'
 import { useState } from 'react';
 import { APIService } from '../../../../services/API';
+import useAuth from '../../../../context/JwtContext';
 const POADetails = ({formValues,setFormValues,relationData,allCountries,initialStates,initialCities}) => {
-
+  const {user} = useAuth()
   const [country, setCountry] = useState(allCountries);
   const [allCity, setAllCity] = useState(initialCities);
   const [allStates, setAllStates] = useState(initialStates);
@@ -17,7 +18,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
    const fetchStateData = async (id) => {
     console.log(id);
     console.log('this is being called')
-    const data = { "user_id": 1234, "country_id": id };
+    const data = { "user_id": user.id, "country_id": id };
     const response = await APIService.getState(data);
     const result = (await response.json()).data;
     console.log('here')
@@ -25,7 +26,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
     setAllStates(result)
 }  
 const fetchCityData = async (id) => {
-  const data = { "user_id": 1234, "state_name": id };
+  const data = { "user_id": user.id, "state_name": id };
   const response = await APIService.getCities(data);
   const result = (await response.json()).data;
   console.log(result);

@@ -5,7 +5,9 @@ import { APIService } from '../../../../services/API';
 import AsyncSelect from "react-select/async"
 // import OrderDropDown from '../../../../Components/Dropdown/OrderDropdown';
 import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
+import useAuth from '../../../../context/JwtContext';
 const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities ,formErrors , orderText, setOrderText}) => {
+    const { user } = useAuth()
     const [tenantOfProperty,setTenantOfProperty] = useState([]);
     const [Salutation, setSalutation] = useState([
         {
@@ -58,8 +60,8 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
     };
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -67,7 +69,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -80,7 +82,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
   const [options,setOptions] = useState([]);
   const fetchClientData = async () => {
      const data = {
-      "user_id" : 1234
+      "user_id" : user.id
      }
      const response = await APIService.getClientAdmin(data)
      const res = await response.json();
@@ -98,7 +100,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
 
   const getClientPropertyByClientId = async (id) => {
     const data = {
-     "user_id" : 1234,
+     "user_id" : user.id,
      "client_id" : id
     }
 
@@ -137,7 +139,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
       console.log(e)
       if(e.length < 3) return ;
       const data = {
-        "user_id" : 1234,
+        "user_id" : user.id,
         "pg_no" : 0,
         "pg_size" : 0,
         "search_key" : e

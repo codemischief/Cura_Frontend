@@ -120,7 +120,7 @@ const ManageClientReceipt = () => {
     };
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
@@ -132,7 +132,7 @@ const ManageClientReceipt = () => {
     const fetchStateData = async (id) => {
         console.log(id);
         const data = {  "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
@@ -177,8 +177,8 @@ const ManageClientReceipt = () => {
     }
     // const fetchUsersData = async () => {
     //     setPageLoading(true);
-    //     // const data = { "user_id":  1234 };
-    //     const data = { "user_id": 1234 };
+    //     // const data = { "user_id":  user.id };
+    //     const data = { "user_id": user.id };
     //     const response = await APIService.getUsers({...data,user_id : user.id})
     //     const result = (await response.json());
 
@@ -194,7 +194,7 @@ const ManageClientReceipt = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = { };
         const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
@@ -209,7 +209,7 @@ const ManageClientReceipt = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
         const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { APIService } from '../../../../services/API';
+import useAuth from '../../../../context/JwtContext';
 const EditLegalInformation = ({formValues,setFormValues,relationData,allCountry,initialStates,initialCities}) => {
-
+ const { user } = useAuth()
 //   const [country, setCountry] = useState(allCountry);
 //   const [state,setAllState] = useState(allState);
   const [allState,setAllState] = useState([]);
@@ -19,7 +20,7 @@ const EditLegalInformation = ({formValues,setFormValues,relationData,allCountry,
    const fetchStateData = async (id) => {
     console.log('hey')
     console.log(id);
-    const data = { "user_id": 1234, "country_id": id };
+    const data = { "user_id": user.id, "country_id": id };
     const response = await APIService.getState(data);
     const result = (await response.json()).data;
     console.log(result)
@@ -32,7 +33,7 @@ const EditLegalInformation = ({formValues,setFormValues,relationData,allCountry,
     }
 }  
 const fetchCityData = async (id) => {
-  const data = { "user_id": 1234, "state_name": id };
+  const data = { "user_id": user.id, "state_name": id };
   const response = await APIService.getCities(data);
   const result = (await response.json()).data;
   console.log(result);

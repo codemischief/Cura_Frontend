@@ -3,8 +3,9 @@ import Checkbox from "@mui/material/Checkbox";
 import { useState , useEffect } from "react";
 // import { APIService } from '../../../../services/API';
 import { APIService } from "../../../../services/API";
+import useAuth from "../../../../context/JwtContext";
 const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,formErrors,builderName}) => {
-   
+    const { user} = useAuth()
     const selectedProjectType =[1,2,3,4];
     const selectedBuilderName = [1,2,3,4];
 
@@ -13,9 +14,9 @@ const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,for
     const [allCity, setAllCity] = useState([]);
 
     const fetchCountryData = async () => {
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {
-            user_id: 1234,
+            user_id: user.id,
             rows: ["id", "name"],
             filters: [],
             sort_by: [],
@@ -34,8 +35,8 @@ const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,for
     };
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { user_id: 1234, country_id: id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { user_id: user.id, country_id: id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -44,7 +45,7 @@ const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,for
         }
     };
     const fetchCityData = async (id) => {
-        const data = { user_id: 1234, state_name: id };
+        const data = { user_id: user.id, state_name: id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);

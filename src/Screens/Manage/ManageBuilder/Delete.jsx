@@ -6,13 +6,15 @@ import { Modal, Button, CircularProgress } from '@mui/material'
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
+import useAuth from '../../../context/JwtContext';
 const Delete = (props) => {
+    const {user} = useAuth()
     const [showLoading, setShowLoading] = useState(false);
     const deleteCountry = async (item) => {
         // props.setShowDelete(true);
         // console.log(props.currentBuilder);
         setShowLoading(true);
-        const data = { "user_id": 1234, "builder_id": props.currentBuilder };
+        const data = { "user_id": user.id, "builder_id": props.currentBuilder };
         console.log(data);
         const response = await APIService.deleteBuilderInfo(data);
         await props.fetchData();

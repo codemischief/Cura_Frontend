@@ -3,7 +3,9 @@ import { Modal } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
+import useAuth from '../../../context/JwtContext';
 const EditCountryModal = (props) => {
+    const {user} = useAuth()
     console.log(props.currentCountry);
     const [showLoading, setShowLoading] = useState(false);
     const [countryName, setCountryName] = useState(props.currentCountry);
@@ -19,7 +21,7 @@ const EditCountryModal = (props) => {
             return;
         }
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "old_country_name": props.currentCountry,
             "new_country_name": countryName,
         }

@@ -170,7 +170,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         }
     }
     // const fetchInitialData = async () => {
-    //    const data = {"user_id":1234,"id": currOrderId}
+    //    const data = {"user_id":user.id,"id": currOrderId}
     // //    console.log({...data,user_id : user.id})
     //    const response = await APIService.getOrderById({...data,user_id : user.id});
     //    const res = await response.json()
