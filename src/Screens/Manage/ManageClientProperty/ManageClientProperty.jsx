@@ -40,9 +40,8 @@ import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
 const ManageClientProperty = () => {
-    const {user} = useAuth()
-    const menuRef = useRef();
-    const {user} = useAuth()
+    const { user } = useAuth()
+    const menuRef = useRef()
     const { state, pathname } = useLocation()
     console.log(pathname)
     console.log(state)
