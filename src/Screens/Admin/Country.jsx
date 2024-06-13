@@ -33,9 +33,11 @@ import ActiveFilter from "../../assets/active_filter.png"
 import AddButton from '../../Components/common/CustomButton';
 import EditButton from '../../Components/common/buttons/EditButton';
 import DeleteButton from '../../Components/common/buttons/deleteButton';
+import useAuth from '../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Country = () => {
   // we have the module here
+  const { user } = useAuth()
   const menuRef = useRef();
   const navigate = useNavigate();
   const { pathname } = useLocation()
@@ -136,7 +138,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -163,7 +165,7 @@ const Country = () => {
       "pg_size": Number(quantity),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -210,7 +212,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -222,7 +224,7 @@ const Country = () => {
   const addCountry = async () => {
 
     const data = { "country_name": formValues.countryName };
-    const response = await APIService.addCountries(data);
+    const response = await APIService.addCountries({...data,user_id : user.id});
     const res = await response.json();
     console.log(res)
     // {
@@ -328,7 +330,7 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(number)
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -358,7 +360,7 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(currentPages)
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -383,7 +385,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": searchQuery
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -417,7 +419,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -452,13 +454,14 @@ const Country = () => {
         "id": "ID"
       }
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const temp = await response.json();
     const result = temp.data;
     console.log(temp)
     if (temp.result == 'success') {
       const d = {
         "filename": temp.filename,
+        "user_id" : user.id
       }
       APIService.download(d, temp.filename).then(response => {
         if (!response.ok) {
@@ -571,7 +574,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
+    const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
     console.log(res)
     setTotalItems(res.total_count);

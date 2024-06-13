@@ -32,9 +32,11 @@ import ActiveFilter from "../../assets/active_filter.png"
 import AddButton from "../../Components/common/CustomButton";
 import EditButton from "../../Components/common/buttons/EditButton";
 import DeleteButton from "../../Components/common/buttons/deleteButton";
+import useAuth from "../../context/JwtContext";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const City = () => {
     const menuRef = useRef();
+    const { user } = useAuth()
     const navigate = useNavigate();
     const {pathname} = useLocation()
     // we have the module here
@@ -77,7 +79,7 @@ const City = () => {
         setPageLoading(true);
         
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
+        const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
         // console.log(result.data);
 
@@ -89,7 +91,7 @@ const City = () => {
     const fetchStateData = async (id) => {
         console.log(id);
         const data = {  "country_id": id };
-        const response = await APIService.getState(data);
+        const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
         if (Array.isArray(result)) {
@@ -136,7 +138,7 @@ const City = () => {
             pg_no: 1,
             pg_size: 15
         };
-        const response = await APIService.getCitiesAdmin(data);
+        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -161,7 +163,7 @@ const City = () => {
             pg_size: Number(quantity),
             search_key: searchInput
         };
-        const response = await APIService.getCitiesAdmin(data);
+        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -233,7 +235,7 @@ const City = () => {
             pg_size: Number(currentPages),
             search_key: searchInput
         };
-        const response = await APIService.getCitiesAdmin(data);
+        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -269,7 +271,7 @@ const City = () => {
             pg_size: Number(currentPages),
             search_key: searchInput,
         };
-        const response = await APIService.getCitiesAdmin(data);
+        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -293,7 +295,7 @@ const City = () => {
             pg_size: Number(currentPages),
             search_key: "",
         };
-        const response = await APIService.getCitiesAdmin(data);
+        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -330,13 +332,14 @@ const City = () => {
                 "id": "ID"
             }
         };
-        const response = await APIService.getCitiesAdmin(data)
+        const response = await APIService.getCitiesAdmin({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
+                "user_id" : user.id
             }
             APIService.download(d, temp.filename).then(response => {
                     if (!response.ok) {
@@ -443,7 +446,7 @@ const City = () => {
             pg_size: Number(currentPages),
             search_key: searchInput,
         };
-        const response = await APIService.getCitiesAdmin(data);
+        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -495,7 +498,7 @@ const City = () => {
             search_key: searchInput,
         };
 
-        const response = await APIService.getCitiesAdmin(data);
+        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -563,7 +566,7 @@ const City = () => {
             "state": formValues.state,
             "countryid": formValues.country
         }
-        const response = await APIService.addCities(data)
+        const response = await APIService.addCities({...data,user_id : user.id})
         const res = await response.json()
         if (res.result == 'success') {
             setShowAddConfirmation(false)
@@ -586,7 +589,7 @@ const City = () => {
         const data = {
             "id": id
         }
-        const response = await APIService.deleteCities(data)
+        const response = await APIService.deleteCities({...data,user_id : user.id})
         const res = await response.json()
         if (res.result === 'success') {
             // delete success

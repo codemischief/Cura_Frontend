@@ -32,9 +32,11 @@ import ActiveFilter from "../../assets/active_filter.png"
 import AddButton from '../../Components/common/CustomButton';
 import EditButton from '../../Components/common/buttons/EditButton';
 import DeleteButton from '../../Components/common/buttons/deleteButton';
+import useAuth from '../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const LOB = () => {
     const menuRef = useRef();
+    const { user } = useAuth()
     const navigate = useNavigate()
     const { pathname } = useLocation()
     const [existingLOB, setExistingLOB] = useState([]);
@@ -75,7 +77,7 @@ const LOB = () => {
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages)
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -95,7 +97,7 @@ const LOB = () => {
             "pg_no": 1,
             "pg_size": Number(number)
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -138,7 +140,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -169,7 +171,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -196,7 +198,7 @@ const LOB = () => {
 
             "name": lobName,
         }
-        const response = await APIService.addLob(data);
+        const response = await APIService.addLob({...data,user_id : user.id});
         const res = await response.json()
         console.log(res);
         setOpenAddConfirmation(false);
@@ -215,7 +217,7 @@ const LOB = () => {
 
             "name": String(name)
         }
-        const response = await APIService.deleteLob(data);
+        const response = await APIService.deleteLob({...data,user_id : user.id});
         setDeleteLobModal(false);
         const res = await response.json()
         console.log("this is the error")
@@ -261,13 +263,14 @@ const LOB = () => {
                 "id": "ID"
             }
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
+                "user_id" : user.id
             }
             APIService.download(d, temp.filename).then(response => {
                 if (!response.ok) {
@@ -316,7 +319,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -410,7 +413,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -506,7 +509,7 @@ const LOB = () => {
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;

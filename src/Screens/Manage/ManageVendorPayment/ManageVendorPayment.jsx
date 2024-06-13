@@ -650,6 +650,7 @@ const ManageVendorPayment = () => {
         setDownloadModal(false);
     }
     const handleDownload = async (type) => {
+        setPageLoading(true);
         const data = {
             "user_id": user.id,
             "rows": [
