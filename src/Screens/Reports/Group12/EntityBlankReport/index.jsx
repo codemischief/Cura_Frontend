@@ -52,7 +52,7 @@ const EntityBlankReport = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows:  [
         "id","clientname","type","date","amount","orderdetails","lobname","service","fy","mode"
       ],
@@ -95,7 +95,7 @@ const EntityBlankReport = () => {
     }
     else {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "id","clientname","type","date","amount","orderdetails","lobname","service","fy","mode"
       ],
@@ -127,7 +127,7 @@ const EntityBlankReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "id","clientname","type","date","amount","orderdetails","lobname","service","fy","mode"
       ],

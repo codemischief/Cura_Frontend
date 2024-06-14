@@ -78,7 +78,7 @@ const PmaInvoiceList = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["buildername", "projectname", "city", "suburb", "contactname", "phone",
         "email", "effectivedate", "role", "tenureenddate", "details"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -118,7 +118,7 @@ const PmaInvoiceList = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: ["buildername", "projectname", "city", "suburb", "contactname", "phone",
           "email", "effectivedate", "role", "tenureenddate", "details"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -154,7 +154,7 @@ const PmaInvoiceList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["buildername", "projectname", "city", "suburb", "contactname", "phone",
         "email", "effectivedate", "role", "tenureenddate", "details"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,

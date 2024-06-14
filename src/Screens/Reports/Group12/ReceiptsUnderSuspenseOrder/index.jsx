@@ -52,7 +52,7 @@ const ReceiptsUnderSuspenseOrder = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "clientname", "orderdesc", "recddate", "paymentmode", "paymentby", "amount", "receiptdescription"
       ],
@@ -94,7 +94,7 @@ const ReceiptsUnderSuspenseOrder = () => {
     }
     else {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "clientname", "orderdesc", "recddate", "paymentmode", "paymentby", "amount", "receiptdescription"
         ],
@@ -126,7 +126,7 @@ const ReceiptsUnderSuspenseOrder = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "clientname", "orderdesc", "recddate", "paymentmode", "paymentby", "amount", "receiptdescription"
       ],

@@ -20,9 +20,11 @@ import { CloseOutlined, Refresh } from "@mui/icons-material";
 import { FilePdfOutlined } from "@ant-design/icons";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png";
+import useAuth from '../../../context/JwtContext';
 
 const BankBalanceReconcilation = () => {
     const dispatch = useDispatch();
+    const { user } = useAuth(); 
     const { bankBalanceReconcilation, isLoading } = useSelector((state) => state.bankBalanceReconcilation);
     const [startDate, setStartDate] = useState(new Date().toLocaleDateString('en-CA'));
     const [showTable, setShowTable] = useState(false);
@@ -43,7 +45,7 @@ const BankBalanceReconcilation = () => {
         const data = {
             "user_id": 1234
         }
-        const response = await APIService.getModesAdmin(data);
+        const response = await APIService.getModesAdmin({ ...data, user_id: user.id });
         const result = (await response.json());
         setPaymentMode(result.data);
 
@@ -61,7 +63,7 @@ const BankBalanceReconcilation = () => {
 
     const handleRefresh = () => {
         let obj = {
-            user_id: 1234,
+            // user_id: 1234,
             startdate: startDate ?? "2021-01-01",
             bankName: bankName,
             rows: "*",
@@ -79,7 +81,7 @@ const BankBalanceReconcilation = () => {
 
     const downloadExcel = async () => {
         let obj = {
-            user_id: 1234,
+            // user_id: 1234,
             startdate: startDate ?? "2021-01-01",
             bankName: bankName,
             rows: ["bankname", "payment", "receipt","balance"],
@@ -100,7 +102,7 @@ const BankBalanceReconcilation = () => {
             dispatch(setInitialState())
             setShowTable(true);
             let obj = {
-                user_id: 1234,
+                // user_id: 1234,
                 startdate: startDate ?? "2021-01-01",
                 bankName: bankName,
                 rows: "*",

@@ -74,7 +74,7 @@ const ClientStatementByDate = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         startdate: startDate,
         enddate: endDate,
         rows: ["type",
@@ -126,7 +126,7 @@ const ClientStatementByDate = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         startdate: startDate,
         enddate: endDate,
         rows: ["type",
@@ -173,7 +173,7 @@ const ClientStatementByDate = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       startdate: startDate,
       enddate: endDate,
       rows: ["type",

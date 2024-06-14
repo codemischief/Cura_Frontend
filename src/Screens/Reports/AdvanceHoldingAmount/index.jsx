@@ -77,7 +77,7 @@ const PmaInvoiceList = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["clientname", "payments", "receipts"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -116,7 +116,7 @@ const PmaInvoiceList = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: ["clientname", "payments", "receipts"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -151,7 +151,7 @@ const PmaInvoiceList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["clientname", "payments", "receipts"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),

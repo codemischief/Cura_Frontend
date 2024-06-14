@@ -24,9 +24,12 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth(); 
+
   const {
     entityReceiptPaymentsData,
     status,
@@ -50,7 +53,7 @@ const LobReceiptPayments = () => {
 
   const fetchEntitiesData = async () => {
     const data = { "user_id": 1234 };
-    const response = await APIService.getEntityAdmin(data)
+    const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
     const result = (await response.json());
     console.log(result.data);
 
@@ -85,7 +88,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     if (startDate && endDate && entity) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
@@ -127,7 +130,7 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (startDate && endDate && entity) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
@@ -165,7 +168,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       entityName: entity,

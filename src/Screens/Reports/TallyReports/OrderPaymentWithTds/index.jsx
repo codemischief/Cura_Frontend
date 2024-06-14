@@ -20,9 +20,11 @@ import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
+import useAuth from "../../../../context/JwtContext";
 
 const OrderPaymentWithTdsView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     orderPaymentWithTdsView,
     status,
@@ -70,8 +72,8 @@ const OrderPaymentWithTdsView = () => {
     const data = {
       user_id: 1234,
     };
-    const mode = await APIService.getModesAdmin(data);
-    const entity = await APIService.getEntityAdmin(data);
+    const mode = await APIService.getModesAdmin({...data , user_id:user.id});
+    const entity = await APIService.getEntityAdmin({...data , user_id:user.id});
     setEntityData((await entity.json()).data);
     setModeData((await mode.json()).data);
   };
@@ -89,7 +91,7 @@ const OrderPaymentWithTdsView = () => {
       intialFields.entity
     ) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "uniqueid",
           "date",
@@ -146,7 +148,7 @@ const OrderPaymentWithTdsView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "uniqueid",
           "date",
@@ -196,7 +198,7 @@ const OrderPaymentWithTdsView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "uniqueid",
         "date",

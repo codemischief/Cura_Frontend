@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../../utils/axios";
 import FileSaver from "file-saver";
 import {
   agedOrder,
@@ -101,9 +101,11 @@ export const dowmloadData =
         `${env_URL_SERVER}reportAgedOrders`,
         payloadObj
       );
-      if ((response.data.filename, payloadObj.user_id)) {
+      if ((response.data.filename, response.data.user_id
+      )) {
         await dispatch(
-          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+          downloadXlsEndpoint(response.data.filename,response.data.user_id
+          )
         );
       }
       dispatch(setStatus("success"));

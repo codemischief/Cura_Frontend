@@ -78,7 +78,7 @@ const PmaClientReport = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
         "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
         "bankaccounttype"],
@@ -119,7 +119,7 @@ const PmaClientReport = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
           "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
           "bankaccounttype"],
@@ -156,7 +156,7 @@ const PmaClientReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
         "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
         "bankaccounttype"],

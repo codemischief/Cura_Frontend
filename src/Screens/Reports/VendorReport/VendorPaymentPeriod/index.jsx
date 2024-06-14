@@ -73,7 +73,7 @@ const VendorPaymentPeriodView = () => {
       intialFields.end_date 
     ) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
         ],
@@ -116,7 +116,7 @@ const VendorPaymentPeriodView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
         ],
@@ -155,7 +155,7 @@ const VendorPaymentPeriodView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
       ],

@@ -25,9 +25,11 @@ import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
 import { APIService } from "../../../services/API";
 import AsyncSelect from "react-select/async";
+import useAuth from "../../../context/JwtContext";
 
 const LLlistReport = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth(); 
   const {
     LLlist,
     status,
@@ -95,12 +97,12 @@ const LLlistReport = () => {
   const loadOptions = async (e) => {
     if (e.length < 2) return;
     const data = {
-      user_id: 1234,
+      // user_id: 1234,
       pg_no: 0,
       pg_size: 0,
       search_key: e,
     };
-    const response = await APIService.getClientAdminPaginated(data);
+    const response = await APIService.getClientAdminPaginated({ ...data, user_id: user.id });
     const res = await response.json();
     const results = res.data.map((e) => {
       return {
@@ -117,9 +119,9 @@ const LLlistReport = () => {
 
   const statusFetch = async () => {
     const data = {
-      user_id: 1234,
+      // user_id: 1234,
     };
-    const response = await APIService.getPaymentStatusAdmin(data);
+    const response = await APIService.getPaymentStatusAdmin({ ...data, user_id: user.id });
     const result = await response.json();
     setData((prev) => ({ ...prev, StatusData: [...result.data] }));
   };
@@ -127,7 +129,7 @@ const LLlistReport = () => {
 
   const typeFetch = async () => {
     const data = { user_id: 1234 };
-    const response = await APIService.getClientTypeAdmin(data);
+    const response = await APIService.getClientTypeAdmin({ ...data, user_id: user.id });
     const res = await response.json();
     setData((prev) => ({ ...prev, TypeData: [...res.data] }));
   }
@@ -143,7 +145,7 @@ const LLlistReport = () => {
   const handleRefresh = () => {
     if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: ["clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
@@ -191,7 +193,7 @@ const LLlistReport = () => {
   useEffect(() => {
     if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
@@ -235,7 +237,7 @@ const LLlistReport = () => {
 
   const handleClient = async (value) => {
     const data = { user_id: 1234, "client_id": value.value, };
-    const response = await APIService.getClientPropertyByClientId(data);
+    const response = await APIService.getClientPropertyByClientId({ ...data, user_id: user.id });
     const res = await response.json();
     console.log(res, "resresresresres");
     setData((prev) => ({ ...prev, ClientPropertyData: [...res.data] }));
@@ -246,7 +248,7 @@ const LLlistReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clienttypename", 
          "propertydescription","property_status","status","registrationtype","paymentcycle",

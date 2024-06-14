@@ -75,7 +75,7 @@ const OwnerMailId = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "email"
       ],
@@ -116,7 +116,7 @@ const OwnerMailId = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "email"
         ],
@@ -150,7 +150,7 @@ const OwnerMailId = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "email"
       ],
@@ -167,6 +167,27 @@ const OwnerMailId = () => {
     };
     dispatch(downloadDataXls(obj))
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      rows: [
+        "email"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/ownerMailId",
+      colmap: {
+       "email": "Email 1",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate) {
@@ -239,6 +260,7 @@ const OwnerMailId = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             height="calc(100vh - 12rem)"
           />
         </div>

@@ -55,7 +55,7 @@ const OwnerPhoneNo = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "name", "phoneno", "phoneno1", "phoneno2"
       ],
@@ -94,7 +94,7 @@ const OwnerPhoneNo = () => {
   useEffect(() => {
     if (phoneNoType) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "name", "phoneno", "phoneno1", "phoneno2"
         ],
@@ -134,7 +134,7 @@ const OwnerPhoneNo = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["name", "phoneno", "phoneno1", "phoneno2"
 
       ],
@@ -155,6 +155,31 @@ const OwnerPhoneNo = () => {
     };
     dispatch(downloadOwnersPhoneNo(obj));
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      rows: [
+        "name", "phoneno", "phoneno1", "phoneno2"
+      ],
+      type:phoneNoType,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/ownerphoneno",
+      colmap: {
+        name: "Name",
+        phoneno: "Phone Number",
+        phoneno1: "Phone Number 1",
+        phoneno2: "Phone Number 2"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadOwnersPhoneNo(obj, 'pdf'))
+  }
 
   return (
     <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
@@ -251,6 +276,7 @@ const OwnerPhoneNo = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
+          downloadPdf={downloadPdf}
           height="calc(100vh - 18rem)"
         />
       </div>

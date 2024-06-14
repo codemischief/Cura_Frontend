@@ -20,9 +20,11 @@ import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
+import useAuth from "../../../../context/JwtContext";
 
 const VendorStatementView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth()
   const {
     vendorStatementView,
     status,
@@ -68,7 +70,7 @@ const VendorStatementView = () => {
     const data = {
       user_id: 1234,
     };
-    const vendor = await APIService.getVendorAdmin(data);
+    const vendor = await APIService.getVendorAdmin({...data , user_id:user.id});
     console.log(vendor,"vendor");
     setVendor((await vendor.json()).data);
   };
@@ -84,7 +86,7 @@ const VendorStatementView = () => {
       intialFields.vendor
     ) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
           "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
@@ -132,7 +134,7 @@ const VendorStatementView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
           "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
@@ -171,7 +173,7 @@ const VendorStatementView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
           "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"

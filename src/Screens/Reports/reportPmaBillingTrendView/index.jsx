@@ -90,7 +90,7 @@ const PmaBillingTrendView = () => {
       // }
       const startYear = startDate.getFullYear()
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         fy: String(startYear),
         rows: ["clientname",
           "jan",
@@ -142,7 +142,7 @@ const PmaBillingTrendView = () => {
     if (startDate) {
       const startYear = startDate.getFullYear()
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         fy: String(startYear),
         rows: ["clientname",
           "jan",
@@ -191,7 +191,7 @@ const PmaBillingTrendView = () => {
     const startYear = startDate.getFullYear()
     let obj = {
 
-      user_id: 1234,
+      // user_id: 1234,
       fy: String(startYear),
       rows: ["clientname",
         "jan",
