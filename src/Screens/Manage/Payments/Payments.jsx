@@ -43,12 +43,14 @@ import AddButton from "../../../Components/common/CustomButton.jsx";
 import EditButton from "../../../Components/common/buttons/EditButton.jsx";
 import DeleteButton from "../../../Components/common/buttons/deleteButton.jsx";
 import useAuth from "../../../context/JwtContext.jsx";
+import checkEditAccess from "../../../Components/common/checkRoleBase.js";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 const Payments = () => {
   const { user } = useAuth()
   const menuRef = useRef();
   const navigate = useNavigate();
-  const { pathname } = useLocation()
+  const { pathname } = useLocation();
+  const canEdit = checkEditAccess();
   const [totalItems, setTotalItems] = useState(0);
   const [currentPages, setCurrentPages] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
@@ -1646,7 +1648,7 @@ const Payments = () => {
                 </p>
               </div>
               <div className="w-1/2 p-4">
-                <p>Edit</p>
+                <p>{canEdit? "Edit": ""}</p>
               </div>
             </div>
           </div>
