@@ -97,7 +97,7 @@ const ManageOrderReceipt = () => {
 
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
@@ -109,7 +109,7 @@ const ManageOrderReceipt = () => {
     const fetchStateData = async (id) => {
         console.log(id);
         const data = {  "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
@@ -135,7 +135,7 @@ const ManageOrderReceipt = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
         const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
@@ -150,7 +150,7 @@ const ManageOrderReceipt = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
         const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
@@ -431,8 +431,8 @@ const ManageOrderReceipt = () => {
             "entityid": 1,
             "officeid": 1
         }
-        // "user_id":1234,
-        // "receivedby": 1234,
+        // "user_id":user.id,
+        // "receivedby": user.id,
         // "amount": 20000,
         // "tds": null,
         // "recddate": "2014-04-14",
@@ -1030,7 +1030,7 @@ const ManageOrderReceipt = () => {
 
         if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
 
-
+        
         fetchFiltered(existing);
     }
     const [filterState, setFilterState] = useState([]);
@@ -1049,21 +1049,21 @@ const ManageOrderReceipt = () => {
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
-        Object.keys(filterMapState).forEach((key) => {
-            if (filterMapState[key].filterType != "") {
-                if (filterMapState[key].filterData == 'Numeric') {
+        Object.keys(mapState).forEach((key) => {
+            if (mapState[key].filterType != "") {
+                if (mapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
-                        filterMapState[key].filterType,
-                        Number(filterMapState[key].filterValue),
-                        filterMapState[key].filterData,
+                        mapState[key].filterType,
+                        Number(mapState[key].filterValue),
+                        mapState[key].filterData,
                     ]);
                 } else {
                     tempArray.push([
                         key,
-                        filterMapState[key].filterType,
-                        filterMapState[key].filterValue,
-                        filterMapState[key].filterData,
+                        mapState[key].filterType,
+                        mapState[key].filterValue,
+                        mapState[key].filterData,
                     ]);
                 }
             }

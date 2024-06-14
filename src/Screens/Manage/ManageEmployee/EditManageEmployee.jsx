@@ -7,7 +7,9 @@ import Draggable from 'react-draggable';
 import Checkbox from '@mui/material/Checkbox';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import UsernameDropDown from '../../../Components/Dropdown/UsernameDropDown';
+import useAuth from '../../../context/JwtContext';
 const EditManageEmployee = (props) => {
+    const {user} = useAuth()
     console.log(props.item);
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
@@ -23,7 +25,7 @@ const EditManageEmployee = (props) => {
     const [currentCountry, setCurrentCountry] = useState("");
     const [allItem, setAllItem] = useState([]);
     const fetchCountryData = async () => {
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         setAllCountry(result)
@@ -31,8 +33,8 @@ const EditManageEmployee = (props) => {
     const fetchStateData = async (id) => {
         // console.log(id);
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -43,7 +45,7 @@ const EditManageEmployee = (props) => {
         // console.log("hy")
         if (name == null) return
         console.log(name);
-        const data = { "user_id": 1234, "state_name": name };
+        const data = { "user_id": user.id, "state_name": name };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -52,8 +54,8 @@ const EditManageEmployee = (props) => {
     }
 
     const fetchUsersData = async () => {
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, };
         const response = await APIService.getUsers(data)
         const result = (await response.json()).data;
         // console.log(result);
@@ -64,8 +66,8 @@ const EditManageEmployee = (props) => {
     }
 
     const fetchRoleData = async () => {
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, };
         const response = await APIService.getRoles(data)
         const result = (await response.json()).data;
         console.log(result);
@@ -76,8 +78,8 @@ const EditManageEmployee = (props) => {
     }
 
     const fetchEntitiesData = async () => {
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json()).data;
         console.log(result);
@@ -89,7 +91,7 @@ const EditManageEmployee = (props) => {
 
     const fetchLobData = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [],
@@ -108,7 +110,7 @@ const EditManageEmployee = (props) => {
     const fetchEmployeeData = async () => {
         setEditPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "table_name": "employee",
             "item_id": props.item.id
         }
@@ -162,7 +164,7 @@ const EditManageEmployee = (props) => {
 
     const handleEdit = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": formValues.id,
             "employeename": formValues.employeename,
             "employeeid": formValues.employeeid,
@@ -183,7 +185,7 @@ const EditManageEmployee = (props) => {
             "lobid": formValues.lob,
             "zip": formValues.zip,
             "dated": formValues.dated,
-            "createdby": 1234,
+            "createdby": user.id,
             "isdeleted": formValues.isdeleted,
             "entityid": Number(formValues.entityid),
             "lastdateofworking": formValues.lastdateofworking,
@@ -208,7 +210,7 @@ const EditManageEmployee = (props) => {
     const initialValues = {
         employeeName: null,
         panNo: null,
-        userName: 1234,
+        userName: user.id,
         doj: null,
         designation: null,
         email: null,
@@ -650,7 +652,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         
                                         <div className="">
-                                            <div className="text-[13px]">Entities <label className="text-red-500">*</label></div>
+                                            <div className="text-[13px]">Entity <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="entityid"
                                                 value={formValues.entityid}

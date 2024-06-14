@@ -36,6 +36,7 @@ import useAuth from '../../context/JwtContext';
 
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Locality = () => {
+    
     const menuRef = useRef();
     const { user } = useAuth()
     const { pathname } = useLocation()
@@ -123,8 +124,8 @@ const Locality = () => {
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         // console.log(result.data);
@@ -136,8 +137,8 @@ const Locality = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -146,7 +147,7 @@ const Locality = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -188,7 +189,7 @@ const Locality = () => {
         console.log(tempArray)
         setCurrentPage(pageNumber);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -217,7 +218,7 @@ const Locality = () => {
         })
         console.log(tempArray)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -265,7 +266,7 @@ const Locality = () => {
         console.log('here is the call')
         console.log(tempArray)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -297,7 +298,7 @@ const Locality = () => {
         console.log(tempArray)
         setSortField(field);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": filterState,
             "sort_by": [field],
@@ -329,7 +330,7 @@ const Locality = () => {
     }
     const addLocality = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "cityid": formValues.city,
             "locality": formValues.locality
         }
@@ -410,7 +411,7 @@ const Locality = () => {
         setPageLoading(true)
         setBackDropLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["country", "state", "city", "locality", "id"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -435,7 +436,7 @@ const Locality = () => {
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
             APIService.download(d, temp.filename).then(response => {
                 if (!response.ok) {
@@ -479,7 +480,7 @@ const Locality = () => {
         setSortField("id");
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "country", "city", "state", "locality"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -520,7 +521,7 @@ const Locality = () => {
         setIsSearchOn(false);
         setCurrentPage((prev) => 1)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -540,7 +541,7 @@ const Locality = () => {
     }
     const deleteLocality = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": Number(id)
         };
         const response = await APIService.deleteLocality(data);
@@ -663,7 +664,7 @@ const Locality = () => {
         console.log(tempArray)
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": tempArray,
             "sort_by": [sortField],

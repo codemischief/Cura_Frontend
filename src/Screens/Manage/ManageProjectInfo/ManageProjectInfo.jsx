@@ -50,9 +50,7 @@ const ManageProjectInfo = () => {
         "mailgroup1", 
         "mailgroup2", 
         "rules", 
-        "tenantstudentsallowed", 
-        "tenantworkingbachelorsallowed", 
-        "tenantforeignersallowed", 
+        "tenant",
         "id",
     ]
     const menuRef = useRef();
@@ -187,6 +185,7 @@ const ManageProjectInfo = () => {
                 setMailGroupFilter(false)
                 setSubscribedEmailFilter(false)
                 setRulesFilter(false)
+                setTenantFilter(false)
                 setIdFilter(false)
             }
         }
@@ -481,7 +480,7 @@ const ManageProjectInfo = () => {
         setPageLoading(true)
         const data = {
             "user_id": user.id,
-            "rows": ["projectname","buildername","suburb","otherdetails","mailgroup1","mailgroup2","rules","tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed"
+            "rows": ["projectname","buildername","suburb","otherdetails","mailgroup1","mailgroup2","rules","tenant"
             ],
             "filters": stateArray,
             "sort_by": [sortField],
@@ -499,9 +498,7 @@ const ManageProjectInfo = () => {
                 "mailgroup1" : "Mailgroup",
                 "mailgroup2" : "Subscribed Mail",
                 "rules" : "Rules",
-                "tenantstudentsallowed" : "Tenant Students Allowed",
-                "tenantworkingbachelorsallowed" : "Tenant Bachelors Allowed",
-                "tenantforeignersallowed" : "Tenant Foreigners Allowed",
+                "tenant": "Tenant",
                 "id" : "ID"
             }
         };
@@ -557,7 +554,7 @@ const ManageProjectInfo = () => {
             "sort_by": [sortField],
             "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
-            "pq_size": Number(currentPages),
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         }
         const response = await APIService.getProjectInfo(data)
@@ -757,6 +754,8 @@ const ManageProjectInfo = () => {
     const [subscribedEmailFilterInput, setSubscribedEmailFilterInput] = useState("");
     const [rulesFilter, setRulesFilter] = useState(false);
     const [rulesFilterInput, setRulesFilterInput] = useState("");
+    const [tenantFilter,setTenantFilter] = useState(false)
+    const [tenantFilterInput,setTenantFilterInput] = useState("")
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
 
@@ -800,6 +799,12 @@ const ManageProjectInfo = () => {
         rules: {
             filterType: "",
             filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        tenant : {
+            filterType: "",
+            filterValue: null,
             filterData: "String",
             filterInput: ""
         },
@@ -855,6 +860,7 @@ const ManageProjectInfo = () => {
                 setMailGroupFilter(false)
                 setSubscribedEmailFilter(false)
                 setRulesFilter(false)
+                setTenantFilter(false)
                 setIdFilter(false)
         // we need to query thru the object
         // console.log(filterMapState);
@@ -1154,12 +1160,21 @@ const ManageProjectInfo = () => {
                                 </div>
                                 {rulesFilter && <CharacterFilter inputVariable={rulesFilterInput} setInputVariable={setRulesFilterInput} handleFilter={newHandleFilter} filterColumn="rules" menuRef={menuRef} filterType={filterMapState.rules.filterType}/>}
                             </div>
-                            {/* <div className='w-[12%] px-3 py-2.5'>
+                            <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                    <button className='w-[30%] px-1 py-2' ><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={tenantFilterInput} onChange={(e) => setTenantFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,tenantFilterInput,
+                                        setTenantFilterInput,
+                                        'contains',
+                                        'tenant')}
+                                    
+                                    />
+                                    {filterMapState.tenant.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTenantFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTenantFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                            </div> */}
+                                {tenantFilter && <CharacterFilter filterColumn='tenant' inputVariable={tenantFilterInput} setInputVariable={setTenantFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.tenant.filterType} />}
+                            </div>
                         </div>
                         <div className="w-[12%] px-3 py-2.5">
                             <div className='w-[65%]  '>
@@ -1231,7 +1246,7 @@ const ManageProjectInfo = () => {
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='p-3'>
-                                    <p>Tenant </p>
+                                    <p>Tenant <button onClick={() => handleSort('tenant')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
@@ -1301,13 +1316,7 @@ const ManageProjectInfo = () => {
                                     </div>
                                     <div className='w-[12%]  flex pl-1.5'>
                                         <div className='pl-3 overflow-x-hidden'>
-                                            <p>{item.tenantworkingbachelorsallowed || item.tenantforeignersallowed || item.tenantstudentsallowed}</p>
-                                            <p>
-                                                {`${item.tenantworkingbachelorsallowed ? "Tenant Working Bachelors Allowed," : ""}
-                                                  ${item.tenantforeignersallowed ? "Tenant Foregners Allowed," : ""}
-                                                  ${item.tenantstudentsallowed ? "Tenant Students Allowed," : ""}
-                                                `}
-                                            </p>
+                                            {item.tenant}
                                         </div>
                                     </div>
                                 </div>
@@ -1337,7 +1346,7 @@ const ManageProjectInfo = () => {
 
             </div>
 
-            <div className='w-full h-12 flex justify-between px-6 bg-white fixed'>
+            <div className='w-full h-12 flex justify-between px-6 bg-white fixed bottom-0'>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>

@@ -89,6 +89,7 @@ const OrderReceiptList = () => {
           "date",
           "type",
           "description",
+          "property",
           "amount",
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -134,6 +135,7 @@ const OrderReceiptList = () => {
           "date",
           "type",
           "description",
+          "property",
           "amount",
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : "",
@@ -175,6 +177,7 @@ const OrderReceiptList = () => {
         "date",
         "type",
         "description",
+        "property",
         "amount",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
@@ -183,6 +186,7 @@ const OrderReceiptList = () => {
         "date": "Date",
         "type": "Type",
         "description": "Description",
+        "property" : "Property",
         "amount": "Amount",
       },
       filters: formatedFilterData(filter),
@@ -212,6 +216,7 @@ const OrderReceiptList = () => {
         "date",
         "type",
         "description",
+        "property",
         "amount",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
@@ -221,6 +226,7 @@ const OrderReceiptList = () => {
         "date": "Date",
         "type": "Type",
         "description": "Description",
+        "property" : "Property",
         "amount": "Amount",
       },
       filters: formatedFilterData(filter),
@@ -233,6 +239,9 @@ const OrderReceiptList = () => {
   }
   const handleShow = () => {
     if(startDate && endDate && selectedOption.value){
+      setClientname(selectedOption.label)
+      setUiStartDate(startDate)
+      setuiEndDate(endDate)
       dispatch(setInitialState());
       setShowTable(true);
       setHeight("calc(100vh - 24rem)")
@@ -245,7 +254,9 @@ const OrderReceiptList = () => {
     label: "Enter Client Name",
     value: null
   });
-
+  const [clientname,setClientname] = useState("")
+  const [uiStartDate,setUiStartDate] = useState("")
+  const [uiEndDate,setuiEndDate] = useState("")
   const handleClientNameChange = (e) => {
     console.log('hey')
     console.log(e)
@@ -289,10 +300,17 @@ const OrderReceiptList = () => {
         "date",
         "type",
         "description",
+        "property",
         "amount",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
-
+      colmap : {
+        "date" : "Date",
+        "type" : "Type",
+        "description" : "Description",
+        "property" : "Property",
+        "amount" : "Amount",
+      },
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
@@ -456,7 +474,7 @@ const OrderReceiptList = () => {
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
                 <div className="">Client Name</div>
-                <div className="">{selectedOption.label}</div>
+                <div className="">{clientname}</div>
               </div>
             </Stack>
             <Stack
@@ -465,7 +483,7 @@ const OrderReceiptList = () => {
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
                 <div className="">Data Range</div>
-                <div className="">{formatDate(startDate)} To {formatDate(endDate)}</div>
+                <div className="">{formatDate(uiStartDate)} To {formatDate(uiEndDate)}</div>
               </div>
             </Stack>
             <Stack

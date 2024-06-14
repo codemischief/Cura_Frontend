@@ -40,8 +40,8 @@ import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
 const ManageClientProperty = () => {
-    const menuRef = useRef();
-    const {user} = useAuth()
+    const { user } = useAuth()
+    const menuRef = useRef()
     const { state, pathname } = useLocation()
     console.log(pathname)
     console.log(state)
@@ -177,7 +177,7 @@ const ManageClientProperty = () => {
     const fetchStateData = async (id) => {
         console.log(id);
         const data = {  "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
@@ -202,7 +202,7 @@ const ManageClientProperty = () => {
     }
     const fetchUsersData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
         const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
@@ -219,7 +219,7 @@ const ManageClientProperty = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
         const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
@@ -234,7 +234,7 @@ const ManageClientProperty = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
         const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
@@ -1882,7 +1882,7 @@ const ManageClientProperty = () => {
 
                             <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
                                 <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
-                                    <div>Project Information</div>
+                                    <div>Property Information</div>
                                 </div>
                                 <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
                                     <div>Photos</div>

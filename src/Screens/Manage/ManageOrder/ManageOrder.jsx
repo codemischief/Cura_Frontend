@@ -42,6 +42,22 @@ import { userId } from '../../../utils/axios';
 import useAuth from '../../../context/JwtContext';
 const ManageOrder = () => {
     // we have the module here
+    const datarows = [
+                "clientname",
+                "clientid",
+                "ownername",
+                "briefdescription",
+                "clientproperty",
+                "servicename",
+                "orderstatus",
+                "earlieststartdate",
+                "expectedcompletiondate",
+                "orderdate",
+                "ageing",
+                "createdbyname",
+                "id",
+
+    ]
     const menuRef = useRef();
     const navigate = useNavigate()
     const {user} = useAuth()
@@ -59,6 +75,7 @@ const ManageOrder = () => {
     const [isSearchOn, setIsSearchOn] = useState(false);
     const [stateArray, setStateArray] = useState([]);
     const [sortField, setSortField] = useState("id");
+    const [submit,setSubmit] = useState(false)
     const handlePageChange = (event, value) => {
 
         setCurrentPage(value)
@@ -82,36 +99,19 @@ const ManageOrder = () => {
         setPageLoading(true);
         const data = {
             "rows": [
-                "id",
-                "clientid",
                 "clientname",
-                "orderdate",
+                "clientid",
+                "ownername",
+                "briefdescription",
+                "clientproperty",
+                "servicename",
+                "orderstatus",
                 "earlieststartdate",
                 "expectedcompletiondate",
-                "actualcompletiondate",
-                "owner",
-                "ownername",
-                "comments",
-                "status",
-                "orderstatus",
-                "briefdescription",
-                "additionalcomments",
-                "service",
-                "servicename",
-                "clientpropertyid",
-                "clientproperty",
-                "vendorid",
-                "vendorname",
-                "assignedtooffice",
-                "officename",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "entityid",
-                "entity",
-                "tallyledgerid",
+                "orderdate",
                 "ageing",
-                "createdbyname"
+                "createdbyname",
+                "id"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -134,38 +134,7 @@ const ManageOrder = () => {
         setPageLoading(true);
         setCurrentPage(pageNumber)
         const data = {
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderdate",
-                "earlieststartdate",
-                "expectedcompletiondate",
-                "actualcompletiondate",
-                "owner",
-                "ownername",
-                "comments",
-                "status",
-                "orderstatus",
-                "briefdescription",
-                "additionalcomments",
-                "service",
-                "servicename",
-                "clientpropertyid",
-                "clientproperty",
-                "vendorid",
-                "vendorname",
-                "assignedtooffice",
-                "officename",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "entityid",
-                "entity",
-                "tallyledgerid",
-                "ageing",
-                "createdbyname"
-            ],
+            "rows": datarows,
             "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -186,38 +155,7 @@ const ManageOrder = () => {
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         const data = {
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderdate",
-                "earlieststartdate",
-                "expectedcompletiondate",
-                "actualcompletiondate",
-                "owner",
-                "ownername",
-                "comments",
-                "status",
-                "orderstatus",
-                "briefdescription",
-                "additionalcomments",
-                "service",
-                "servicename",
-                "clientpropertyid",
-                "clientproperty",
-                "vendorid",
-                "vendorname",
-                "assignedtooffice",
-                "officename",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "entityid",
-                "entity",
-                "tallyledgerid",
-                "ageing",
-                "createdbyname"
-            ],
+            "rows": datarows,
             "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -246,7 +184,7 @@ const ManageOrder = () => {
         fetchData();
         fetchUsersData()
         fetchOrderStatusData()
-        fetchClientPropertyData()
+        // fetchClientPropertyData()
         fetchServiceData()
         fetchVendorData()
         fetchTallyLedgerData()
@@ -303,6 +241,7 @@ const ManageOrder = () => {
     }
     const [formErrors, setFormErrors] = useState({});
     const validate = () => {
+        console.log(formValues)
         var res = true
         if (formValues.order_info.owner === "" || formValues.order_info.owner === null) {
             res = false
@@ -347,7 +286,7 @@ const ManageOrder = () => {
             }))
         }
 
-        if (formValues.order_info.clientid === "" || formValues.order_info.clientid === null) {
+        if (formValues.order_info.clientid === "" || formValues.order_info.clientid === null || !formValues.order_info.clientid) {
             res = false
             setFormErrors((existing) => ({
                 ...existing,
@@ -381,6 +320,7 @@ const ManageOrder = () => {
     const [formValues, setFormValues] = useState(initialValues)
     const [currOrderName, setCurrOrderName] = useState(-1);
     const handleAddOrder = () => {
+
         console.log(formErrors);
         if (!validate()) {
             setSelectedDialogue(1);
@@ -391,6 +331,8 @@ const ManageOrder = () => {
 
     }
     const addOrder = async () => {
+        console.log('clicked')
+        setSubmit(true)
         console.log(formValues)
         const data = {
             "order_info": {
@@ -413,16 +355,10 @@ const ManageOrder = () => {
             },
             "order_photos": formValues.order_photos
         }
-        const d = {
-            "orderid": currOrderId,
-            "statusid": Number(formValues.order_info.status)
-        }
-        const statusresponse = await APIService.addOrderStatusChange(d);
-        const statusres = await statusresponse.json();
-        // console.log(res)
         const response = await APIService.addOrder({...data,user_id : user.id});
         const res = await response.json();
         if (res.result == 'success') {
+            
             const d = {
                 "user_id" : user.id,
                 "orderid": res.data['inserted data'],
@@ -434,6 +370,8 @@ const ManageOrder = () => {
             setShowAddConfirmation(false);
             setFormValues(initialValues);
             openAddSuccess();
+            initials()
+            setSubmit(false)
         } else {
             // we need to open failure modal
 
@@ -484,24 +422,6 @@ const ManageOrder = () => {
                 "ageing",
                 "createdbyname",
                 "id",
-                // "clientid",
-                // "actualcompletiondate",
-                // "owner",
-                // "comments",
-                // "status",
-                // "additionalcomments",
-                // "service",
-                // "clientpropertyid",
-                // "vendorid",
-                // "vendorname",
-                // "assignedtooffice",
-                // "officename",
-                // "dated",
-                // "createdby",
-                // "isdeleted",
-                // "entityid",
-                // "entity",
-                // "tallyledgerid",
             ],
             "filters": stateArray,
             "sort_by": [sortField],
@@ -566,38 +486,7 @@ const ManageOrder = () => {
         setCurrentPage(1);
         setIsSearchOn(true);
         const data = {
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderdate",
-                "earlieststartdate",
-                "expectedcompletiondate",
-                "actualcompletiondate",
-                "owner",
-                "ownername",
-                "comments",
-                "status",
-                "orderstatus",
-                "briefdescription",
-                "additionalcomments",
-                "service",
-                "servicename",
-                "clientpropertyid",
-                "clientproperty",
-                "vendorid",
-                "vendorname",
-                "assignedtooffice",
-                "officename",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "entityid",
-                "entity",
-                "tallyledgerid",
-                "ageing",
-                "createdbyname"
-            ],
+            "rows": datarows,
             "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -621,38 +510,7 @@ const ManageOrder = () => {
         setSearchInput("");
         const data = {
             
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderdate",
-                "earlieststartdate",
-                "expectedcompletiondate",
-                "actualcompletiondate",
-                "owner",
-                "ownername",
-                "comments",
-                "status",
-                "orderstatus",
-                "briefdescription",
-                "additionalcomments",
-                "service",
-                "servicename",
-                "clientpropertyid",
-                "clientproperty",
-                "vendorid",
-                "vendorname",
-                "assignedtooffice",
-                "officename",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "entityid",
-                "entity",
-                "tallyledgerid",
-                "ageing",
-                "createdbyname"
-            ],
+            "rows": datarows,
             "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -833,38 +691,7 @@ const ManageOrder = () => {
         setPageLoading(true);
         const data = {
             
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderdate",
-                "earlieststartdate",
-                "expectedcompletiondate",
-                "actualcompletiondate",
-                "owner",
-                "ownername",
-                "comments",
-                "status",
-                "orderstatus",
-                "briefdescription",
-                "additionalcomments",
-                "service",
-                "servicename",
-                "clientpropertyid",
-                "clientproperty",
-                "vendorid",
-                "vendorname",
-                "assignedtooffice",
-                "officename",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "entityid",
-                "entity",
-                "tallyledgerid",
-                "ageing",
-                "createdbyname"
-            ],
+            "rows": datarows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -898,38 +725,7 @@ const ManageOrder = () => {
         setFlag((prev) => !prev);
         const data = {
             
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderdate",
-                "earlieststartdate",
-                "expectedcompletiondate",
-                "actualcompletiondate",
-                "owner",
-                "ownername",
-                "comments",
-                "status",
-                "orderstatus",
-                "briefdescription",
-                "additionalcomments",
-                "service",
-                "servicename",
-                "clientpropertyid",
-                "clientproperty",
-                "vendorid",
-                "vendorname",
-                "assignedtooffice",
-                "officename",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "entityid",
-                "entity",
-                "tallyledgerid",
-                "ageing",
-                "createdbyname"
-            ],
+            "rows": datarows,
             "filters": tempArray,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -981,6 +777,7 @@ const ManageOrder = () => {
     const initials = () => {
         setOrderText('Select Client Property')
         setFormValues(initialValues);
+        setClientPropertyData([])
         setFormErrors({});
     }
     const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
@@ -1044,13 +841,7 @@ const ManageOrder = () => {
         setOrderStatusData(res.data)
     }
     const [clientPropertyData, setClientPropertyData] = useState([])
-    const fetchClientPropertyData = async () => {
-        const data = { "user_id": user.id }
-        const response = await APIService.getClientPropertyAdmin({...data,user_id : user.id})
-        const res = await response.json()
-        console.log(res)
-        setClientPropertyData(res.data)
-    }
+    
     const [serviceData, setServiceData] = useState([])
     const fetchServiceData = async () => {
         const data = { "user_id": user.id }
@@ -1443,7 +1234,7 @@ const ManageOrder = () => {
                                 <p> Order Description <button onClick={() => handleSort('briefdescription')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[215px] p-4'>
-                                <p> Proper Description <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
+                                <p> Property Description <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[150px] p-4'>
                                 <p> Service <button onClick={() => handleSort('servicename')}><span className="font-extrabold">↑↓</span></button></p>
@@ -1684,11 +1475,11 @@ const ManageOrder = () => {
                                     <div>Order Status history</div>
                                 </div>
                             </div>
-                            {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} hyperlinkstate={state} orderText={orderText} setOrderText={setOrderText}/>}
+                            {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} propertyData={clientPropertyData} setPropertyData={setClientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} hyperlinkstate={state} orderText={orderText} setOrderText={setOrderText}/>}
                             {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 3 && <OrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddOrder} >Add</button>
+                                <button className={`w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md ${submit ? 'cursor-not-allowed' : 'cursor-pointer'}`} disabled={submit} onClick={handleAddOrder} >Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose} >Cancel</button>
                             </div>
                         </div>

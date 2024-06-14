@@ -6,6 +6,7 @@ import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
 import useAuth from '../../../context/JwtContext'
 const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, usersData, showCancel }) => {
+    
     const {user} = useAuth()
     const initialValues = {
         client: "",
@@ -174,7 +175,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
 
     // const fetchModesData = async () => {
     //     const data = {
-    //         "user_id": 1234
+    //         "user_id": user.id
     //     }
     //     const response = await APIService.getModesAdmin({...data,user_id : user.id})
     //     const res = await response.json()
@@ -183,7 +184,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
     // }
     // const fetchUsersData = async () => {
     //     const data = {
-    //         "user_id": 1234
+    //         "user_id": user.id
     //     }
     //     const response = await APIService.getUsers({...data,user_id : user.id})
     //     const res = await response.json()

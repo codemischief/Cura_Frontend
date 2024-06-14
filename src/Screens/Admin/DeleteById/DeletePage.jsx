@@ -13,7 +13,9 @@ import { CrossIcon } from "../../../Components/Svg/CrossIcon"
 import DeleteIcon from "../../../Components/Svg/DeleteIcon"
 import CancelModel from "../../../Components/modals/CancelModel"
 import SucessfullModal from "../../../Components/modals/SucessfullModal"
+import useAuth from "../../../context/JwtContext"
 const DeletePage = () => {
+  const { user } = useAuth()
   let { state } = useLocation();
   console.log(state)
   const navigate = useNavigate(-1)
@@ -40,7 +42,7 @@ const DeletePage = () => {
     if (id == "") return;
     try {
       const d = {
-        "user_id": 1234,
+        "user_id": user.id,
         "table_name": state.tablename,
         "item_id": Number(id)
       }
@@ -64,7 +66,7 @@ const DeletePage = () => {
   const handleDelete = async () => {
     // we do the hard delete here
     const data = {
-      "user_id": 1234,
+      "user_id": user.id,
       "table_name": state.tablename,
       "id": id
     }

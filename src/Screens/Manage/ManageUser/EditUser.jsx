@@ -6,8 +6,10 @@ import Draggable from 'react-draggable';
 import eyeIcon from "../../../assets/eye.jpg";
 import bcrypt from 'bcryptjs';
 import EyeHide from "./../../../assets/eyeHide.png";
+import useAuth from '../../../context/JwtContext';
 
 const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSuccess, showCancel , openFailureModal , setErrorMessage }) => {
+    const { user } = useAuth()
     const [pass , setPass] = useState("");
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,7 +43,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
     const fetchInitialData = async () => {
         console.log(currUser)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "item_id": currUser,
             "table_name": "get_users_view"
         }
@@ -214,7 +216,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             }
         }
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id" : currUser,
             "username": formValues.userName,
             "roleid": Number(formValues.role),

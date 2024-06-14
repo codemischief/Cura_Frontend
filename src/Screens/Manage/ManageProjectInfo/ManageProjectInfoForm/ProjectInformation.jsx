@@ -444,7 +444,7 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                             setFormValues(existing)
                         }}
                     />
-                    Tenant woking Bachelors allowed
+                    Tenant Working Bachelors allowed
                 </div>
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
                     <input
@@ -462,7 +462,7 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                     />
 
 
-                    Tenant student allowed
+                    Tenant Student Allowed
                 </div>
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
                     <input

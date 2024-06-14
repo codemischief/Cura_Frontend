@@ -357,33 +357,21 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                 <div className="text-[13px]">
                                                     Order <label className="text-red-500">*</label>
                                                 </div>
-                                                {/* <select
+                                                <select
                                                 className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="order"
                                                 value={formValues.order}
                                                 onChange={handleChange}
                                             >
-                                                <option value="" >
-                                                    <div className='flex justify-between'>
-                                                        <p className="float-left">Order Id</p>
-                                                        &nbsp;
-                                                        &nbsp;
-                                                        &nbsp;
-                                                        &nbsp;
-                                                        <p className="float-right">Order Name</p>
-                                                    </div>
-                                                </option>
+                                               <option value="" hidden>Select An Order</option>
                                                 {orders.map((item) => (
                                                     <option key={item.id} value={item.id}>
-                                                        {item.id}
-                                                        &nbsp;
-                                                        &nbsp;
                                                         {item.ordername}
                                                     </option>
                                                 ))}
-                                            </select> */}
-                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                            </select>
+                                                {/* <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div> */}
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Actual End Date </div>
@@ -413,14 +401,14 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                     existing.gst1 = !existing.gst1;
                                                     setFormValues(existing)
                                                 }}
-                                            />Gst Additional ?</div>
+                                            />GST Additional ?</div>
                                         </div>
                                         <div className=" space-y-3 py-5">
                                             <div className="">
                                                 <div className="text-[13px]">
                                                     Client Property <label className="text-red-500">*</label>
                                                 </div>
-                                                {/* <select
+                                                <select
                                                 className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="clientProperty"
                                                 value={formValues.clientProperty}
@@ -431,9 +419,9 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                         {item.propertyname}
                                                     </option>
                                                 ))}
-                                            </select> */}
-                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
+                                            </select>
+                                                {/* <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div> */}
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">PMA End Date <label className="text-red-500">*</label></div>
@@ -471,7 +459,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                     existing.gst2 = !existing.gst2;
                                                     setFormValues(existing)
                                                 }}
-                                            />Gst Additional ?</div>
+                                            />GST Additional ?</div>
                                         </div>
                                     </div>
                                 </div>

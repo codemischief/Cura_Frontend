@@ -427,7 +427,7 @@ const EditClientProperty = (props) => {
 
             <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
                 <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={() => setSelectedDialogue(1)}>
-                    <div>Project Information</div>
+                    <div>Property Information</div>
                 </div>
                 <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={() => setSelectedDialogue(2)}>
                     <div>Photos</div>

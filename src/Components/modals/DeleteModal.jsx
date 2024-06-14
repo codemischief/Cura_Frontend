@@ -5,11 +5,13 @@ import Cross from "../../assets/cross.png";
 import { APIService } from "../../services/API";
 import CancelModel from "./CancelModel";
 import Draggable from "react-draggable";
+import useAuth from "../../context/JwtContext";
 const DeleteModal = (props) => {
+    const { user} = useAuth()
     const [showLoading, setShowLoading] = useState(false);
     const deleteCountry = async (item) => {
         // props.setShowDelete(true);
-        const data = { user_id: 1234, country_name: props.currentCountry };
+        const data = { user_id: user.id, country_name: props.currentCountry };
         setShowLoading(true);
         console.log(data);
         const response = await APIService.deleteCountries(data);

@@ -5,7 +5,9 @@ import { APIService } from '../../../../services/API';
 import AsyncSelect from "react-select/async"
 // import OrderDropDown from '../../../../Components/Dropdown/OrderDropdown';
 import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
+import useAuth from '../../../../context/JwtContext';
 const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities ,formErrors , orderText, setOrderText}) => {
+    const { user } = useAuth()
     const [tenantOfProperty,setTenantOfProperty] = useState([]);
     const [Salutation, setSalutation] = useState([
         {
@@ -58,8 +60,8 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
     };
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const data = { "user_id": user.id, "country_id": id };
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -67,7 +69,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -80,7 +82,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
   const [options,setOptions] = useState([]);
   const fetchClientData = async () => {
      const data = {
-      "user_id" : 1234
+      "user_id" : user.id
      }
      const response = await APIService.getClientAdmin(data)
      const res = await response.json();
@@ -98,7 +100,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
 
   const getClientPropertyByClientId = async (id) => {
     const data = {
-     "user_id" : 1234,
+     "user_id" : user.id,
      "client_id" : id
     }
 
@@ -137,7 +139,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
       console.log(e)
       if(e.length < 3) return ;
       const data = {
-        "user_id" : 1234,
+        "user_id" : user.id,
         "pg_no" : 0,
         "pg_size" : 0,
         "search_key" : e
@@ -172,7 +174,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                             onChange={
                                 handleChange
                             }>
-                            <option >Select Salutation</option>
+                            <option value="" hidden>Select Salutation</option>
                             {Salutation && Salutation.map(item => (
                                 <option key={item.id} value={item.name}>
                                     {item.name}
@@ -193,7 +195,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 })
                             }
                         } >
-                            <option >Select Client Type </option>
+                            <option value="" hidden>Select Client Type </option>
                             {clientTypeData && clientTypeData.map(item => (
                                 <option key={item.id} value={item.id}>
                                     {item.name}
@@ -279,7 +281,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                         }
                             // value={formValues.client_info.country}
                         >
-                            <option >Select Country</option>
+                            <option value="" hidden>Select Country</option>
                             {allCountry && allCountry.map(item => {
                                 if (item[0] == formValues.client_info.country) {
                                     return <option key={item.id} value={item.id} selected>
@@ -341,7 +343,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 fetchCityData(e.target.value)
                             }
                         }>
-                            <option >Select State </option>
+                            <option value="" hidden>Select State </option>
 
                             {allState && allState.map(item => {
                                 if (item[0] == "Maharashtra") {
@@ -458,7 +460,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                             }
                         }>
                             
-                            <option value="none" > Select A City</option>
+                            <option value="none" hidden> Select A City</option>
                             {allCity && allCity.map(item => (
                                 <option value={item.city}>
                                     {item.city}

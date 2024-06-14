@@ -116,7 +116,7 @@ const ManagePmaArgreement = () => {
 
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
@@ -128,7 +128,7 @@ const ManagePmaArgreement = () => {
     const fetchStateData = async (id) => {
         console.log(id);
         const data = {  "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
         console.log(result)
@@ -153,7 +153,7 @@ const ManagePmaArgreement = () => {
     }
     const fetchUsersData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
         const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
@@ -170,7 +170,7 @@ const ManagePmaArgreement = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
         const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
@@ -185,7 +185,7 @@ const ManagePmaArgreement = () => {
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
+        // const data = { "user_id":  user.id };
         const data = {  };
         const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
@@ -653,7 +653,7 @@ const ManagePmaArgreement = () => {
             "colmap" : {
                 "clientname" : "Client Name",
                 "propertydescription" : "Property Description",
-                "orderdescription" : "Property Description",
+                "orderdescription" : "Order Description",
                 "propertystatusname" : "Property Status",
                 "description" : "Description",
                 "status" : "Status",
@@ -1270,7 +1270,7 @@ const ManagePmaArgreement = () => {
                                 {filterMapState.activemap.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 {/* <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='active' menuRef={menuRef} filterType={filterMapState.activemap.filterType}/>}
+                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='activemap' menuRef={menuRef} filterType={filterMapState.activemap.filterType}/>}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1724,35 +1724,20 @@ const ManagePmaArgreement = () => {
                                                 <div className="text-[13px]">
                                                     Order <label className="text-red-500">*</label>
                                                 </div>
-                                                {/* <select
+                                                <select
                                                     className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                     name="order"
                                                     value={formValues.order}
                                                     onChange={handleChange}
                                                 >
-                                                    <option value="" hidden >Select A Order</option>
-                                                    <option value="" >
-                                                        <div className='flex justify-between'>
-                                                            <p className="float-left">Order Id</p>
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            <p className="float-right">Order Name</p>
-                                                        </div>
-                                                    </option>
-
+                                                    <option value="" hidden>Select An Order</option>
                                                     {orders.map((item) => (
                                                         <option key={item.id} value={item.id}>
-                                                            {item.id}
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
                                                             {item.ordername}
                                                         </option>
                                                     ))}
-                                                </select> */}
-                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+                                                </select>
+                                                {/* <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                             </div>
                                             <div className="">
@@ -1779,7 +1764,7 @@ const ManagePmaArgreement = () => {
                                                     existing.gst1 = !existing.gst1;
                                                     setFormValues(existing)
                                                 }}
-                                            />Gst Additional ?</div>
+                                            />GST Additional ?</div>
                                         </div>
                                         <div className=" space-y-3 py-5">
                                             <div className="">
@@ -1802,8 +1787,24 @@ const ManagePmaArgreement = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
+                                               
                                                 {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>  : 
-                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />}
+                                                 <select
+                                                 className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                 name="clientProperty"
+                                                 value={formValues.clientProperty}
+                                                 onChange={handleChange}
+                                             >
+                                                 <option value="" hidden>Select A Client Property</option>
+                                                 {clientPropertyData.map((item) => (
+                                                     <option key={item.id} value={item.id}>
+                                                         {item.propertyname}
+                                                     </option>
+                                                 ))}
+                                             </select>
+                                                // <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} width='230px'/>
+                                                
+                                                }
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
                                             </div>
                                             <div className="">
@@ -1842,7 +1843,7 @@ const ManagePmaArgreement = () => {
                                                     existing.gst2 = !existing.gst2;
                                                     setFormValues(existing)
                                                 }}
-                                            />Gst Additional ?</div>
+                                            />GST Additional ?</div>
                                         </div>
                                     </div>
                                 </div>

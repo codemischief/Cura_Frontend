@@ -134,7 +134,7 @@ import ClientPhoneNo from "./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx
 import OwnerPhoneNo from "./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx";
 import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation/index.jsx";
 import AgedOrders from "./Screens/Reports/AgedOrders/index.jsx";
-
+import { v4 as uuidv4 } from "uuid";
 const App = () => {
   const { isInitialized } = useAuth();
   const ROLES = {
@@ -164,7 +164,7 @@ const App = () => {
                 </AuthGuard>
               }
             >
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard key={uuidv4()}/>} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
               <Route
                 path="/admin/manageemployees"
@@ -173,16 +173,16 @@ const App = () => {
               <Route path="/manage/managebuilder" element={<ManageBuilder />} />
               <Route
                 path="/manage/manageprojectinfo"
-                element={<ManageProjectInfo />}
+                element={<ManageProjectInfo key={uuidv4()}/>}
               />
               <Route
                 path="/manage/managebuilder/manageproject/:id"
-                element={<ManageProjectInfo />}
+                element={<ManageProjectInfo key={uuidv4()}/>}
               />
               <Route path="/admin/deleteById" element={<DeleteById />} />
               <Route
                 path="/admin/deleteById/:pagename"
-                element={<DeletePage />}
+                element={<DeletePage key={uuidv4()}/>}
               />
               <Route path="/manage/manageOrder" element={<ManageOrder />} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
@@ -273,44 +273,44 @@ const App = () => {
               />
               <Route
                 path="manage/managebuilder/projects/:buildername"
-                element={<ManageBuilderProject />}
+                element={<ManageBuilderProject key={uuidv4()}/>}
               />
               <Route
                 path="/manage/managebuilder/contacts/:buildername"
-                element={<ManageBuilderContact />}
+                element={<ManageBuilderContact key={uuidv4()}/>}
               />
 
               <Route
                 path="/manage/managevendorpayment/:orderid"
-                element={<ManageVendorPayment />}
+                element={<ManageVendorPayment key={uuidv4()}/>}
               />
               <Route
                 path="/manage/manageclientinvoice/:orderid"
-                element={<ManageClientInvoice />}
+                element={<ManageClientInvoice key={uuidv4()}/>}
               />
               <Route
                 path="/manage/manageorderreceipt/:orderid"
-                element={<ManageOrderReceipt />}
+                element={<ManageOrderReceipt key={uuidv4()}/>}
               />
               <Route
                 path="/manage/manageclientinfo/orders/showall/:orderid"
-                element={<ShowAllOdersInformation />}
+                element={<ShowAllOdersInformation key={uuidv4()}/>}
               />
               <Route
                 path="/manage/manageclientinfo/properties/:clientname"
-                element={<ManageClientProperty />}
+                element={<ManageClientProperty key={uuidv4()}/>}
               />
               <Route
                 path="/manage/manageclientinfo/orders/:clientname"
-                element={<ManageOrder />}
+                element={<ManageOrder key={uuidv4()}/>}
               />
               <Route
                 path="/manage/manageclientproperty/pmaagreement/:clientname"
-                element={<ManagePmaArgreement />}
+                element={<ManagePmaArgreement key={uuidv4()}/>}
               />
               <Route
                 path="/manage/manageclientproperty/llagreement/:clientname"
-                element={<ManageLLAgreement />}
+                element={<ManageLLAgreement key={uuidv4()}/>}
               />
               <Route path="/manage/pmaBilling" element={<PmaBilling />} />
               <Route path="admin/temp" element={<Temp />} />

@@ -14,6 +14,7 @@ import {
 } from "../../../../Redux/slice/Manage/contact";
 import { ModalHeader } from "../../../../Components/modals/ModalAtoms";
 import CustomSelectNative from "../../../../Components/common/select/CustomSelectNative";
+import useAuth from "../../../../context/JwtContext";
 
 const validationSchema = Yup.object().shape({
   contactname : Yup.string().required('Enter Contact Name'),
@@ -26,7 +27,7 @@ const validationSchema = Yup.object().shape({
   city: Yup.string().required("Select City"),
 });
 // {
-//   "user_id": 1234,
+//   "user_id": user.id,
 //   "country": 5,
 //   "onsiteopportunity": true,
 //   "city": "Pune",
@@ -35,7 +36,7 @@ const validationSchema = Yup.object().shape({
 //   "zip": "10001",
 //   "hc": "Healthcare",
 //   "website": "www.example.com",
-//   "admincontactphone": "1234567890",
+//   "admincontactphone": "user.id567890",
 //   "contactname1": "Jane Smith",
 //   "contactmail1": "jane@example.com",
 //   "contactphone1": "2345678901",
@@ -53,6 +54,7 @@ const validationSchema = Yup.object().shape({
 //   "suburb": "Downtown"
 // }
 const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
+  const { user } = useAuth()
   const dispatch = useDispatch();
   const { countryData } = useSelector((state) => state.commonApi);
   const [stateData, setStateData] = useState([]);
@@ -69,7 +71,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
     return idNameObject;
   }
   const fetchCityData = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     setCityData(convertToIdNameObject(result));
@@ -86,7 +88,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   }, []);
 
   const fetchStateData = async (id) => {
-    const data = { user_id: 1234, country_id: id };
+    const data = { user_id: user.id, country_id: id };
     const response = await APIService.getState(data);
     const result = await response.json();
     setStateData(result.data);
@@ -119,7 +121,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const handleConfirm = async () => {
     try {
       const data = {
-        user_id: 1234,
+        user_id: user.id,
         builderid: editData?.builderid,
         contactname: values.contactname,
         email1: values.email,
@@ -220,13 +222,13 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
                           <div className="">
                             <div className="flex">
-                              <label className="inputFieldLabel">
+                              <label className="inputFieldLabel  ">
                                 Builder Name
                               </label>
                               
                             </div>
                             <input
-                              className="inputFieldBorder inputFieldValue"
+                              className="inputFieldBorder inputFieldValue border-[1px] border-[#C6C6C6] rounded-sm bg-[#F5F5F5]"
                               type="text"
                               name="employername"
                               value={editData.buildername}

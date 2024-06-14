@@ -4,7 +4,9 @@ import { Modal } from '@mui/material'
 import { useState } from 'react'
 import { APIService } from '../../../services/API'
 import Draggable from 'react-draggable'
+import useAuth from '../../../context/JwtContext'
 const EditLocalityModal = (props) => {
+    const { user } = useAuth()
     // const [showSuccess,setShowSuccess] = useState(false);
     const [inputField, setInputField] = useState(props.item.locality);
     const [formErrors,setFormErrors] = useState("");
@@ -16,7 +18,7 @@ const EditLocalityModal = (props) => {
             setFormErrors("")
         }
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": props.item.id,
             "locality": inputField,
             "cityid": props.item.cityid

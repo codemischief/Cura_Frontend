@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { APIService } from '../../../../services/API';
+import useAuth from '../../../../context/JwtContext';
 const POADetails = ({formValues,setFormValues,relationData,allCountries,initialStates,initialCities}) => {
-
+  const {user} = useAuth()
   const [country, setCountry] = useState(allCountries);
   const [allCity, setAllCity] = useState(initialCities);
   const [allStates, setAllStates] = useState(initialStates);
@@ -17,7 +18,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
    const fetchStateData = async (id) => {
     console.log(id);
     console.log('this is being called')
-    const data = { "user_id": 1234, "country_id": id };
+    const data = { "user_id": user.id, "country_id": id };
     const response = await APIService.getState(data);
     const result = (await response.json()).data;
     console.log('here')
@@ -25,7 +26,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
     setAllStates(result)
 }  
 const fetchCityData = async (id) => {
-  const data = { "user_id": 1234, "state_name": id };
+  const data = { "user_id": user.id, "state_name": id };
   const response = await APIService.getCities(data);
   const result = (await response.json()).data;
   console.log(result);
@@ -33,6 +34,10 @@ const fetchCityData = async (id) => {
       setAllCity(result)
   }
 }
+ useEffect(() => {
+   fetchStateData(formValues.client_poa.poacountry)
+   fetchCityData(formValues.client_poa.poastate)
+ },[])
   return (
     <div className="mt-5 h-auto pt-2 pb-5 w-full">
       <div className="flex gap-10 justify-center">
@@ -63,7 +68,7 @@ const fetchCityData = async (id) => {
                fetchStateData(e.target.value);
               }
             }>
-              <option >Select country</option>
+              <option value={"none"} className='hidden'>Select country</option>
               {country && country.map(item => {
                 if(item.id == 5) {
                   return <option key={item.id} value={item.id} selected>
@@ -86,7 +91,7 @@ const fetchCityData = async (id) => {
                   poacity : e.target.value
               }})
             }}>
-              <option >Select city</option>
+              <option value={"none"} className='hidden'>Select city</option>
               {allCity && allCity.map(item => (
                 <option  value={item.city}>
                   {item.city}
@@ -131,7 +136,7 @@ const fetchCityData = async (id) => {
                 }})
                 fetchCityData(e.target.value);
             }}>
-              <option >Select state</option>
+              <option value={"none"} className='hidden'>Select state</option>
               {allStates && allStates.map(item => {
                 if(item[0] == "Maharashtra") {
                   return <option key={item[0]} selected>
@@ -164,7 +169,7 @@ const fetchCityData = async (id) => {
           <div className="">
             <div className="text-[14px]">Relation </div>
             <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="poarelation" value={formValues.client_poa.poarelation} onChange={handleChange}>
-              <option >Select Relation</option>
+              <option value="" hidden>Select Relation</option>
               {relationData && relationData.map(item => (
                 <option key={item.id} value={item.id}>
                   {item.name}

@@ -4,9 +4,9 @@ import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
 import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
 import useAuth from '../../../../context/JwtContext';
-const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, clientPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors ,setClientName, orderText, setOrderText }) => {
+const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, propertyData, setPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors ,setClientName, orderText, setOrderText }) => {
     const {user} = useAuth()
-    const [propertyData,setPropertyData] = useState(clientPropertyData)
+    // const [propertyData,setPropertyData] = useState(clientPropertyData)
     const handleClose = () => {
         setIsStateDialogue(false);
     }
@@ -173,11 +173,11 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                         <div className="">
                             <div className="text-[13px]">Cura office</div>
-                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Pune"} name="Cura Office" readOnly />
+                            <input className="bg-[#F5F5F5] w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Pune"} name="Cura Office" readOnly />
                         </div>
                         <div className="">
                             <div className="text-[13px]">Entity</div>
-                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Cura"} name="Entity" readOnly />
+                            <input className="bg-[#F5F5F5] w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Cura"} name="Entity" readOnly />
                         </div>
                         <div className="">
                             <div className="text-[13px]">Assigned to <label className="text-red-500">*</label></div>
@@ -195,7 +195,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                         <div className="">
                             <div className="text-[13px]">Status <label className="text-red-500">*</label></div>
                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="status" value={formValues.order_info.status} onChange={handleChange}>
-                                <option value={null}>Select Status</option>
+                                <option value={null} hidden>Select Status</option>
                                 {orderStatusData.map(item => (
                                     <option key={item[0]} value={item[0]}>
                                         {item[1]}
@@ -205,11 +205,20 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                             <div className="text-[10px] text-[#CD0000] ">{formErrors.status}</div>
                         </div>
                         <div className="">
-                            {console.log(clientPropertyData)}
+                            {/* {console.log(clientPropertyData)} */}
                             <div className="text-[13px]">Client Property</div>
-                            <PropertyDropDown options={propertyData} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
+                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="clientpropertyid" value={formValues.order_info.clientpropertyid} onChange={handleChange} >
+                                <option value={null} hidden> Select Client Propery</option>
+                                {console.log(propertyData)}
+                                {propertyData.map(item => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.propertyname}
+                                    </option>
+                                ))}
+                            </select>
+                            {/* <PropertyDropDown options={propertyData} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
                             handleChange(e)
-                        }} formValueName="clientpropertyid" value={formValues.order_info.clientpropertyid}  />
+                        }} formValueName="clientpropertyid" value={formValues.order_info.clientpropertyid}  /> */}
                             {/* <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={formValues.order_info.clientpropertyid} onChange={handleChange} name="clientpropertyid" >
                                 <option value={null}>Select Client Property</option>
                                 {clientPropertyData.map(item => (
@@ -222,7 +231,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                         <div className="">
                             <div className="text-[13px]">Service <label className="text-red-500">*</label></div>
                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="service" value={formValues.order_info.service} onChange={handleChange} >
-                                <option value={null}> Select Service</option>
+                                <option value={null} hidden> Select Service</option>
                                 {serviceData.map(item => (
                                     <option key={item[0]} value={item[0]}>
                                         {item[1]}
@@ -309,7 +318,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                         <div className="">
                             <div className="text-[13px]">Vendor</div>
                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.order_info.vendorid} onChange={handleChange} >
-                                <option value={null}> Select Vendor</option>
+                                <option value={null} hidden> Select Vendor</option>
                                 {vendorData.map(item => (
                                     <option key={item[0]} value={item[0]}>
                                         {item[1]}
@@ -318,11 +327,11 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                             </select>
                         </div>
                     </div>
-                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                    <div className=" space-y-[12px] py-[20px] px-[10px] mt-5 ">
                         <div className="">
                             <div className="text-[13px]">Tally Ledger</div>
                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="tallyledgerid" value={formValues.order_info.tallyledgerid} onChange={handleChange} >
-                                <option value={null}> Select Tally Ledger</option>
+                                <option value={null} hidden> Select Tally Ledger</option>
                                 {tallyLedgerData.map(item => (
                                     <option key={item[0]} value={item[0]}>
                                         {item[1]}
@@ -331,18 +340,18 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                             </select>
                         </div>
                         <div className="">
-                            <div className="text-[13px]">Order Description <label className="text-red-500">*</label></div>
+                            <div className="text-[13px] mt-6">Order Description <label className="text-red-500">*</label></div>
                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="briefdescription" value={formValues.order_info.briefdescription} onChange={handleChange} />
                             <div className="text-[12px] text-[#CD0000] ">{formErrors.briefdescription}</div>
                         </div>
                         <div className="">
                             <div className="text-[13px]">Comments</div>
-                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" value={formValues.order_info.comments} name="comments" onChange={handleChange} />
+                            <textarea className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] max-h-[90px] min-h-[90px]" type="text" value={formValues.order_info.comments} name="comments" onChange={handleChange} />
                         </div>
                         
                         <div className="">
                             <div className="text-[13px]">Additional Comments</div>
-                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" value={formValues.order_info.additionalcomments} name="additionalcomments" onChange={handleChange} />
+                            <textarea className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] max-h-[90px] min-h-[90px]" type="text" value={formValues.order_info.additionalcomments} name="additionalcomments" onChange={handleChange} />
                         </div>
                     </div>
                 </div>

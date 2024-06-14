@@ -30,12 +30,12 @@ const DeleteOrderReceipt = (props) => {
             <>
                 <Draggable>
                     <div className='bg-white rounded-lg'>
-                        <div className="w-auto h-auto flex flex-col justify-center items-center ">
+                        <div className="w-auto h-auto flex flex-col justify-center items-center relative">
                             <div className="h-[40px] flex justify-center items-center">
                                 <div className="ml-56 mr-52">
-                                    <div className="text-[16px]">Delete</div>
+                                    <div className="text-[16px]">Delete Order Receipt</div>
                                 </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute top-2 right-2">
                                     <button onClick={() => {close()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                 </div>
                             </div>

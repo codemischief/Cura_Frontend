@@ -2,38 +2,34 @@ import React from "react";
 import searchIcon from "../../assets/searchIcon.png";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Navbar from "../../Components/Navabar/Navbar";
-// import useAuth from "../../context/JwtContext";
-import { userId } from "../../utils/axios";
+import { Backdrop, CircularProgress } from "@mui/material";
+
 import { APIService } from "../../services/API";
-// import useAuth from "../../../context/JwtContext";
+
 import useAuth from "../../context/JwtContext";
 const Dashboard = () => {
   const {user} = useAuth()
-  // console.log(user)
+  const [pageLoading,setPageLoading] = useState(false)
+  const [searchText,setSearchText] = useState("")
   const [myOrder, setmyorder] = useState([]);
   const [cashBalance, setcashbalance] = useState([]);
-  
-
-  //************ mock post request ************** */
-  //   const [content, setContent] = useState('')
-
-  //   const addCountryOnClick = (d) =>{
-  //     d.preventDefault();
-  //     fetch("/addCountry", {
-  //         method :"POST",
-  //         headers: {
-  //             "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({content})
-  //     });
-  //   }
   const fetchDashboardData = async (id) => {
+    setPageLoading(true)
     const data = {"user_id" : user.id}
     const response = await APIService.dashboardData(data)
     const res = await response.json()
     console.log(res)
     setmyorder(res.data)
+    setPageLoading(false)
+  }
+  const handleSearch = async () => {
+    setPageLoading(true)
+    const data = {"user_id" : user.id, "search_key" : searchText}
+    const response = await APIService.dashboardData(data)
+    const res = await response.json()
+    console.log(res)
+    setmyorder(res.data)
+    setPageLoading(false)
   }
   useEffect(() => {
      
@@ -42,22 +38,39 @@ const Dashboard = () => {
   },[])
   return (
     <div className="w-full flex flex-col h-[calc(100vh-6.2rem)] overflow-x-hidden bg-[#F5F5F5]">
+       <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+        </Backdrop>
       <div className="flex flex-col gap-2 h-full w-full px-[2.25rem] py-[2.5rem]">
         {/* this is the background container */}
         <div className="flex justify-between">
           <div>
             <h1 className="text-3xl font-sans">Dashboard</h1>
           </div>
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              handleSearch()
+            }}>
           <div className="flex w-[230px] h-[36px] items-center">
             <input
               className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2  "
               type="text"
-              placeholder="  Search"
-            />
+              placeholder="Search"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              
+              />
             <div className="h-[36px] w-[42px] bg-[#004DD7] flex items-center justify-center rounded-r-[5px]">
-              <img className="h-[26px] " src={searchIcon} alt="search-icon" />
+              <button type="submit"><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
             </div>
           </div>
+            </form>
         </div>
 
         <div className="bg-white w-full h-full p-3 rounded-[5px] ">
@@ -98,6 +111,7 @@ const Dashboard = () => {
                         <h1>{item.count_orders} </h1>
                       </div>
                     </div>
+                    
                   );
                 })}
               </div>

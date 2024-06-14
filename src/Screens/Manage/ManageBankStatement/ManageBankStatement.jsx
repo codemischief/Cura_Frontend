@@ -126,10 +126,10 @@ const ManageBankStatement = () => {
         const mode1 = await APIService.getModesAdmin(data);
         const howReceived1 = await APIService.getHowReceivedAdmin(data);
         const entity1 = await APIService.getEntityAdmin(data);
-        const client1 = await APIService.getClientAdmin(data);
+        
         setEntity((await entity1.json()).data)
         setHowReceived((await howReceived1.json()).data)
-        setClient((await client1.json()).data)
+        
         setMode((await mode1.json()).data)
 
     }
@@ -1704,7 +1704,7 @@ const ManageBankStatement = () => {
                                                     <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.crdr}</div>
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[13px]">How Recieved(CR)?</div>
+                                                    <div className="text-[13px]">How Received(CR)?</div>
                                                     <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
                                                         <option hidden>Select how Received</option>
                                                         {howReceived && howReceived.map(item => (
@@ -1879,8 +1879,8 @@ const ManageBankStatement = () => {
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Receipt Description</div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="desc" value={formValues.desc} onChange={handleChange} />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.desc}</div>
+                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="receiptDescription" value={crFormValues.receiptDescription} onChange={handleCrChange} />
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.desc}</div>
                                                 </div>
                                                 {/* <div className="">
                                                     <div className="text-[14px]">Pending Amount </div>

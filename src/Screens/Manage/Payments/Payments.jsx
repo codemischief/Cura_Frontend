@@ -42,8 +42,10 @@ import { usernameByUserId } from "../../../utils/UsernameByUserId.js";
 import AddButton from "../../../Components/common/CustomButton.jsx";
 import EditButton from "../../../Components/common/buttons/EditButton.jsx";
 import DeleteButton from "../../../Components/common/buttons/deleteButton.jsx";
+import useAuth from "../../../context/JwtContext.jsx";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 const Payments = () => {
+  const { user } = useAuth()
   const menuRef = useRef();
   const navigate = useNavigate();
   const { pathname } = useLocation()
@@ -73,8 +75,8 @@ const Payments = () => {
   };
   const fetchUsersData = async () => {
     // setPageLoading(true);
-    // const data = { "user_id":  1234 };
-    const data = { user_id: 1234 };
+    // const data = { "user_id":  user.id };
+    const data = { user_id: user.id };
     const response = await APIService.getUsers(data);
     const result = await response.json();
 
@@ -84,8 +86,8 @@ const Payments = () => {
   };
   const fetchEntitiesData = async () => {
     // setPageLoading(true);
-    // const data = { "user_id":  1234 };
-    const data = { user_id: 1234 };
+    // const data = { "user_id":  user.id };
+    const data = { user_id: user.id };
     const response = await APIService.getEntityAdmin(data);
     const result = await response.json();
     // console.log(result.data);
@@ -101,7 +103,7 @@ const Payments = () => {
   const [paymentMode, setPaymentMode] = useState([]);
   const fetchPaymentMode = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
     };
     const response = await APIService.getModesAdmin(data);
     const result = await response.json();
@@ -113,7 +115,7 @@ const Payments = () => {
   };
   const fetchPaymentFor = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
     };
     const response = await APIService.getPaymentFor(data);
     const result = await response.json();
@@ -179,7 +181,7 @@ const Payments = () => {
     setFilterState(tempArray);
     console.log(tempArray);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id",
         "paymentto",
@@ -233,7 +235,7 @@ const Payments = () => {
     setCurrentPage((prev) => 1);
     setPageLoading(true);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id",
         "paymentto",
@@ -285,7 +287,7 @@ const Payments = () => {
     setCurrentPage(pageNumber);
     setPageLoading(true);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id",
         "paymentto",
@@ -370,7 +372,7 @@ const Payments = () => {
   };
   const addPayment = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       paymentto: formValues.paymentto,
       paymentby: formValues.paymentby,
       amount: Number(formValues.amount),
@@ -411,7 +413,7 @@ const Payments = () => {
   const deletePayments = async (id) => {
     console.log(id);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       id: Number(id),
     };
     const response = await APIService.deletePayment(data);
@@ -687,7 +689,7 @@ const Payments = () => {
     setCurrentPage((prev) => 1);
     setIsSearchOn(true);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "paymentto",
         "paymentby",
@@ -717,7 +719,7 @@ const Payments = () => {
     setSearchInput("");
     setCurrentPage((prev) => 1);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id",
         "paymentto",
@@ -758,7 +760,7 @@ const Payments = () => {
     setDownloadModal(false);
     setPageLoading(true);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "paymentto",
         "paymentby",
@@ -795,7 +797,7 @@ const Payments = () => {
     if (temp.result == "success") {
       const d = {
         filename: temp.filename,
-        user_id: 1234,
+        user_id: user.id,
       };
       APIService.download(d, temp.filename).then((response) => {
           if (!response.ok) {
@@ -941,7 +943,7 @@ const Payments = () => {
     setFilterState(tempArray);
     console.log(tempArray);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id",
         "paymentto",
@@ -1021,7 +1023,7 @@ const Payments = () => {
     });
     setFlag((prev) => !prev);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id",
         "paymentto",

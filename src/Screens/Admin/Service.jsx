@@ -31,9 +31,10 @@ import ActiveFilter from "../../assets/active_filter.png";
 import AddButton from '../../Components/common/CustomButton';
 import EditButton from '../../Components/common/buttons/EditButton';
 import DeleteButton from '../../Components/common/buttons/deleteButton';
+import useAuth from '../../context/JwtContext';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Service = () => {
-
+    const { user } = useAuth()
     const menuRef = useRef();
     const navigate = useNavigate();
     const {pathname} = useLocation()
@@ -76,7 +77,7 @@ const Service = () => {
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["id", "name"],
             "filters": [],
             "sort_by": ["name"],
@@ -118,7 +119,7 @@ const Service = () => {
 
     const getVendorCategoryAdmin = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "order": "asc"
         }
         const response = await APIService.getVendorCategoryAdmin(data);
@@ -129,8 +130,8 @@ const Service = () => {
 
     const fetchRoleData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
+        // const data = { "user_id":  user.id };
+        const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
@@ -165,7 +166,7 @@ const Service = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["*"],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -189,7 +190,7 @@ const Service = () => {
         // we need to query thru the object
         setCurrentPage((prev) => pageNumber)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["*"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -212,7 +213,7 @@ const Service = () => {
         setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": ["*"],
             "filters": filterState,
             "sort_by": [sortField],
@@ -286,7 +287,7 @@ const Service = () => {
     }
     const addService = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "lob": Number(formValues.lob),
             "service": formValues.serviceName,
             "active": true,
@@ -363,7 +364,7 @@ const Service = () => {
     }
     const deleteUser = async (id) => {
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": id
         }
         const response = await APIService.deleteService(data);
@@ -390,7 +391,7 @@ const Service = () => {
         setPageLoading(true)
         setBackDropLoading(true)
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "lob",
                 "service",
@@ -417,7 +418,7 @@ const Service = () => {
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id": 1234
+                "user_id": user.id
             }
             APIService.download(d, temp.filename).then(response => {
                     if (!response.ok) {
@@ -449,7 +450,7 @@ const Service = () => {
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "lob",
                 "service",
@@ -477,7 +478,7 @@ const Service = () => {
         setSearchInput("");
         setCurrentPage(1);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "*"
             ],
@@ -588,7 +589,7 @@ const Service = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "*"
             ],
@@ -640,7 +641,7 @@ const Service = () => {
         setSortField(field)
         setFlag((prev) => !prev);
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "rows": [
                 "*"
             ],
@@ -666,7 +667,7 @@ const Service = () => {
     //    const [allCity,setAllCity] = useState([]);
     // we need to fetch the city data
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -683,7 +684,7 @@ const Service = () => {
     const [tallyLedgerData, setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getTallyLedgerAdmin(data);
         const res = await response.json()

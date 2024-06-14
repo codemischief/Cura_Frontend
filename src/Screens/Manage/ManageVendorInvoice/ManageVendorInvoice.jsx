@@ -1485,7 +1485,7 @@ const ManageVendorInvoice = () => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">Vat 5% </div>
+                                            <div className="text-[13px]">VAT 5% </div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
                                         </div>
 
