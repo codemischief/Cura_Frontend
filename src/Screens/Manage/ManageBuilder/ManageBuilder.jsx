@@ -27,12 +27,14 @@ import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import useAuth from "../../../context/JwtContext";
 import { handleError } from "../../../utils/ErrorHandler";
 import { toast } from "react-toastify";
+import checkEditAccess from "../../../Components/common/checkRoleBase";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageBuilder = () => {
     const {user} = useAuth()
     const {pathname} = useLocation()
     const menuRef = useRef();
     const navigate = useNavigate();
+    const canEdit = checkEditAccess();
     const [existingBuilders, setExistingBuilders] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
@@ -914,7 +916,7 @@ const ManageBuilder = () => {
                                 <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-1/2 0 p-4'>
-                                <p>Edit</p>
+                                <p>{canEdit ? "Edit" : ""}</p>
                             </div>
                         </div>
                     </div>

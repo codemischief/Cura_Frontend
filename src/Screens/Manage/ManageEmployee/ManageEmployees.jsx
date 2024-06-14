@@ -38,12 +38,15 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageEmployees = () => {
     const { user } = useAuth()
     const menuRef = useRef();
     const navigate = useNavigate();
-    const { pathname } = useLocation()
+    const { pathname } = useLocation();
+    const canEdit = checkEditAccess();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -90,6 +93,20 @@ const ManageEmployees = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
+    const resetAllInputs = () => {
+        // toast.success('Filters Resetted!')
+
+        setEmployeeNameInput("")
+        setEmployeeIdInput("")
+        setPannoInput("")
+        setPhoneFilterInput("")
+        setEmailInput("")
+        setRoleInput("")
+        setDateOfJoiningInput("")
+        setLdowInput("")
+        setStatusInput("")
+        setIdInput("");
+    };
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchCountryData = async () => {
@@ -1281,7 +1298,7 @@ const ManageEmployees = () => {
                             </div>
                         </div>
                         <div className="w-[10%] flex items-center">
-                            <div className='w-[65%] px-3 ml-[-1px]'>
+                            <div className='w-1/2 px-3 ml-[-1px]'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idInput} onChange={(e) => setIdInput(e.target.value)}
                                         onKeyDown={(event) => handleEnterToFilter(event, idInput,
@@ -1296,10 +1313,13 @@ const ManageEmployees = () => {
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
 
-                            <div className='w-[35%]  flex'>
-                                <div className='p-3'>
-
-                                </div>
+                            <div className='w-1/2 p-3  flex items-center'>
+                                <RefreshFilterButton
+                                    fetchData={fetchData}
+                                    resetAllInputs={resetAllInputs}
+                                    setFilterMapState={setFilterMapState}
+                                    filterMapping={filterMapping}
+                                />
                             </div>
                         </div>
                     </div>
@@ -1367,7 +1387,7 @@ const ManageEmployees = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='p-3'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>
