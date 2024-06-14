@@ -35,6 +35,7 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png"
 import EditButton from "../../../Components/common/buttons/EditButton";
 import useAuth from "../../../context/JwtContext";
+import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
 const ManageBankStatement = () => {
     // we have the module here
@@ -1495,8 +1496,12 @@ const ManageBankStatement = () => {
                                           handleEdit={editStatement}
                                           rowData={item}
                                         />
+                                        <DeleteButton
+                                            handleDelete={deleteStatement}
+                                            rowData={item.id}
+                                        />
                                         {/* <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editStatement(item, vendorList, howReceived, mode)} /> */}
-                                        <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteStatement(item.id)} />
+                                        {/* <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteStatement(item.id)} /> */}
                                     </div>
                                 </div>
                             </div>
