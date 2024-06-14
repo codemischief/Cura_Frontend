@@ -41,6 +41,7 @@ import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
 import CustomSelectNative from '../../../Components/common/select/CustomSelectNative';
+import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
 const ManageClientInvoice = () => {
     const {pathname} = useLocation()
     const {user} = useAuth();
@@ -49,6 +50,7 @@ const ManageClientInvoice = () => {
     const dataRows = [
         "clientname",
         "quotedescription",
+        "ordername",
         "invoiceamount",
         "entityname",
         "createdbyname",
@@ -494,6 +496,7 @@ const ManageClientInvoice = () => {
             "rows": [
                 "clientname",
                 "quotedescription",
+                "ordername",
                 "invoiceamount",
                 "invoicedate",
                 "entityname",
@@ -511,6 +514,7 @@ const ManageClientInvoice = () => {
             "colmap" : {
                 "clientname" : "Client Name",
                 "quotedescription" : "Quote/Invoice Description",
+                "ordername" : "Order Description",
                 "invoiceamount" : "Invoice Amount",
                 "invoicedate" : "Invoice Date",
                 "entityname" : "Entity",
@@ -559,44 +563,7 @@ const ManageClientInvoice = () => {
             },1000) 
         }
     }
-    const handleExcelDownload = async () => {
-        const tempArray = [];
-        // we need to query thru the object
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        const data = {
-            "rows": [
-                "clientname",
-                "quotedescription",
-                "estimateamount",
-                "estimatedate",
-                "invoiceamount",
-                "invoicedate",
-                "entityname",
-                "createdbyname",
-                "id",
 
-            ],
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientInvoice({...data, user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "ClientInvoicecData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
-    }
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
@@ -700,6 +667,12 @@ const ManageClientInvoice = () => {
             filterInput: ""
         },
         quotedescription: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        ordername: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -1004,7 +977,7 @@ const ManageClientInvoice = () => {
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType}/>}
                             </div>
 
-                            <div className='w-[26%]  p-3 '>
+                            <div className='w-[22%]  p-3 '>
                                 <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,orderDescriptionFilterInput,
@@ -1017,7 +990,19 @@ const ManageClientInvoice = () => {
                                 </div>
                                 {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} filterColumn='quotedescription' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.quotedescription.filterType} />}
                             </div>
-
+                            <div className='w-[22%]  p-3 '>
+                                <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,orderDescriptionFilterInput,
+                                        setOrderDescriptionFilterInput,
+                                        'contains',
+                                        'quotedescription')}
+                                     />
+                                     {filterMapState.quotedescription.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
+                                </div>
+                                {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} filterColumn='quotedescription' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.quotedescription.filterType} />}
+                            </div>
                             {/* <div className='w-[13%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateAmountFilterInput} onChange={(e) => setEstimateAmountFilterInput(e.target.value)}
@@ -1044,7 +1029,7 @@ const ManageClientInvoice = () => {
                                 {estimateDateFilter && <DateFilter inputVariable={estimateDateFilterInput} setInputVariable={setEstimateDateFilterInput} handleFilter={newHandleFilter} columnName='estimatedate' menuRef={menuRef} />}
                             </div> */}
 
-                            <div className='w-[14%]  p-3'>
+                            <div className='w-[12%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)} 
                                     onKeyDown={(event) => handleEnterToFilter(event,invoiceAmountFilterInput,
@@ -1058,7 +1043,7 @@ const ManageClientInvoice = () => {
                                 {invoiceAmountFilter && <NumericFilter inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} columnName='invoiceamount' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.invoiceamount.filterType} />}
                             </div>
 
-                            <div className='w-[13%] p-3'>
+                            <div className='w-[10%] p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceDateFilterInput} onChange={(e) => setInvoiceDateFilterInput(e.target.value)} type="date" 
                                     onKeyDown={(event) => handleEnterToFilter(event,invoiceDateFilterInput,
@@ -1072,7 +1057,7 @@ const ManageClientInvoice = () => {
                                 {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef} filterType={filterMapState.invoicedate.filterType}/>}
                             </div>
 
-                            <div className='w-[10%] p-3'>
+                            <div className='w-[9%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} 
                                     onKeyDown={(event) => handleEnterToFilter(event,entityFilterInput,
@@ -1140,9 +1125,14 @@ const ManageClientInvoice = () => {
                                     <p>Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[26%]  flex'>
+                            <div className='w-[22%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Quote/Invoice Description <button onClick={() => handleSort('quotedescription')}><span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className='w-[22%]  flex'>
+                                <div className='px-3 py-3.5'>
+                                    <p>Order Description <button onClick={() => handleSort('quotedescription')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             {/* <div className='w-[13%]  flex'>
@@ -1155,17 +1145,17 @@ const ManageClientInvoice = () => {
                                     <p>Estimate Date <button onClick={() => handleSort('estimatedate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div> */}
-                            <div className='w-[14%]  flex'>
+                            <div className='w-[12%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Invoice Amount <button onClick={() => handleSort('invoiceamount')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[13%]  flex'>
+                            <div className='w-[10%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Invoice Date <button onClick={() => handleSort('invoicedate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex'>
+                            <div className='w-[9%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Entity <button onClick={() => handleSort('entityname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1211,9 +1201,14 @@ const ManageClientInvoice = () => {
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[26%]  flex'>
+                                    <div className='w-[22%]  flex'>
                                         <div className='p-3'>
                                             <p>{item.quotedescription}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[22%]  flex'>
+                                        <div className='p-3'>
+                                            <p>{item.ordername}</p>
                                         </div>
                                     </div>
                                     {/* <div className='w-[13%]  flex pl-0.5'>
@@ -1226,17 +1221,17 @@ const ManageClientInvoice = () => {
                                             <p>{item.estimatedate ? item.estimatedate.split('T')[0] : ""}</p>
                                         </div>
                                     </div> */}
-                                    <div className='w-[14%]  flex pl-0.5'>
+                                    <div className='w-[12%]  flex pl-0.5'>
                                         <div className='p-3'>
                                             <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : "0.00"}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[13%]  flex pl-1'>
+                                    <div className='w-[10%]  flex pl-1'>
                                         <div className='p-3'>
                                             <p>{formatDate(item.invoicedate)}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex pl-1'>
+                                    <div className='w-[9%]  flex pl-1'>
                                         <div className='p-3'>
                                             <p>{item.entityname}</p>
                                         </div>
@@ -1455,7 +1450,8 @@ const ManageClientInvoice = () => {
                                             Order <label className="text-red-500">*</label>
                                         </div>
                                         
-                                        <CustomSelectNative
+                                        
+                                         {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : <OrderCustomSelectNative
                                            data={Object.keys(orders)}
                                            value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
                                            placeholder="Select Orders"
@@ -1466,13 +1462,14 @@ const ManageClientInvoice = () => {
                                           }}
                                           renderData={(item) => {
                                             return (
-                                              <MenuItem value={item} key={item} sx={{display : 'flex', width : '300px', gap : '5px', fontSize : '12px'}}>
-                                                <span>
-                                                    {item}
-                                                </span>
-                                                <span>
+                                              <MenuItem value={item} key={item} sx={{ width : '300px', gap : '5px', fontSize : '12px'}}>
+                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
                                                    {orders[item]}
-                                                </span>
+                                                </p>
+                                                <p className='w-[20%]'>
+                                                    {item}
+                                                </p>
+                                                
                                                
                                               </MenuItem>
                                             );
@@ -1483,9 +1480,7 @@ const ManageClientInvoice = () => {
                                            
                                         
                                         />
-                                        {/* {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
-                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}  />} */}
-                                        {/* <DropDown options={orders} initialValue="Select Order" leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}/> */}
+                                        }
                                         <div className="text-[10px] text-[#CD0000] absolute">{formErrors.order}</div>
                                     </div>
                                     <div className="">

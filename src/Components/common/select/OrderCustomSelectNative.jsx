@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { FormControl, Select, MenuItem } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-const CustomSelectNative = ({
+const OrderCustomSelectNative = ({
   value,
   onChange,
   data,
@@ -20,8 +20,9 @@ const CustomSelectNative = ({
   return (
     <FormControl sx={{ minWidth: 120  }}>
       <Select
-        className="selectBoxField inputFieldValue text-sm !text-[#505050] border-[#C6C6C6] "
+        className="orderSelectBoxField orderInputFieldValue text-sm !text-[#505050] border-[#C6C6C6] "
         value={value}
+        
         onChange={onChange}
         displayEmpty
         inputProps={{ "aria-label": "Without label" }}
@@ -39,6 +40,7 @@ const CustomSelectNative = ({
                 borderRadius: "0.9375rem",
                 color: "#505050",
                 // paddingTop: "1rem",
+                // fontSize : '30px',
                 marginTop: "0.2rem",
               },
             },
@@ -67,7 +69,7 @@ const CustomSelectNative = ({
             paddingLeft: "8px",
             fontWeight: 400,
             fontFamily: "Open Sans",
-            lineHeight: "1.3125rem",
+            lineHeight: "3em",
           },
           paddingTop: "0px",
           paddingBottom : "0px",
@@ -76,8 +78,14 @@ const CustomSelectNative = ({
         {...props}
       >
         {isSticky && <MenuItem disabled style={{opacity:"1.2"}} sx={{ position: "sticky", top: 0, backgroundColor: "gray", zIndex: 99, color:"black",display:"flex", opacity : '0.5', gap : '45px' , }}>
-         <span>{headerText.first}</span>
-         <span>{headerText.second}</span>
+        <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+             {headerText.second}
+        </p>
+        <p className='w-[20%]'>
+            {headerText.first}
+        </p>
+         {/* <span>{headerText.first}</span>
+         <span>{headerText.second}</span> */}
 
         </MenuItem>}
         {data?.length === 0 && (
@@ -91,7 +99,7 @@ const CustomSelectNative = ({
   );
 };
 
-CustomSelectNative.propTypes = {
+OrderCustomSelectNative.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(
@@ -105,4 +113,4 @@ CustomSelectNative.propTypes = {
   renderData: PropTypes.func,
 };
 
-export default CustomSelectNative;
+export default OrderCustomSelectNative;

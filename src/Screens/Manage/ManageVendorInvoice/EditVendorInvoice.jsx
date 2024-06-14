@@ -119,7 +119,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
             "invoiceamount": formValues.invoiceAmount,
             "notes": formValues.notes,
             "vat1": formValues.vat5,
-            "vat2": formValues.vat12,
+            "vat2": null,
             "servicetax": formValues.gst,
             "invoicenumber": formValues.invoiceNumber,
             "entityid": 1,
@@ -263,7 +263,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">VAT 5% </div>
+                                            <div className="text-[13px]">VAT  </div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
                                         </div>
 
@@ -339,10 +339,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                             <div className="text-[13px]">Estimate Amount </div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
                                         </div>
-                                        <div className="">
-                                            <div className="text-[13px]">VAT 12.5% </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat12" value={formValues.vat12} onChange={handleChange} />
-                                        </div>
+                                        
                                     </div>
                                     <div className=" space-y-3 py-5">
                                         <div className="">
