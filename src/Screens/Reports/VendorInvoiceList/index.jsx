@@ -71,7 +71,7 @@ const VendorInvoiceList = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows:
@@ -130,7 +130,7 @@ const VendorInvoiceList = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -180,7 +180,7 @@ const VendorInvoiceList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [

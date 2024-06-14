@@ -25,9 +25,10 @@ import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
 import { APIService } from "../../../services/API";
 import AsyncSelect from "react-select/async";
-
+import useAuth from '../../../context/JwtContext';
 const AgedOrders = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth(); 
   const {
     Data,
     status,
@@ -76,7 +77,7 @@ const AgedOrders = () => {
       pg_no: 0,
       pg_size: 0,
     };
-    const response = await APIService.getLob(data);
+    const response = await APIService.getLob({ ...data, user_id: user.id });
     const result = await response.json();
     setData((prev) => ({ ...prev, Lob: [...result.data] }));
   };
@@ -85,7 +86,7 @@ const AgedOrders = () => {
     const data = {
       user_id: 1234,
     };
-    const response = await APIService.getOrderStatusAdmin(data);
+    const response = await APIService.getOrderStatusAdmin({ ...data, user_id: user.id });
     const result = await response.json();
     console.log(result.data, "Status");
     setData((prev) => ({ ...prev, Status: [...result.data] }));
@@ -102,7 +103,7 @@ const AgedOrders = () => {
   const handleRefresh = () => {
     if (intialValue.status && intialValue.lobname) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: ["service",
           "clientname",
           "propertydescription",
@@ -147,7 +148,7 @@ const AgedOrders = () => {
   useEffect(() => {
     if (intialValue.status && intialValue.lobname) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         lobname: intialValue.lobname,
         orderstatus: intialValue.status,
         rows: ["service",
@@ -188,7 +189,7 @@ const AgedOrders = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
 
       rows: ["service",
         "clientname",
@@ -228,8 +229,8 @@ const AgedOrders = () => {
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
-              heading={"Order Analysis"}
-              path={["Reports", "Orders", "Order Analysis"]}
+              heading={"Aged Orders"}
+              path={["Reports", "Orders", "Aged Orders"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
               {showTable && (

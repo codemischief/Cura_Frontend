@@ -25,9 +25,11 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     lobReceiptPaymentConsolidatedData,
     status,
@@ -51,7 +53,7 @@ const LobReceiptPayments = () => {
 
   const fetchLobData = async () => {
     const data = {
-      "user_id": 1234,
+      // "user_id": 1234,
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": ["name"],
@@ -59,7 +61,7 @@ const LobReceiptPayments = () => {
       "pg_no": 0,
       "pg_size": 0
     };
-    const response = await APIService.getLob(data);
+    const response = await APIService.getLob({...data , user_id:user.id});
     const result = (await response.json());
     if (Array.isArray(result.data)) {
       setAllLOB(result.data);
@@ -92,7 +94,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     if (startDate && endDate && lob) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         lobName: lob,
@@ -133,7 +135,7 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (startDate && endDate && lob) {
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         lobName: lob,
@@ -169,7 +171,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       lobName: lob,

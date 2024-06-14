@@ -55,7 +55,7 @@ const TdsPaidByVendorView = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "vendorname",
         "vendorcategory",
@@ -108,7 +108,7 @@ const TdsPaidByVendorView = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
           "vendorname",
           "vendorcategory",
@@ -151,7 +151,7 @@ const TdsPaidByVendorView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "vendorname",
         "vendorcategory",

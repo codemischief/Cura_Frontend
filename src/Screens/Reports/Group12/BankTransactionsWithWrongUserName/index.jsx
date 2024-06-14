@@ -52,7 +52,7 @@ const BankTransactionsWithWrongUserName = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows:  [
         "type","clientname","orderdescription","mode_of_payment","doneby","amount"
       ],
@@ -94,7 +94,7 @@ const BankTransactionsWithWrongUserName = () => {
     }
     else {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "type","clientname","orderdescription","mode_of_payment","doneby","amount"
       ],
@@ -126,7 +126,7 @@ const BankTransactionsWithWrongUserName = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows:  [
         "type","clientname","orderdescription","mode_of_payment","doneby","amount"
       ],

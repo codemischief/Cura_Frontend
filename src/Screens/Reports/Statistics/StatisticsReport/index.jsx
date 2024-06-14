@@ -75,7 +75,7 @@ const StatisticsReport = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["type", "count", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -114,7 +114,7 @@ const StatisticsReport = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: ["type", "count", "amount"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -145,7 +145,7 @@ const StatisticsReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["type", "count", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),

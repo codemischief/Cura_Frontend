@@ -52,7 +52,7 @@ const ClientsWithOrderButNoEmail = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows:  [
         "fullname","clienttypename","countryname","email1"
       ],
@@ -94,7 +94,7 @@ const ClientsWithOrderButNoEmail = () => {
     }
     else {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows:  [
         "fullname","clienttypename","countryname","email1"
       ],
@@ -126,7 +126,7 @@ const ClientsWithOrderButNoEmail = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows:  [
         "fullname","clienttypename","countryname","email1"
       ],

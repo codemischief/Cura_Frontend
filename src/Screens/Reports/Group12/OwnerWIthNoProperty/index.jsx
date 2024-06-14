@@ -52,7 +52,7 @@ const OwnerPaymentView = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       "rows": [
   "id","fullname","clienttype_text"
 ],
@@ -95,7 +95,7 @@ const OwnerPaymentView = () => {
     }
     else{
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: [
   "id","fullname","clienttype_text"
 ],
@@ -127,7 +127,7 @@ const OwnerPaymentView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
   "id","fullname","clienttype_text"
 ],

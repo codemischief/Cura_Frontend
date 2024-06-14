@@ -52,7 +52,7 @@ const EmployeeWithoutVendor = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows:  [
         "username","userstatus","vendorname"
       ],
@@ -95,7 +95,7 @@ const EmployeeWithoutVendor = () => {
     }
     else{
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows:  [
           "username","userstatus","vendorname"
         ],
@@ -127,7 +127,7 @@ const EmployeeWithoutVendor = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows:  [
         "username","userstatus","vendorname"
       ],

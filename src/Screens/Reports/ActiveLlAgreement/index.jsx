@@ -49,7 +49,7 @@ const ActiveLLAgreementView = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "clientname",
         "propertydescription",
@@ -100,7 +100,7 @@ const ActiveLLAgreementView = () => {
 
   useEffect(() => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "clientname",
         "propertydescription",
@@ -141,7 +141,7 @@ const ActiveLLAgreementView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "clientname",
         "propertydescription",

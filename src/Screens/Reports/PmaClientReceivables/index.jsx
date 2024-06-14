@@ -78,7 +78,7 @@ const PmaClientReceivable = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["clientname",
         "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -119,7 +119,7 @@ const PmaClientReceivable = () => {
 
 
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: ["clientname",
           "amount"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -155,7 +155,7 @@ const PmaClientReceivable = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: [
         "clientname",
         "amount"

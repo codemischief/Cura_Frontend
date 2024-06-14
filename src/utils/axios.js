@@ -51,6 +51,7 @@ const logPayload = {
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    const userId = JSON.parse(sessionStorage.getItem("user"))?.id;
     // Merge the common payload with the user's request data
     if (config.appendLog) {
       config.data = {
@@ -61,7 +62,7 @@ axiosInstance.interceptors.request.use(
     }
     config.data = {
       ...config.data,
-      user_id: logPayload.user_id,
+      user_id: userId,
     };
 
     return config;

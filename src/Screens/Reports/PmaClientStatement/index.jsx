@@ -77,7 +77,7 @@ const LobReceiptPayments = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["clientname", "date", "amount", "type", "orderdetails"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -115,7 +115,7 @@ const LobReceiptPayments = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        // user_id: 1234,
         rows: ["clientname", "date", "amount", "type", "orderdetails"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -145,7 +145,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      // user_id: 1234,
       rows: ["clientname", "date", "type", "orderdetails", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
