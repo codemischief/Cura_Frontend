@@ -68,17 +68,18 @@ const CustomSelectNative = ({
             fontWeight: 400,
             fontFamily: "Open Sans",
             lineHeight: "1.3125rem",
+            paddingTop:"0px !important"
           },
 
           borderRadius: 0,
         }}
         {...props}
       >
-        {isSticky && <MenuItem disabled sx={{ position: "sticky", top: 0, backgroundColor: "gray", zIndex: 99, color:"black",display:"flex", opacity : '0.5', gap : '40px' }}>
+        {isSticky && <MenuItem disabled style={{opacity:"1.2"}} sx={{ position: "sticky", top: 0, backgroundColor: "gray", zIndex: 99, color:"black",display:"flex", opacity : '0.5',justifyContent:"space-between",pad }}>
          <span>{headerText.first}</span>
          <span>{headerText.second}</span>
 
-        </MenuItem>}
+        </MenuItem>}
         {data?.length === 0 && (
           <MenuItem value="" disabled>
             No data

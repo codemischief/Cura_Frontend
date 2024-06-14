@@ -1455,11 +1455,16 @@ const ManageClientInvoice = () => {
                                             Order <label className="text-red-500">*</label>
                                         </div>
                                         
-                                        
                                         <CustomSelectNative
-                                          value={orders[formValues.order]}
                                            data={Object.keys(orders)}
-                                           renderData={(item) => {
+                                           value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
+                                           placeholder="Select Orders"
+                                           isSticky={true}
+                                           headerText={{
+                                            first : 'ID',
+                                            second : 'Order Description',
+                                          }}
+                                          renderData={(item) => {
                                             return (
                                               <MenuItem value={item} key={item} sx={{display : 'flex', width : '300px', gap : '5px', fontSize : '12px'}}>
                                                 <span>
@@ -1472,16 +1477,9 @@ const ManageClientInvoice = () => {
                                               </MenuItem>
                                             );
                                           }}
-                                           placeholder="Select Orders"
-                                           
-                                           onChange={(e) => {
+                                          onChange={(e) => {
                                             setFormValues({ ...formValues, order: e.target.value })
                                            }}
-                                           isSticky={true}
-                                           headerText={{
-                                            first : 'ID',
-                                            second : 'Order Description',
-                                          }}
                                            
                                         
                                         />
