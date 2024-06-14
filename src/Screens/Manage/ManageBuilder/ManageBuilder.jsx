@@ -116,13 +116,14 @@ const ManageBuilder = () => {
             setTotalItems(res.total_count);
             
             
-            // 
+            setPageLoading(false);
             setExistingBuilders(result);
         }catch(err) {
             handleError(err)
+            setPageLoading(false);
             toast('Something Went Wrong, Please Refresh!')
         }
-        setPageLoading(false);
+        
         
     }
     const fetchPageData = async (page) => {
@@ -1136,7 +1137,7 @@ const ManageBuilder = () => {
                                                     }}
                                                 >
 
-                                                    {allCountry && allCountry.map(item => {
+                                                    {allCountry?.map(item => {
                                                         return <option value={item.id}> {item.name}</option>
                                                         // if (item[0] == 5) {
                                                         //     return <option value={item[0]} selected>
