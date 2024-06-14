@@ -2049,10 +2049,10 @@ const ManageLLAgreement = () => {
                                                     }}
                                                 /> */}
                                             </div>
-                                            <button className="bg-[#282828] text-white h-[36px] w-[300px] rounded-lg" onClick={handleAddClient}>
+                                            <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleAddClient}>
 
                                                 <div className="flex items-center justify-center gap-4">
-                                                    Add Client
+                                                    Add Tenant (Client)
                                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                                 </div>
                                             </button>

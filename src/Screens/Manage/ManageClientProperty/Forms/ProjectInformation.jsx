@@ -537,8 +537,8 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
           </div>
           <div className="">
             <div className="text-[13px]">Internal Furniture and Fittings (Sch B) </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+            <textarea
+              className="text-[12px] pl-4 w-[230px] min-h-[77px] max-h-[77px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="internalfurnitureandfittings"
               onChange={handleChange}

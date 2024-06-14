@@ -1826,7 +1826,7 @@ const ManagePmaArgreement = () => {
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                             </div>
                                             <div className="">
-                                                <div className="text-[13px]">Scan Copy </div>
+                                                <div className="text-[13px]">Path To Scanned Copy </div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} />
                                             </div>
                                             <div className="">
