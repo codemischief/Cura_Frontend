@@ -195,14 +195,7 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
     };
-    dispatch(downloadData(obj))
-      // const tableData = response.data;
-      // const worksheet = XLSX.utils.json_to_sheet(tableData);
-      // const workbook = XLSX.utils.book_new();
-      // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      // XLSX.writeFile(workbook, "SendClientStatement.xlsx");
-      // dispatch(setStatus("success"));
-    
+    dispatch(downloadData(obj))    
   };
   const downloadPdf = () => {
     let obj = {
@@ -258,14 +251,14 @@ const OrderReceiptList = () => {
   const [uiStartDate,setUiStartDate] = useState("")
   const [uiEndDate,setuiEndDate] = useState("")
   const handleClientNameChange = (e) => {
-    console.log('hey')
-    console.log(e)
+    
+    
 
     setSelectedOption(e)
   }
 
   const loadOptions = async (e) => {
-    console.log(e)
+    
     if (e.length < 3) return;
     const data = {
       "user_id": user.id,
@@ -287,7 +280,7 @@ const OrderReceiptList = () => {
     return results
   }
   const sendEmail = () => {
-    console.log(sorting)
+    
     let obj = {
       user_id: user.id,
       startdate: startDate ?? "2021-01-01",
@@ -429,9 +422,9 @@ const OrderReceiptList = () => {
               onChange={handleDateChange}
               name="endDate"
             />
-            {console.log(startDate)}
-            {console.log(endDate)}
-            {console.log(selectedOption.value)}
+            {}
+            {}
+            {}
             <Button
               variant="outlined"
               //   onClick={handleShow}

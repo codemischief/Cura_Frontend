@@ -98,7 +98,7 @@ const ManageBuilder = () => {
         setFilterState((prev) => tempArray)
         try {
         const data = {
-            // "user_id": user.id,
+            "user_id": user.id,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": tempArray,
             "sort_by": [sortField],
