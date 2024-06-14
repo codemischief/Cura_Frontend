@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Modal , CircularProgress, Backdrop} from '@mui/material'
+import { Modal , CircularProgress, Backdrop ,MenuItem} from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async";
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import Draggable from 'react-draggable'
 import useAuth from '../../../context/JwtContext';
+import CustomSelectNative from '../../../Components/common/select/CustomSelectNative';
 const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel }) => {
     const {user} = useAuth()
 
@@ -163,16 +164,23 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         console.log(formValues)
         setSelectedOption(e)
     }
-
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = item.ordername;
+        });
+        return idNameObject;
+    }
     const getOrdersByClientId = async (id) => {
-        console.log('hello')
+        
         const data = {
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
         const res = await response.json()
+        
         console.log(res.data)
-        setOrders(res.data)
+        setOrders(convertToIdNameObject(res.data))
 
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
@@ -346,7 +354,35 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                                 </option>
                                             ))}
                                         </select> */}
-                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+                                         <CustomSelectNative
+                                           data={Object.keys(orders)}
+                                           value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
+                                           placeholder="Select Orders"
+                                           isSticky={true}
+                                           headerText={{
+                                            first : 'ID',
+                                            second : 'Order Description',
+                                          }}
+                                          renderData={(item) => {
+                                            return (
+                                              <MenuItem value={item} key={item} sx={{display : 'flex', width : '300px', gap : '5px', fontSize : '12px'}}>
+                                                <span>
+                                                    {item}
+                                                </span>
+                                                <span>
+                                                   {orders[item]}
+                                                </span>
+                                               
+                                              </MenuItem>
+                                            );
+                                          }}
+                                          onChange={(e) => {
+                                            setFormValues({ ...formValues, order: e.target.value })
+                                           }}
+                                           
+                                        
+                                        />
+                                        {/* <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
                                         <div className="text-[10px] text-[#CD0000] absolute">{formErrors.order}</div>
                                     </div>
                                     <div className="">

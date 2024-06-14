@@ -141,6 +141,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     setFieldValue(e.target.name, e.target.value);
   };
   const handleCountrySelect = (e) => {
+    
     setFieldValue("countryId", e.target.value);
     setFieldValue("city", null);
     setFieldValue("state", null);
@@ -204,6 +205,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
+                            {console.log(Object.keys(countryData))}
                             <CustomSelectNative
                               data={Object.keys(countryData)}
                               renderData={(item) => {

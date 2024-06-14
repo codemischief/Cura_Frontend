@@ -10,6 +10,11 @@ const CustomSelectNative = ({
   placeholder,
   menuMaxHeight = "14rem",
   renderData,
+  isSticky = false,
+  headerText = {
+    first : 'ID',
+    second : 'Order Description',
+  },
   ...props
 }) => {
   return (
@@ -56,7 +61,7 @@ const CustomSelectNative = ({
               border: "none", // Default border color
               borderRadius: 0,
             },
-
+            
             fontSize: "0.6875rem",
             color: "#505050",
             paddingLeft: "8px",
@@ -64,11 +69,17 @@ const CustomSelectNative = ({
             fontFamily: "Open Sans",
             lineHeight: "1.3125rem",
           },
-
+          paddingTop: "0px",
+          paddingBottom : "0px",
           borderRadius: 0,
         }}
         {...props}
       >
+        {isSticky && <MenuItem disabled style={{opacity:"1.2"}} sx={{ position: "sticky", top: 0, backgroundColor: "gray", zIndex: 99, color:"black",display:"flex", opacity : '0.5', gap : '45px' , }}>
+         <span>{headerText.first}</span>
+         <span>{headerText.second}</span>
+
+        </MenuItem>}
         {data?.length === 0 && (
           <MenuItem value="" disabled>
             No data
