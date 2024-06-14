@@ -38,6 +38,7 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
 const ManageProjectInfo = () => {
     const {pathname} = useLocation()
     const {user} = useAuth()
@@ -56,6 +57,7 @@ const ManageProjectInfo = () => {
     const menuRef = useRef();
     const navigate = useNavigate()
     const {state} = useLocation()
+    const canEdit = checkEditAccess();
     const [pageLoading, setPageLoading] = useState(false);
     const [existingProjectInfo, setExistingProjectInfo] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
@@ -1258,7 +1260,7 @@ const ManageProjectInfo = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='p-3'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>

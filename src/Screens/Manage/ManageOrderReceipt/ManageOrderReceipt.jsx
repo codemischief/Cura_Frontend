@@ -40,11 +40,13 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageOrderReceipt = () => {
     const {user} = useAuth()
     const menuRef = useRef();
     const { state , pathname} = useLocation();
+    const canEdit = checkEditAccess();
     console.log(pathname)
     const navigate = useNavigate();
     // we have the module here
@@ -1517,7 +1519,7 @@ const ManageOrderReceipt = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>

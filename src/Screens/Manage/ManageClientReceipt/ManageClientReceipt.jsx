@@ -39,9 +39,10 @@ import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
 const ManageClientReceipt = () => {
     const {user} = useAuth()
-
+    const canEdit = checkEditAccess();
     const location = useLocation()
     console.log(location)
     const navigate = useNavigate()
@@ -1437,7 +1438,7 @@ const ManageClientReceipt = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>

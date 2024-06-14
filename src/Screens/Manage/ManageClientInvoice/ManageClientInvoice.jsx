@@ -39,9 +39,11 @@ import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilte
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
 const ManageClientInvoice = () => {
     const {pathname} = useLocation()
-    const {user} = useAuth()
+    const {user} = useAuth();
+    const canEdit = checkEditAccess();
     console.log(pathname)
     const dataRows = [
         "clientname",
@@ -1170,7 +1172,7 @@ const ManageClientInvoice = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-3.5'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>

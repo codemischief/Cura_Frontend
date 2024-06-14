@@ -35,6 +35,7 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ActiveFilter from "../../../assets/active_filter.png"
 import EditButton from "../../../Components/common/buttons/EditButton";
 import useAuth from "../../../context/JwtContext";
+import checkEditAccess from "../../../Components/common/checkRoleBase";
 const ManageBankStatement = () => {
     // we have the module here
     const { user } = useAuth()
@@ -54,6 +55,7 @@ const ManageBankStatement = () => {
         'receivedhow'
     ]
     const menuRef = useRef();
+    const canEdit = checkEditAccess();
     const [existingStatement, setExistingStatement] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
@@ -1425,7 +1427,7 @@ const ManageBankStatement = () => {
                                 <p>ID <button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-1/2 0 p-4'>
-                                <p>Edit</p>
+                                <p>{canEdit ? "Edit": ""}</p>
                             </div>
                         </div>
                     </div>
