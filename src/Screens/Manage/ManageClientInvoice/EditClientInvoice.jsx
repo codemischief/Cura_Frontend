@@ -6,7 +6,8 @@ import AsyncSelect from "react-select/async";
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import Draggable from 'react-draggable'
 import useAuth from '../../../context/JwtContext';
-import CustomSelectNative from '../../../Components/common/select/CustomSelectNative';
+// import CustomSelectNative from '../../../Components/common/select/CustomSelectNative';
+import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
 const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel }) => {
     const {user} = useAuth()
 
@@ -354,7 +355,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                                 </option>
                                             ))}
                                         </select> */}
-                                         <CustomSelectNative
+                                         <OrderCustomSelectNative
                                            data={Object.keys(orders)}
                                            value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
                                            placeholder="Select Orders"
@@ -365,13 +366,14 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                           }}
                                           renderData={(item) => {
                                             return (
-                                              <MenuItem value={item} key={item} sx={{display : 'flex', width : '300px', gap : '5px', fontSize : '12px'}}>
-                                                <span>
+                                                <MenuItem value={item} key={item} sx={{ width : '300px', gap : '5px', fontSize : '12px'}}>
+                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                   {orders[item]}
+                                                </p>
+                                                <span className='w-[20%]'>
                                                     {item}
                                                 </span>
-                                                <span>
-                                                   {orders[item]}
-                                                </span>
+                                                
                                                
                                               </MenuItem>
                                             );

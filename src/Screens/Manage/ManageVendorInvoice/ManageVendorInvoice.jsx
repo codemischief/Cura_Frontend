@@ -359,7 +359,7 @@ const ManageVendorInvoice = () => {
             "invoiceamount": Number(formValues.invoiceAmount),
             "notes": formValues.notes,
             "vat1": Number(formValues.vat5),
-            "vat2": Number(formValues.vat12),
+            "vat2": null,
             "servicetax": Number(formValues.gst),
             "invoicenumber": formValues.invoiceNumber,
             "entityid": 1,
@@ -1487,7 +1487,7 @@ const ManageVendorInvoice = () => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">VAT 5% </div>
+                                            <div className="text-[13px]">VAT  </div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
                                         </div>
 
@@ -1563,10 +1563,7 @@ const ManageVendorInvoice = () => {
                                             <div className="text-[13px]">Estimate Amount </div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
                                         </div>
-                                        <div className="">
-                                            <div className="text-[13px]">VAT 12.5% </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat12" value={formValues.vat12} onChange={handleChange} />
-                                        </div>
+                                        
                                     </div>
                                     <div className=" space-y-3 py-5">
                                         <div className="">
