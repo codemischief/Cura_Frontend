@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress , Backdrop, CircularProgress} from "@mui/material";
+import { Modal, Pagination, LinearProgress , Backdrop, CircularProgress, MenuItem} from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -40,6 +40,7 @@ import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
+import CustomSelectNative from '../../../Components/common/select/CustomSelectNative';
 const ManageClientInvoice = () => {
     const {pathname} = useLocation()
     const {user} = useAuth();
@@ -151,8 +152,14 @@ const ManageClientInvoice = () => {
         console.log(formValues)
         setSelectedOption(e)
     }
-
-    const [orders, setOrders] = useState([]);
+     function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = item.ordername;
+        });
+        return idNameObject;
+    }
+    const [orders, setOrders] = useState({});
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
@@ -160,8 +167,10 @@ const ManageClientInvoice = () => {
         }
         const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
         const res = await response.json()
+        
         console.log(res.data)
-        setOrders(res.data)
+        setOrders(convertToIdNameObject(res.data))
+        // setOrders(res.data)
 
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
@@ -899,6 +908,9 @@ const ManageClientInvoice = () => {
                                     }, [state,filterMapState]);
 
     const [orderText, setOrderText] = useState("Select Order")
+    const handleOrderChange = (e) => {
+        
+    }
     return (
         <div className='font-medium'>
             <Backdrop
@@ -1442,21 +1454,39 @@ const ManageClientInvoice = () => {
                                         <div className="text-[13px] mb-1">
                                             Order <label className="text-red-500">*</label>
                                         </div>
-                                        {/* <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="order"
-                                            value={formValues.order}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="" >Select A Order</option>
-                                            {orders.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.ordername}
-                                                </option>
-                                            ))}
-                                        </select> */}
-                                        {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
-                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}  />}
+                                        
+                                        
+                                        <CustomSelectNative
+                                          value={orders[formValues.order]}
+                                           data={Object.keys(orders)}
+                                           renderData={(item) => {
+                                            return (
+                                              <MenuItem value={item} key={item} sx={{display : 'flex', width : '300px', gap : '5px', fontSize : '12px'}}>
+                                                <span>
+                                                    {item}
+                                                </span>
+                                                <span>
+                                                   {orders[item]}
+                                                </span>
+                                               
+                                              </MenuItem>
+                                            );
+                                          }}
+                                           placeholder="Select Orders"
+                                           
+                                           onChange={(e) => {
+                                            setFormValues({ ...formValues, order: e.target.value })
+                                           }}
+                                           isSticky={true}
+                                           headerText={{
+                                            first : 'ID',
+                                            second : 'Order Description',
+                                          }}
+                                           
+                                        
+                                        />
+                                        {/* {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
+                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}  />} */}
                                         {/* <DropDown options={orders} initialValue="Select Order" leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}/> */}
                                         <div className="text-[10px] text-[#CD0000] absolute">{formErrors.order}</div>
                                     </div>

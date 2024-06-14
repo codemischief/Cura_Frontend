@@ -10,6 +10,11 @@ const CustomSelectNative = ({
   placeholder,
   menuMaxHeight = "14rem",
   renderData,
+  isSticky = false,
+  headerText = {
+    first : 'ID',
+    second : 'Order Description',
+  },
   ...props
 }) => {
   return (
@@ -69,6 +74,11 @@ const CustomSelectNative = ({
         }}
         {...props}
       >
+        {isSticky && <MenuItem disabled sx={{ position: "sticky", top: 0, backgroundColor: "gray", zIndex: 99, color:"black",display:"flex", opacity : '0.5', gap : '40px' }}>
+         <span>{headerText.first}</span>
+         <span>{headerText.second}</span>
+
+        </MenuItem>}
         {data?.length === 0 && (
           <MenuItem value="" disabled>
             No data
