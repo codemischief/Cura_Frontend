@@ -24,9 +24,11 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 
 const OrderInvoiceList = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     orderInvoiceData,
     status,
@@ -71,7 +73,7 @@ const OrderInvoiceList = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -129,7 +131,7 @@ const OrderInvoiceList = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -179,7 +181,7 @@ const OrderInvoiceList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [

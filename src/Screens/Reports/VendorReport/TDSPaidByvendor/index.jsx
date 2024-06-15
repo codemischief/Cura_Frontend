@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
+import useAuth from "./../../../../context/JwtContext"
 import {
   downloadVendorStatementReport,
   getTdByVendorView,
@@ -21,6 +22,7 @@ import SimpleTable from "../../../../Components/common/table/CustomTable";
 const TdsPaidByVendorView = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
+  const {user} = useAuth();
 
   const {
     tdsByVendorView,
@@ -55,7 +57,7 @@ const TdsPaidByVendorView = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "vendorname",
         "vendorcategory",
@@ -108,7 +110,7 @@ const TdsPaidByVendorView = () => {
     } else {
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "vendorname",
           "vendorcategory",
@@ -151,7 +153,7 @@ const TdsPaidByVendorView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "vendorname",
         "vendorcategory",

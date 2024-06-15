@@ -21,9 +21,11 @@ import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
+import useAuth from "../../../../context/JwtContext";
 
 const VendorPaymentPeriodView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth(); 
   const {
     vendorPaymentPeriodData,
     status,
@@ -73,7 +75,7 @@ const VendorPaymentPeriodView = () => {
       intialFields.end_date 
     ) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
         ],
@@ -116,7 +118,7 @@ const VendorPaymentPeriodView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
         ],
@@ -155,7 +157,7 @@ const VendorPaymentPeriodView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
       ],

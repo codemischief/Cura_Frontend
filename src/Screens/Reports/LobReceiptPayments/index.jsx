@@ -55,7 +55,7 @@ const LobReceiptPayments = () => {
 
   const fetchLobData = async () => {
     const data = {
-      // "user_id": 1234,
+      // "user_id": user.id,
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": ["name"],
@@ -96,7 +96,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     if (startDate && endDate && lob) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         lobName: lob,
@@ -138,7 +138,7 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (startDate && endDate && lob) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         lobName: lob,
@@ -175,7 +175,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       lobName: lob,
@@ -201,7 +201,7 @@ const LobReceiptPayments = () => {
   const downloadPdf = () => {
     console.log("start")
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: ["lobname", "service", "orderreceiptamount", "paymentamount", "diff"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       startdate: startDate ?? "2021-01-01",

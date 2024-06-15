@@ -43,7 +43,7 @@ const BankBalanceReconcilation = () => {
 
     const fetchPaymentMode = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
         const response = await APIService.getModesAdmin({ ...data, user_id: user.id });
         const result = (await response.json());
@@ -63,7 +63,7 @@ const BankBalanceReconcilation = () => {
 
     const handleRefresh = () => {
         let obj = {
-            // user_id: 1234,
+            user_id: user.id,
             startdate: startDate ?? "2021-01-01",
             bankName: bankName,
             rows: "*",
@@ -81,7 +81,7 @@ const BankBalanceReconcilation = () => {
 
     const downloadExcel = async () => {
         let obj = {
-            // user_id: 1234,
+            user_id: user.id,
             startdate: startDate ?? "2021-01-01",
             bankName: bankName,
             rows: ["bankname", "payment", "receipt", "balance"],
@@ -120,7 +120,7 @@ const BankBalanceReconcilation = () => {
             dispatch(setInitialState())
             setShowTable(true);
             let obj = {
-                // user_id: 1234,
+                user_id: user.id,
                 startdate: startDate ?? "2021-01-01",
                 bankName: bankName,
                 rows: "*",

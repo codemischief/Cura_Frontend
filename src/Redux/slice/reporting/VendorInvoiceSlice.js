@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "../../../utils/axios";
+import axios from "axios";
 import {
   env_URL_SERVER,
   updatedVendorInvoiceData
@@ -84,7 +84,7 @@ export const getVendorInvoiceData =
       dispatch(setStatus("loading"));
       const response = await axios.post(
         `${env_URL_SERVER}getReportVendorInvoice`,
-        {...payloadObj ,user_id}
+        payloadObj
       );
 
       dispatch(setVendorInvoiceData({ data: response.data, year, month }));
@@ -103,9 +103,9 @@ export const downloadVendorInvoiceDataXls =
         payloadObj
       );
 
-      if ((response.data.filename, response.data.user_id)) {
+      if ((response.data.filename, payloadObj.user_id)) {
         await dispatch(
-          downloadXlsEndpoint(response.data.filename, response.data.user_id)
+          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
         );
       }
       dispatch(setStatus("success"));

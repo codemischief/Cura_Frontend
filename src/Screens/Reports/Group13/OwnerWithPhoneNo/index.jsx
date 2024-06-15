@@ -17,9 +17,11 @@ import {
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
+import useAuth from "../../../../context/JwtContext";
 
 const OwnerPhoneNo = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     ownersPhoneNo,
     status,
@@ -55,7 +57,7 @@ const OwnerPhoneNo = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "name", "phoneno", "phoneno1", "phoneno2"
       ],
@@ -94,7 +96,7 @@ const OwnerPhoneNo = () => {
   useEffect(() => {
     if (phoneNoType) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "name", "phoneno", "phoneno1", "phoneno2"
         ],
@@ -134,7 +136,7 @@ const OwnerPhoneNo = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["name", "phoneno", "phoneno1", "phoneno2"
 
       ],
@@ -158,7 +160,7 @@ const OwnerPhoneNo = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: [
         "name", "phoneno", "phoneno1", "phoneno2"
       ],

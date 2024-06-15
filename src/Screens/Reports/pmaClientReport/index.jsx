@@ -27,10 +27,12 @@ import * as XLSX from "xlsx";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
 import CLientPortalTable from "../../../Components/common/table/CustomTable";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 
 const PmaClientReport = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
+  const {user} = useAuth();
 
   const {
     pmaClientReport,
@@ -78,7 +80,7 @@ const PmaClientReport = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientid",
         "fullname",
@@ -123,7 +125,7 @@ const PmaClientReport = () => {
     } else {
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "clientid",
           "fullname",
@@ -164,7 +166,7 @@ const PmaClientReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientid",
         "fullname",
@@ -271,7 +273,7 @@ const PmaClientReport = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

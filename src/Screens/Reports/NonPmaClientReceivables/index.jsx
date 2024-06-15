@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "./../../../context/JwtContext"
 import {
   downloadNonPmaClientStAndRec,
   getNonPmaClientStAndRec,
@@ -27,6 +28,7 @@ import Container from "../../../Components/common/Container";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     NonPmaClientStAndRec,
     status,
@@ -76,7 +78,7 @@ const LobReceiptPayments = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["clientname", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -114,7 +116,7 @@ const LobReceiptPayments = () => {
       isInitialMount.current = false;
     } else {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["clientname", "amount"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -144,7 +146,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["clientname", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),

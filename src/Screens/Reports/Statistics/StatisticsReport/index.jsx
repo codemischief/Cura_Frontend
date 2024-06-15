@@ -17,6 +17,7 @@ import {
   setStatus
 } from "../../../../Redux/slice/reporting/Statistics/StatisticsReport"
 import { useSelector } from "react-redux";
+import useAuth from "../../../../context/JwtContext";
 // import DatePicker from "../../../Components/common/select/CustomDate";
 import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../../utils/filters";
@@ -28,6 +29,7 @@ import Container from "../../../../Components/common/Container";
 const StatisticsReport = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
+  const {user} = useAuth();
 
   const {
     data,
@@ -75,7 +77,7 @@ const StatisticsReport = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["type", "count", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -114,7 +116,7 @@ const StatisticsReport = () => {
     } else {
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["type", "count", "amount"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -145,7 +147,7 @@ const StatisticsReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["type", "count", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),

@@ -24,11 +24,12 @@ import * as XLSX from "xlsx";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import Container from "../../../../Components/common/Container";
+import useAuth from "../../../../context/JwtContext";
 
 const OwnerMailId = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
-
+  const {user} = useAuth();
   const {
     data,
     status,
@@ -75,7 +76,7 @@ const OwnerMailId = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "email"
       ],
@@ -116,7 +117,7 @@ const OwnerMailId = () => {
     } else {
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "email"
         ],
@@ -150,7 +151,7 @@ const OwnerMailId = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "email"
       ],
@@ -170,7 +171,7 @@ const OwnerMailId = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: [
         "email"
       ],
