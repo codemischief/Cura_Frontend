@@ -401,7 +401,7 @@ const ManageVendor = () => {
             "bankifsccode": formValues.ifscCode,
             "bankaccttype": formValues.accountType,
             "companydeductee": true,
-            "tallyledgerid": Number(formValues.tallyLedger)
+            "tallyledgerid": formValues.tallyLedger
         }
         const response = await APIService.addVendors(data);
         const result = (await response.json())

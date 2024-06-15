@@ -1,4 +1,4 @@
-import { LinearProgress, Modal, Pagination, CircularProgress } from "@mui/material";
+import { LinearProgress, Modal, Pagination, CircularProgress, MenuItem } from "@mui/material";
 import React, { useEffect, useRef, useState } from 'react';
 import AsyncSelect from "react-select/async";
 import Navbar from "../../../Components/Navabar/Navbar";
@@ -41,6 +41,8 @@ import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import useAuth from "../../../context/JwtContext";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
+import OrderCustomSelectNative from "../../../Components/common/select/OrderCustomSelectNative";
+
 const ManageVendorPayment = () => {
     const {user} = useAuth()
     const menuRef = useRef();
@@ -365,7 +367,7 @@ const ManageVendorPayment = () => {
         setClientPropertyData(res.data)
     }
     const [orders, setOrders] = useState([]);
-
+    
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
@@ -375,7 +377,14 @@ const ManageVendorPayment = () => {
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
         console.log(res.data)
-        setOrders(res.data)
+        setOrders((prev) => {
+            const temp = {}
+             res.data.forEach((item) => {
+                temp[item.id] = item.ordername;
+              });
+            return temp
+        })
+        // setOrders(res.data)
     }
     const addVendorPayment = async () => {
 
@@ -1610,22 +1619,34 @@ const ManageVendorPayment = () => {
                                                         control: (provided, state) => ({
                                                             ...provided,
                                                             minHeight: 23,
-                                                            lineHeight: '0.8',
-                                                            height: 4,
-                                                            width: 230,
-                                                            fontSize: 10,
+                                                            // lineHeight: '0.8',
+                                                            height: '20px',
+                                                            width: 224,
+                                                            fontSize: 12,
                                                             // padding: '1px'
+                                                            borderRadius : '2px'
                                                         }),
-                                                        // indicatorSeparator: (provided, state) => ({
-                                                        //   ...provided,
-                                                        //   lineHeight : '0.5',
-                                                        //   height : 2,
-                                                        //   fontSize : 12 // hide the indicator separator
-                                                        // }),
+                                                        indicatorSeparator: (provided, state) => ({
+                                                          display : 'none'
+                                                        }),
                                                         dropdownIndicator: (provided, state) => ({
                                                             ...provided,
-                                                            padding: '1px', // adjust padding for the dropdown indicator
+                                                            padding: '1px',
+                                                            paddingRight : '2px', // Adjust padding for the dropdown indicator
+                                                            width: 15, // Adjust width to make it smaller
+                                                            height: 15, // Adjust height to make it smaller
+                                                            display: 'flex', // Use flex to center the icon
+                                                            alignItems: 'center', // Center vertically
+                                                            justifyContent: 'center'
+                                                             // adjust padding for the dropdown indicator
                                                         }),
+                                                        input: (provided, state) => ({
+                                                            ...provided,
+                                                            margin: 0, // Remove any default margin
+                                                            padding: 0, // Remove any default padding
+                                                            fontSize: 12, // Match the font size
+                                                            height: 'auto', // Adjust input height
+                                                          }),
                                                         // options: (provided, state) => ({
                                                         //     ...provided,
                                                         //     fontSize: 10// adjust padding for the dropdown indicator
@@ -1634,17 +1655,17 @@ const ManageVendorPayment = () => {
                                                             ...provided,
                                                             padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
                                                             margin: 0, // Ensure no extra margin
-                                                            fontSize: 10 // Adjust font size of individual options
+                                                            fontSize: 12 // Adjust font size of individual options
                                                         }),
                                                         menu: (provided, state) => ({
                                                             ...provided,
-                                                            width: 230, // Adjust the width of the dropdown menu
+                                                            width: 224, // Adjust the width of the dropdown menu
                                                             zIndex: 9999 // Ensure the menu appears above other elements
                                                         }),
                                                         menuList: (provided, state) => ({
                                                             ...provided,
                                                             padding: 0, // Adjust padding of the menu list
-                                                            fontSize: 10,
+                                                            fontSize: 12,
                                                             maxHeight: 150 // Adjust font size of the menu list
                                                         }),
                                                         
@@ -1707,18 +1728,47 @@ const ManageVendorPayment = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
-                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
-                                                    handleChange(e)
-                                                    getOrderData(e.target.value)
-                                                }} formValueName="orderid" value={formValues.orderid} />}
+                                                <OrderCustomSelectNative
+                                           data={Object.keys(orders)}
+                                           value={orders?.[formValues.orderid] ? orders?.[formValues.orderid]:null}
+                                           placeholder="Select Orders"
+                                           isSticky={true}
+                                           headerText={{
+                                            first : 'Order Description',
+                                            second : 'ID',
+                                          }}
+                                          renderData={(item) => {
+                                            return (
+                                              <MenuItem value={item} key={item} sx={{ width : '224px', gap : '5px', fontSize : '12px'}}>
+                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                   {orders[item]}
+                                                </p>
+                                                <p className='w-[20%]'>
+                                                    {item}
+                                                </p>
+                                                
+                                               
+                                              </MenuItem>
+                                            );
+                                          }}
+                                          onChange={(e) => {
+                                            setFormValues({ ...formValues, orderid: e.target.value })
+                                           }}
+                                           
+                                        
+                                        />
+                                                    {/* {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
+                                                    <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
+                                                        handleChange(e)
+                                                        getOrderData(e.target.value)
+                                                    }} formValueName="orderid" value={formValues.orderid} />} */}
 
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.orderid}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
                                                 <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.vendorid} onChange={handleChange} >
-                                                    <option value={null}> Select Vendor</option>
+                                                    <option value={null} hidden> Select Vendor</option>
                                                     {vendorData.map(item => (
                                                         <option key={item[0]} value={item[0]}>
                                                             {item[1]}

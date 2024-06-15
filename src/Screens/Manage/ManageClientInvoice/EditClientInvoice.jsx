@@ -258,9 +258,9 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                         </div> } */}
                         {!pageLoading &&
                             <div className="flex gap-12 justify-center">
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-4 py-5">
                                     <div className="">
-                                        <div className="text-[13px] pb-0.5">
+                                        <div className="text-[13px] ">
                                             Client Name<label className="text-red-500">*</label>
                                         </div>
                                         <AsyncSelect
@@ -275,22 +275,34 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                                 control: (provided, state) => ({
                                                     ...provided,
                                                     minHeight: 23,
-                                                    lineHeight: '0.8',
-                                                    height: 4,
-                                                    width: 230,
-                                                    fontSize: 10,
+                                                    // lineHeight: '0.8',
+                                                    height: '20px',
+                                                    width: 224,
+                                                    fontSize: 12,
                                                     // padding: '1px'
+                                                    borderRadius : '2px'
                                                 }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
+                                                indicatorSeparator: (provided, state) => ({
+                                                  display : 'none'
+                                                }),
                                                 dropdownIndicator: (provided, state) => ({
                                                     ...provided,
-                                                    padding: '1px', // adjust padding for the dropdown indicator
+                                                    padding: '1px',
+                                                    paddingRight : '2px', // Adjust padding for the dropdown indicator
+                                                    width: 15, // Adjust width to make it smaller
+                                                    height: 15, // Adjust height to make it smaller
+                                                    display: 'flex', // Use flex to center the icon
+                                                    alignItems: 'center', // Center vertically
+                                                    justifyContent: 'center'
+                                                     // adjust padding for the dropdown indicator
                                                 }),
+                                                input: (provided, state) => ({
+                                                    ...provided,
+                                                    margin: 0, // Remove any default margin
+                                                    padding: 0, // Remove any default padding
+                                                    fontSize: 12, // Match the font size
+                                                    height: 'auto', // Adjust input height
+                                                  }),
                                                 // options: (provided, state) => ({
                                                 //     ...provided,
                                                 //     fontSize: 10// adjust padding for the dropdown indicator
@@ -299,17 +311,17 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                                     ...provided,
                                                     padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
                                                     margin: 0, // Ensure no extra margin
-                                                    fontSize: 10 // Adjust font size of individual options
+                                                    fontSize: 12 // Adjust font size of individual options
                                                 }),
                                                 menu: (provided, state) => ({
                                                     ...provided,
-                                                    width: 230, // Adjust the width of the dropdown menu
+                                                    width: 224, // Adjust the width of the dropdown menu
                                                     zIndex: 9999 // Ensure the menu appears above other elements
                                                 }),
                                                 menuList: (provided, state) => ({
                                                     ...provided,
                                                     padding: 0, // Adjust padding of the menu list
-                                                    fontSize: 10,
+                                                    fontSize: 12,
                                                     maxHeight: 150 // Adjust font size of the menu list
                                                 }),
                                                 
@@ -337,9 +349,9 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                         <div className="text-[10px] text-[#CD0000] absolute">{formErrors.invoiceDescription}</div>
                                     </div>
                                 </div>
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-4 py-5">
                                     <div className="">
-                                        <div className="text-[13px] mb-1">
+                                        <div className="text-[13px] ">
                                             Order <label className="text-red-500">*</label>
                                         </div>
                                         {/* <select
@@ -361,12 +373,12 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                            placeholder="Select Orders"
                                            isSticky={true}
                                            headerText={{
-                                            first : 'ID',
-                                            second : 'Order Description',
+                                            first : 'Order Description',
+                                            second : 'ID',
                                           }}
                                           renderData={(item) => {
                                             return (
-                                                <MenuItem value={item} key={item} sx={{ width : '300px', gap : '5px', fontSize : '12px'}}>
+                                                <MenuItem value={item} key={item} sx={{ width : '224px', gap : '5px', fontSize : '12px'}}>
                                                 <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
                                                    {orders[item]}
                                                 </p>

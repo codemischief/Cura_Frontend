@@ -4,6 +4,7 @@ import { APIService } from '../../../../services/API';
 import useAuth from '../../../../context/JwtContext';
 const POADetails = ({initialCountries,initialStates,initialCities,formValues,setFormValues}) => {
   const {user} = useAuth()
+  {console.log(initialCountries)}
   const [country, setCountry] = useState(initialCountries);
   const [city, setCity] = useState(initialCities);
   const [state, setState] = useState(initialStates);
@@ -59,10 +60,11 @@ const fetchCityData = async (id) => {
                 fetchStateData(e.target.value)
                 setCity([]);
             }} > 
-              <option >Select country</option>
+            {console.log(country)}
+              <option value="" hidden>Select country</option>
               {country && country.map(item => (
-                <option key={item[0]} value={item[0]}>
-                  {item[1]}
+                <option key={item.id} value={item.id}>
+                  {item.name}
                 </option>
               ))}
             </select>
@@ -71,7 +73,7 @@ const fetchCityData = async (id) => {
           <div className="">
             <div className="text-[13px]">City </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="poacity" value={formValues.client_property_poa.poacity} onChange={handleChange}>
-              <option >Select city</option>
+              <option value="" hidden >Select city</option>
               {city && city.map(item => (
                 <option key={item.city} value={item.city}>
                   {item.city}
@@ -109,7 +111,7 @@ const fetchCityData = async (id) => {
               fetchCityData(e.target.value);
             }}>
               
-              <option >Select state</option>
+              <option value="" hidden>Select state</option>
               {state && state.map((item) => (
                 
                 <option key={item[0]} value={item[0]}>
