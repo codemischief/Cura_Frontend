@@ -71,7 +71,7 @@ function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   const getInitialIdleTimeout = () => {
-    const storedIdleTimeout = sessionStorage.getItem("idleTimeout");
+    const storedIdleTimeout = localStorage.getItem("idleTimeout");
     return storedIdleTimeout ? parseInt(storedIdleTimeout, 10) : null;
   };
 
@@ -80,8 +80,8 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = sessionStorage.getItem("accessToken");
-        const user = sessionStorage.getItem("user");
+        const accessToken = localStorage.getItem("accessToken");
+        const user = localStorage.getItem("user");
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(JSON.parse(user), accessToken);
@@ -118,7 +118,7 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     if (idleTimeout !== null) {
-      sessionStorage.setItem("idleTimeout", idleTimeout);
+      localStorage.setItem("idleTimeout", idleTimeout);
     }
   }, [idleTimeout]);
   
@@ -179,6 +179,7 @@ function AuthProvider({ children }) {
         password,
         company_key,
       });
+     
       const { token, user_id, role_id, access_rights, idleTimeOut } = response.data;
       if (token) {
         let userObj = {
@@ -196,7 +197,7 @@ function AuthProvider({ children }) {
         };
         const idleTimeoutInMs = idleTimeOut ? idleTimeOut * 1000 : null;
         if (idleTimeoutInMs !== null) {
-          sessionStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
+          localStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
           setIdleTimeout(idleTimeoutInMs); // Set idleTimeout state
         }
         setSession(userObj, token);
@@ -216,7 +217,7 @@ function AuthProvider({ children }) {
     setIsModalOpen(false);
     clearInterval(countdownRef.current);
     setSession(null);
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch({ type: Types.Logout });
     toast.success("Logged out successfully");
     navigate("/login");
