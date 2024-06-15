@@ -69,7 +69,7 @@ const OrderPaymentWithoutTdsView = () => {
 
   const getEntityAndMode = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
     };
     const mode = await APIService.getModesAdmin({...data , user_id:user.id});
     const entity = await APIService.getEntityAdmin({...data , user_id:user.id});
