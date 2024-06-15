@@ -172,6 +172,30 @@ const PmaClientReport = () => {
     dispatch(downloadMonthlyBankSummary(obj))
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      rows: ["name", "monthyear", "payments", "bankpayments", "bankreceipts", "receipts"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/monthlyBankSummary",
+      colmap: {
+        "name": "Bank Name",
+        "monthyear": "Month Year",
+        "payments": "Order Payments",
+        "bankpayments": "Payments(DR)",
+        "bankreceipts": "Order Receipt",
+        "receipts": "Receipt(CR)",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadMonthlyBankSummary(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (startDate) {
 
@@ -243,7 +267,8 @@ const PmaClientReport = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

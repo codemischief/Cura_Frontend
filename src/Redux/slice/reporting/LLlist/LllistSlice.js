@@ -93,7 +93,7 @@ export const getLLlist =
   };
 
 export const downloadLLlist =
-  (payloadObj) => async (dispatch) => {
+  (payloadObj ,type) => async (dispatch) => {
     
     try {
       dispatch(setStatus("loading"));
@@ -101,9 +101,9 @@ export const downloadLLlist =
         `${env_URL_SERVER}reportLLAgreement`,
         payloadObj
       );
-      if ((response.data.filename, payloadObj.user_id)) {
+      if ((response.data.filename, response.data.user_id)) {
         await dispatch(
-          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+          downloadXlsEndpoint(response.data.filename, response.data.user_id ,type)
         );
       }
       dispatch(setStatus("success"));
@@ -112,7 +112,7 @@ export const downloadLLlist =
     }
   };
 
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -127,7 +127,12 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "ReportActiveLLAgreement.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "ReportLLlist.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "ReportLLlist.pdf");
+    }
+
   } catch (error) {
     console.log("error", error);
   }

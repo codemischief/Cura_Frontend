@@ -289,6 +289,49 @@ const LLlistReport = () => {
     dispatch(downloadLLlist(obj))
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      rows: [
+        "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clienttypename", 
+         "propertydescription","property_status","status","registrationtype","paymentcycle",
+         "noticeperiodindays",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/Lllist",
+      colmap: {
+        type: "Type",
+        id: "ID",
+        startdate: 'Start Date',
+        actualenddate: "End Date",
+        startdatemonthyear: "StartDate Fiscal Month",
+        enddatemonthyear: 'EndDate Fiscal Month',
+        rentamount: "Rent",
+        depositamount: "Deposit",
+        entityname: "Entity",
+        clientid: "Client ID",
+        clienttypename: "Client Name",
+        propertydescription: "Property Description",
+        property_status: "Property Status",
+        status: "Status",
+        registrationtype: "Registration Type",
+        paymentcycle: "Payment Cycle",
+        noticeperiodindays: "Notice Period In Days"
+      },
+      statusName: intialValue.status,
+      clientName: intialValue.clientId.label,
+      typeName: intialValue.type,
+      clientPropertyID: intialValue.clientProperty,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadLLlist(obj, 'pdf'))
+  }
+
 
   const handleShow = () => {
     dispatch(setInitialState())
@@ -480,6 +523,8 @@ const LLlistReport = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

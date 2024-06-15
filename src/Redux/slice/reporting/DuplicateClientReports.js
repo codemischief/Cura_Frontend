@@ -96,16 +96,16 @@ export const getDuplicateClientsReport =
   };
 
 export const downloadDuplicateClientsReport =
-  (payloadObj, year, month) => async (dispatch) => {
+  (payloadObj, year, month ,type) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
         `${env_URL_SERVER}reportDuplicateClients`,
         payloadObj
       );
-      if ((response.data.filename, payloadObj.user_id)) {
+      if ((response.data.filename, response.data.user_id)) {
         await dispatch(
-          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+          downloadXlsEndpoint(response.data.filename, response.data.user_id ,type)
         );
       }
       dispatch(setStatus("success"));
@@ -116,7 +116,7 @@ export const downloadDuplicateClientsReport =
       dispatch(setStatus("error"));
     }
   };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId , type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -131,7 +131,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "DuplicateClientReport.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "DuplicateClientReport.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "DuplicateClientReport.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }

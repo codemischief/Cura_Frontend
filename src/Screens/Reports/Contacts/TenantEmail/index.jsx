@@ -274,7 +274,7 @@ const TenantEmail = () => {
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
             downloadPdf={downloadPdf}
-            height="calc(100vh - 12rem)"
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

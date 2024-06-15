@@ -223,6 +223,36 @@ const LobReceiptPayments = () => {
     // });
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      rows:  ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
+        "lobname", "service", "fy", "mode"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/clientContactDetails",
+      colmap: {
+       "id": "ID",
+        "entity": "Entity",
+        "clientname": "Client Name",
+        "type": "Type",
+        "date": "date",
+        "amount": "Amount",
+        "orderdetails": "Order Details",
+        "lobname": "Lob Name",
+        "service": "Service",
+        "fy": "FY",
+        "mode": "Mode",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadClientStatementAllEntitiesDataXls(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (lob && entity) {
 
@@ -373,7 +403,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

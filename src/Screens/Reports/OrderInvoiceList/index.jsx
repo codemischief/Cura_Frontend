@@ -236,6 +236,59 @@ const OrderInvoiceList = () => {
     });
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      rows: [
+        "type",
+        "id",
+        "invoicedate",
+        "monthyear",
+        "fy",
+        "invoiceamount",
+        "entityname",
+        "mode",
+        "clientid",
+        "clientname",
+        "vendorname",
+        "orderid",
+        "orderdescription",
+        "serviceid",
+        "service",
+        "lobname",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/orderInvoiceList",
+      colmap: {
+       "type": "Type",
+        "id": "ID",
+        "invoicedate": "Invoice Date",
+        "monthyear": "Fiscal Month",
+        "fy": "Fiscal year",
+        "invoiceamount": "Amount",
+        "entityname": "Entity",
+        "mode": "Mode",
+        "clientid": "Client ID",
+        "clientname": "Client Name",
+        "vendorname": "Vendor Name",
+        "orderid": "Order ID",
+        "orderdescription": "Order Description",
+        "serviceid": "Service ID",
+        "service": "Service",
+        "lobname": "LOB Name"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadInvoiceDataXls(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (startDate && endDate) {
 
@@ -343,6 +396,8 @@ const OrderInvoiceList = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+             downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
       </Stack>

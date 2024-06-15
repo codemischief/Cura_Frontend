@@ -28,6 +28,7 @@ import useAuth from "../../../context/JwtContext";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth(); 
   const {
     bankPaymentsReconciliation,
     status,
@@ -51,7 +52,6 @@ const LobReceiptPayments = () => {
   const [bankName, setBankName] = useState("DAP-ICICI-42");
 
   const fetchPaymentMode = async () => {
-    const { user } = useAuth(); 
     const data = {
       "user_id": 1234
     }
@@ -197,6 +197,32 @@ const LobReceiptPayments = () => {
     // });
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      bankName: bankName,
+      rows: ["date", "bankst_dr", "contorderpayments", "order_payments", "contractual_payments",],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/bankPaymentsReconciliation",
+      colmap: {
+       "date": "Date",
+        "bankst_dr": "BankSt(DR)",
+        "contorderpayments": "Cont+Order Pay",
+        "order_payments": "Order pay",
+        "contractual_payments": "Cont Pay"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadBankPaymentsReconciliation(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (startDate && endDate && bankName) {
 
@@ -318,6 +344,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

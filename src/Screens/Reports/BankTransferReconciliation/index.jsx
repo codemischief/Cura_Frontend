@@ -178,6 +178,29 @@ const PmaClientReport = () => {
     // });
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      rows:["type", "orderdescription", "date", "mode", "amount"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/bankTransferReconciliation",
+      colmap: {
+       "type": "Type",
+        "orderdescription": "Order Description",
+        "date": "Date",
+        "mode": "Mode",
+        "amount": "Amount",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadBankTransferReconsiliation(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (startDate) {
 
@@ -249,7 +272,8 @@ const PmaClientReport = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

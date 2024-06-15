@@ -88,8 +88,8 @@ export const getClientsPhoneNo = (payloadObj) => async (dispatch) => {
   }
 };
 
-export const downloadClientsPhoneNo = (payloadObj) => async (
-  dispatch , type
+export const downloadClientsPhoneNo = (payloadObj ,type) => async (
+  dispatch , 
 ) => {
   try {
     dispatch(setStatus("loading"));
@@ -112,6 +112,7 @@ export const downloadClientsPhoneNo = (payloadObj) => async (
 };
 
 export const downloadXlsEndpoint = (filename, userId , type='excel') => async (dispatch) => {
+
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,

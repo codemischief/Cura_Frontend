@@ -169,6 +169,26 @@ const LobReceiptPayments = () => {
     // });
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      rows: ["clientname", "amount"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/nonPmaClientReceivables",
+      colmap: {
+        "clientname": "Client Name",
+        "amount": "Amount"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadNonPmaClientStAndRec(obj, 'pdf'))
+  }
+
   const handleShow = () => {
 
     dispatch(setInitialState())
@@ -222,6 +242,7 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             height="calc(100vh - 12rem)"
           />
         </div>

@@ -84,7 +84,7 @@ export const getVendorInvoiceData =
       dispatch(setStatus("loading"));
       const response = await axios.post(
         `${env_URL_SERVER}getReportVendorInvoice`,
-        payloadObj
+        {...payloadObj ,user_id}
       );
 
       dispatch(setVendorInvoiceData({ data: response.data, year, month }));
@@ -95,7 +95,7 @@ export const getVendorInvoiceData =
   };
 
 export const downloadVendorInvoiceDataXls =
-  (payloadObj, year, month) => async (dispatch) => {
+  (payloadObj, year, month ,type) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
@@ -103,9 +103,9 @@ export const downloadVendorInvoiceDataXls =
         payloadObj
       );
 
-      if ((response.data.filename, payloadObj.user_id)) {
+      if ((response.data.filename, response.data.user_id)) {
         await dispatch(
-          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+          downloadXlsEndpoint(response.data.filename, response.data.user_id)
         );
       }
       dispatch(setStatus("success"));
@@ -116,7 +116,7 @@ export const downloadVendorInvoiceDataXls =
     }
   };
 
-  export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+  export const downloadXlsEndpoint = (filename, userId ,type = 'excel') => async (dispatch) => {
     try {
       const response = await axios.post(
         `${env_URL_SERVER}download/${filename}`,
@@ -131,7 +131,12 @@ export const downloadVendorInvoiceDataXls =
       const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      FileSaver.saveAs(blob, "VendorInvoiceList.xlsx");
+      if(type == 'excel') {
+        FileSaver.saveAs(blob, "VendorInvoiceList.xlsx");
+      }else {
+        FileSaver.saveAs(blob, "VendorInvoiceList.pdf");
+      }
+
     } catch (error) {
       console.log("error", error);
     }

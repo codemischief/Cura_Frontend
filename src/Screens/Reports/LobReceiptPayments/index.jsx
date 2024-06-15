@@ -196,15 +196,34 @@ const LobReceiptPayments = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadLobReceiptPaymentsDataXls(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
+
+  const downloadPdf = () => {
+    console.log("start")
+    let obj = {
+      // user_id: user.id,
+      rows: ["lobname", "service", "orderreceiptamount", "paymentamount", "diff"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      lobName: lob,
+      downloadType: "pdf",
+      routename: "/reports/lobReceiptPayments",
+      colmap: {
+       "lobname": "LOB Name",
+        "service": "Service",
+        "orderreceiptamount": "Receipt Amount",
+        "paymentamount": "Payment Amount",
+        "diff": "Difference"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadLobReceiptPaymentsDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -336,7 +355,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-
+            downloadPdf={downloadPdf}
+            height = "calc(100vh - 15rem)"
           />
         </div>
         {toast && (

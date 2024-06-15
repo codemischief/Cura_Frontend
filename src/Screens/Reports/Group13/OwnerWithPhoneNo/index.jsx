@@ -277,7 +277,7 @@ const OwnerPhoneNo = () => {
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
           downloadPdf={downloadPdf}
-          height="calc(100vh - 18rem)"
+          height="calc(100vh - 16rem)"
         />
       </div>
     </Stack>

@@ -190,6 +190,29 @@ const LobReceiptPayments = () => {
     dispatch(downloadEntityReceiptPaymentsDataXls(obj))
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      rows: ["entityname", "orderreceiptamount", "paymentamount", "diff"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      downloadType: "pdf",
+      routename: "/reports/entityReceiptPayments",
+      entityName: entity,
+      colmap: {
+       "entityname": "Entity",
+        "orderreceiptamount": "Receipt Amount",
+        "paymentamount": "Payment Amount",
+        "diff": "Difference"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(downloadEntityReceiptPaymentsDataXls(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (startDate && endDate) {
 
@@ -319,7 +342,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

@@ -304,7 +304,7 @@ const PmaBilling = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 16rem)"
+            height="calc(100vh - 15rem)"
           />
         )}
       </Stack>

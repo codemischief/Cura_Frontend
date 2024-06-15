@@ -160,6 +160,7 @@ const LobReceiptPayments = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
+
     dispatch(downloadBankReceiptReconciliation(obj))
     // .then((response) => {
     //   const tableData = response.data;
@@ -170,6 +171,28 @@ const LobReceiptPayments = () => {
     //   dispatch(setStatus("success"));
     // });
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      // user_id: user.id,
+      rows: ["date", "bankst_cr", "client_receipt", "order_receipt"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/bankReceiptReconciliation",
+      colmap: {
+        "date": "Date",
+        "bankst_cr": "bankSt(CR)",
+        "client_receipt": "Client Rec",
+        "order_receipt": "Order Rec",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadBankReceiptReconciliation(obj, 'pdf'))
+  }
 
   const handleShow = () => {
 
@@ -223,7 +246,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (
