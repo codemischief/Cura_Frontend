@@ -7,7 +7,6 @@ import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
-import useAuth from "../../../context/JwtContext";
 
 import { useDispatch } from "react-redux";
 import {
@@ -48,7 +47,7 @@ const VendorInvoiceList = () => {
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const  {user} = useAuth()
+  
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
