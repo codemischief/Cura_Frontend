@@ -65,7 +65,7 @@ const OrderStaticsView = () => {
 
   const getLob = async () => {
     const data = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],
@@ -89,7 +89,7 @@ const OrderStaticsView = () => {
   const handleRefresh = () => {
     if (intialFields.lob) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "service", "on_hold", "estimate_given", "cancelled", "closed"
           , "billed", "inquiry", "completed", "in_progress"
@@ -130,7 +130,7 @@ const OrderStaticsView = () => {
   useEffect(() => {
     if (intialFields.lob) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "service",
           "on_hold",
@@ -171,7 +171,7 @@ const OrderStaticsView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "service",
         "on_hold",

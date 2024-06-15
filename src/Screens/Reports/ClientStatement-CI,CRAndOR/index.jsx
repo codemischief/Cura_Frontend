@@ -55,7 +55,7 @@ const LobReceiptPayments = () => {
 
   const fetchLobData = async () => {
     const data = {
-      "user_id": 1234,
+      "user_id": user.id,
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": ["name"],
@@ -70,7 +70,7 @@ const LobReceiptPayments = () => {
     }
   }
   const fetchEntitiesData = async () => {
-    const data = { "user_id": 1234 };
+    const data = { "user_id": user.id };
     const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
     const result = (await response.json());
     console.log(result.data);
@@ -106,7 +106,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     if (entity && lob) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         lobName: lob,
         entityName: entity,
         rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
@@ -147,7 +147,7 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (entity && lob) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         lobName: lob,
         entityName: entity,
         rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
@@ -186,7 +186,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       lobName: lob,
       entityName: entity,
       rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",

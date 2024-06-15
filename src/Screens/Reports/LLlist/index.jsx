@@ -97,7 +97,7 @@ const LLlistReport = () => {
   const loadOptions = async (e) => {
     if (e.length < 2) return;
     const data = {
-      // user_id: 1234,
+      user_id: user.id,
       pg_no: 0,
       pg_size: 0,
       search_key: e,
@@ -119,7 +119,7 @@ const LLlistReport = () => {
 
   const statusFetch = async () => {
     const data = {
-      // user_id: 1234,
+      // user_id: user.id,
     };
     const response = await APIService.getPaymentStatusAdmin({ ...data, user_id: user.id });
     const result = await response.json();
@@ -128,7 +128,7 @@ const LLlistReport = () => {
 
 
   const typeFetch = async () => {
-    const data = { user_id: 1234 };
+    const data = { user_id: user.id };
     const response = await APIService.getClientTypeAdmin({ ...data, user_id: user.id });
     const res = await response.json();
     setData((prev) => ({ ...prev, TypeData: [...res.data] }));
@@ -145,7 +145,7 @@ const LLlistReport = () => {
   const handleRefresh = () => {
     if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
@@ -193,7 +193,7 @@ const LLlistReport = () => {
   useEffect(() => {
     if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
@@ -236,7 +236,7 @@ const LLlistReport = () => {
   }
 
   const handleClient = async (value) => {
-    const data = { user_id: 1234, "client_id": value.value, };
+    const data = { user_id: user.id, "client_id": value.value, };
     const response = await APIService.getClientPropertyByClientId({ ...data, user_id: user.id });
     const res = await response.json();
     console.log(res, "resresresresres");
@@ -248,7 +248,7 @@ const LLlistReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clienttypename", 
          "propertydescription","property_status","status","registrationtype","paymentcycle",

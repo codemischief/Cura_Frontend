@@ -17,9 +17,11 @@ import {
 import { formatedFilterData } from "../../../utils/filters";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
+import useAuth from "../../../context/JwtContext";
 
 const ActiveLLAgreementView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     activeLlAgreement,
     status,
@@ -49,7 +51,7 @@ const ActiveLLAgreementView = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname",
         "propertydescription",
@@ -100,7 +102,7 @@ const ActiveLLAgreementView = () => {
 
   useEffect(() => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname",
         "propertydescription",
@@ -141,7 +143,7 @@ const ActiveLLAgreementView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname",
         "propertydescription",

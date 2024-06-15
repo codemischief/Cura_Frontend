@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
+import useAuth from "./../../../../context/JwtContext"
 import {
   downloadVendorStatementReport,
   getTdByVendorView,
@@ -22,6 +23,7 @@ import useAuth from "../../../../context/JwtContext";
 const TdsPaidByVendorView = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
+  const {user} = useAuth();
 
   const {
     tdsByVendorView,
@@ -110,6 +112,7 @@ const TdsPaidByVendorView = () => {
     } else {
 
       let obj = {
+
         user_id:user.id,
         rows: [
           "vendorname",

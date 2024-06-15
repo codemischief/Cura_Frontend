@@ -82,7 +82,7 @@ const OrderAnalysis = () => {
 
   const lobDatafetch = async () => {
     const data = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],
@@ -98,7 +98,7 @@ const OrderAnalysis = () => {
   const loadOptions = async (e) => {
     if (e.length < 2) return;
     const data = {
-      // user_id: 1234,
+      user_id: user.id,
       pg_no: 0,
       pg_size: 0,
       search_key: e,
@@ -122,7 +122,7 @@ const OrderAnalysis = () => {
 
   const statusFetch = async () => {
     const data = {
-      // user_id: 1234,
+      user_id: user.id,
     };
     const response = await APIService.getOrderStatusAdmin({...data , user_id:user.id});
     const result = await response.json();
@@ -131,7 +131,7 @@ const OrderAnalysis = () => {
   };
 
   const serviceFetch = async () => {
-    const data = { user_id: 1234 };
+    const data = { user_id: user.id };
     const response = await APIService.getServiceAdmin({...data , user_id:user.id});
     const res = await response.json();
     setData((prev) => ({ ...prev, Service: [...res.data] }));
@@ -149,7 +149,7 @@ const OrderAnalysis = () => {
   const handleRefresh = () => {
     if (intialValue.status && intialValue.client && intialValue.lobname && intialValue.service) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["service",
           "clientname",
           "orderid",
@@ -199,7 +199,7 @@ const OrderAnalysis = () => {
   useEffect(() => {
     if (intialValue.status && intialValue.client && intialValue.lobname && intialValue.service) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         lobName: intialValue.lobname,
         statusName: intialValue.status,
         serviceName: intialValue.service,
@@ -247,7 +247,7 @@ const OrderAnalysis = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "service",
@@ -480,6 +480,7 @@ const OrderAnalysis = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

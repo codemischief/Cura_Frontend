@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "../../../../utils/axios";
+import axios from "axios";
 import FileSaver from "file-saver";
 import { env_URL_SERVER } from "../../../helper";
 
@@ -97,9 +97,9 @@ export const downloadClientsPhoneNo = (payloadObj ,type) => async (
       `${env_URL_SERVER}reportClientPhoneNos`,
       payloadObj
     );
-    if ((response.data.filename, response.data.user_id)) {
+    if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, response.data.user_id , type)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id , type)
       );
     }
     dispatch(setStatus("success"));

@@ -7,6 +7,7 @@ import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
+import useAuth from "../../../context/JwtContext";
 
 import { useDispatch } from "react-redux";
 import {
@@ -29,6 +30,7 @@ import useAuth from "../../../context/JwtContext";
 
 const VendorInvoiceList = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     VendorInvoiceData,
     status,
@@ -162,6 +164,7 @@ const VendorInvoiceList = () => {
         pg_size: +countPerPage,
         order: sorting.sort_order ? sorting.sort_order : undefined,
       };
+      
       dispatch(getVendorInvoiceData(obj));
     }
   }, [

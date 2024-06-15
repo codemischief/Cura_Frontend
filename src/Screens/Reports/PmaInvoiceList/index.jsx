@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../context/JwtContext";
 import {
   downloadPmaInvoiceList,
   getPmaInvoiceList,
@@ -31,6 +32,7 @@ import Container from "../../../Components/common/Container";
 const PmaInvoiceList = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
+  const {user} = useAuth();
 
   const {
     pmaInvoiceList,
@@ -78,7 +80,7 @@ const PmaInvoiceList = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["clientname",
         "orderdescription",
         "invoicedate",
@@ -123,7 +125,7 @@ const PmaInvoiceList = () => {
     } else {
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "clientname",
           "orderdescription",
@@ -165,7 +167,7 @@ const PmaInvoiceList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname",
         "orderdescription",
@@ -274,7 +276,7 @@ const PmaInvoiceList = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

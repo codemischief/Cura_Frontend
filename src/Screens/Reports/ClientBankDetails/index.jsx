@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../context/JwtContext";
 import {
   downloadClientBankDetails,
   getClientBankDetails,
@@ -31,6 +32,7 @@ import Container from "../../../Components/common/Container";
 const PmaClientReport = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
+  const {user} = useAuth();
 
   const {
     clientBankDetails,
@@ -78,7 +80,7 @@ const PmaClientReport = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
         "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
         "bankaccounttype"],
@@ -119,7 +121,7 @@ const PmaClientReport = () => {
     } else {
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
           "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
           "bankaccounttype"],
@@ -156,7 +158,7 @@ const PmaClientReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
         "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
         "bankaccounttype"],

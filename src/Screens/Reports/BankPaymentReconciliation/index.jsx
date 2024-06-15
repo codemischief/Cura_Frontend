@@ -53,7 +53,7 @@ const LobReceiptPayments = () => {
 
   const fetchPaymentMode = async () => {
     const data = {
-      "user_id": 1234
+      "user_id": user.id
     }
     const response = await APIService.getModesAdmin({ ...data, user_id: user.id });
     const result = (await response.json());
@@ -90,7 +90,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     if (startDate && endDate && bankName) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         bankName: bankName,
@@ -128,7 +128,7 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (startDate && endDate && bankName) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         bankName: bankName,
@@ -166,7 +166,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       bankName: bankName,

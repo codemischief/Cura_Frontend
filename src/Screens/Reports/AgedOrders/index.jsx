@@ -69,7 +69,7 @@ const AgedOrders = () => {
 
   const lobDatafetch = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],
@@ -84,7 +84,7 @@ const AgedOrders = () => {
 
   const statusFetch = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
     };
     const response = await APIService.getOrderStatusAdmin({ ...data, user_id: user.id });
     const result = await response.json();
@@ -103,7 +103,7 @@ const AgedOrders = () => {
   const handleRefresh = () => {
     if (intialValue.status && intialValue.lobname) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["service",
           "clientname",
           "propertydescription",
@@ -148,7 +148,7 @@ const AgedOrders = () => {
   useEffect(() => {
     if (intialValue.status && intialValue.lobname) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         lobname: intialValue.lobname,
         orderstatus: intialValue.status,
         rows: ["service",
@@ -189,7 +189,7 @@ const AgedOrders = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
 
       rows: ["service",
         "clientname",
@@ -343,7 +343,7 @@ const AgedOrders = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-             height = {"calc(100vh - 16rem)"}
+             height = {"calc(100vh - 15rem)"}
           />
         </div>
         {toast && (

@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../context/JwtContext";
 import {
   downloadDataXls,
   getData,
@@ -28,6 +29,7 @@ import Container from "../../../Components/common/Container";
 
 const ClientStatementByDate = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     Data,
     status,
@@ -74,7 +76,7 @@ const ClientStatementByDate = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         startdate: startDate,
         enddate: endDate,
         rows: ["type",
@@ -126,7 +128,7 @@ const ClientStatementByDate = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        // user_id: 1234,
+        // user_id: user.id,
         startdate: startDate,
         enddate: endDate,
         rows: ["type",
@@ -173,7 +175,7 @@ const ClientStatementByDate = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       startdate: startDate,
       enddate: endDate,
       rows: ["type",

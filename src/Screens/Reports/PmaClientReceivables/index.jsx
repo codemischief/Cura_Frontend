@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../context/JwtContext";
 import {
   downloadPmaClientReceivables,
   getPmaClientReceivable,
@@ -31,7 +32,7 @@ import Container from "../../../Components/common/Container";
 const PmaClientReceivable = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
-
+  const {user} = useAuth();
   const {
     pmaClientReceivable,
     status,
@@ -78,7 +79,7 @@ const PmaClientReceivable = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["clientname",
         "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -119,7 +120,7 @@ const PmaClientReceivable = () => {
 
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["clientname",
           "amount"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -155,7 +156,7 @@ const PmaClientReceivable = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname",
         "amount"

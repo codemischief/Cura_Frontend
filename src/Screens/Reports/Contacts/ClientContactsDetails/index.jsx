@@ -7,6 +7,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../../context/JwtContext";
 import {
   downloadDataXls,
   getData,
@@ -28,7 +29,7 @@ import Container from "../../../../Components/common/Container";
 const ClientContactDetails = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
-
+  const {user} = useAuth();
   const {
     data,
     status,
@@ -75,7 +76,7 @@ const ClientContactDetails = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
       ],
@@ -116,7 +117,7 @@ const ClientContactDetails = () => {
     } else {
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
         ],
@@ -153,7 +154,7 @@ const ClientContactDetails = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
       ],
@@ -179,7 +180,7 @@ const ClientContactDetails = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: [
         "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
       ],

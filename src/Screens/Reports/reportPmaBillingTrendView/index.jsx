@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../context/JwtContext";
 import {
   downloadPmaBillingTrendView,
   getPmaBillingTrendViewData,
@@ -30,6 +31,7 @@ import Container from "../../../Components/common/Container";
 
 const PmaBillingTrendView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     pmaBillingTrendView,
     status,
@@ -78,7 +80,7 @@ const PmaBillingTrendView = () => {
   const handleRefresh = () => {
     if (startDate) {
       // {
-      //   "user_id":1234,
+      //   "user_id":user.id,
       //   "fy":"2021",
       //   "rows":["*"],
       //   "filters":[],
@@ -90,7 +92,7 @@ const PmaBillingTrendView = () => {
       // }
       const startYear = startDate.getFullYear()
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         fy: String(startYear),
         rows: ["clientname",
           "jan",
@@ -142,7 +144,7 @@ const PmaBillingTrendView = () => {
     if (startDate) {
       const startYear = startDate.getFullYear()
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         fy: String(startYear),
         rows: ["clientname",
           "jan",
@@ -191,7 +193,7 @@ const PmaBillingTrendView = () => {
     const startYear = startDate.getFullYear()
     let obj = {
 
-      // user_id: 1234,
+      user_id: user.id,
       fy: String(startYear),
       rows: ["clientname",
         "jan",

@@ -7,6 +7,7 @@ import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
+import useAuth from "../../../context/JwtContext";
 
 import { useDispatch } from "react-redux";
 import {
@@ -27,6 +28,7 @@ import Container from "../../../Components/common/Container";
 
 const ClientReceiptList = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     clientReceiptData,
     status,
@@ -71,7 +73,7 @@ const ClientReceiptList = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows:
@@ -130,7 +132,7 @@ const ClientReceiptList = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -179,7 +181,7 @@ const ClientReceiptList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [
@@ -343,6 +345,7 @@ const ClientReceiptList = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            height="calc(100vh - 15rem)"
           />
         </div>
       </Stack>

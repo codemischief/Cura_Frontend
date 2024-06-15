@@ -27,8 +27,10 @@ import * as XLSX from "xlsx";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import Container from "../../../Components/common/Container";
+import useAuth from "./../../../context/JwtContext"
 const PmaClientReport = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const isInitialMount = useRef(true);
   const {
     bankTransferReconsiliation,
@@ -76,7 +78,7 @@ const PmaClientReport = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["type", "orderdescription", "date", "mode", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -115,7 +117,7 @@ const PmaClientReport = () => {
     } else {
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["type", "orderdescription", "date", "mode", "amount"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -150,7 +152,7 @@ const PmaClientReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["type", "orderdescription", "date", "mode", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
