@@ -15,7 +15,7 @@ const METHOD_POST = (data) => ({
   body: JSON.stringify(data),
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   },
 });
 const METHOD_POST_WITH_TOKEN = (data, token) => ({
