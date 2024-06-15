@@ -86,7 +86,7 @@ input:active {
 .orderSelectBoxField {
   display: flex;
   width: 17.5625rem;
-  height: 3rem;
+  height: 2rem;
   /* padding: 0.1875rem 1.25rem; */
   justify-content: center;
   align-items: flex-start;
