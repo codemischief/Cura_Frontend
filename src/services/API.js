@@ -9,7 +9,6 @@ const API = {
 
 const userId = 1234
 
-console.log(userId , "hello")
 const METHOD_POST = (data) => ({
   method: "POST",
   body: JSON.stringify(data),
@@ -18,6 +17,7 @@ const METHOD_POST = (data) => ({
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   },
 });
+
 const METHOD_POST_WITH_TOKEN = (data, token) => ({
   method: "POST",
   headers: {
@@ -1018,6 +1018,8 @@ const responseInterceptor = async (response) => {
   let updatedResponse = await response.json();
   return { data: updatedResponse, status: 200 };
 };
+
+
 const resetPassword = async (data) => {
   const response = await fetch(`${env_URL_SERVER}token`, METHOD_POST(data));
   return responseInterceptor(response);

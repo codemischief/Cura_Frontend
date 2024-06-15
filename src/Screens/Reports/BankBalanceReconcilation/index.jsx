@@ -99,7 +99,7 @@ const BankBalanceReconcilation = () => {
 
     const downloadPdf = () => {
         let obj = {
-            // user_id: user.id,
+            user_id: user.id,
             startdate: startDate ?? "2021-01-01",
             bankName: bankName,
             rows: ["bankname", "payment", "receipt", "balance"],

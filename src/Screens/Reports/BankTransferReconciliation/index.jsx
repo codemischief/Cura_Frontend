@@ -182,7 +182,7 @@ const PmaClientReport = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows:["type", "orderdescription", "date", "mode", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",

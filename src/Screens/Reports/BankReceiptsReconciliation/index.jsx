@@ -4,7 +4,6 @@ import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState, useRef } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
-// import SimpleTable from "../../../Components/common/table/CustomTable";
 import SimpleTableWithFooter from "../../../Components/common/table/CustomTableWithFooter";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
@@ -164,19 +163,12 @@ const LobReceiptPayments = () => {
     };
 
     dispatch(downloadBankReceiptReconciliation(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
+   
   };
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: ["date", "bankst_cr", "client_receipt", "order_receipt"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",

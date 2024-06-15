@@ -1,14 +1,9 @@
-import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
+import {  Stack } from "@mui/material";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState , useRef } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
-// import SimpleTable from "../../../Components/common/table/CustomTable";
-import SimpleTableWithFooter from "../../../Components/common/table/CustomTableWithFooter";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
-import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 import useAuth from "../../../context/JwtContext";
 import {
@@ -21,11 +16,7 @@ import {
   setStatus
 } from "../../../Redux/slice/reporting/DuplicateClientReports"
 import { useSelector } from "react-redux";
-// import DatePicker from "../../../Components/common/select/CustomDate";
-import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../utils/filters";
-import * as XLSX from "xlsx";
-// import SimpleTable from "../../../Components/common/table/CustomTable";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import Container from "../../../Components/common/Container";
 
@@ -180,7 +171,7 @@ const PmaClientReport = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: ["clientname", "clienttypename", "count"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",

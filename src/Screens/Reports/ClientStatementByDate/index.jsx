@@ -128,7 +128,7 @@ const ClientStatementByDate = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        // user_id: user.id,
+        user_id: user.id,
         startdate: startDate,
         enddate: endDate,
         rows: ["type",
@@ -217,7 +217,7 @@ const ClientStatementByDate = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       startdate: startDate,
       enddate: endDate,
       rows: ["type",

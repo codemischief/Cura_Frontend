@@ -17,6 +17,7 @@ import {
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
+import useAuth from "../../../../context/JwtContext";
 
 const EmployeeWithoutVendor = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const EmployeeWithoutVendor = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const isInitialMount = useRef(true);
+  const {user} = useAuth()
 
   const columns = useMemo(() => connectionDataColumn(), []);
 
@@ -52,7 +54,8 @@ const EmployeeWithoutVendor = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id:user.id,
+      
       rows:  [
         "username","userstatus","vendorname"
       ],
@@ -95,7 +98,7 @@ const EmployeeWithoutVendor = () => {
     }
     else{
       let obj = {
-        // user_id: 1234,
+        user_id:user.id,
         rows:  [
           "username","userstatus","vendorname"
         ],
@@ -127,7 +130,7 @@ const EmployeeWithoutVendor = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id:user.id,
       rows:  [
         "username","userstatus","vendorname"
       ],

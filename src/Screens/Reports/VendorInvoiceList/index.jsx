@@ -1,9 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
-import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
@@ -41,9 +38,7 @@ const VendorInvoiceList = () => {
   } = useSelector((state) => state.vendorInvoice);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [openModal, setOpenModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
-  const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -244,7 +239,7 @@ const VendorInvoiceList = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [

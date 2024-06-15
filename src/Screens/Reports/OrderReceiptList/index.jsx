@@ -1,8 +1,6 @@
-import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
+import { Button, Stack } from "@mui/material";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
@@ -16,14 +14,12 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
-  setStatus,
   resetData,
   setInitialState,
 } from "../../../Redux/slice/reporting/OrderReceiptSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
-import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
 
 const OrderReceiptList = () => {
@@ -229,19 +225,12 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadReceiptDataXls(obj)).then((response) => {
-      // const tableData = response.data;
-      // const worksheet = XLSX.utils.json_to_sheet(tableData);
-      // const workbook = XLSX.utils.book_new();
-      // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      // XLSX.writeFile(workbook, "OrderPaymentList.xlsx");
-      // dispatch(setStatus("success"));
-    });
+    dispatch(downloadReceiptDataXls(obj))
   };
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [

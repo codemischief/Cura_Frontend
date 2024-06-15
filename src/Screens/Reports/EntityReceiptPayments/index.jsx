@@ -1,8 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import connectionDataColumn from "./Columns";
 import SimpleTableWithFooter from "../../../Components/common/table/CustomTableWithFooter";
@@ -192,7 +190,7 @@ const LobReceiptPayments = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: ["entityname", "orderreceiptamount", "paymentamount", "diff"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "pdf",

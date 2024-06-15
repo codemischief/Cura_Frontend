@@ -225,7 +225,7 @@ const LobReceiptPayments = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows:  ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
         "lobname", "service", "fy", "mode"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",

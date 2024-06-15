@@ -45,29 +45,16 @@ const PmaClientReport = () => {
     filter
   } = useSelector((state) => state.clientBankDetails)
   const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [openModal, setOpenModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const [lob, setLob] = useState(0);
-  const [allLOB, setAllLOB] = useState([]);
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
 
-  const handleDateChange = (e) => {
-    let { name, value } = e.target;
-    if (name === "startDate") {
-      setStartDate(value);
-    }
-    if (name === "endDate") {
-      setEndDate(value);
-    }
-  };
 
   const handlePageChange = (value) => {
     dispatch(setPageNumber(value));
@@ -194,7 +181,7 @@ const PmaClientReport = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
         "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
         "bankaccounttype"],

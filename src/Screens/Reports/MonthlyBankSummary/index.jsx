@@ -1,14 +1,10 @@
 import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState, useRef } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
-import SimpleTableWithFooter from "../../../Components/common/table/CustomTableWithFooter";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
-import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 import {
   downloadMonthlyBankSummary,
@@ -20,11 +16,8 @@ import {
   setStatus
 } from "../../../Redux/slice/reporting/MonthlyBankSummary"
 import { useSelector } from "react-redux";
-// import DatePicker from "../../../Components/common/select/CustomDate";
-import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
-// import SimpleTable from "../../../Components/common/table/CustomTable";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import Container from "../../../Components/common/Container";
 import useAuth from "../../../context/JwtContext";
@@ -36,7 +29,6 @@ const PmaClientReport = () => {
   const {
     monthlyBankSummary,
     status,
-    totalAmount,
     totalCount,
     sorting,
     countPerPage,
@@ -45,28 +37,14 @@ const PmaClientReport = () => {
   } = useSelector((state) => state.monthlyBankSummary)
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const [showTable, setShowTable] = useState(false);
-  const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const [lob, setLob] = useState(0);
-  const [allLOB, setAllLOB] = useState([]);
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
 
-  const handleDateChange = (e) => {
-    let { name, value } = e.target;
-    if (name === "startDate") {
-      setStartDate(value);
-    }
-    if (name === "endDate") {
-      setEndDate(value);
-    }
-  };
 
   const handlePageChange = (value) => {
     dispatch(setPageNumber(value));
@@ -176,7 +154,7 @@ const PmaClientReport = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: ["name", "monthyear", "payments", "bankpayments", "bankreceipts", "receipts"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",
@@ -198,25 +176,8 @@ const PmaClientReport = () => {
     dispatch(downloadMonthlyBankSummary(obj, 'pdf'))
   }
 
-  const handleShow = () => {
-    if (startDate) {
 
-      dispatch(setInitialState())
 
-      setShowTable(true);
-    } else {
-      // setError((prev) => ({
-      //   ...prev,
-      //   year: selectedYear ? prev.year : "please select a year first",
-      //   month: selectedMonth ? prev.month : "please select a year first",
-      // }));
-    }
-  };
-
-  const renderYearContent = (year) => {
-    const tooltipText = `Tooltip for year: ${year}`;
-    return <span title={tooltipText}>{year}</span>;
-  }
   return (
     <Container>
 
@@ -273,12 +234,7 @@ const PmaClientReport = () => {
             height="calc(100vh - 11rem)"
           />
         </div>
-        {toast && (
-          <SucessfullModal
-            isOpen={toast}
-            message="New Receipt Added Successfully"
-          />
-        )}
+       
       </Stack>
     </Container>
   );

@@ -47,7 +47,6 @@ const LLlistReport = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [data, setData] = useState({
-    StatusData: [],
     ClientData: [
       {
         label: "Select Client", value: ""
@@ -117,18 +116,10 @@ const LLlistReport = () => {
     return results;
   };
 
-  const statusFetch = async () => {
-    const data = {
-      // user_id: user.id,
-    };
-    const response = await APIService.getPaymentStatusAdmin({ ...data, user_id: user.id });
-    const result = await response.json();
-    setData((prev) => ({ ...prev, StatusData: [...result.data] }));
-  };
+
 
 
   const typeFetch = async () => {
-    const data = { user_id: user.id };
     const response = await APIService.getClientTypeAdmin({ ...data, user_id: user.id });
     const res = await response.json();
     setData((prev) => ({ ...prev, TypeData: [...res.data] }));
@@ -137,7 +128,7 @@ const LLlistReport = () => {
 
 
   useEffect(() => {
-    statusFetch();
+   
     typeFetch();
     dispatch(setInitialState())
   }, []);
@@ -145,7 +136,7 @@ const LLlistReport = () => {
   const handleRefresh = () => {
     if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
-        user_id: user.id,
+       user_id:user.id,
         rows: ["clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
@@ -160,10 +151,6 @@ const LLlistReport = () => {
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
-        statusName: intialValue.status,
-        clientName: intialValue.clientId.label,
-        typeName: intialValue.type,
-        clientPropertyID: intialValue.clientProperty,
       };
       dispatch(getLLlist(obj));
     }
@@ -291,7 +278,7 @@ const LLlistReport = () => {
 
   const downloadPdf = () => {
     let obj = {
-      // user_id: user.id,
+      user_id: user.id,
       rows: [
         "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clienttypename", 
          "propertydescription","property_status","status","registrationtype","paymentcycle",

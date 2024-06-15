@@ -106,7 +106,7 @@ const ResearchBusinessGroup = () => {
 
   const fetchData = () => {
     let obj = {
-      // user_id: 1234,
+      user_id:user.id,
 
       rows: [
         "groupname",
