@@ -207,7 +207,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               onChange={handleChange}
               value={formValues.client_property.leveloffurnishing}
             >
-              <option>Select Level of Furnishing</option>
+              <option value="" hidden>Select Level of Furnishing</option>
               {levelOfFurnishing &&
                 levelOfFurnishing.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -405,7 +405,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               onChange={handleChange}
               value={formValues.client_property.propertytype}
             >
-              <option value="">Select Property Type </option>
+              <option value="" hidden>Select Property Type </option>
               {propertyType &&
                 propertyType.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -484,7 +484,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               value={formValues.client_property.status}
               onChange={handleChange}
             >
-              <option>Select Status </option>
+              <option value="" hidden>Select Status </option>
               {propertyStatus &&
                 propertyStatus.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -513,7 +513,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               value={formValues.client_property.electricitybillingduedate}
               onChange={handleChange}
             >
-              <option>Select Date </option>
+              <option value="" hidden>Select Date </option>
               {dueDate &&
                 dueDate.map((item) => (
                   <option key={item.id} value={item.date}>

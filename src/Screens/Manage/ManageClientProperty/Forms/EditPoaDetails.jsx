@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { APIService } from '../../../../services/API';
 import useAuth from '../../../../context/JwtContext';
@@ -37,6 +37,11 @@ const fetchCityData = async (id) => {
       
   }
 }
+ useEffect(() => {
+  
+  fetchStateData(formValues.client_property_poa.poacountry)
+  fetchCityData(formValues.client_property_poa.poastate)
+ },[])
   return (
     <div className="h-auto w-full">
       <div className="flex gap-10 justify-center mt-3 mb-5">
@@ -55,14 +60,21 @@ const fetchCityData = async (id) => {
             <div className="text-[13px]">Country </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="poacountry"
             value={formValues.client_property_poa.poacountry} onChange={(e) => {
-              handleChange(e)
+              // handleChange(e)
               fetchStateData(e.target.value)
+              const temp = {...formValues}
+              const ex = temp.client_property_poa
+              ex.poacountry = e.target.value 
+              ex.poastate = null 
+              ex.poacity = null
+              temp.client_property_poa = ex 
+              setFormValues(temp)
               setCity([]);
             }} >
-              <option >Select country</option>
+              <option value=""  hidden>Select country</option>
               {country && country.map(item => (
-                <option key={item[0]} value={item[0]}>
-                  {item[1]}
+                <option key={item.id} value={item.id}>
+                  {item.name}
                 </option>
               ))}
             </select>
@@ -71,7 +83,7 @@ const fetchCityData = async (id) => {
           <div className="">
             <div className="text-[13px]">City </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="poacity" value={formValues.client_property_poa.poacity} onChange={handleChange}>
-              <option >Select city</option>
+              <option value="" hidden>Select city</option>
               {city && city.map(item => (
                 <option key={item.city} value={item.city}>
                   {item.city}
@@ -104,9 +116,18 @@ const fetchCityData = async (id) => {
           </div>
           <div className="">
             <div className="text-[13px]">State </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="poastate" value={formValues.client_property_poa.poastate} onChange={handleChange}>
-              <option >Select state</option>
-              {initialStates && initialStates.map((item) => (
+            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="poastate" value={formValues.client_property_poa.poastate} onChange={(e) => {
+              handleChange(e)
+              const temp = {...formValues}
+              const ex = temp.client_property_poa
+              ex.poastate = e.target.value 
+              ex.poacity = null 
+              temp.client_property_poa = ex 
+              setFormValues(temp)
+              fetchCityData(e.target.value)
+            }}>
+              <option value="" hidden>Select state</option>
+              {state && state.map((item) => (
                 <option key={item[0]} value={item[0]}>
                   {item[0]}
                 </option>

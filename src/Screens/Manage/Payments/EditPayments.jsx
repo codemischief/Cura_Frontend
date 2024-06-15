@@ -132,7 +132,7 @@ const EditPayments = (props) => {
             "description": formValues.description,
             "paymentfor": formValues.paymentfor,
             "entityid": Number(formValues.entityid),
-            "officeid": 10,
+            "officeid": 2,
             "tds": Number(formValues.tds),
             "professiontax": Number(formValues.professiontax),
             "month": formValues.month,

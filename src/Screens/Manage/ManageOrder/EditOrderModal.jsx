@@ -101,7 +101,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                 "service": Number(formValues.order_info.service),
                 "clientpropertyid": Number(formValues.order_info.clientpropertyid),
                 "vendorid": Number(formValues.order_info.vendorid),
-                "assignedtooffice": 1,
+                "assignedtooffice": 2,
                 "entityid": 1,
                 "tallyledgerid": formValues.order_info.tallyledgerid
             },

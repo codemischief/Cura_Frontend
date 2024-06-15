@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, CircularProgress } from '@mui/material'
+import { Modal, CircularProgress , MenuItem} from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import useAuth from '../../../context/JwtContext'
+import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative'
 const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, showCancel }) => {
     const { user } = useAuth()
     const initialValues = {
@@ -134,7 +135,13 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
     }
 
 
-
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = item.ordername;
+        });
+        return idNameObject;
+    }
 
     const getOrdersByClientId = async (id) => {
         console.log('hello')
@@ -145,7 +152,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
         console.log(res.data)
-        setOrders(res.data)
+        setOrders(convertToIdNameObject(res.data))
     }
 
 
@@ -245,7 +252,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                         </div>
                                         <div className="pt-0.5">
                                             <div className="text-[13px]">Vendor</div>
-                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                            <select className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                                 <option value={null}> Select Vendor</option>
                                                 {vendorData.map(item => (
                                                     <option key={item[0]} value={item[0]}>
@@ -256,15 +263,15 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Invoice Amount </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Estimate Date </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">VAT  </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
                                         </div>
 
                                     </div>
@@ -285,22 +292,34 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                                     control: (provided, state) => ({
                                                         ...provided,
                                                         minHeight: 23,
-                                                        lineHeight: '0.8',
-                                                        height: 4,
-                                                        width: 230,
-                                                        fontSize: 10,
+                                                        // lineHeight: '0.8',
+                                                        height: '20px',
+                                                        width: 224,
+                                                        fontSize: 12,
                                                         // padding: '1px'
+                                                        borderRadius : '2px'
                                                     }),
-                                                    // indicatorSeparator: (provided, state) => ({
-                                                    //   ...provided,
-                                                    //   lineHeight : '0.5',
-                                                    //   height : 2,
-                                                    //   fontSize : 12 // hide the indicator separator
-                                                    // }),
+                                                    indicatorSeparator: (provided, state) => ({
+                                                      display : 'none'
+                                                    }),
                                                     dropdownIndicator: (provided, state) => ({
                                                         ...provided,
-                                                        padding: '1px', // adjust padding for the dropdown indicator
+                                                        padding: '1px',
+                                                        paddingRight : '2px', // Adjust padding for the dropdown indicator
+                                                        width: 15, // Adjust width to make it smaller
+                                                        height: 15, // Adjust height to make it smaller
+                                                        display: 'flex', // Use flex to center the icon
+                                                        alignItems: 'center', // Center vertically
+                                                        justifyContent: 'center'
+                                                         // adjust padding for the dropdown indicator
                                                     }),
+                                                    input: (provided, state) => ({
+                                                        ...provided,
+                                                        margin: 0, // Remove any default margin
+                                                        padding: 0, // Remove any default padding
+                                                        fontSize: 12, // Match the font size
+                                                        height: 'auto', // Adjust input height
+                                                      }),
                                                     // options: (provided, state) => ({
                                                     //     ...provided,
                                                     //     fontSize: 10// adjust padding for the dropdown indicator
@@ -309,17 +328,17 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                                         ...provided,
                                                         padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
                                                         margin: 0, // Ensure no extra margin
-                                                        fontSize: 10 // Adjust font size of individual options
+                                                        fontSize: 12 // Adjust font size of individual options
                                                     }),
                                                     menu: (provided, state) => ({
                                                         ...provided,
-                                                        width: 230, // Adjust the width of the dropdown menu
+                                                        width: 224, // Adjust the width of the dropdown menu
                                                         zIndex: 9999 // Ensure the menu appears above other elements
                                                     }),
                                                     menuList: (provided, state) => ({
                                                         ...provided,
                                                         padding: 0, // Adjust padding of the menu list
-                                                        fontSize: 10,
+                                                        fontSize: 12,
                                                         maxHeight: 150 // Adjust font size of the menu list
                                                     }),
                                                     
@@ -329,15 +348,15 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Invoice Number </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceNumber" value={formValues.invoiceNumber} onChange={handleChange} />
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceNumber" value={formValues.invoiceNumber} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">GST/ST </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Estimate Amount </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
                                         </div>
                                         
                                     </div>
@@ -346,33 +365,50 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                             <div className="text-[13px]">
                                                 Order <label className="text-red-500">*</label>
                                             </div>
-                                            {/* <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="order"
-                                            value={formValues.order}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="" >Select A Order</option>
-                                            {orders.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.ordername}
-                                                </option>
-                                            ))}
-                                        </select> */}
-                                            <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+
+                                            <OrderCustomSelectNative
+                                           data={Object.keys(orders)}
+                                           value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
+                                           placeholder="Select Orders"
+                                           isSticky={true}
+                                           headerText={{
+                                            first : 'Order Description',
+                                            second : 'ID',
+                                          }}
+                                          renderData={(item) => {
+                                            return (
+                                              <MenuItem value={item} key={item} sx={{ width : '224px', gap : '5px', fontSize : '12px'}}>
+                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                   {orders[item]}
+                                                </p>
+                                                <p className='w-[20%]'>
+                                                    {item}
+                                                </p>
+                                                
+                                               
+                                              </MenuItem>
+                                            );
+                                          }}
+                                          onChange={(e) => {
+                                            setFormValues({ ...formValues, order: e.target.value })
+                                           }}
+                                           
+                                        
+                                        />
+                                            {/* <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
                                             <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.order}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px] pt-[-2px]">Invoice Date </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px] mb-0.5">Invoice/Estimate Description </div>
-                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
+                                            <textarea className="w-56 h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px] mb-0.5">Notes </div>
-                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
+                                            <textarea className="w-56 h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
                                         </div>
                                     </div>
                                 </div>

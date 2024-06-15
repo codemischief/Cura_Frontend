@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
 import DropDown from "../../../../Components/Dropdown/Dropdown";
 import useAuth from "../../../../context/JwtContext";
+import { APIService } from "../../../../services/API";
 const EditProjectInformation = ({ clientData, initialSociety, initialStates, initialCities, formValues, setFormValues, propertyType, levelOfFurnishing, propertyStatus, clientNameOption, formErrors }) => {
   // console.log(levelOfFurnishing)
   const {user} = useAuth()
@@ -18,6 +19,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
   const [electricity, setElectricity] = useState([]);
   const [existingSociety, setExistingSociety] = useState(initialSociety);
   const [clientName, setClientName] = useState(clientData);
+  
   const dueDate = [];
   for (var i = 1; i <= 31; i++) {
     dueDate.push({
@@ -25,7 +27,17 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
       date: i
     })
   }
-
+  const fetchCityData = async (id) => {
+    const data = { "user_id": user.id, "state_name": id };
+    const response = await APIService.getCities(data);
+    const result = (await response.json()).data;
+    console.log(result)
+    console.log(result);
+    if (Array.isArray(result)) {
+        setCity(result)
+        
+    }
+  }
   const handleChange = (e) => {
     
 
@@ -73,6 +85,9 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
     }
     return results
   }
+  useEffect(() => {
+     fetchCityData(formValues.client_property.state)
+  },[])
   return (
     <div className="h-auto w-full">
       <div className="flex gap-10 justify-center mt-3">
@@ -159,7 +174,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
               onChange={handleChange}
               value={formValues.client_property.leveloffurnishing}
             >
-              <option>Select Level of Furnishing</option>
+              <option value="" hidden>Select Level of Furnishing</option>
               {levelOfFurnishing &&
                 levelOfFurnishing.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -177,7 +192,16 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="state"
               value={formValues.client_property.state}
-              onChange={handleChange}
+              onChange={(e) => {
+                // handleChange(e) 
+                fetchCityData(e.target.value)
+                const temp = {...formValues}
+                const ex = temp.client_property
+                ex.city = null
+                ex.state = e.target.value
+                temp.client_property = ex 
+                setFormValues(temp)
+              }}
             >
               {/* <option>Select State</option> */}
               {initialStates &&
@@ -280,9 +304,9 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
               onChange={handleChange}
               value={formValues.client_property.city}
             >
-              <option>Select City</option>
-              {initialCities &&
-                initialCities.map((item) => (
+              <option value="" hidden>Select City</option>
+              {city &&
+                city.map((item) => (
                   <option key={item.id} value={item.city}>
                     {item.city}
                   </option>
@@ -346,7 +370,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
               onChange={handleChange}
               value={formValues.client_property.propertytype}
             >
-              <option value="">Select Property Type </option>
+              <option value="" hidden>Select Property Type </option>
               {propertyType &&
                 propertyType.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -425,7 +449,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
               value={formValues.client_property.status}
               onChange={handleChange}
             >
-              <option>Select Status </option>
+              <option value="" hidden>Select Status </option>
               {propertyStatus &&
                 propertyStatus.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -454,7 +478,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
               value={formValues.client_property.electricitybillingduedate}
               onChange={handleChange}
             >
-              <option>Select Date </option>
+              <option value="" hidden>Select Date </option>
               {dueDate &&
                 dueDate.map((item) => (
                   <option key={item.id} value={item.date}>

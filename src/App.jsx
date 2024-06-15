@@ -23,20 +23,13 @@ import ManageVendorInvoice from "./Screens/Manage/ManageVendorInvoice/ManageVend
 import ManageVendorPayment from "./Screens/Manage/ManageVendorPayment/ManageVendorPayment";
 
 import { Route, Routes, Outlet } from "react-router-dom";
-import Userscreen from "./Screens/UserScreens/Userscreen";
 import LOB from "./Screens/Admin/LOB";
 import Service from "./Screens/Admin/Service";
 import ResearchAgent from "./Screens/Research/Agent/index.jsx";
-// import Agent from "./Screens/Research/Agent/Agent";
-// import Employer from "./Screens/Research/Employer/Employer";
-import GovernmentDepartment from "./Screens/Research/Government Department/GovernmentDepartment";
 import ManageBankStatement from "./Screens/Manage/ManageBankStatement/ManageBankStatement";
 import ManageBuilderProject from "./Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject";
 import ManageBuilderContact from "./Screens/Manage/ManageBuilder/ManageBuilderContact/index.jsx";
-import Temp from "./Screens/Admin/temp";
-import ManageClientPropertyByClientName from "./Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName";
-import ClientPmaArgreement from "./Screens/Manage/ManageClientProperty/ClientPmaAgreement/ClientPmaAgreement";
-import ClientLLAgreement from "./Screens/Manage/ManageClientProperty/ClientLLAgreement/ClientLLAgreement copy";
+
 import PmaBilling from "./Screens/Manage/pma";
 import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
 import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
@@ -52,7 +45,6 @@ import ClientReceiptList from "./Screens/Reports/ClientReceiptList";
 import VendorInvoiceList from "./Screens/Reports/VendorInvoiceList";
 import DeletePage from "./Screens/Admin/DeleteById/DeletePage";
 import PmaBillingTrendView from "./Screens/Reports/reportPmaBillingTrendView";
-// import PmaClientReport from "./Redux/slice/reporting/pmaClientReport";
 import PmaClientReport from "./Screens/Reports/pmaClientReport";
 import PmaInvoiceList from "./Screens/Reports/PmaInvoiceList";
 import PmaClientReceivable from "./Screens/Reports/PmaClientReceivables/index.jsx";
@@ -313,7 +305,7 @@ const App = () => {
                 element={<ManageLLAgreement key={uuidv4()}/>}
               />
               <Route path="/manage/pmaBilling" element={<PmaBilling />} />
-              <Route path="admin/temp" element={<Temp />} />
+              
               <Route
                 path="/reports/orderPaymentList"
                 element={<OrderPaymentList />}
