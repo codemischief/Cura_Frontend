@@ -17,9 +17,11 @@ import {
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
+import useAuth from "../../../../context/JwtContext";
 
 const OwnerPaymentView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     ownerWithNoReport,
     status,
@@ -52,7 +54,7 @@ const OwnerPaymentView = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       "rows": [
   "id","fullname","clienttype_text"
 ],
@@ -95,7 +97,7 @@ const OwnerPaymentView = () => {
     }
     else{
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
   "id","fullname","clienttype_text"
 ],
@@ -127,7 +129,7 @@ const OwnerPaymentView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
   "id","fullname","clienttype_text"
 ],

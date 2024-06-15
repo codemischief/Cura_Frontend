@@ -47,6 +47,7 @@ const OrderPaymentDDView = () => {
     mode: 5,
     entity: "",
   });
+  
 
   const columns = useMemo(() => connectionDataColumn(), []);
 
@@ -70,7 +71,7 @@ const OrderPaymentDDView = () => {
 
   const getEntityAndMode = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
     };
     const mode = await APIService.getModesAdmin({...data , user_id:user.id});
     const entity = await APIService.getEntityAdmin({...data , user_id:user.id});
@@ -91,7 +92,7 @@ const OrderPaymentDDView = () => {
       intialFields.entity
     ) {
       let obj = {
-        // user_id: 1234,
+        user_id:user.id,
         rows: [
           "uniqueid",
           "date",
@@ -148,7 +149,7 @@ const OrderPaymentDDView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       let obj = {
-        // user_id: 1234,
+        user_id:user.id,
         rows: 
           [
             "uniqueid",
@@ -200,7 +201,7 @@ const OrderPaymentDDView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id:user.id,
       rows: [
         "uniqueid",
         "date",

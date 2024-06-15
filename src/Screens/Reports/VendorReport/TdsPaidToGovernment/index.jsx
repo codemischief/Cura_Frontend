@@ -34,10 +34,8 @@ const TdsPaidByVendorView = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.tdsToGovt);
-
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-
   const columns = useMemo(() => connectionDataColumn(), []);
 
   const handleSearchvalue = (e) => {

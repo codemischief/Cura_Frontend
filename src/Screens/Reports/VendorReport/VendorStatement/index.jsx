@@ -68,7 +68,7 @@ const VendorStatementView = () => {
 
   const getVendor = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
     };
     const vendor = await APIService.getVendorAdmin({...data , user_id:user.id});
     console.log(vendor,"vendor");
@@ -86,7 +86,7 @@ const VendorStatementView = () => {
       intialFields.vendor
     ) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
           "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
@@ -134,7 +134,7 @@ const VendorStatementView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
           "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
@@ -173,7 +173,7 @@ const VendorStatementView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
           "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"

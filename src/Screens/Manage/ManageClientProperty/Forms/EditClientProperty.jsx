@@ -31,10 +31,7 @@ const EditClientProperty = (props) => {
         const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        setAllCountry(result)
     }
     const fetchClientName = async (id) => { 
             const data = {

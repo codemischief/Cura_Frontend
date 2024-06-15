@@ -475,7 +475,7 @@ const OrderReceiptList = () => {
               alignItems={"center"}
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
-                <div className="">Data Range</div>
+                <div className="">Date Range</div>
                 <div className="">{formatDate(uiStartDate)} To {formatDate(uiEndDate)}</div>
               </div>
             </Stack>
@@ -493,7 +493,7 @@ const OrderReceiptList = () => {
               alignItems={"center"}
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
-                <div className="">Current Balance</div>
+                <div className="">Closing Balance</div>
                 <div className="">{closingBalance}</div>
               </div>
             </Stack>

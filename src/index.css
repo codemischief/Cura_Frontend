@@ -69,11 +69,11 @@ input:active {
   font-size: 2rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 300%; /* 1.03125rem */
+  /* line-height: 300%; 1.03125rem */
 }
 .selectBoxField {
   display: flex;
-  width: 17.5625rem;
+  width: 40rem;
   height: 1.5rem;
   padding: 0.1875rem 1.25rem;
   justify-content: center;
@@ -85,7 +85,7 @@ input:active {
 }
 .orderSelectBoxField {
   display: flex;
-  width: 17.5625rem;
+  width: 14rem;
   height: 2rem;
   /* padding: 0.1875rem 1.25rem; */
   justify-content: center;

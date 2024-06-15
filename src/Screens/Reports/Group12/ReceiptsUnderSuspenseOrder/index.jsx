@@ -17,9 +17,11 @@ import {
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
+import useAuth from "../../../../context/JwtContext";
 
 const ReceiptsUnderSuspenseOrder = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     receiptsUnderSuspenseOrder,
     status,
@@ -52,7 +54,7 @@ const ReceiptsUnderSuspenseOrder = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname", "orderdesc", "recddate", "paymentmode", "paymentby", "amount", "receiptdescription"
       ],
@@ -94,7 +96,7 @@ const ReceiptsUnderSuspenseOrder = () => {
     }
     else {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: [
           "clientname", "orderdesc", "recddate", "paymentmode", "paymentby", "amount", "receiptdescription"
         ],
@@ -126,7 +128,7 @@ const ReceiptsUnderSuspenseOrder = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname", "orderdesc", "recddate", "paymentmode", "paymentby", "amount", "receiptdescription"
       ],

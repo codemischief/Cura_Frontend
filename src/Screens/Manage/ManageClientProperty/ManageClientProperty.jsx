@@ -161,10 +161,8 @@ const ManageClientProperty = () => {
         const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
-        console.log(result.data);
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        console.log(result);
+        setAllCountry(result);
     }
     const fetchClientTypeData = async () => {
         const data = {
@@ -647,11 +645,7 @@ const ManageClientProperty = () => {
             "indexiicollected": false
         },
         "client_property_photos": [
-            {
-                "photolink": null,
-                "description": null,
-                "phototakenwhen": null
-            }
+            
         ],
         "client_property_owner": {
             "owner1name": null,
@@ -1899,6 +1893,7 @@ const ManageClientProperty = () => {
 
                             {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={clientNameText} setClientNameText={setClientNameText} clientid={state?.clientid} hyperlinkState={state}/>}
                             {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
+                            {console.log(allCountry)}
                             {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
 

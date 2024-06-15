@@ -279,12 +279,12 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="move cursor-move">
 
-                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
 
                                 <div className="mr-[410px] ml-[410px]">
                                     <div className="text-[16px]">Edit Order Receipt</div>
                                 </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                     <button onClick={() => { close() }}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                 </div>
                             </div>
@@ -342,11 +342,11 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">TDS </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Receipt Description </div>
-                                            <textarea className="w-[230px] h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
+                                            <textarea className="w-56 h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className=" space-y-3 py-5">
@@ -376,7 +376,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
                                             <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.receivedDate}</div>
                                         </div>
                                         <div className="">

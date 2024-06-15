@@ -50,7 +50,7 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Property",
-      field: "entityname",
+      field: "property",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%" },

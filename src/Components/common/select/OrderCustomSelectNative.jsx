@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import { FormControl, Select, MenuItem } from "@mui/material";
+import { FormControl, Select, MenuItem, Tooltip } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const OrderCustomSelectNative = ({
@@ -22,7 +22,6 @@ const OrderCustomSelectNative = ({
       <Select
         className="orderSelectBoxField orderInputFieldValue text-sm !text-[#505050] border-[#C6C6C6] "
         value={value}
-        
         onChange={onChange}
         displayEmpty
         inputProps={{ "aria-label": "Without label" }}
@@ -30,7 +29,12 @@ const OrderCustomSelectNative = ({
           if (!selected) {
             return <span className="text-[#C6C6C6]">{placeholder}</span>;
           }
-          return selected;
+          return (
+            <Tooltip title={selected} arrow>
+              <span>{selected}</span>
+            </Tooltip>
+          );
+          
         }}
         MenuProps={{
           slotProps: {
@@ -42,6 +46,7 @@ const OrderCustomSelectNative = ({
                 // paddingTop: "1rem",
                 // fontSize : '30px',
                 marginTop: "0.2rem",
+                
               },
             },
           },
@@ -70,6 +75,8 @@ const OrderCustomSelectNative = ({
             fontWeight: 400,
             fontFamily: "Open Sans",
             lineHeight: "3em",
+            width:"224px",
+            height:'23px'
           },
           paddingTop: "0px",
           paddingBottom : "0px",
@@ -77,20 +84,22 @@ const OrderCustomSelectNative = ({
         }}
         {...props}
       >
-        {isSticky && <MenuItem disabled style={{opacity:"1.2"}} sx={{ position: "sticky", top: 0, backgroundColor: "gray", zIndex: 99, color:"black",display:"flex", opacity : '0.5', gap : '45px' , }}>
-        <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
-             {headerText.second}
-        </p>
-        <p className='w-[20%]'>
-            {headerText.first}
-        </p>
+        {isSticky && <MenuItem disabled style={{opacity:"1.2"}} sx={{ position: "sticky", top: 0, backgroundColor: "gray", zIndex: 99, color:"black",display:"flex", opacity : '0.5', gap : '45px' , fontSize : '12px'}}>
+          <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+              {headerText.first}
+          </p>
+          <p className='w-[20%]'>
+              {headerText.second}
+          </p>
          {/* <span>{headerText.first}</span>
          <span>{headerText.second}</span> */}
 
         </MenuItem>}
         {data?.length === 0 && (
-          <MenuItem value="" disabled>
-            No data
+          <MenuItem value="" disabled style={{
+            fontSize : '12px'
+          }}>
+            Select Client With Orders
           </MenuItem>
         )}
         {data?.length > 0 && data?.map((item) => renderData(item))}
@@ -112,5 +121,4 @@ OrderCustomSelectNative.propTypes = {
   menuMaxHeight: PropTypes.string,
   renderData: PropTypes.func,
 };
-
-export default OrderCustomSelectNative;
+export default OrderCustomSelectNative
