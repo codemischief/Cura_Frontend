@@ -52,9 +52,9 @@ export const UserProvider = ({ children }) => {
       .login({ username, password, company_key })
       .then((res) => {
         if (res) {
-          sessionStorage.setItem("Role", res.data.role_id);
-          sessionStorage.setItem("User_id", res.data.user_id);
-          sessionStorage.setItem("token", res.data.token);
+          localStorage.setItem("Role", res.data.role_id);
+          localStorage.setItem("User_id", res.data.user_id);
+          localStorage.setItem("token", res.data.token);
           localStorage.setItem("token", res?.data.token);
           const userObj = {
             userName: res?.data.userName,

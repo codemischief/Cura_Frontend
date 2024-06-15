@@ -69,8 +69,8 @@ function AuthProvider({ children }) {
   // const [countdown, setCountdown] = useState(10);
   // const countdownRef = useRef(null);
   // const [idleTimeout, setIdleTimeout] = useState(() =>
-  //   sessionStorage.getItem("idleTimeOut")
-  //     ? sessionStorage.getItem("idleTimeOut")
+  //   localStorage.getItem("idleTimeOut")
+  //     ? localStorage.getItem("idleTimeOut")
   //     : 10 * 60 * 1000
   // );
   // const [idleTimer, setIdleTimer] = useState(1);
@@ -79,9 +79,9 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = sessionStorage.getItem("accessToken");
-        const user = sessionStorage.getItem("user");
-        // const storedIdleTimeout = sessionStorage.getItem("idleTimeOut");
+        const accessToken = localStorage.getItem("accessToken");
+        const user = localStorage.getItem("user");
+        // const storedIdleTimeout = localStorage.getItem("idleTimeOut");
         if (accessToken && isValidToken(accessToken)) {
           setSession(JSON.parse(user), accessToken);
           dispatch({
@@ -153,7 +153,7 @@ function AuthProvider({ children }) {
           allowedModules: replaceKeys(access_rights),
         };
         const idleTimeoutInMs = idleTimeOut * 1000; // Convert seconds to milliseconds
-        // sessionStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
+        // localStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
         // setIdleTimeout(idleTimeoutInMs); // Set idleTimeout state
         // setSession(userObj, token, idleTimeoutInMs);
         setSession(userObj, token);

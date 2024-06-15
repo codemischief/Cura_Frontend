@@ -1,11 +1,11 @@
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
-const accessToken = sessionStorage.getItem("accessToken");
+const accessToken = localStorage.getItem("accessToken");
 // const env_URL_SERVER="http://192.168.10.183:8000/"
 const API = {
   LOGIN: "$env_URL_SERVERvalidateCredentials",
 };
 // import { userId } from "../utils/axios";
-// const userId = JSON.parse(sessionStorage.getItem("user"))?.id;
+// const userId = JSON.parse(localStorage.getItem("user"))?.id;
 
 const userId = 1234
 

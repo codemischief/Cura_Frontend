@@ -24,25 +24,25 @@ const handleTokenExpired = (exp) => {
   const currentTime = Date.now();
   const timeLeft = exp * 1000 - currentTime;
   expiredTimer = window.setTimeout(() => {
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("user");
-    // sessionStorage.removeItem("idleTimeOut");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    // localStorage.removeItem("idleTimeOut");
   }, timeLeft);
 };
 
 const setSession = (user, accessToken, idleTimeOut) => {
   if (accessToken) {
-    sessionStorage.setItem("accessToken", accessToken);
-    sessionStorage.setItem("user", JSON.stringify(user));
-    // sessionStorage.setItem("idleTimeOut", idleTimeOut);
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("user", JSON.stringify(user));
+    // localStorage.setItem("idleTimeOut", idleTimeOut);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     // This function below will handle when token is expired
     const { exp } = jwtDecode(accessToken);
     handleTokenExpired(exp);
   } else {
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("user");
-    // sessionStorage.removeItem("idleTimeOut");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    // localStorage.removeItem("idleTimeOut");
     delete axios.defaults.headers.common.Authorization;
   }
 };
