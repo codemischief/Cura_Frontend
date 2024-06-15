@@ -92,7 +92,7 @@ const OrderPaymentB2CView = () => {
       intialFields.entity
     ) {
       let obj = {
-        // user_id: 1234,
+        user_id:user.id,
         rows: [
           "uniqueid",
           "date",
@@ -149,7 +149,7 @@ const OrderPaymentB2CView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       let obj = {
-        // user_id: 1234,
+        user_id:user.id,
         rows: [
           "uniqueid",
           "date",
@@ -199,7 +199,7 @@ const OrderPaymentB2CView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id:user.id,
       rows: [
         "uniqueid",
         "date",

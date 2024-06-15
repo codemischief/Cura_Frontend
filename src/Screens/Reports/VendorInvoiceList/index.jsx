@@ -24,6 +24,8 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
+
 
 const VendorInvoiceList = () => {
   const dispatch = useDispatch();
@@ -44,6 +46,7 @@ const VendorInvoiceList = () => {
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+  const  {user} = useAuth()
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
@@ -71,7 +74,7 @@ const VendorInvoiceList = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        // user_id: 1234,
+        user_id:user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows:
@@ -130,7 +133,7 @@ const VendorInvoiceList = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        // user_id: 1234,
+        user_id:user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -180,7 +183,7 @@ const VendorInvoiceList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id:user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [
