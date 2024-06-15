@@ -60,7 +60,7 @@ const OrderTraceReport = () => {
   const handleRefresh = () => {
     if (selectedOption.value) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         orderID: selectedOption.value,
         rows: ["type", "orderid"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -99,7 +99,7 @@ const OrderTraceReport = () => {
   useEffect(() => {
     if (selectedOption.value) {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         orderID: selectedOption.value,
         rows: ["type", "orderid"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -130,7 +130,7 @@ const OrderTraceReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       orderID: selectedOption.value,
       rows: ["type", "orderid"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -176,7 +176,7 @@ const OrderTraceReport = () => {
     console.log(e)
     if (e.length < 2) return;
     const data = {
-      // "user_id": 1234,
+      "user_id": user.id,
       "rows": ["id"],
       "pg_no": 0,
       "pg_size": 0,

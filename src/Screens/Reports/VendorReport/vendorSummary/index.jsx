@@ -23,9 +23,11 @@ import DatePicker from "../../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../../Components/common/Container";
+import useAuth from "../../../../context/JwtContext";
 
 const vendorSummary = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const isInitialMount = useRef(true);
   const {
     Data,
@@ -75,7 +77,7 @@ const vendorSummary = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["clientname","briefdescription","vendorname","service","ownername","estimateamount","invoiceamount","paymentamount","computedpending"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -112,7 +114,7 @@ const vendorSummary = () => {
       isInitialMount.current = false;
     } else {
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["clientname","briefdescription","vendorname","service","ownername","estimateamount","invoiceamount","paymentamount","computedpending"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -142,7 +144,7 @@ const vendorSummary = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["clientname","briefdescription","vendorname","service","ownername","estimateamount","invoiceamount","paymentamount","computedpending"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),

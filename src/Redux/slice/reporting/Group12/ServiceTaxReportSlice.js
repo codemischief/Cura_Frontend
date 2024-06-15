@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "../../../../utils/axios";
+import axios from "axios";
 import FileSaver from "file-saver";
 import { env_URL_SERVER, ServiceTaxReportFormat } from "../../../helper";
 

@@ -24,9 +24,11 @@ import * as XLSX from "xlsx";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import Container from "../../../../Components/common/Container";
+import useAuth from "../../../../context/JwtContext";
 
 const ServiceTaxPaidByVendor = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const isInitialMount = useRef(true);
 
   const {
@@ -75,7 +77,7 @@ const ServiceTaxPaidByVendor = () => {
 
   const handleRefresh = () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["vendorname", "vendorcategory", "servicetaxamount", "amount", "paymentmode", "registered", "paymentdate", "monthyear"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -114,7 +116,7 @@ const ServiceTaxPaidByVendor = () => {
     } else {
 
       let obj = {
-        // user_id: 1234,
+        user_id: user.id,
         rows: ["vendorname", "vendorcategory", "servicetaxamount", "amount", "paymentmode", "registered", "paymentdate", "monthyear"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -149,7 +151,7 @@ const ServiceTaxPaidByVendor = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      // user_id: 1234,
+      user_id: user.id,
       rows: ["vendorname", "vendorcategory", "servicetaxamount", "amount", "paymentmode", "registered", "paymentdate", "monthyear"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
