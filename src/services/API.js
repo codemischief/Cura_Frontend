@@ -1061,6 +1061,14 @@ const deleteFromTable = async (data) => {
 
   return response;
 }
+const getGroupsAdmin = async (data) => {
+  const response = await fetch(
+    `${env_URL_SERVER}getGroupsAdmin`,
+    METHOD_POST(data)
+  );
+
+  return response;
+}
 export const APIService = {
   getCountries,
   getNewBuilderInfo,
@@ -1207,5 +1215,6 @@ export const APIService = {
   getProfessionalTypesAdmin,
   dashboardData,
   getMandalAdmin,
-  deleteFromTable
+  deleteFromTable,
+  getGroupsAdmin
 };

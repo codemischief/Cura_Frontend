@@ -76,10 +76,8 @@ const ManageClientInfo = () => {
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
-    const [allUsername, setAllUsername] = useState([]);
-    const [allRoles, setAllRoles] = useState([]);
+
     const [allEntities, setAllEntites] = useState([]);
-    const [allLOB, setAllLOB] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
     const [isClientInfoDialogue, setIsClientInfoDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
@@ -196,22 +194,7 @@ const ManageClientInfo = () => {
             }
         }
     }
-    const fetchUsersData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = {};
-        const response = await APIService.getUsers({ ...data, user_id: user.id })
-        const result = (await response.json());
-
-        console.log(result.data);
-        console.log('hey')
-        setFormValues((existing) => {
-            return { ...existing, userName: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllUsername(result.data);
-        }
-    }
+    
 
     const fetchRoleData = async () => {
         setPageLoading(true);
@@ -365,11 +348,7 @@ const ManageClientInfo = () => {
         fetchEntitiesData();
         fetchRelation();
         fetchRoleData();
-        fetchUsersData();
         fetchLobData();
-        const makeFalse = () => {
-
-        }
         const handler = (e) => {
             console.log(menuRef)
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {

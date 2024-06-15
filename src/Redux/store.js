@@ -84,6 +84,8 @@ import ServiceTaxReportReducer from "./slice/reporting/Group12/ServiceTaxReportS
 import professionals  from "./slice/Research/ProfessionalsSlice";
 import mandals  from "./slice/Research/MandalSlice";
 import contact from "./slice/Manage/contact";
+import businessgroup  from "./slice/Research/BusinessGroup";
+import architect  from "./slice/Research/ArchitectSlice";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -166,6 +168,8 @@ export const store = configureStore({
     sendClientStatement:SendClientStatement,
     contact : contact,
     agedOrder:AgedOrder,
+    businessgroup : businessgroup,
+    architect : architect
   },
   // Add the RTK Query API middleware
 });

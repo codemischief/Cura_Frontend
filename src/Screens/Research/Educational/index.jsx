@@ -50,7 +50,7 @@ const ResearchEducational = () => {
     try {
       let dataItem = {
         user_id: 1234,
-        table_name: "get_research_employer_view",
+        table_name: "get_research_colleges_view",
         item_id: data.id,
       };
       const response = await APIService.getItembyId(dataItem);
