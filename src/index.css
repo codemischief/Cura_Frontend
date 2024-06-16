@@ -6,10 +6,11 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background: white;
+  background: #fafafa;
   font-family: "Open Sans", sans-serif;
 }
 ::-webkit-scrollbar {

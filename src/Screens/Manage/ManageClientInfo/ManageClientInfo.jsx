@@ -76,7 +76,7 @@ const ManageClientInfo = () => {
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
-
+   
     const [allEntities, setAllEntites] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
     const [isClientInfoDialogue, setIsClientInfoDialogue] = useState(false);
@@ -196,20 +196,7 @@ const ManageClientInfo = () => {
     }
     
 
-    const fetchRoleData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = {};
-        const response = await APIService.getRoles({ ...data, user_id: user.id })
-        const result = (await response.json());
-        console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, role: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
-        }
-    }
+   
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
@@ -234,28 +221,6 @@ const ManageClientInfo = () => {
         console.log(res)
         setRelationData(res.data)
     }
-    const fetchLobData = async () => {
-        setPageLoading(true);
-        const data = {
-
-            "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getLob({ ...data, user_id: user.id });
-        const result = (await response.json());
-        console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, lob: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
-        }
-    }
-    // const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
         // console.log('ugm')
@@ -347,8 +312,6 @@ const ManageClientInfo = () => {
         fetchTenentOfData();
         fetchEntitiesData();
         fetchRelation();
-        fetchRoleData();
-        fetchLobData();
         const handler = (e) => {
             console.log(menuRef)
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {

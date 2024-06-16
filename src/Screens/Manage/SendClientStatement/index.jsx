@@ -51,7 +51,7 @@ const OrderReceiptList = () => {
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const [height, setHeight] = useState("calc(100vh - 16rem)");
+  const [height, setHeight] = useState("calc(100vh - 15rem)");
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
@@ -237,7 +237,7 @@ const OrderReceiptList = () => {
       setuiEndDate(endDate)
       dispatch(setInitialState());
       setShowTable(true);
-      setHeight("calc(100vh - 24rem)")
+      setHeight("calc(100vh - 20rem)")
     }
   };
 
@@ -479,7 +479,7 @@ const OrderReceiptList = () => {
                 <div className="">{formatDate(uiStartDate)} To {formatDate(uiEndDate)}</div>
               </div>
             </Stack>
-            <Stack
+            {/* <Stack
               direction={"row"}
               alignItems={"center"}
             >
@@ -487,8 +487,8 @@ const OrderReceiptList = () => {
                 <div className="">Opening Balance</div>
                 <div className="">{openingBalance}</div>
               </div>
-            </Stack>
-            <Stack
+            </Stack> */}
+            {/* <Stack
               direction={"row"}
               alignItems={"center"}
             >
@@ -496,7 +496,7 @@ const OrderReceiptList = () => {
                 <div className="">Closing Balance</div>
                 <div className="">{closingBalance}</div>
               </div>
-            </Stack>
+            </Stack> */}
           </Stack>
         </div>
         }
