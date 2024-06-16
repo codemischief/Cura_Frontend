@@ -1071,6 +1071,15 @@ const getGroupsAdmin = async (data) => {
 
   return response;
 }
+const getCompanyKey = async (data) => {
+  const response = await fetch(
+    `${env_URL_SERVER}getCompanyKey`,
+    METHOD_POST(data)
+  );
+
+  return response;
+}
+
 export const APIService = {
   getCountries,
   getNewBuilderInfo,
@@ -1218,5 +1227,6 @@ export const APIService = {
   dashboardData,
   getMandalAdmin,
   deleteFromTable,
-  getGroupsAdmin
+  getGroupsAdmin,
+  getCompanyKey
 };

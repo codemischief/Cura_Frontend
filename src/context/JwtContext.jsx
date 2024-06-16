@@ -184,7 +184,7 @@ function AuthProvider({ children }) {
       if (token) {
         let userObj = {
           id: user_id,
-          roleId: role_id,
+          role_id: role_id,
           allowedModules: {
             ...replaceKeys(access_rights),
             "/dashboard": {
