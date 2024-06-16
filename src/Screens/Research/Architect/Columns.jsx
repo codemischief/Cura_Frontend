@@ -1,18 +1,14 @@
 import { Stack } from "@mui/material";
 
 import styleConst from "./styleConst";
-// import {
-//   DateFilterField,
-//   NumberFilterField,
-//   TextFilterField,
-// } from "./CustomFilterField";
 import {
-    DateFilterField,
+  DateFilterField,
   NumberFilterField,
-  TextFilterField
-} from "./CustomFilerField"
+  TextFilterField,
+} from "./CustomFilterField";
 import { Create, Delete } from "@mui/icons-material";
-
+import DeleteButton from "../../../Components/common/buttons/deleteButton";
+import EditButton from "../../../Components/common/buttons/EditButton";
 export default function connectionDataColumn(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
 
@@ -23,7 +19,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width: "10%",
+        width: "5%",
       },
       align: "center",
       sorting: false,
@@ -43,8 +39,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 2,
       filterComponent: TextFilterField,
-      title: "Name Of Agent",
-      field: "nameofagent",
+      title: "Employer Name",
+      field: "employername",
       sorting: true,
     //   width : '1000px',
       align: "left",
@@ -52,22 +48,38 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '15%'
       },
     },
     {
       id: 3,
       filterComponent: TextFilterField,
-      title: "Agency Name",
-      field: "agencyname",
+      title: "Industry",
+      field: "industry",
       align: "left",
-    //   width : '20%',
+    //   width : '18%',
       filterDisabled: false,
       sorting: true,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '15%'
+        
+      },
+    },
+    {
+      id: 3,
+      filterComponent: TextFilterField,
+      title: "Suburb",
+      field: "suburb",
+      align: "left",
+    //   width : '18%',
+      filterDisabled: false,
+      sorting: true,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        width : '15%'
         
       },
     },
@@ -75,8 +87,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       id: 4,
       filterComponent: TextFilterField,
 
-      title: "Email ID",
-      field: "emailid",
+      title: "Website",
+      field: "website",
       align: "left",
       filterDisabled: false,
       sorting: true,
@@ -84,13 +96,13 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '15%'
       },
     },
     {
       id: 5,
-      title: "Phone Number",
-      field: "phoneno",
+      title: "Onsite Oppurtunity",
+      field: "onsiteopportunitytext",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
@@ -99,107 +111,47 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '15%'
       },
     },
     {
       id: 6,
-      title: "Whatsapp Number",
-      field: "phoneno2",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 6,
-      title: "Localities Dealing",
-      field: "localitiesdealing",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 7,
-      title: "Name Of Partners",
-      field: "nameofpartners",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 8,
-      title: "Registered",
-      field: "registered",
-      sorting: true,
-      align: "left",
-      filterComponent: TextFilterField,
-
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        // maxWidth: "18.25rem",
-        width : '300px'
-      },
-    },
-    {
-      id: 9,
       title: "ID",
       field: "id",
       sorting: true,
       align: "left",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
 
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '15%'
       },
     },
     {
-      id: 10,
-      title: "Action",
+      id: 8,
+      title: "Edit",
       field: "action",
       sorting: false,
-      align: "left",
+      align: "center",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
-        // maxWidth: "18.25rem",
+        width : '5%'
       },
       render: (rowData) => {
         return (
-          <div className="flex gap-2 justify-start">
-            <Create
-              sx={{ width: "20px", height: "20px" }}
-              onClick={() => handleEdit(rowData)}
+          <div className="flex gap-2 justify-start ">
+            <EditButton
+              handleEdit={handleEdit}
+              rowData={rowData}
             />
-            <Delete
-              sx={{ width: "20px", height: "20px" }}
-              onClick={() => handleDelete(rowData)}
+            <DeleteButton
+                 handleDelete={handleDelete}
+                 rowData={rowData}
             />
+
           </div>
         );
       },

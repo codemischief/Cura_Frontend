@@ -20,6 +20,7 @@ const SimpleTableWithFooter = ({
   handleRefresh,
   handleSortingChange,
   downloadExcel,
+  downloadPdf= () => {},
   height = "calc(100vh - 19rem)",
 
 }) => {
@@ -169,6 +170,7 @@ const SimpleTableWithFooter = ({
       handlePageCountChange={handlePageCountChange}
       handleRefresh={handleRefresh}
       downloadExcel={downloadExcel}
+      downloadPdf={downloadPdf}
     />,
   ];
 };

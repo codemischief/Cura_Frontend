@@ -15,6 +15,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Sr No",
       cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5%" },
       sorting: false,
+      align : 'center',
       render: (index) => {
         return (
           <Stack
@@ -32,35 +33,35 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       filterComponent: DateFilterField,
       // filterComponent:TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%"},
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "10%"},
     },
     {
       title: "Type",
       field: "type",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "10%" },
     },
     {
-      title: "Desciption",
+      title: "Description",
       field: "description",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "35%" },
     },
     {
       title: "Property",
-      field: "entityname",
+      field: "property",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "30%" },
     },
     {
       title: "Amount",
       field: "amount",
       sorting: true,
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "19%" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center", width: "10%" },
     },
   ];
   return columns;

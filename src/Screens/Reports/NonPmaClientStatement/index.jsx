@@ -1,14 +1,10 @@
-import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
+import { Stack } from "@mui/material";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState , useRef } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
-// import SimpleTable from "../../../Components/common/table/CustomTable";
 import SimpleTableWithFooter from "../../../Components/common/table/CustomTableWithFooter";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
-import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 import {
   downloadNonPmaClientStAndRec,
@@ -17,17 +13,16 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus,
 } from "../../../Redux/slice/reporting/NonPmaClientStAndRec";
 import { useSelector } from "react-redux";
-import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
-import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import  useAuth from "./../../../context/JwtContext"
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
+  const {user} = useAuth();
   const {
     NonPmaClientStAndRec,
     status,
@@ -41,29 +36,17 @@ const LobReceiptPayments = () => {
   console.log(totalAmount)
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [openModal, setOpenModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const [lob, setLob] = useState(0);
-  const [allLOB, setAllLOB] = useState([]);
 
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
 
-  const handleDateChange = (e) => {
-    let { name, value } = e.target;
-    if (name === "startDate") {
-      setStartDate(value);
-    }
-    if (name === "endDate") {
-      setEndDate(value);
-    }
-  };
 
   const handlePageChange = (value) => {
     dispatch(setPageNumber(value));
@@ -76,7 +59,7 @@ const LobReceiptPayments = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["clientname", "date", "type", "orderdetails", "details", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -113,7 +96,7 @@ const LobReceiptPayments = () => {
       isInitialMount.current = false;
     } else {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: ["clientname", "date", "type", "orderdetails", "details", "amount"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -143,7 +126,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["clientname", "date", "type", "orderdetails", "details", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -162,24 +145,32 @@ const LobReceiptPayments = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadNonPmaClientStAndRec(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
 
-  const handleShow = () => {
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["clientname", "date", "type", "orderdetails", "details", "amount"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/nonPmaClientStatement",
+      colmap: {
+        "clientname": "Client Name",
+        "date": "Date",
+        "type": "Type",
+        "orderdetails": "Order Description",
+        "details": "Details",
+        "amount": "Amount"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadNonPmaClientStAndRec(obj, 'pdf'))
+  }
 
-    dispatch(setInitialState())
-
-    setShowTable(true);
-
-
-  };
   return (
     <Container>
 
@@ -224,7 +215,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

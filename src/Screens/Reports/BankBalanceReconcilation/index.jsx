@@ -20,9 +20,11 @@ import { CloseOutlined, Refresh } from "@mui/icons-material";
 import { FilePdfOutlined } from "@ant-design/icons";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png";
+import useAuth from '../../../context/JwtContext';
 
 const BankBalanceReconcilation = () => {
     const dispatch = useDispatch();
+    const { user } = useAuth();
     const { bankBalanceReconcilation, isLoading } = useSelector((state) => state.bankBalanceReconcilation);
     const [startDate, setStartDate] = useState(new Date().toLocaleDateString('en-CA'));
     const [showTable, setShowTable] = useState(false);
@@ -41,9 +43,9 @@ const BankBalanceReconcilation = () => {
 
     const fetchPaymentMode = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": user.id
         }
-        const response = await APIService.getModesAdmin(data);
+        const response = await APIService.getModesAdmin({ ...data, user_id: user.id });
         const result = (await response.json());
         setPaymentMode(result.data);
 
@@ -61,7 +63,7 @@ const BankBalanceReconcilation = () => {
 
     const handleRefresh = () => {
         let obj = {
-            user_id: 1234,
+            user_id: user.id,
             startdate: startDate ?? "2021-01-01",
             bankName: bankName,
             rows: "*",
@@ -79,10 +81,10 @@ const BankBalanceReconcilation = () => {
 
     const downloadExcel = async () => {
         let obj = {
-            user_id: 1234,
+            user_id: user.id,
             startdate: startDate ?? "2021-01-01",
             bankName: bankName,
-            rows: ["bankname", "payment", "receipt","balance"],
+            rows: ["bankname", "payment", "receipt", "balance"],
             downloadType: "excel",
             colmap: {
                 "bankname": "Bank Name",
@@ -95,12 +97,30 @@ const BankBalanceReconcilation = () => {
 
     };
 
+    const downloadPdf = () => {
+        let obj = {
+            user_id: user.id,
+            startdate: startDate ?? "2021-01-01",
+            bankName: bankName,
+            rows: ["bankname", "payment", "receipt", "balance"],
+            downloadType: "pdf",
+            routename: "/reports/bankbalancereconciliation",
+            colmap: {
+                "bankname": "Bank Name",
+                "payment": "Payment",
+                "receipt": "Receipt",
+                "balance": "Total Balance",
+            },
+        };
+        dispatch(downloadbankBalanceReconcillation(obj, 'pdf'))
+    }
+
     const handleShow = () => {
         if (startDate) {
             dispatch(setInitialState())
             setShowTable(true);
             let obj = {
-                user_id: 1234,
+                user_id: user.id,
                 startdate: startDate ?? "2021-01-01",
                 bankName: bankName,
                 rows: "*",
@@ -337,7 +357,7 @@ const BankBalanceReconcilation = () => {
                                                             <p>1</p>
                                                         </div>
                                                     ) : (
-                                                        bankBalanceReconcilation.bankpmtrcps && (column.field === "balance" || column.field === "payment" ||column.field === "receipt")
+                                                        bankBalanceReconcilation.bankpmtrcps && (column.field === "balance" || column.field === "payment" || column.field === "receipt")
                                                             ? floorDecimal(bankBalanceReconcilation.bankpmtrcps[column.field])
                                                             : bankBalanceReconcilation?.bankpmtrcps?.[column.field]
                                                     )
@@ -368,7 +388,7 @@ const BankBalanceReconcilation = () => {
                         </div>
                         <MenuItem
                             className="flex space-x-2 justify-center items-center ml-3 mt-3"
-                            // onClick={downloadPDF}/
+                            onClick={downloadPdf}
                             disabled={!setShowTable}
                         >
                             <p>Download as Pdf</p>

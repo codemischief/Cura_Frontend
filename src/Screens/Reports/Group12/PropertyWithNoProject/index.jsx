@@ -17,9 +17,11 @@ import {
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
+import useAuth from "../../../../context/JwtContext";
 
 const PropertyWithNoProjectView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     propertyWithNoProject,
     status,
@@ -52,7 +54,7 @@ const PropertyWithNoProjectView = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       "rows": [
         "clientname", "propertydescription", "propertytype", "level_of_furnishing"
       ],
@@ -95,7 +97,7 @@ const PropertyWithNoProjectView = () => {
     }
     else {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: [
           "clientname", "propertydescription", "propertytype", "level_of_furnishing"
         ],
@@ -127,7 +129,7 @@ const PropertyWithNoProjectView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname", "propertydescription", "propertytype", "level_of_furnishing"
       ],

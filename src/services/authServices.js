@@ -7,12 +7,12 @@ const env_URL_SERVER=import.meta.env.VITE_ENV_URL_SERVER
 
 
 const setToken = (token) => {
-       sessionStorage.setItem('token' ,token);
+       localStorage.setItem('token' ,token);
 };
 
 
 const getToken = ()=> {
-   const token = sessionStorage.getItem('token');
+   const token = localStorage.getItem('token');
    if(token){
        return token;
    }
@@ -23,20 +23,20 @@ const getToken = ()=> {
 
 const login = async (userData) => {
    // const response =await  axios.post(`${env_URL_SERVER}validateCredentials`, userData);
-   // sessionStorage.setItem("Role" ,response.data.role_id);
-   // sessionStorage.setItem("User_id" ,response.data.user_id);
+   // localStorage.setItem("Role" ,response.data.role_id);
+   // localStorage.setItem("User_id" ,response.data.user_id);
    // return response.data;
 }
 
 
 
 const getUserRole = () => {
-  const Role_id =sessionStorage.getItem("Role");
+  const Role_id =localStorage.getItem("Role");
   return Role_id;
 }
 
 const getUserID = () => {
-   const User_id =sessionStorage.getItem("User_id");
+   const User_id =localStorage.getItem("User_id");
    return User_id;
  }
 // const isLoggedIn = () => {
@@ -50,7 +50,7 @@ const getUserID = () => {
 // }
 
 const logOut = ()=> {
-   sessionStorage.clear();
+   localStorage.clear();
 }
 
 

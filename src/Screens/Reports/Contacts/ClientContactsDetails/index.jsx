@@ -7,6 +7,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../../context/JwtContext";
 import {
   downloadDataXls,
   getData,
@@ -28,7 +29,7 @@ import Container from "../../../../Components/common/Container";
 const ClientContactDetails = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
-
+  const {user} = useAuth();
   const {
     data,
     status,
@@ -75,7 +76,7 @@ const ClientContactDetails = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
       ],
@@ -116,7 +117,7 @@ const ClientContactDetails = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: [
           "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
         ],
@@ -153,7 +154,7 @@ const ClientContactDetails = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
       ],
@@ -176,6 +177,33 @@ const ClientContactDetails = () => {
     };
     dispatch(downloadDataXls(obj))
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/clientContactDetails",
+      colmap: {
+       "employername": "Employer Name",
+        "localcontact1name": "Contact 1 Name",
+        "localcontact1address": "Contact 1 Address",
+        "localcontact1details": "Contact 1 Details",
+        "localcontact2name": "Contact 2 Name",
+        "localcontact2address": "Contact 2 Address",
+        "localcontact2details": "Contact 2 Details",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate) {
@@ -248,7 +276,8 @@ const ClientContactDetails = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

@@ -20,8 +20,10 @@ import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 const OrderPaymentList = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     orderPaymentData,
     status,
@@ -65,7 +67,7 @@ const OrderPaymentList = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -126,7 +128,7 @@ const OrderPaymentList = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -176,7 +178,7 @@ const OrderPaymentList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [
@@ -225,6 +227,59 @@ const OrderPaymentList = () => {
     };
     dispatch(downloadPaymentDataXls(obj));
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      rows: [
+        "id",
+        "type",
+        "paymentdate",
+        "monthyear",
+        "fy",
+        "amount",
+        "entityname",
+        "mode_of_payment",
+        "clientid",
+        "clientname",
+        "vendorname",
+        "orderid",
+        "orderdescription",
+        "serviceid",
+        "service",
+        "lobname",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/orderPaymentList",
+      colmap: {
+        id: "ID",
+        type: "Type",
+        paymentdate: "Payment Date",
+        monthyear: "Fiscal Month",
+        fy: "Fiscal Year",
+        amount: "Amount",
+        entityname: "Entity",
+        mode_of_payment: "Mode",
+        clientid: "Client ID",
+        clientname: "Client Name",
+        vendorname: "Vendor Name",
+        orderid: "Order ID",
+        orderdescription: "Order Description",
+        serviceid: "Service ID",
+        service: "Service",
+        lobname: "LOB name",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadPaymentDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -333,6 +388,8 @@ const OrderPaymentList = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

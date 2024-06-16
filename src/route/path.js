@@ -1,3 +1,4 @@
+
 function path(root, sublink) {
   return `${root}${sublink}`;
 }
@@ -30,6 +31,7 @@ export const PATH_DASHBOARD = {
       ROOTS.admin,
       "/lobReceiptPaymentsConsolidated"
     ),
+    updateCompanyKey : path(ROOTS.admin, "/updatecompanykey")
   },
   research: {
     prospect: path(ROOTS.research, "/prospect"),

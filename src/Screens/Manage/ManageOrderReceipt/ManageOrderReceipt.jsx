@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, duration, CircularProgress, Backdrop } from "@mui/material";
+import { Modal, Pagination, LinearProgress, duration, CircularProgress, Backdrop , MenuItem} from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -34,17 +34,20 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditOrderReceipt from './EditOrderReceipt';
 import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
 import { formatDate } from '../../../utils/formatDate';
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageOrderReceipt = () => {
     const {user} = useAuth()
     const menuRef = useRef();
     const { state , pathname} = useLocation();
+    const canEdit = checkEditAccess();
     console.log(pathname)
     const navigate = useNavigate();
     // we have the module here
@@ -396,17 +399,22 @@ const ManageOrderReceipt = () => {
         //  } 
     }
     const [orders, setOrders] = useState([]);
-
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = item.ordername;
+        });
+        return idNameObject;
+    }
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
-        setOrders(res.data)
+        setOrders(convertToIdNameObject(res.data))
 
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
@@ -429,7 +437,7 @@ const ManageOrderReceipt = () => {
             "orderid": Number(formValues.order),
             "receiptdesc": formValues.receiptDescription,
             "entityid": 1,
-            "officeid": 1
+            "officeid": 2
         }
         // "user_id":user.id,
         // "receivedby": user.id,
@@ -1517,7 +1525,7 @@ const ManageOrderReceipt = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>
@@ -1703,11 +1711,11 @@ const ManageOrderReceipt = () => {
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className="move cursor-move">
 
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]">New Order Receipt</div>
                                     </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                         <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                     </div>
                                 </div>
@@ -1738,22 +1746,34 @@ const ManageOrderReceipt = () => {
                                                     control: (provided, state) => ({
                                                         ...provided,
                                                         minHeight: 23,
-                                                        lineHeight: '0.8',
-                                                        height: 4,
-                                                        width: 230,
-                                                        fontSize: 10,
+                                                        // lineHeight: '0.8',
+                                                        height: '20px',
+                                                        width: 224,
+                                                        fontSize: 12,
                                                         // padding: '1px'
+                                                        borderRadius : '2px'
                                                     }),
-                                                    // indicatorSeparator: (provided, state) => ({
-                                                    //   ...provided,
-                                                    //   lineHeight : '0.5',
-                                                    //   height : 2,
-                                                    //   fontSize : 12 // hide the indicator separator
-                                                    // }),
+                                                    indicatorSeparator: (provided, state) => ({
+                                                      display : 'none'
+                                                    }),
                                                     dropdownIndicator: (provided, state) => ({
                                                         ...provided,
-                                                        padding: '1px', // adjust padding for the dropdown indicator
+                                                        padding: '1px',
+                                                        paddingRight : '2px', // Adjust padding for the dropdown indicator
+                                                        width: 15, // Adjust width to make it smaller
+                                                        height: 15, // Adjust height to make it smaller
+                                                        display: 'flex', // Use flex to center the icon
+                                                        alignItems: 'center', // Center vertically
+                                                        justifyContent: 'center'
+                                                         // adjust padding for the dropdown indicator
                                                     }),
+                                                    input: (provided, state) => ({
+                                                        ...provided,
+                                                        margin: 0, // Remove any default margin
+                                                        padding: 0, // Remove any default padding
+                                                        fontSize: 12, // Match the font size
+                                                        height: 'auto', // Adjust input height
+                                                      }),
                                                     // options: (provided, state) => ({
                                                     //     ...provided,
                                                     //     fontSize: 10// adjust padding for the dropdown indicator
@@ -1762,17 +1782,17 @@ const ManageOrderReceipt = () => {
                                                         ...provided,
                                                         padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
                                                         margin: 0, // Ensure no extra margin
-                                                        fontSize: 10 // Adjust font size of individual options
+                                                        fontSize: 12 // Adjust font size of individual options
                                                     }),
                                                     menu: (provided, state) => ({
                                                         ...provided,
-                                                        width: 230, // Adjust the width of the dropdown menu
+                                                        width: 224, // Adjust the width of the dropdown menu
                                                         zIndex: 9999 // Ensure the menu appears above other elements
                                                     }),
                                                     menuList: (provided, state) => ({
                                                         ...provided,
                                                         padding: 0, // Adjust padding of the menu list
-                                                        fontSize: 10,
+                                                        fontSize: 12,
                                                         maxHeight: 150 // Adjust font size of the menu list
                                                     }),
                                                     
@@ -1819,11 +1839,11 @@ const ManageOrderReceipt = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">TDS </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Receipt Description </div>
-                                            <textarea className="w-[230px] max-h-[70px] min-h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
+                                            <textarea className="w-[224px] max-h-[70px] min-h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className=" space-y-3 py-5">
@@ -1852,16 +1872,42 @@ const ManageOrderReceipt = () => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                           {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
-                                            <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
-                                                handleChange(e)
-                                                getOrderData(e.target.value)
-                                            }} formValueName="order" value={formValues.order} />}
+                                        
+                                           {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : <OrderCustomSelectNative
+                                           data={Object.keys(orders)}
+                                           value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
+                                           placeholder="Select Orders"
+                                           isSticky={true}
+                                           headerText={{
+                                            first : 'Order Description',
+                                            second : 'ID',
+                                          }}
+                                          renderData={(item) => {
+                                            return (
+                                              <MenuItem value={item} key={item} sx={{ width : '224px', gap : '5px', fontSize : '12px'}}>
+                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                   {orders[item]}
+                                                </p>
+                                                <p className='w-[20%]'>
+                                                    {item}
+                                                </p>
+                                                
+                                               
+                                              </MenuItem>
+                                            );
+                                          }}
+                                          onChange={(e) => {
+                                            setFormValues({ ...formValues, order: e.target.value })
+                                           }}
+                                           
+                                        
+                                        />
+                                             }
                                             <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.order}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
                                             <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.receivedDate}</div>
                                         </div>
                                         <div className="">

@@ -76,10 +76,8 @@ const ManageClientInfo = () => {
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
-    const [allUsername, setAllUsername] = useState([]);
-    const [allRoles, setAllRoles] = useState([]);
+   
     const [allEntities, setAllEntites] = useState([]);
-    const [allLOB, setAllLOB] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
     const [isClientInfoDialogue, setIsClientInfoDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
@@ -196,37 +194,9 @@ const ManageClientInfo = () => {
             }
         }
     }
-    const fetchUsersData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = {};
-        const response = await APIService.getUsers({ ...data, user_id: user.id })
-        const result = (await response.json());
+    
 
-        console.log(result.data);
-        console.log('hey')
-        setFormValues((existing) => {
-            return { ...existing, userName: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllUsername(result.data);
-        }
-    }
-
-    const fetchRoleData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = {};
-        const response = await APIService.getRoles({ ...data, user_id: user.id })
-        const result = (await response.json());
-        console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, role: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
-        }
-    }
+   
 
     const fetchEntitiesData = async () => {
         setPageLoading(true);
@@ -251,28 +221,6 @@ const ManageClientInfo = () => {
         console.log(res)
         setRelationData(res.data)
     }
-    const fetchLobData = async () => {
-        setPageLoading(true);
-        const data = {
-
-            "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getLob({ ...data, user_id: user.id });
-        const result = (await response.json());
-        console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, lob: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
-        }
-    }
-    // const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
         // console.log('ugm')
@@ -364,12 +312,6 @@ const ManageClientInfo = () => {
         fetchTenentOfData();
         fetchEntitiesData();
         fetchRelation();
-        fetchRoleData();
-        fetchUsersData();
-        fetchLobData();
-        const makeFalse = () => {
-
-        }
         const handler = (e) => {
             console.log(menuRef)
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
@@ -1565,32 +1507,38 @@ const ManageClientInfo = () => {
 
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
 
-
+                         {!pageLoading &&
+              existingClientInfo &&
+              existingClientInfo.length == 0 && (
+                <div className="h-10 border-gray-400 border-b-[1px] flex items-center">
+                  <h1 className="ml-10">No Records To Show</h1>
+                </div>
+              )}
                         {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingClientInfo && existingClientInfo.map((item, index) => {
                             return <div className='w-full h-12 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className="w-[85%] flex">
+                                <div className="w-[85%] flex items-center">
                                     <div className='w-[3%] flex overflow-x-hidden'>
                                         <div className='p-3'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[13%]  flex '>
+                                    <div className='w-[13%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.clientname} </p>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex'>
+                                    <div className='w-[11%]  flex items-center'>
                                         <div className='p-3'>
                                             <p> {item.clienttypename}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex '>
+                                    <div className='w-[10%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.tenantofname} </p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex '>
+                                    <div className='w-[12%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.tenantofpropertyname}</p>
                                         </div>

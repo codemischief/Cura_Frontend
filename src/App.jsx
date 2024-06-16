@@ -23,25 +23,18 @@ import ManageVendorInvoice from "./Screens/Manage/ManageVendorInvoice/ManageVend
 import ManageVendorPayment from "./Screens/Manage/ManageVendorPayment/ManageVendorPayment";
 
 import { Route, Routes, Outlet } from "react-router-dom";
-import Userscreen from "./Screens/UserScreens/Userscreen";
 import LOB from "./Screens/Admin/LOB";
 import Service from "./Screens/Admin/Service";
 import ResearchAgent from "./Screens/Research/Agent/index.jsx";
-// import Agent from "./Screens/Research/Agent/Agent";
-// import Employer from "./Screens/Research/Employer/Employer";
-import GovernmentDepartment from "./Screens/Research/Government Department/GovernmentDepartment";
 import ManageBankStatement from "./Screens/Manage/ManageBankStatement/ManageBankStatement";
 import ManageBuilderProject from "./Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject";
 import ManageBuilderContact from "./Screens/Manage/ManageBuilder/ManageBuilderContact/index.jsx";
-import Temp from "./Screens/Admin/temp";
-import ManageClientPropertyByClientName from "./Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName";
-import ClientPmaArgreement from "./Screens/Manage/ManageClientProperty/ClientPmaAgreement/ClientPmaAgreement";
-import ClientLLAgreement from "./Screens/Manage/ManageClientProperty/ClientLLAgreement/ClientLLAgreement copy";
+
 import PmaBilling from "./Screens/Manage/pma";
 import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
 import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
 import OrderInvoiceList from "./Screens/Reports/OrderInvoiceList";
-import LobReceiptPayments from "./Screens/Reports/LobReceiptPayments";
+import LobReceiptPayments from "./Screens/Reports/LobReceiptPayments";``
 import EntityReceiptPayments from "./Screens/Reports/EntityReceiptPayments";
 import LobReceiptPaymentsConsolidated from "./Screens/Reports/LobReceiptPaymentsConsolidated";
 
@@ -52,7 +45,6 @@ import ClientReceiptList from "./Screens/Reports/ClientReceiptList";
 import VendorInvoiceList from "./Screens/Reports/VendorInvoiceList";
 import DeletePage from "./Screens/Admin/DeleteById/DeletePage";
 import PmaBillingTrendView from "./Screens/Reports/reportPmaBillingTrendView";
-// import PmaClientReport from "./Redux/slice/reporting/pmaClientReport";
 import PmaClientReport from "./Screens/Reports/pmaClientReport";
 import PmaInvoiceList from "./Screens/Reports/PmaInvoiceList";
 import PmaClientReceivable from "./Screens/Reports/PmaClientReceivables/index.jsx";
@@ -134,7 +126,8 @@ import ClientPhoneNo from "./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx
 import OwnerPhoneNo from "./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx";
 import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation/index.jsx";
 import AgedOrders from "./Screens/Reports/AgedOrders/index.jsx";
-import { v4 as uuidv4 } from "uuid";
+import UpdateCompanyKey from "./Screens/Admin/UpdateCompanyKey/index.jsx";
+import ChangePassword from "./Screens/Login/ChangePassword.jsx";
 const App = () => {
   const { isInitialized } = useAuth();
   const ROLES = {
@@ -164,8 +157,11 @@ const App = () => {
                 </AuthGuard>
               }
             >
-              <Route path="/dashboard" element={<Dashboard key={uuidv4()}/>} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/changepassword" element={<ChangePassword />} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
+              <Route path="/admin/updatecompanykey" element={<UpdateCompanyKey/>}/>
+
               <Route
                 path="/admin/manageemployees"
                 element={<ManageEmployees />}
@@ -173,16 +169,16 @@ const App = () => {
               <Route path="/manage/managebuilder" element={<ManageBuilder />} />
               <Route
                 path="/manage/manageprojectinfo"
-                element={<ManageProjectInfo key={uuidv4()}/>}
+                element={<ManageProjectInfo />}
               />
               <Route
                 path="/manage/managebuilder/manageproject/:id"
-                element={<ManageProjectInfo key={uuidv4()}/>}
+                element={<ManageProjectInfo />}
               />
               <Route path="/admin/deleteById" element={<DeleteById />} />
               <Route
                 path="/admin/deleteById/:pagename"
-                element={<DeletePage key={uuidv4()}/>}
+                element={<DeletePage />}
               />
               <Route path="/manage/manageOrder" element={<ManageOrder />} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
@@ -271,49 +267,79 @@ const App = () => {
                 path="/manage/sendclientstatement"
                 element={<SendClientStatement />}
               />
+              
               <Route
                 path="manage/managebuilder/projects/:buildername"
-                element={<ManageBuilderProject key={uuidv4()}/>}
+                element={<ManageBuilderProject />}
               />
               <Route
                 path="/manage/managebuilder/contacts/:buildername"
-                element={<ManageBuilderContact key={uuidv4()}/>}
+                element={<ManageBuilderContact />}
               />
 
               <Route
                 path="/manage/managevendorpayment/:orderid"
-                element={<ManageVendorPayment key={uuidv4()}/>}
+                element={<ManageVendorPayment key="hyperlinked"/>}
               />
               <Route
                 path="/manage/manageclientinvoice/:orderid"
-                element={<ManageClientInvoice key={uuidv4()}/>}
+                element={<ManageClientInvoice key="hyperlinked"/>}
               />
               <Route
                 path="/manage/manageorderreceipt/:orderid"
-                element={<ManageOrderReceipt key={uuidv4()}/>}
+                element={<ManageOrderReceipt key="hyperlinked"/>}
               />
               <Route
                 path="/manage/manageclientinfo/orders/showall/:orderid"
-                element={<ShowAllOdersInformation key={uuidv4()}/>}
+                element={<ShowAllOdersInformation/>}
               />
               <Route
                 path="/manage/manageclientinfo/properties/:clientname"
-                element={<ManageClientProperty key={uuidv4()}/>}
+                element={<ManageClientProperty key="hyperlinked"/>}
               />
               <Route
                 path="/manage/manageclientinfo/orders/:clientname"
-                element={<ManageOrder key={uuidv4()}/>}
+                element={<ManageOrder key="hyperlinked" />}
               />
               <Route
                 path="/manage/manageclientproperty/pmaagreement/:clientname"
-                element={<ManagePmaArgreement key={uuidv4()}/>}
+                element={<ManagePmaArgreement key="hyperlinked"/>}
               />
               <Route
                 path="/manage/manageclientproperty/llagreement/:clientname"
-                element={<ManageLLAgreement key={uuidv4()}/>}
+                element={<ManageLLAgreement key="hyperlinked"/>}
+               
+              />
+              <Route
+                path="/manage/manageclientinvoice/:orderid"
+                element={<ManageClientInvoice />}
+              />
+              <Route
+                path="/manage/manageorderreceipt/:orderid"
+                element={<ManageOrderReceipt />}
+              />
+              <Route
+                path="/manage /manageclientinfo/orders/showall/:orderid"
+                element={<ShowAllOdersInformation />}
+              />
+              <Route
+                path="/manage/manageclientinfo/properties/:clientname"
+                element={<ManageClientProperty />}
+              />
+              <Route
+                path="/manage/manageclientinfo/orders/:clientname"
+                element={<ManageOrder />}
+              />
+              <Route
+                path="/manage/manageclientproperty/pmaagreement/:clientname"
+                element={<ManagePmaArgreement />}
+              />
+              <Route
+                path="/manage/manageclientproperty/llagreement/:clientname"
+                element={<ManageLLAgreement />}
               />
               <Route path="/manage/pmaBilling" element={<PmaBilling />} />
-              <Route path="admin/temp" element={<Temp />} />
+              
               <Route
                 path="/reports/orderPaymentList"
                 element={<OrderPaymentList />}

@@ -25,9 +25,11 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     lobReceiptPaymentsData,
     status,
@@ -53,7 +55,7 @@ const LobReceiptPayments = () => {
 
   const fetchLobData = async () => {
     const data = {
-      "user_id": 1234,
+      // "user_id": user.id,
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": ["name"],
@@ -61,7 +63,7 @@ const LobReceiptPayments = () => {
       "pg_no": 0,
       "pg_size": 0
     };
-    const response = await APIService.getLob(data);
+    const response = await APIService.getLob({...data, user_id: user.id});
     const result = (await response.json());
     if (Array.isArray(result.data)) {
       setAllLOB(result.data);
@@ -94,7 +96,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     if (startDate && endDate && lob) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         lobName: lob,
@@ -136,7 +138,7 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (startDate && endDate && lob) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         lobName: lob,
@@ -173,7 +175,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       lobName: lob,
@@ -194,15 +196,33 @@ const LobReceiptPayments = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadLobReceiptPaymentsDataXls(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["lobname", "service", "orderreceiptamount", "paymentamount", "diff"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      lobName: lob,
+      downloadType: "pdf",
+      routename: "/reports/lobReceiptPayments",
+      colmap: {
+       "lobname": "LOB Name",
+        "service": "Service",
+        "orderreceiptamount": "Receipt Amount",
+        "paymentamount": "Payment Amount",
+        "diff": "Difference"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadLobReceiptPaymentsDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -334,7 +354,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-
+            downloadPdf={downloadPdf}
+            height = "calc(100vh - 15rem)"
           />
         </div>
         {toast && (

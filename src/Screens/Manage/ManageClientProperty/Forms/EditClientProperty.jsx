@@ -16,7 +16,7 @@ const EditClientProperty = (props) => {
         fetchLevelOfFurnishing();
         getBuildersAndProjectsList();
         fetchPropertyType();
-        fetchClientData();
+        
         fetchPropertyStatus();
         fetchCountryData();
         fetchStateData('5');
@@ -31,10 +31,7 @@ const EditClientProperty = (props) => {
         const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        setAllCountry(result)
     }
     const fetchClientName = async (id) => { 
             const data = {
@@ -72,15 +69,7 @@ const EditClientProperty = (props) => {
         },1000)
         console.log(formValues);
     }
-    const fetchClientData = async () => {
-        const data = {
-            "user_id": user.id,
-          }
-          const response =  await APIService.getClientAdmin(data)
-          const res =   await response.json();
-          console.log(res)
-          setClientData(res.data);
-    }
+    
     const [initialClientPropertyData,setInitialClientPropertyData] = useState({});
     const initialValues = {
         "client_property": {
@@ -180,12 +169,23 @@ const EditClientProperty = (props) => {
         console.log(res);
         setLevelOfFurnishing(res);
     }
+    function projectHelper(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.projectid] = {
+            buildername : item.buildername,
+            projectname : item.projectname
+          }
+        });
+        return idNameObject;
+    }
+    
     const getBuildersAndProjectsList = async () => {
         const data = {"user_id" : user.id};
         const response = await APIService.getBuildersAndProjectsList(data);
         const res = await response.json();
         console.log(res.data);
-        setExistingSociety(res.data);
+        setExistingSociety(projectHelper(res.data));
     }
     const fetchPropertyType = async () => {
         const data = {"user_id" : user.id}

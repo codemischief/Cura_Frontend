@@ -37,11 +37,13 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
 const ManageVendor = () => {
     const {user} = useAuth()
     const {pathname} = useLocation()
+    const canEdit = checkEditAccess();
     console.log(pathname)
     const dataRows = [
         "vendorname",
@@ -399,7 +401,7 @@ const ManageVendor = () => {
             "bankifsccode": formValues.ifscCode,
             "bankaccttype": formValues.accountType,
             "companydeductee": true,
-            "tallyledgerid": Number(formValues.tallyLedger)
+            "tallyledgerid": formValues.tallyLedger
         }
         const response = await APIService.addVendors(data);
         const result = (await response.json())
@@ -1111,7 +1113,7 @@ const ManageVendor = () => {
                             </div>
                             <div className='w-[35%]  flex'>
                                 <div className='px-3 py-3.5'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>

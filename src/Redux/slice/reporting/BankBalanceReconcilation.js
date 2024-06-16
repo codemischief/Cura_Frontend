@@ -8,7 +8,7 @@ import {
 const initialState = {
     bankBalanceReconcilation: {
         bankpmtrcps: {},
-        bankstbalance:{}
+        bankstbalance: {}
     },
     isLoading: false,
     isSuccess: false,
@@ -26,11 +26,11 @@ export const bankBalanceReconcilation = createSlice({
         },
         setInitialState: (state) => {
             (state.isLoading = false),
-            (state.isSuccess = false),
-            state.bankBalanceReconcilation ={
-                bankpmtrcps: {},
-                bankstbalance:{}
-            }
+                (state.isSuccess = false),
+                state.bankBalanceReconcilation = {
+                    bankpmtrcps: {},
+                    bankstbalance: {}
+                }
 
         },
         setLoading: (state, { payload }) => {
@@ -67,7 +67,7 @@ export const getBankBalanceReconcilation =
     };
 
 export const downloadbankBalanceReconcillation =
-    (payloadObj) => async (dispatch) => {
+    (payloadObj, type) => async (dispatch) => {
         try {
             dispatch(setLoading(true))
             const response = await axios.post(
@@ -76,18 +76,18 @@ export const downloadbankBalanceReconcillation =
             );
             if ((response.data.filename, payloadObj.user_id)) {
                 await dispatch(
-                    downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+                    downloadXlsEndpoint(response.data.filename, payloadObj.user_id, type)
                 );
             }
             dispatch(setLoading(false))
-          
+
         } catch (err) {
             dispatch(setLoading(false))
             console.log(err);
 
         }
     };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId, type = 'excel') => async (dispatch) => {
     try {
         const response = await axios.post(
             `${env_URL_SERVER}download/${filename}`,
@@ -102,7 +102,12 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
         const blob = new Blob([response.data], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
-        FileSaver.saveAs(blob, "BankBalanceReconcilation.xlsx");
+        if (type == 'excel') {
+            FileSaver.saveAs(blob, "BankBalanceReconcilation.xlsx");
+        } else {
+            FileSaver.saveAs(blob, "BankBalanceReconcilation.pdf");
+        }
+
     } catch (error) {
         console.log("error", error);
     }

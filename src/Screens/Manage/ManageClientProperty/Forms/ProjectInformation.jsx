@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Checkbox from '@mui/material/Checkbox';
+import { MenuItem } from "@mui/material";
 import AsyncSelect from "react-select/async"
 import { APIService } from "../../../../services/API";
 import DropDown from "../../../../Components/Dropdown/Dropdown"
 import useAuth from "../../../../context/JwtContext";
+import ClientPropertySelectNative from "../../../../Components/common/select/ClientPropertySelectNative";
 const ProjectInformation = ({ clientData, initialSociety, initialStates, initialCities, formValues, setFormValues, propertyType, levelOfFurnishing, propertyStatus, formErrors, setCurrClientName, clientname, clientid , setClientNameText, hyperlinkState}) => {
   // console.log(levelOfFurnishing)
   // const [propertyType, setPropertyType] = useState([]);
@@ -15,7 +17,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
     ex.clientid = clientid
     temp.client_property = ex
     setFormValues(temp)
-    fetchClientData();
+    
   }, [])
   const [state, setState] = useState(initialStates);
   const [city, setCity] = useState(initialCities);
@@ -37,22 +39,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
   //   { value: 'vanilla', label: 'Vanilla' }
   // ]
   const [options, setOptions] = useState([]);
-  const fetchClientData = async () => {
-    const data = {
-      "user_id": user.id
-    }
-    const response = await APIService.getClientAdmin(data)
-    const res = await response.json();
-    console.log(res.data)
-    //  res.data.map((item) => {
-    //      value : item[0],
-    //      label : item[1]
-    //  })
-    setOptions(res.data.map(x => ({
-      value: x[0],
-      label: x[1]
-    })))
-  }
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({
@@ -141,22 +128,34 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
                 control: (provided, state) => ({
                     ...provided,
                     minHeight: 23,
-                    lineHeight: '0.8',
-                    height: 4,
+                    // lineHeight: '0.8',
+                    height: '20px',
                     width: 230,
-                    fontSize: 10,
+                    fontSize: 12,
                     // padding: '1px'
+                    borderRadius : '2px'
                 }),
-                // indicatorSeparator: (provided, state) => ({
-                //   ...provided,
-                //   lineHeight : '0.5',
-                //   height : 2,
-                //   fontSize : 12 // hide the indicator separator
-                // }),
+                indicatorSeparator: (provided, state) => ({
+                  display : 'none'
+                }),
                 dropdownIndicator: (provided, state) => ({
                     ...provided,
-                    padding: '1px', // adjust padding for the dropdown indicator
+                    padding: '1px',
+                    paddingRight : '2px', // Adjust padding for the dropdown indicator
+                    width: 15, // Adjust width to make it smaller
+                    height: 15, // Adjust height to make it smaller
+                    display: 'flex', // Use flex to center the icon
+                    alignItems: 'center', // Center vertically
+                    justifyContent: 'center'
+                     // adjust padding for the dropdown indicator
                 }),
+                input: (provided, state) => ({
+                    ...provided,
+                    margin: 0, // Remove any default margin
+                    padding: 0, // Remove any default padding
+                    fontSize: 12, // Match the font size
+                    height: 'auto', // Adjust input height
+                  }),
                 // options: (provided, state) => ({
                 //     ...provided,
                 //     fontSize: 10// adjust padding for the dropdown indicator
@@ -165,7 +164,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
                     ...provided,
                     padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
                     margin: 0, // Ensure no extra margin
-                    fontSize: 10 // Adjust font size of individual options
+                    fontSize: 12 // Adjust font size of individual options
                 }),
                 menu: (provided, state) => ({
                     ...provided,
@@ -175,7 +174,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
                 menuList: (provided, state) => ({
                     ...provided,
                     padding: 0, // Adjust padding of the menu list
-                    fontSize: 10,
+                    fontSize: 12,
                     maxHeight: 150 // Adjust font size of the menu list
                 }),
                 
@@ -207,7 +206,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               onChange={handleChange}
               value={formValues.client_property.leveloffurnishing}
             >
-              <option>Select Level of Furnishing</option>
+              <option value="" hidden>Select Level of Furnishing</option>
               {levelOfFurnishing &&
                 levelOfFurnishing.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -295,27 +294,42 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
             <div className="text-[13px]">
               Society/Project Name <label className="text-red-500">*</label>
             </div>
-            {/* <select
-              className="text-[12px]  w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-              name="projectid"
-              onChange={handleChange}
-              value={formValues.client_property.projectid}
-            >
-              <option>Select Builder </option>
-              {existingSociety &&
-                existingSociety.map((item) => (
-                  <option key={item[0]} value={item.projectid} >
-                       <p>{item.buildername}</p> 
-                       &nbsp;
-                       &nbsp;
-                       &nbsp;
-                       <p>{item.projectname}</p> 
-                  </option>
-                ))}
-            </select> */}
-            {/* {"Hey"}
-            {formValues.client_property.projectid} */}
-            <DropDown options={existingSociety} initialValue="Select Project" leftLabel="Builder Name" rightLabel="Project" leftAttr="buildername" rightAttr="projectname" toSelect="projectname" handleChange={handleChange} formValueName="projectid" value={formValues.client_property.projectid} idName="projectid" />
+                      {console.log(existingSociety)}
+            
+                        <ClientPropertySelectNative
+                        data={Object.keys(existingSociety)}
+                        value={existingSociety?.[formValues.client_property.projectid]?.projectname ? existingSociety?.[formValues.client_property.projectid]?.projectname:null}
+                        placeholder="Select Project"
+                        isSticky={true}
+                        menuMaxHeight="20rem"
+                        headerText={{
+                            first : 'Property',
+                            second : 'Builder'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {existingSociety[item].projectname}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {existingSociety[item].buildername}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            setFormValues({
+                                ...formValues, client_property: {
+                                    ...formValues.client_property,
+                                    projectid: e.target.value
+                                }
+                            })
+                           }}
+                        />
+            {/* <DropDown options={existingSociety} initialValue="Select Project" leftLabel="Builder Name" rightLabel="Project" leftAttr="buildername" rightAttr="projectname" toSelect="projectname" handleChange={handleChange} formValueName="projectid" value={formValues.client_property.projectid} idName="projectid" /> */}
             <div className="text-[10px] text-[#CD0000] ">{formErrors.projectid}</div>
           </div>
           <div className="">
@@ -405,7 +419,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               onChange={handleChange}
               value={formValues.client_property.propertytype}
             >
-              <option value="">Select Property Type </option>
+              <option value="" hidden>Select Property Type </option>
               {propertyType &&
                 propertyType.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -484,7 +498,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               value={formValues.client_property.status}
               onChange={handleChange}
             >
-              <option>Select Status </option>
+              <option value="" hidden>Select Status </option>
               {propertyStatus &&
                 propertyStatus.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -513,7 +527,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               value={formValues.client_property.electricitybillingduedate}
               onChange={handleChange}
             >
-              <option>Select Date </option>
+              <option value="" hidden>Select Date </option>
               {dueDate &&
                 dueDate.map((item) => (
                   <option key={item.id} value={item.date}>
@@ -537,8 +551,8 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
           </div>
           <div className="">
             <div className="text-[13px]">Internal Furniture and Fittings (Sch B) </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+            <textarea
+              className="text-[12px] pl-4 w-[230px] min-h-[77px] max-h-[77px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="internalfurnitureandfittings"
               onChange={handleChange}

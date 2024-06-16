@@ -2,45 +2,48 @@ import { CircularProgress, Modal, Pagination } from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import backLink from "../../../assets/back.png";
 import Cross from "../../../assets/cross.png";
 import downloadIcon from "../../../assets/download.png";
-import Edit from "../../../assets/edit.png";
-import Add from "./../../../assets/add.png";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
-import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import searchIcon from "../../../assets/searchIcon.png";
-import Trash from "../../../assets/trash.png";
 import { APIService } from '../../../services/API';
 import Delete from './Delete';
 import EditManageBuilder from './EditManageBuilder';
 import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
-import * as XLSX from 'xlsx';
-import FileSaver from 'file-saver';
 import Filter from "../../../assets/filter.png"
 import SaveConfirmationBuilder from "./SaveConfirmationBuilder";
 import CancelModel from './../../../Components/modals/CancelModel';
-import { ScreenSearchDesktopTwoTone } from "@mui/icons-material";
 import Draggable from "react-draggable";
 import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from "../../../Components/common/CustomButton";
 import EditButton from "../../../Components/common/buttons/EditButton";
 import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import useAuth from "../../../context/JwtContext";
+import { handleError } from "../../../utils/ErrorHandler";
+import { toast } from "react-toastify";
+import checkEditAccess from "../../../Components/common/checkRoleBase";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageBuilder = () => {
-    // we have the module here
+    
+    const dataRows = [
+        "buildername",
+        "country",
+        "city", 
+        "suburb",
+        "id",
+    ]
+        
     const {user} = useAuth()
     const {pathname} = useLocation()
     const menuRef = useRef();
     const navigate = useNavigate();
-
+    const canEdit = checkEditAccess();
     const [existingBuilders, setExistingBuilders] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
@@ -64,13 +67,6 @@ const ManageBuilder = () => {
     const [sortField, setSortField] = useState("id");
     const [searchInput, setSearchInput] = useState("");
     const [isSearchOn, setIsSearchOn] = useState(false);
-
-    const fetchUserId = async () => {
-        const response = await authService.getUserId()
-
-        setUserId(response)
-
-    }
     const openSuccessModal = () => {
         // set the state for true for some time
         setIsManageBuidlerDialogue(false);
@@ -111,9 +107,10 @@ const ManageBuilder = () => {
             }
         });
         setFilterState((prev) => tempArray)
+        try {
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -121,22 +118,29 @@ const ManageBuilder = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getNewBuilderInfo(data)
-        const res = await response.json()
-        console.log(res)
-        const result = res.data.builder_info;
-        setTotalItems(res.total_count);
-        console.log(res.total_count);
-        setPageLoading(false);
-        // console.log(result);
-        setExistingBuilders(result);
+            const response = await APIService.getNewBuilderInfo(data)
+            const res = await response.json()
+            
+            const result = res.data.builder_info;
+            setTotalItems(res.total_count);
+            
+            
+            setPageLoading(false);
+            setExistingBuilders(result);
+        }catch(err) {
+            handleError(err)
+            setPageLoading(false);
+            toast('Something Went Wrong, Please Refresh!')
+        }
+        
+        
     }
     const fetchPageData = async (page) => {
         setPageLoading(true);
         setCurrentPage(page)
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -146,12 +150,12 @@ const ManageBuilder = () => {
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
-        console.log(res)
+        
         const result = res.data.builder_info;
         setTotalItems(res.total_count);
-        console.log(res.total_count);
+        
         setPageLoading(false);
-        // console.log(result);
+        // 
         setExistingBuilders(result);
     }
     const fetchQuantityData = async (quantity) => {
@@ -160,7 +164,7 @@ const ManageBuilder = () => {
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": "desc",
@@ -170,12 +174,12 @@ const ManageBuilder = () => {
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
-        console.log(res)
+        
         const result = res.data.builder_info;
         setTotalItems(res.total_count);
-        console.log(res.total_count);
+        
         setPageLoading(false);
-        // console.log(result);
+        // 
         setExistingBuilders(result);
     }
 
@@ -193,7 +197,7 @@ const ManageBuilder = () => {
         const data = { "user_id": user.id, "country_id": e };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        // console.log(result)
+        // 
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -214,7 +218,7 @@ const ManageBuilder = () => {
         setCurrentPage(1)
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -224,12 +228,12 @@ const ManageBuilder = () => {
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
-        console.log(res)
+        
         const result = res.data.builder_info;
         setTotalItems(res.total_count);
-        console.log(res.total_count);
+        
         setPageLoading(false);
-        // console.log(result);
+        // 
         setExistingBuilders(result);
     }
 
@@ -240,7 +244,7 @@ const ManageBuilder = () => {
         setCurrentPage(1);
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": "desc",
@@ -250,23 +254,25 @@ const ManageBuilder = () => {
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
-        console.log(res)
+        
         const result = res.data.builder_info;
         setTotalItems(res.total_count);
-        console.log(res.total_count);
+        
         setPageLoading(false);
-        // console.log(result);
+        // 
         setExistingBuilders(result);
     }
-
+    
     const deleteBuilder = async (item) => {
         setShowDelete(true);
-        setCurrentBuilderId(item);
+        setCurrentBuilderId(item.id);
+        setCurrentBuilder(item.buildername)
+        console.log(currentBuilder)
         setDeleted(true);
     }
     const [errorMessage, setErrorMessage] = useState("");
     const handleAddBuilder = async () => {
-        console.log('hey')
+        
         setCurrentBuilder(formValues.builderName)
         setIsManageBuidlerDialogue(false)
 
@@ -351,13 +357,13 @@ const ManageBuilder = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
-        // console.log(e.target.value)
+        // 
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues)); // validate form and set error message
-        console.log(formErrors)
+        
         if (!formValues.builderName || formValues.builderName == "") {
             return
         }
@@ -475,7 +481,7 @@ const ManageBuilder = () => {
         const response = await APIService.getNewBuilderInfo(data)
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
@@ -501,7 +507,7 @@ const ManageBuilder = () => {
                         FileSaver.saveAs(result, 'BuilderData.pdf');
                     }
 
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -603,8 +609,8 @@ const ManageBuilder = () => {
         setIdFilter(false);
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 if (mapState[key].filterData == 'Numeric') {
@@ -629,7 +635,7 @@ const ManageBuilder = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -639,12 +645,12 @@ const ManageBuilder = () => {
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
-        console.log(res)
+        
         const result = res.data.builder_info;
         setTotalItems(res.total_count);
-        console.log(res.total_count);
+        
         setPageLoading(false);
-        // console.log(result);
+        // 
         setExistingBuilders(result);
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
@@ -677,7 +683,7 @@ const ManageBuilder = () => {
         setFlag((prev) => {
             return !prev
         })
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -685,7 +691,7 @@ const ManageBuilder = () => {
         })
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -695,12 +701,12 @@ const ManageBuilder = () => {
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
-        console.log(res)
+        
         const result = res.data.builder_info;
         setTotalItems(res.total_count);
-        console.log(res.total_count);
+        
         setPageLoading(false);
-        // console.log(result);
+        // 
         setExistingBuilders(result);
 
     }
@@ -921,8 +927,8 @@ const ManageBuilder = () => {
                             <div className='w-1/2  p-4'>
                                 <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-1/2 0 p-4'>
-                                <p>Edit</p>
+                            <div className='w-1/2 0 p-4 flex justify-center'>
+                                <p>{canEdit ? "Edit" : ""}</p>
                             </div>
                         </div>
                     </div>
@@ -933,9 +939,9 @@ const ManageBuilder = () => {
                         {/* {pageLoading && <div className='ml-11 mt-9'>
                             <CircularProgress />
                         </div>} */}
-                        {console.log(pageLoading)}
-                        {console.log(existingBuilders)}
-                        {console.log(existingBuilders)}
+                        {}
+                        {}
+                        {}
                         {!pageLoading && existingBuilders && existingBuilders.length == 0 &&
                          <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                             <h1 className='ml-10'>No Records To Show</h1>
@@ -976,7 +982,7 @@ const ManageBuilder = () => {
                                     </div>
                                     <div className='w-1/2 flex justify-center items-center gap-2 ml-0.5'>
                                         <EditButton handleEdit={editBuilder} rowData={item}/>
-                                        <DeleteButton handleDelete={deleteBuilder} rowData={item.id}/>
+                                        <DeleteButton handleDelete={deleteBuilder} rowData={item}/>
                         
                                     </div>
                                 </div>
@@ -1010,7 +1016,7 @@ const ManageBuilder = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 // setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
                                 fetchQuantityData(e.target.value);
                                 // fetchPageCountryData(e.target.value)
                             }}
@@ -1070,11 +1076,11 @@ const ManageBuilder = () => {
                     <Draggable handle='div.move'>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className="move cursor-move">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]"> New Builder</div>
                                     </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                         <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
                                     </div>
                                 </div>
@@ -1142,7 +1148,7 @@ const ManageBuilder = () => {
                                                     }}
                                                 >
 
-                                                    {allCountry && allCountry.map(item => {
+                                                    {allCountry?.map(item => {
                                                         return <option value={item.id}> {item.name}</option>
                                                         // if (item[0] == 5) {
                                                         //     return <option value={item[0]} selected>
@@ -1168,7 +1174,7 @@ const ManageBuilder = () => {
                                                         const existing = { ...formValues }
                                                         existing.state = e.target.value
                                                         existing.city = null
-                                                        console.log(existing)
+                                                        
                                                         setFormValues(existing)
                                                     }}
                                                 >
@@ -1189,7 +1195,7 @@ const ManageBuilder = () => {
                                                     defaultValue="Select City"
                                                     onChange={e => {
                                                         // fetchCityData(e.target.value);
-                                                        console.log(e.target.value);
+                                                        
                                                         setFormValues((existing) => {
                                                             const newData = { ...existing, city: e.target.value }
                                                             return newData;

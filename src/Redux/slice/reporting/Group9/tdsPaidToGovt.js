@@ -87,7 +87,7 @@ export const getTdsPaidGovtData = (payloadObj) => async (dispatch) => {
   }
 };
 
-export const downloadTdsPaidToGovtReport = (payloadObj) => async (
+export const downloadTdsPaidToGovtReport = (payloadObj ,type) => async (
   dispatch
 ) => {
   try {
@@ -98,7 +98,7 @@ export const downloadTdsPaidToGovtReport = (payloadObj) => async (
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -110,7 +110,7 @@ export const downloadTdsPaidToGovtReport = (payloadObj) => async (
   }
 };
 
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type = 'excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -125,7 +125,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "Tds_paid_to_govt.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "TdsPaidToGovt.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "TdsPaidToGovt.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }

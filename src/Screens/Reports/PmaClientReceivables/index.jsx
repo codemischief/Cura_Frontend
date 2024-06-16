@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../context/JwtContext";
 import {
   downloadPmaClientReceivables,
   getPmaClientReceivable,
@@ -31,7 +32,7 @@ import Container from "../../../Components/common/Container";
 const PmaClientReceivable = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
-
+  const {user} = useAuth();
   const {
     pmaClientReceivable,
     status,
@@ -78,7 +79,7 @@ const PmaClientReceivable = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["clientname",
         "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -119,7 +120,7 @@ const PmaClientReceivable = () => {
 
 
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: ["clientname",
           "amount"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -155,7 +156,7 @@ const PmaClientReceivable = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname",
         "amount"
@@ -173,15 +174,30 @@ const PmaClientReceivable = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadPmaClientReceivables(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "clientname",
+        "amount"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/pmaClientReceivable",
+      colmap: {
+        "clientname": "Client Name",
+        "amount": "Amount"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadPmaClientReceivables(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate) {
@@ -256,6 +272,7 @@ const PmaClientReceivable = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            download={downloadPdf}
             height="calc(100vh - 12rem)"
           />
         </div>

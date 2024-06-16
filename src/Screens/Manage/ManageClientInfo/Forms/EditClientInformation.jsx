@@ -1,11 +1,13 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import Checkbox from '@mui/material/Checkbox';
+import { MenuItem } from '@mui/material';
 import { APIService } from '../../../../services/API';
 import AsyncSelect from "react-select/async"
 // import OrderDropDown from '../../../../Components/Dropdown/OrderDropdown';
 import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
 import useAuth from '../../../../context/JwtContext';
+import ClientPropertySelectNative from '../../../../Components/common/select/ClientPropertySelectNative';
 const EditClientInformation = ({formErrors, formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities,tenantofname, orderText , setOrderText, setTenantOfName}) => {
     const { user } = useAuth()
     console.log(orderText)
@@ -83,6 +85,16 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
             setAllCity(result)
         }
     }
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            buildername : item.buildername,
+            propertyname : item.propertyname
+          }
+        });
+        return idNameObject;
+    }
     const [tenantOfProperty,setTenantOfProperty] = useState([])
     const getClientPropertyByClientId = async (id) => {
         const data = {
@@ -93,7 +105,8 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
         const response = await APIService.getClientPropertyByClientId(data)
         const res = await response.json()
         console.log(res)
-        setTenantOfProperty(res.data)
+        setTenantOfProperty(convertToIdNameObject(res.data))
+        // setTenantOfProperty(res.data)
      }
     useEffect(() => {
         // we need to fetch the client property
@@ -107,18 +120,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
 
 
   const [options,setOptions] = useState([]);
-  const fetchClientData = async () => {
-     const data = {
-      "user_id" : user.id
-     }
-     const response = await APIService.getClientAdmin(data)
-     const res = await response.json();
-     console.log(res.data)
-     setOptions(res.data.map(x => ({
-      value: x[0],
-      label: x[1]
-    })))
-  }
+ 
    console.log(tenantofname)
    const [selectedOption,setSelectedOption] = useState(tenantofname);
    const [query,setQuery] = useState('')
@@ -411,22 +413,34 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                                 control: (provided, state) => ({
                                                     ...provided,
                                                     minHeight: 23,
-                                                    lineHeight: '0.8',
-                                                    height: 4,
+                                                    // lineHeight: '0.8',
+                                                    height: '20px',
                                                     width: 230,
-                                                    fontSize: 10,
+                                                    fontSize: 12,
                                                     // padding: '1px'
+                                                    borderRadius : '2px'
                                                 }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
+                                                indicatorSeparator: (provided, state) => ({
+                                                  display : 'none'
+                                                }),
                                                 dropdownIndicator: (provided, state) => ({
                                                     ...provided,
-                                                    padding: '1px', // adjust padding for the dropdown indicator
+                                                    padding: '1px',
+                                                    paddingRight : '2px', // Adjust padding for the dropdown indicator
+                                                    width: 15, // Adjust width to make it smaller
+                                                    height: 15, // Adjust height to make it smaller
+                                                    display: 'flex', // Use flex to center the icon
+                                                    alignItems: 'center', // Center vertically
+                                                    justifyContent: 'center'
+                                                     // adjust padding for the dropdown indicator
                                                 }),
+                                                input: (provided, state) => ({
+                                                    ...provided,
+                                                    margin: 0, // Remove any default margin
+                                                    padding: 0, // Remove any default padding
+                                                    fontSize: 12, // Match the font size
+                                                    height: 'auto', // Adjust input height
+                                                  }),
                                                 // options: (provided, state) => ({
                                                 //     ...provided,
                                                 //     fontSize: 10// adjust padding for the dropdown indicator
@@ -435,7 +449,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                                     ...provided,
                                                     padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
                                                     margin: 0, // Ensure no extra margin
-                                                    fontSize: 10 // Adjust font size of individual options
+                                                    fontSize: 12 // Adjust font size of individual options
                                                 }),
                                                 menu: (provided, state) => ({
                                                     ...provided,
@@ -445,7 +459,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                                 menuList: (provided, state) => ({
                                                     ...provided,
                                                     padding: 0, // Adjust padding of the menu list
-                                                    fontSize: 10,
+                                                    fontSize: 12,
                                                     maxHeight: 150 // Adjust font size of the menu list
                                                 }),
                                                 
@@ -515,7 +529,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                     <div className="">
                         {console.log(formValues.client_info.tenantofproperty)}
                         <div className="text-[13px]">Tenant Of Property</div>
-                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.tenantofproperty} name="city" onChange={(e) => {
+                        {/* <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.tenantofproperty} name="city" onChange={(e) => {
                             setFormValues({
                                 ...formValues, client_info: {
                                     ...formValues.client_info,
@@ -530,8 +544,39 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                     {item.propertyname}
                                 </option>
                             ))}
-                        </select>
-                        {console.log(orderText)}
+                        </select> */}
+                        <ClientPropertySelectNative
+                        data={Object.keys(tenantOfProperty)}
+                        value={tenantOfProperty?.[formValues.client_info.tenantofproperty]?.propertyname ? tenantOfProperty?.[formValues.client_info.tenantofproperty]?.propertyname:null}
+                        placeholder="Select Client Property"
+                        isSticky={true}
+                        headerText={{
+                            first : 'Property',
+                            second : 'Builder'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {tenantOfProperty[item].propertyname}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {tenantOfProperty[item].buildername}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            setFormValues({
+                                ...formValues, client_info: {
+                                    ...formValues.client_info,
+                                    tenantofproperty: e.target.value
+                                }
+                            })
+                           }}
+                        />
                         {/* <PropertyDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
                             setFormValues({
                                 ...formValues, client_info: {

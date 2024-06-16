@@ -4,7 +4,7 @@ const styleConst = {
   columnFlex: { p: 1, display: 'flex', flexDirection: 'column' },
   customFilterFCCommon: { m: 1, minWidth:20 },
   cellStyleCommon: { wordBreak: 'break-word', padding: '4px', fontFamily: "Open Sans",
-  fontSize: '11px',
+  fontSize: '13px',
   fontStyle: 'normal',
   fontWeight: 400,
   lineHeight: '150%'

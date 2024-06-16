@@ -1,12 +1,11 @@
-import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
+import { Button, Stack } from "@mui/material";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
+import useAuth from "../../../context/JwtContext";
 
 import { useDispatch } from "react-redux";
 import {
@@ -15,18 +14,17 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
-  setStatus,
   resetData,
   setInitialState,
 } from "../../../Redux/slice/reporting/OrderReceiptSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
-import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
 
 const OrderReceiptList = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     orderReceiptData,
     status,
@@ -71,7 +69,7 @@ const OrderReceiptList = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -130,7 +128,7 @@ const OrderReceiptList = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -180,7 +178,7 @@ const OrderReceiptList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [
@@ -227,15 +225,61 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadReceiptDataXls(obj)).then((response) => {
-      const tableData = response.data;
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "OrderPaymentList.xlsx");
-      dispatch(setStatus("success"));
-    });
+    dispatch(downloadReceiptDataXls(obj))
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      rows: [
+        "type",
+        "id",
+        "recddate",
+        "monthyear",
+        "fy",
+        "amount",
+        "entityname",
+        "paymentmode",
+        "clientid",
+        "clientname",
+        "vendorname",
+        "orderid",
+        "orderdescription",
+        "serviceid",
+        "service",
+        "lobname",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/orderReceiptList",
+      colmap: {
+        "type": "Type",
+        "id": "ID",
+        "recddate": "Received Date",
+        "monthyear": "Fiscal Month",
+        "fy": "Fiscal year",
+        "amount": "Amount",
+        "entityname": "Entity",
+        "paymentmode": "Mode",
+        "clientid": "Client ID",
+        "clientname": "Client Name",
+        "vendorname": "Vendor Name",
+        "orderid": "Order ID",
+        "orderdescription": "Order Description",
+        "serviceid": "Service ID",
+        "service": "Service",
+        "lobname": "LOB Name"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadReceiptDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -344,6 +388,8 @@ const OrderReceiptList = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

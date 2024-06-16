@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, duration , Backdrop , CircularProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, duration , Backdrop , CircularProgress , MenuItem } from "@mui/material";
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
@@ -37,10 +37,14 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
+import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
+import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageLLAgreement = () => {
     const {user} = useAuth()
     const navigate = useNavigate();
+    const canEdit = checkEditAccess();
     const { state , pathname} =  useLocation();
     console.log(pathname)
     console.log(state)
@@ -247,9 +251,24 @@ const ManageLLAgreement = () => {
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
-        setOrders(res.data)
+        setOrders((prev) => {
+            const temp = {}
+             res.data.forEach((item) => {
+                temp[item.id] = item.ordername;
+              });
+            return temp
+        })
     }
-
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            buildername : item.buildername,
+            propertyname : item.propertyname
+          }
+        });
+        return idNameObject;
+    }
     const [clientPropertyData, setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {
         const data = {
@@ -260,7 +279,7 @@ const ManageLLAgreement = () => {
         const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
-        setClientPropertyData(res.data)
+        setClientPropertyData(convertToIdNameObject(res.data))
     }
 
     const [selectedOption, setSelectedOption] = useState({
@@ -1515,7 +1534,7 @@ const ManageLLAgreement = () => {
                             </div>
                             <div className='w-[35%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>
@@ -1729,22 +1748,34 @@ const ManageLLAgreement = () => {
                                                         control: (provided, state) => ({
                                                             ...provided,
                                                             minHeight: 23,
-                                                            lineHeight: '0.8',
-                                                            height: 4,
+                                                            // lineHeight: '0.8',
+                                                            height: '20px',
                                                             width: 230,
-                                                            fontSize: 10,
+                                                            fontSize: 12,
                                                             // padding: '1px'
+                                                            borderRadius : '2px'
                                                         }),
-                                                        // indicatorSeparator: (provided, state) => ({
-                                                        //   ...provided,
-                                                        //   lineHeight : '0.5',
-                                                        //   height : 2,
-                                                        //   fontSize : 12 // hide the indicator separator
-                                                        // }),
+                                                        indicatorSeparator: (provided, state) => ({
+                                                          display : 'none'
+                                                        }),
                                                         dropdownIndicator: (provided, state) => ({
                                                             ...provided,
-                                                            padding: '1px', // adjust padding for the dropdown indicator
+                                                            padding: '1px',
+                                                            paddingRight : '2px', // Adjust padding for the dropdown indicator
+                                                            width: 15, // Adjust width to make it smaller
+                                                            height: 15, // Adjust height to make it smaller
+                                                            display: 'flex', // Use flex to center the icon
+                                                            alignItems: 'center', // Center vertically
+                                                            justifyContent: 'center'
+                                                             // adjust padding for the dropdown indicator
                                                         }),
+                                                        input: (provided, state) => ({
+                                                            ...provided,
+                                                            margin: 0, // Remove any default margin
+                                                            padding: 0, // Remove any default padding
+                                                            fontSize: 12, // Match the font size
+                                                            height: 'auto', // Adjust input height
+                                                          }),
                                                         // options: (provided, state) => ({
                                                         //     ...provided,
                                                         //     fontSize: 10// adjust padding for the dropdown indicator
@@ -1753,7 +1784,7 @@ const ManageLLAgreement = () => {
                                                             ...provided,
                                                             padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
                                                             margin: 0, // Ensure no extra margin
-                                                            fontSize: 10 // Adjust font size of individual options
+                                                            fontSize: 12 // Adjust font size of individual options
                                                         }),
                                                         menu: (provided, state) => ({
                                                             ...provided,
@@ -1763,7 +1794,7 @@ const ManageLLAgreement = () => {
                                                         menuList: (provided, state) => ({
                                                             ...provided,
                                                             padding: 0, // Adjust padding of the menu list
-                                                            fontSize: 10,
+                                                            fontSize: 12,
                                                             maxHeight: 150 // Adjust font size of the menu list
                                                         }),
                                                         
@@ -1791,8 +1822,41 @@ const ManageLLAgreement = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
+                                                
                                                 {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>  : 
-                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />}
+                                               
+                                               <ClientPropertySelectNative
+                                               data={Object.keys(clientPropertyData)}
+                                               value={clientPropertyData?.[formValues.clientProperty]?.propertyname ? clientPropertyData?.[formValues.clientProperty]?.propertyname:null}
+                                               placeholder="Select Client Property"
+                                               isSticky={true}
+                                               menuMaxHeight='18rem'
+                                               headerText={{
+                                                   first : 'Property',
+                                                   second : 'Builder'
+                                               }}
+                                               renderData={(item) => {
+                                                   return (
+                                                     <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                                       <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                          {clientPropertyData[item].propertyname}
+                                                       </p>
+                                                       <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                         {clientPropertyData[item].buildername}
+                                                       </p>
+                                                       
+                                                      
+                                                     </MenuItem>
+                                                   );
+                                                 }}
+                                                 onChange={(e) => {
+                                                   const temp = {...formValues}
+                                                   temp.clientProperty = e.target.value 
+                                                   setFormValues(temp)
+                                                  }}
+                                               />
+                                               
+                                               }
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
                                             </div>
                                             <div className="">
@@ -1838,7 +1902,37 @@ const ManageLLAgreement = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+                                                 <OrderCustomSelectNative
+                                                        data={Object.keys(orders)}
+                                                        value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
+                                                        placeholder="Select Orders"
+                                                        isSticky={true}
+                                                        width={'230px'}
+                                                        headerText={{
+                                                            first : 'Order Description',
+                                                            second : 'ID',
+                                                        }}
+                                                        renderData={(item) => {
+                                                            return (
+                                                            <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                                {orders[item]}
+                                                                </p>
+                                                                <p className='w-[20%]'>
+                                                                    {item}
+                                                                </p>
+                                                                
+                                                            
+                                                            </MenuItem>
+                                                            );
+                                                        }}
+                                                        onChange={(e) => {
+                                                            setFormValues({ ...formValues, order: e.target.value })
+                                                        }}
+                                                        
+                                                        
+                                                />
+                                                {/* <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.order}</div>
                                             </div>
                                             <div className="">
@@ -2049,10 +2143,10 @@ const ManageLLAgreement = () => {
                                                     }}
                                                 /> */}
                                             </div>
-                                            <button className="bg-[#282828] text-white h-[36px] w-[300px] rounded-lg" onClick={handleAddClient}>
+                                            <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleAddClient}>
 
                                                 <div className="flex items-center justify-center gap-4">
-                                                    Add Client
+                                                    Add Tenant (Client)
                                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                                 </div>
                                             </button>

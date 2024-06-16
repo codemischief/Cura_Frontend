@@ -16,6 +16,7 @@ export const routeMapObj = Object.freeze({
 
   Employee: PATH_DASHBOARD.admin.manageEmployees,
   deletebyid: PATH_DASHBOARD.admin.deleteId,
+  companykey : PATH_DASHBOARD.admin.updateCompanyKey,
   getLobEntityPayments: PATH_DASHBOARD.admin.lobReceiptPayments,
   EntityReceiptPayments: PATH_DASHBOARD.admin.entityReceiptPayment,
   LOBReceiptPayments: PATH_DASHBOARD.admin.lobReceiptPaymentsConsolidated,
@@ -70,9 +71,11 @@ let defaultpermission = { add: true, delete: true, edit: true, get: true };
 
 const allowSpecialRoutes = (routes) => {
   routes["/dashboard"] = defaultpermission;
+  routes["/changepassword"] = defaultpermission
   if (routes[PATH_DASHBOARD.manage.manageBuilder.root]) {
     routes["/manage/managebuilder/manageproject/"] = defaultpermission;
     routes["/manage/manageBuilder/contacts/"] = defaultpermission;
+    
   }
   if (routes[PATH_DASHBOARD.manage.clientInfo]) {
     routes["/manage/manageclientinfo/properties/"] = defaultpermission;

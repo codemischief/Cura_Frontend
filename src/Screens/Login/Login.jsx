@@ -103,7 +103,7 @@ const Login = () => {
                     autoComplete="off"
                   />
                   <span
-                    className="w-5 h-5 absolute right-2.5 bottom-[6px] cursor-pointer"
+                    className="w-5 h-5 absolute right-2.5 top-[1rem] cursor-pointer "
                     onClick={passwordToggle}
                   >
                     <img
@@ -129,7 +129,7 @@ const Login = () => {
                     autoComplete="off"
                   />
                   <span
-                    className="w-5 h-5 absolute right-2.5 bottom-[6px] cursor-pointer"
+                    className="w-5 h-5 absolute right-2.5 top-[1rem] cursor-pointer"
                     onClick={comkeyToggle}
                   >
                     <img
@@ -155,12 +155,12 @@ const Login = () => {
                 className="text-[#004DD7] text-xl cursor-pointer"
                 to="/reset"
               >
-                Forgot Password
+                Forgot Password?
               </Link>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-[15rem] h-[3rem] text-white text-lg rounded-[10px] cursor-pointer ${
+                className={`w-[15rem] h-[3rem] text-white text-lg rounded-[10px] cursor-pointer flex items-center justify-center ${
                   isSubmitting
                     ? "bg-gray-600 cursor-not-allowed"
                     : "bg-[#004DD7]"

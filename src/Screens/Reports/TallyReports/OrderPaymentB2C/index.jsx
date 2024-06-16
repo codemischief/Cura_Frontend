@@ -20,9 +20,11 @@ import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
+import useAuth from "../../../../context/JwtContext";
 
 const OrderPaymentB2CView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     orderPaymentB2CView,
     status,
@@ -68,10 +70,10 @@ const OrderPaymentB2CView = () => {
 
   const getEntityAndMode = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
     };
-    const mode = await APIService.getModesAdmin(data);
-    const entity = await APIService.getEntityAdmin(data);
+    const mode = await APIService.getModesAdmin({...data , user_id:user.id});
+    const entity = await APIService.getEntityAdmin({...data , user_id:user.id});
     setEntityData((await entity.json()).data);
     setModeData((await mode.json()).data);
   };
@@ -90,7 +92,7 @@ const OrderPaymentB2CView = () => {
       intialFields.entity
     ) {
       let obj = {
-        user_id: 1234,
+        user_id:user.id,
         rows: [
           "uniqueid",
           "date",
@@ -147,7 +149,7 @@ const OrderPaymentB2CView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       let obj = {
-        user_id: 1234,
+        user_id:user.id,
         rows: [
           "uniqueid",
           "date",
@@ -197,7 +199,7 @@ const OrderPaymentB2CView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id:user.id,
       rows: [
         "uniqueid",
         "date",

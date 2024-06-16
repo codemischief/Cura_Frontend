@@ -18,10 +18,12 @@ import { useSelector } from "react-redux";
 import { formatedFilterData } from "../../../utils/filters";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import Container from "../../../Components/common/Container";
+import useAuth from  "../../../context/JwtContext";
 
 const PmaClientReport = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
+  const {user} = useAuth();
   const {
     clientOrderReceiptMismatchDetails,
     status,
@@ -53,7 +55,7 @@ const PmaClientReport = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["type", "diff", "date", "paymentmode", "fullname"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -93,7 +95,7 @@ const PmaClientReport = () => {
       isInitialMount.current = false;
     } else {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: ["type", "diff", "date", "paymentmode", "fullname"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -123,7 +125,7 @@ const PmaClientReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["type", "diff", "date", "paymentmode", "fullname"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -142,6 +144,29 @@ const PmaClientReport = () => {
     };
     dispatch(downloadClientOrderReceiptMismatchDetails(obj));
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["type", "diff", "date", "paymentmode", "fullname"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/clientContactDetails",
+      colmap: {
+        type: "Type",
+        diff: "Difference",
+        date: "Date",
+        paymentmode: "Payment Mode",
+        fullname: "Full Name",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadClientOrderReceiptMismatchDetails(obj, 'pdf'))
+  }
 
   return (
     <Container>
@@ -186,7 +211,8 @@ const PmaClientReport = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

@@ -1,9 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
-import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
@@ -24,9 +21,12 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
+
 
 const VendorInvoiceList = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     VendorInvoiceData,
     status,
@@ -38,12 +38,11 @@ const VendorInvoiceList = () => {
   } = useSelector((state) => state.vendorInvoice);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [openModal, setOpenModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
-  const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+  
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
@@ -71,7 +70,7 @@ const VendorInvoiceList = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id:user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows:
@@ -130,7 +129,7 @@ const VendorInvoiceList = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id:user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -159,6 +158,7 @@ const VendorInvoiceList = () => {
         pg_size: +countPerPage,
         order: sorting.sort_order ? sorting.sort_order : undefined,
       };
+      
       dispatch(getVendorInvoiceData(obj));
     }
   }, [
@@ -180,7 +180,7 @@ const VendorInvoiceList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id:user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [
@@ -236,6 +236,59 @@ const VendorInvoiceList = () => {
       dispatch(setStatus("success"));
     });
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      rows: [
+        "type",
+        "id",
+        "invoicedate",
+        "monthyear",
+        "fy",
+        "invoiceamount",
+        "entityname",
+        "mode",
+        "clientid",
+        "clientname",
+        "vendorname",
+        "orderid",
+        "briefdescription",
+        "serviceid",
+        "service",
+        "lobname",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/vendorPaymentsList",
+      colmap: {
+       "id": "ID",
+        "type": "Type",
+        "invoicedate": "Invoice Date",
+        "monthyear": "Fiscal Month",
+        "fy": "Fiscal Year",
+        "invoiceamount": "Amount",
+        "entityname": "Entity",
+        "mode": "Mode",
+        "clientid": "Client ID",
+        "clientname": "Client Name",
+        "vendorname": "Vendor Name",
+        "orderid": "Order ID",
+        "briefdescription": "Order Description",
+        "serviceid": "Service ID",
+        "service": "Service",
+        "lobname": "LOB name"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadVendorInvoiceDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -344,6 +397,8 @@ const VendorInvoiceList = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
       </Stack>

@@ -55,7 +55,7 @@ const Navbar = () => {
         >
           Dashboard
         </Button>
-        <Button sx={buttonStyle}>Change Password</Button>
+        <Button sx={buttonStyle} onClick={() => navigate("/changepassword")}>Change Password</Button>
         <Button
           onClick={logout}
           sx={{ ...buttonStyle, width: "142px", textTransform: "none" }}

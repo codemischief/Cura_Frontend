@@ -18,9 +18,11 @@ import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
+import useAuth from "../../../../context/JwtContext";
 
 const ClientReceiptView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     clientReceiptView,
     status,
@@ -42,7 +44,7 @@ const ClientReceiptView = () => {
     end_date: "",
     mode: 5,
     entity: "",
-  });
+  }); 
 
   const columns = useMemo(() => connectionDataColumn(), []);
 
@@ -66,10 +68,10 @@ const ClientReceiptView = () => {
 
   const getEntityAndMode = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
     };
-    const mode = await APIService.getModesAdmin(data);
-    const entity = await APIService.getEntityAdmin(data);
+    const mode = await APIService.getModesAdmin({...data , user_id:user.id});
+    const entity = await APIService.getEntityAdmin({...data , user_id:user.id});
     setEntityData((await entity.json()).data);
     setModeData((await mode.json()).data);
   };
@@ -83,7 +85,7 @@ const ClientReceiptView = () => {
   const handleRefresh = () => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode && intialFields.entity) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: [
           "uniqueid",
           "date",
@@ -136,7 +138,7 @@ const ClientReceiptView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: [
           "uniqueid",
           "date",
@@ -183,7 +185,7 @@ const ClientReceiptView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "uniqueid",
         "date",

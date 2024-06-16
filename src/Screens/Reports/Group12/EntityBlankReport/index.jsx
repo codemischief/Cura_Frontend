@@ -17,9 +17,11 @@ import {
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTableWithFooter";
+import useAuth from "../../../../context/JwtContext";
 
 const EntityBlankReport = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth()
   const {
     entityBlankReportData,
     status,
@@ -52,7 +54,7 @@ const EntityBlankReport = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows:  [
         "id","clientname","type","date","amount","orderdetails","lobname","service","fy","mode"
       ],
@@ -95,7 +97,7 @@ const EntityBlankReport = () => {
     }
     else {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id","clientname","type","date","amount","orderdetails","lobname","service","fy","mode"
       ],
@@ -127,7 +129,7 @@ const EntityBlankReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id","clientname","type","date","amount","orderdetails","lobname","service","fy","mode"
       ],

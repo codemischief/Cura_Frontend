@@ -51,7 +51,7 @@ const OrderReceiptList = () => {
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const [height, setHeight] = useState("calc(100vh - 16rem)");
+  const [height, setHeight] = useState("calc(100vh - 15rem)");
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
@@ -120,6 +120,10 @@ const OrderReceiptList = () => {
     setSearchInput("");
   };
   useEffect(() => {
+      dispatch(setInitialState())
+  },[])
+  useEffect(() => {
+
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
@@ -195,14 +199,7 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
     };
-    dispatch(downloadData(obj))
-      // const tableData = response.data;
-      // const worksheet = XLSX.utils.json_to_sheet(tableData);
-      // const workbook = XLSX.utils.book_new();
-      // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      // XLSX.writeFile(workbook, "SendClientStatement.xlsx");
-      // dispatch(setStatus("success"));
-    
+    dispatch(downloadData(obj))    
   };
   const downloadPdf = () => {
     let obj = {
@@ -244,7 +241,7 @@ const OrderReceiptList = () => {
       setuiEndDate(endDate)
       dispatch(setInitialState());
       setShowTable(true);
-      setHeight("calc(100vh - 24rem)")
+      setHeight("calc(100vh - 20.5rem)")
     }
   };
 
@@ -258,14 +255,14 @@ const OrderReceiptList = () => {
   const [uiStartDate,setUiStartDate] = useState("")
   const [uiEndDate,setuiEndDate] = useState("")
   const handleClientNameChange = (e) => {
-    console.log('hey')
-    console.log(e)
+    
+    
 
     setSelectedOption(e)
   }
 
   const loadOptions = async (e) => {
-    console.log(e)
+    
     if (e.length < 3) return;
     const data = {
       "user_id": user.id,
@@ -287,7 +284,7 @@ const OrderReceiptList = () => {
     return results
   }
   const sendEmail = () => {
-    console.log(sorting)
+    
     let obj = {
       user_id: user.id,
       startdate: startDate ?? "2021-01-01",
@@ -318,6 +315,10 @@ const OrderReceiptList = () => {
       order: sorting.sort_order ? sorting.sort_order : "",
     };
     dispatch(getData(obj));
+  }
+  function floorDecimal(number) {
+    let floorValue = Math.floor(number * 100) / 100; // Get floor value with two decimal places
+    return floorValue.toFixed(2); // Convert to string with exactly two decimal places
   }
   return (
     <Container>
@@ -374,47 +375,59 @@ const OrderReceiptList = () => {
 
                 styles={{
                   control: (provided, state) => ({
-                    ...provided,
-                    minHeight: 23,
-                    lineHeight: '0.8',
-                    height: 30,
-                    width: 180,
-                    fontSize: 10,
-                    // padding: '1px'
+                      ...provided,
+                      minHeight: 23,
+                      // lineHeight: '0.8',
+                      height: '30px',
+                      width: 224,
+                      fontSize: 12,
+                      // padding: '1px'
+                      borderRadius : '2px'
                   }),
-                  // indicatorSeparator: (provided, state) => ({
-                  //   ...provided,
-                  //   lineHeight : '0.5',
-                  //   height : 2,
-                  //   fontSize : 12 // hide the indicator separator
-                  // }),
+                  indicatorSeparator: (provided, state) => ({
+                    display : 'none'
+                  }),
                   dropdownIndicator: (provided, state) => ({
-                    ...provided,
-                    padding: '1px', // adjust padding for the dropdown indicator
+                      ...provided,
+                      padding: '1px',
+                      paddingRight : '2px', // Adjust padding for the dropdown indicator
+                      width: 15, // Adjust width to make it smaller
+                      height: 15, // Adjust height to make it smaller
+                      display: 'flex', // Use flex to center the icon
+                      alignItems: 'center', // Center vertically
+                      justifyContent: 'center'
+                       // adjust padding for the dropdown indicator
                   }),
+                  input: (provided, state) => ({
+                      ...provided,
+                      margin: 0, // Remove any default margin
+                      padding: 0, // Remove any default padding
+                      fontSize: 12, // Match the font size
+                      height: 'auto', // Adjust input height
+                    }),
                   // options: (provided, state) => ({
                   //     ...provided,
                   //     fontSize: 10// adjust padding for the dropdown indicator
                   // }),
                   option: (provided, state) => ({
-                    ...provided,
-                    padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
-                    margin: 0, // Ensure no extra margin
-                    fontSize: 10 // Adjust font size of individual options
+                      ...provided,
+                      padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                      margin: 0, // Ensure no extra margin
+                      fontSize: 12 // Adjust font size of individual options
                   }),
                   menu: (provided, state) => ({
-                    ...provided,
-                    width: 180, // Adjust the width of the dropdown menu
-                    zIndex: 9999 // Ensure the menu appears above other elements
+                      ...provided,
+                      width: 224, // Adjust the width of the dropdown menu
+                      zIndex: 9999 // Ensure the menu appears above other elements
                   }),
                   menuList: (provided, state) => ({
-                    ...provided,
-                    padding: 0, // Adjust padding of the menu list
-                    fontSize: 10,
-                    maxHeight: 150 // Adjust font size of the menu list
+                      ...provided,
+                      padding: 0, // Adjust padding of the menu list
+                      fontSize: 12,
+                      maxHeight: 150 // Adjust font size of the menu list
                   }),
-
-                }}
+                  
+              }}
               />
             </div>
 
@@ -429,9 +442,7 @@ const OrderReceiptList = () => {
               onChange={handleDateChange}
               name="endDate"
             />
-            {console.log(startDate)}
-            {console.log(endDate)}
-            {console.log(selectedOption.value)}
+            
             <Button
               variant="outlined"
               //   onClick={handleShow}
@@ -471,10 +482,15 @@ const OrderReceiptList = () => {
             <Stack
               direction={"row"}
               alignItems={"center"}
+              justifyContent={'space-around'}
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
                 <div className="">Client Name</div>
                 <div className="">{clientname}</div>
+              </div>
+              <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
+                <div className="">Opening Balance</div>
+                <div className="">{floorDecimal(openingBalance)}</div>
               </div>
             </Stack>
             <Stack
@@ -482,11 +498,15 @@ const OrderReceiptList = () => {
               alignItems={"center"}
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
-                <div className="">Data Range</div>
+                <div className="">Date Range</div>
                 <div className="">{formatDate(uiStartDate)} To {formatDate(uiEndDate)}</div>
               </div>
+              <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
+                <div className="">Closing Balance</div>
+                <div className="">{floorDecimal(closingBalance)}</div>
+              </div>
             </Stack>
-            <Stack
+            {/* <Stack
               direction={"row"}
               alignItems={"center"}
             >
@@ -494,16 +514,16 @@ const OrderReceiptList = () => {
                 <div className="">Opening Balance</div>
                 <div className="">{openingBalance}</div>
               </div>
-            </Stack>
-            <Stack
+            </Stack> */}
+            {/* <Stack
               direction={"row"}
               alignItems={"center"}
             >
               <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
-                <div className="">Current Balance</div>
+                <div className="">Closing Balance</div>
                 <div className="">{closingBalance}</div>
               </div>
-            </Stack>
+            </Stack> */}
           </Stack>
         </div>
         }

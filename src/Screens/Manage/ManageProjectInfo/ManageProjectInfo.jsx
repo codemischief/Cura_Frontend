@@ -38,6 +38,7 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
 const ManageProjectInfo = () => {
     const {pathname} = useLocation()
     const {user} = useAuth()
@@ -56,6 +57,7 @@ const ManageProjectInfo = () => {
     const menuRef = useRef();
     const navigate = useNavigate()
     const {state} = useLocation()
+    const canEdit = checkEditAccess();
     const [pageLoading, setPageLoading] = useState(false);
     const [existingProjectInfo, setExistingProjectInfo] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
@@ -645,33 +647,33 @@ const ManageProjectInfo = () => {
             "numberoffloors": null,
             "numberofbuildings": null,
             "approxtotalunits": null,
-            "tenantstudentsallowed": null,
-            "tenantworkingbachelorsallowed": null,
-            "tenantforeignersallowed": null,
+            "tenantstudentsallowed": false,
+            "tenantworkingbachelorsallowed": false,
+            "tenantforeignersallowed": false,
             "otherdetails": null,
             "duespayablemonth": null,
             "policestation": null,
         },
         "project_amenities": {
-            "swimmingpool": null,
-            "lift": null,
-            "liftbatterybackup": null,
-            "clubhouse": null,
-            "gym": null,
-            "childrensplayarea": null,
-            "pipedgas": null,
-            "cctvcameras": null,
+            "swimmingpool": false,
+            "lift": false,
+            "liftbatterybackup": false,
+            "clubhouse": false,
+            "gym": false,
+            "childrensplayarea": false,
+            "pipedgas": false,
+            "cctvcameras": false,
             "otheramenities": null,
-            "studio": null,
-            "1BHK": null,
-            "2BHK": null,
-            "3BHK": null,
-            "4BHK": null,
-            "RK": null,
-            "penthouse": null,
-            "other": null,
-            "duplex": null,
-            "rowhouse": null,
+            "studio": false,
+            "1BHK": false,
+            "2BHK": false,
+            "3BHK": false,
+            "4BHK": false,
+            "RK": false,
+            "penthouse": false,
+            "other": false,
+            "duplex": false,
+            "rowhouse": false,
             "otheraccomodationtypes": null,
             "sourceofwater": null
         },
@@ -1258,7 +1260,7 @@ const ManageProjectInfo = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='p-3'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>

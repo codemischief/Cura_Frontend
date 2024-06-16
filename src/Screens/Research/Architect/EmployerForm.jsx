@@ -17,10 +17,12 @@ import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
 const validationSchema = Yup.object().shape({
-  employername : Yup.string().required('Employer Name Is Required'),
-  countryId: Yup.string().required("Country Name is required"),
-  state: Yup.string().required("State is required"),
-  city: Yup.string().required("City is required"),
+  employername : Yup.string().required('Enter Employer Name'),
+  industry : Yup.string().required('Enter Industry'),
+  suburb : Yup.string().required('Enter Suburb'),
+  countryId: Yup.string().required("Select Country"),
+  state: Yup.string().required("Select State"),
+  city: Yup.string().required("Select City"),
 });
 // {
 //   "user_id": 1234,
@@ -51,10 +53,7 @@ const validationSchema = Yup.object().shape({
 // }
 const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
-  const [countryData, setCountryData] = useState({
-    arr: [],
-    obj: {},
-  });
+  const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -75,13 +74,15 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
-    const resultConverted = await result?.reduce((acc, current) => {
-      acc[current.id] = current.name;
-      return acc;
-    }, {});
-
+    setCountryData(result)
     setLoading(false);
-    setCountryData({ arr: result, obj: resultConverted });
+    // const resultConverted = await result?.reduce((acc, current) => {
+    //   acc[current.id] = current.name;
+    //   return acc;
+    // }, {});
+
+    // setCountryData({ arr: result, obj: resultConverted });
+    console.log(countryData)
   };
 
   const fetchCityData = async (id) => {
@@ -93,8 +94,16 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   useEffect(() => {
     fetchCountryData();
-    fetchStateData(5);
-    fetchCityData("Maharashtra");
+    if(editData?.id) {
+      // then its update wala case
+      fetchStateData(editData?.countryid)
+      fetchCityData(editData?.state)
+    }else {
+      // then its add wala case
+      fetchStateData(5);
+     fetchCityData("Maharashtra");
+    }
+    
   }, []);
 
   const fetchStateData = async (id) => {
@@ -110,30 +119,33 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = await response.json();
     setCityData(result.data);
   };
-
+  console.log(editData)
   const formik = useFormik({
     initialValues: {
-      employername : editData?.employername ? editData.employername : "",
-      adressline1 : editData?.addressline1 ? editData.addressline1 : "",
-      adressline2 : editData?.addressline2 ? editData.addressline2 : "",
-      countryId: editData?.country ? editData.country : 5,
+      employername : editData?.employername ? editData.employername : null,
+      adressline1 : editData?.addressline1 ? editData.addressline1 : null,
+      adressline2 : editData?.addressline2 ? editData.addressline2 : null,
+      countryId: editData?.countryid ? editData.countryid: 5,
       state: editData?.state ? editData.state : "Maharashtra",
       city: editData?.city ? editData.city : "Pune",
-      zip : editData?.zip ? editData.zip : "",
-      industry : editData?.industry ? editData.industry : "",
-      hrcontactname : editData?.hrcontactname ? editData.hrcontactname : "",
-      hrcontactphone : editData?.hrcontactphone ? editData.hrcontactphone : "",
-      hrcontactmail : editData?.hrcontactmail ? editData.hrcontactmail : "",
-      admincontactname : editData?.admincontactname ? editData.admincontactname : "",
-      admincontactmail : editData?.admincontactmail ? editData.admincontactmail : "",
-      hc : editData?.hc ? emailData.hc : "",
-      website : editData?.website ? emailData.website : "",
-      contactname1 : editData?.contactname1 ? emailData.contactname1 : "",
-      contactphone1 : editData?.contactphone1 ? emailData.contactphone1 : "",
-      contactmail1 : editData?.contactmail1 ? emailData.contactmail1 : "",
-      contactname2 : editData?.contactname2 ? emailData.contactname2 : "",
-      contactphone2 : editData?.contactphone2 ? emailData.contactphone2 : "",
-      contactmail2 : editData?.contactmail2 ? emailData.contactmail2 : ""
+      suburb : editData.suburb ? editData.suburb : null,
+      zip : editData?.zip ? editData.zip : null,
+      industry : editData?.industry ? editData.industry : null,
+      hrcontactname : editData?.hrcontactname ? editData.hrcontactname : null,
+      hrcontactphone : editData?.hrcontactphone ? editData.hrcontactphone : null,
+      hrcontactmail : editData?.hrcontactmail ? editData.hrcontactmail : null,
+      admincontactname : editData?.admincontactname ? editData.admincontactname : null,
+      admincontactphone : editData?.admincontactphone ? editData.admincontactphone : null,
+      admincontactmail : editData?.admincontactmail ? editData.admincontactmail : null,
+      hc : editData?.hc ? editData.hc : null,
+      website : editData?.website ? editData.website : null,
+      contactname1 : editData?.contactname1 ? editData.contactname1 : null,
+      contactphone1 : editData?.contactphone1 ? editData.contactphone1 : null,
+      contactmail1 : editData?.contactmail1 ? editData.contactmail1 : null,
+      contactname2 : editData?.contactname2 ? editData.contactname2 : null,
+      contactphone2 : editData?.contactphone2 ? editData.contactphone2 : null,
+      contactmail2 : editData?.contactmail2 ? editData.contactmail2 : null,
+      onsiteopportunity : editData?.onsiteopportunity ? editData.onsiteopportunity : false
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -146,20 +158,34 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     try {
       const data = {
         user_id: 1234,
-        personname: values.personname,
-        suburb: values.suburb,
+        country: Number(values.countryId),
+        onsiteopportunity : values.onsiteopportunity,
         city: values.city,
         state: values.state,
-        phoneno: values.phoneNumber,
-        email1: values.email,
-        country: Number(values.countryId),
-        propertylocation: values.propertylocation,
-        possibleservices: values.possibleservices,
-        createdby: 1234,
-        isdeleted: false,
+        admincontactmail : values.admincontactmail,
+        zip : values.zip,
+        hc : values.hc,
+        website : values.website,
+        admincontactphone : values.admincontactphone,
+        contactname1 : values.contactname1,
+        contactmail1 : values.contactmail1,
+        contactphone1 : values.contactphone1,
+        contactname2 : values.contactname2,
+        contactmail2 : values.contactmail2,
+        contactphone2 : values.contactphone2,
+        hrcontactname : values.hrcontactname,
+        hrcontactmail : values.hrcontactmail,
+        hrcontactphone : values.hrcontactphone,
+        admincontactname : values.admincontactname,
+        employername : values.employername,
+        industry : values.industry,
+        addressline1 : values.adressline1,
+        addressline2 : values.adressline2,
+        suburb: values.suburb
       };
 
       if (editData?.id) {
+        data.id = editData.id
         await dispatch(editEmployerData(data));
         openSucess();
       } else {
@@ -192,13 +218,25 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    setFieldValue(e.target.name, e.target.value);
+    // console.log(e.target)
+    // setFieldValue(e.target.name, e.target.value);
+    const { type, name, value, checked } = e.target;
+    // const fieldValue = type === 'checkbox' ? checked : value;
+    console.log(name, checked);
+    if(type == 'checkbox') {
+      setFieldValue(name,checked)
+    }else {
+
+      setFieldValue(name, value);
+    }
   };
-  const handleCountrySelect = (country) => {
-    setFieldValue("countryId", country?.id);
-    setFieldValue("state", "");
-    setFieldValue("city", "");
-    fetchStateData(country?.id);
+  const handleCountrySelect = (e) => {
+    // console.log(country)
+    setFieldValue("countryId", e.target.value);
+    setFieldValue("city", null);
+    setFieldValue("state", null);
+    setCityData([])
+    fetchStateData(e.target.value);
   };
 
   const handleState = (e) => {
@@ -260,7 +298,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="addressline1"
+                              name="adressline1"
                               value={formik.values.adressline1}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -280,7 +318,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="addressline2"
+                              name="adressline2"
                               value={formik.values.adressline2}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -298,13 +336,38 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-
-                            <CustomSelect
+                            {console.log(countryData)}
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
+                              name="countryId"
+                              value={formik.values.countryId}
+                              defaultValue="Select Country"
+                              onChange={handleCountrySelect}
+                              onBlur={handleBlur}
+                            >
+                              <option value="" className="inputValidationError" hidden>
+                                Select Country
+                              </option>
+                              {countryData?.length > 0 &&
+                                countryData?.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.id}
+                                      key={editData.id}
+                                      
+                                    >
+                                      {editData.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            {/* <CustomSelect
                               isLoading={loading}
                               value={countryData?.obj[formik.values.countryId]}
                               onSelect={handleCountrySelect}
                               options={countryData?.arr}
-                            />
+                            /> */}
                             <div className="inputValidationError">
                               {errors.countryId && (
                                 <div>{errors.countryId}</div>
@@ -316,6 +379,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 State Name
                               </label>
+                              <span className="requiredError">*</span>
                               {/* <span className="requiredError">*</span> */}
                             </div>
                             <select
@@ -326,8 +390,8 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               defaultValue="Select State"
                               onChange={handleState}
                             >
-                              <option value="" className="inputFieldValue">
-                                select state
+                              <option value="" className="inputFieldValue" hidden>
+                                Select State
                               </option>
                               {stateData.length > 0 &&
                                 stateData.map((editData) => {
@@ -342,19 +406,17 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                 })}
                             </select>
                             <div className="inputValidationError">
-                              {/* {formErrors.state} */}
+                              {/* {formErrors.city} */}
                               {errors.state && <div>{errors.state}</div>}
                             </div>
+                            
                           </div>
                           <div className="">
-                            {/* <div className="text-[13px]">
-                              City Name{" "}
-                              <label className="text-red-500">*</label>
-                            </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">
                                 City Name
                               </label>
+                              <span className="requiredError">*</span>
                               {/* <span className="requiredError">*</span> */}
                             </div>
 
@@ -367,8 +429,8 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             >
-                              <option value="" className="inputValidationError">
-                                select city
+                              <option value="" className="inputValidationError" hidden>
+                                Select City
                               </option>
                               {cityData.length > 0 &&
                                 cityData.map((editData) => {
@@ -376,7 +438,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                     <option
                                       value={editData.city}
                                       key={editData.city}
-                                      selected
+                                      
                                     >
                                       {editData.city}
                                     </option>
@@ -394,7 +456,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">Suburb</label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span>
                             </div>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -442,6 +504,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             {/* <div className="text-[13px]">Email </div> */}
                             <label className="inputFieldLabel">Industry</label>
+                            <span className="requiredError">*</span>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
@@ -451,6 +514,11 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
+                            <div className="inputValidationError">
+                              {touched.industry && errors.industry && (
+                                <div>{errors.industry}</div>
+                              )}
+                            </div>
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
@@ -466,6 +534,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
+                             
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
@@ -490,7 +559,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="hrcontactmail"
                               value={formik.values.hrcontactmail}
                               onChange={handleChange}
@@ -623,7 +692,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="contactmail1"
                               value={formik.values.contactmail1}
                               onBlur={handleBlur}
@@ -674,7 +743,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="contactmail2"
                               value={formik.values.contactmail2}
                               onBlur={handleBlur}
@@ -682,6 +751,22 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             />
                             
                           </div>
+                          <div className="mt-12">
+                            <div className="flex space-x-2 items-center">
+                              
+                              <input 
+                                type="checkbox" checked={values.onsiteopportunity}
+                                className='mr-3 h-4 w-4'
+                                name="onsiteopportunity"
+                                onBlur={handleBlur}
+                                onChange={handleChange}/>
+                              <label className="inputFieldLabel">
+                                On Site Oppurtunity
+                              </label>
+                              
+                            </div>
+                            
+                          </div> 
                           
                           
                           
@@ -703,9 +788,9 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         {isSubmitting ? (
                           <CircularProgress />
                         ) : editData?.id ? (
-                          "Update"
-                        ) : (
                           "Save"
+                        ) : (
+                          "Add"
                         )}
                       </button>
                       <button
@@ -728,16 +813,16 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Update" : "Save"}
+          btnTitle={editData?.id ? "Save" : "Add"}
           onClose={() => {
             setOpenConfimation(false);
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Client"
+          title={`${editData?.id ?  "Save Employer" : "Add Employer"}`}
           description={
-            <div>
-              <p className="">Client: {values.personname}</p>
+            <div className="flex flex-col items-center">
+              <p className="">Employer: {values.employername}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
@@ -748,7 +833,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this client?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Employer?
               </Typography>
             </div>
           }

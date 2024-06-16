@@ -19,9 +19,11 @@ import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
+import useAuth from "../../../../context/JwtContext";
 
 const OrderStaticsView = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     orderStatisticsReport,
     status,
@@ -63,7 +65,7 @@ const OrderStaticsView = () => {
 
   const getLob = async () => {
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],
@@ -71,7 +73,7 @@ const OrderStaticsView = () => {
       pg_no: 0,
       pg_size: 0,
     };
-    const response = await APIService.getLob(data);
+    const response = await APIService.getLob({...data , user_id:user.id});
     const result = await response.json();
 
     setLobData(result.data);
@@ -87,7 +89,7 @@ const OrderStaticsView = () => {
   const handleRefresh = () => {
     if (intialFields.lob) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: [
           "service", "on_hold", "estimate_given", "cancelled", "closed"
           , "billed", "inquiry", "completed", "in_progress"
@@ -128,7 +130,7 @@ const OrderStaticsView = () => {
   useEffect(() => {
     if (intialFields.lob) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: [
           "service",
           "on_hold",
@@ -169,7 +171,7 @@ const OrderStaticsView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "service",
         "on_hold",
@@ -204,6 +206,44 @@ const OrderStaticsView = () => {
     };
     dispatch(downloadOrderStatisticsReport(obj));
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "service",
+        "on_hold",
+        "estimate_given",
+        "cancelled",
+        "closed",
+        "billed",
+        "inquiry",
+        "completed",
+        "in_progress",
+      ],
+      lobName:intialFields.lob,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/orderStaticsView",
+      colmap: {
+        service: "Service",
+        on_hold: "On Hold",
+        estimate_given: "Estimate Given",
+        cancelled: "Cancelled",
+        closed: "Closed",
+        billed: "Billed",
+        inquiry: "Inquiry",
+        completed: "Completed",
+        in_progress: "In Progress",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadOrderStatisticsReport(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (intialFields.lob) {
@@ -312,7 +352,8 @@ const OrderStaticsView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 18rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 16rem)"
         />
       </div>
     </Stack>

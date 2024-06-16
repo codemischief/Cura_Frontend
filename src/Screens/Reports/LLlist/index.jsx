@@ -25,9 +25,11 @@ import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
 import { APIService } from "../../../services/API";
 import AsyncSelect from "react-select/async";
+import useAuth from "../../../context/JwtContext";
 
 const LLlistReport = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth(); 
   const {
     LLlist,
     status,
@@ -45,7 +47,6 @@ const LLlistReport = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [data, setData] = useState({
-    StatusData: [],
     ClientData: [
       {
         label: "Select Client", value: ""
@@ -95,12 +96,12 @@ const LLlistReport = () => {
   const loadOptions = async (e) => {
     if (e.length < 2) return;
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       pg_no: 0,
       pg_size: 0,
       search_key: e,
     };
-    const response = await APIService.getClientAdminPaginated(data);
+    const response = await APIService.getClientAdminPaginated({ ...data, user_id: user.id });
     const res = await response.json();
     const results = res.data.map((e) => {
       return {
@@ -115,19 +116,11 @@ const LLlistReport = () => {
     return results;
   };
 
-  const statusFetch = async () => {
-    const data = {
-      user_id: 1234,
-    };
-    const response = await APIService.getPaymentStatusAdmin(data);
-    const result = await response.json();
-    setData((prev) => ({ ...prev, StatusData: [...result.data] }));
-  };
+
 
 
   const typeFetch = async () => {
-    const data = { user_id: 1234 };
-    const response = await APIService.getClientTypeAdmin(data);
+    const response = await APIService.getClientTypeAdmin({ ...data, user_id: user.id });
     const res = await response.json();
     setData((prev) => ({ ...prev, TypeData: [...res.data] }));
   }
@@ -135,7 +128,7 @@ const LLlistReport = () => {
 
 
   useEffect(() => {
-    statusFetch();
+   
     typeFetch();
     dispatch(setInitialState())
   }, []);
@@ -143,7 +136,7 @@ const LLlistReport = () => {
   const handleRefresh = () => {
     if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
-        user_id: 1234,
+       user_id:user.id,
         rows: ["clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
@@ -158,10 +151,6 @@ const LLlistReport = () => {
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
-        statusName: intialValue.status,
-        clientName: intialValue.clientId.label,
-        typeName: intialValue.type,
-        clientPropertyID: intialValue.clientProperty,
       };
       dispatch(getLLlist(obj));
     }
@@ -191,7 +180,7 @@ const LLlistReport = () => {
   useEffect(() => {
     if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: [
           "clienttypename", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
@@ -234,8 +223,8 @@ const LLlistReport = () => {
   }
 
   const handleClient = async (value) => {
-    const data = { user_id: 1234, "client_id": value.value, };
-    const response = await APIService.getClientPropertyByClientId(data);
+    const data = { user_id: user.id, "client_id": value.value, };
+    const response = await APIService.getClientPropertyByClientId({ ...data, user_id: user.id });
     const res = await response.json();
     console.log(res, "resresresresres");
     setData((prev) => ({ ...prev, ClientPropertyData: [...res.data] }));
@@ -246,7 +235,7 @@ const LLlistReport = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clienttypename", 
          "propertydescription","property_status","status","registrationtype","paymentcycle",
@@ -286,6 +275,49 @@ const LLlistReport = () => {
     };
     dispatch(downloadLLlist(obj))
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clienttypename", 
+         "propertydescription","property_status","status","registrationtype","paymentcycle",
+         "noticeperiodindays",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/Lllist",
+      colmap: {
+        type: "Type",
+        id: "ID",
+        startdate: 'Start Date',
+        actualenddate: "End Date",
+        startdatemonthyear: "StartDate Fiscal Month",
+        enddatemonthyear: 'EndDate Fiscal Month',
+        rentamount: "Rent",
+        depositamount: "Deposit",
+        entityname: "Entity",
+        clientid: "Client ID",
+        clienttypename: "Client Name",
+        propertydescription: "Property Description",
+        property_status: "Property Status",
+        status: "Status",
+        registrationtype: "Registration Type",
+        paymentcycle: "Payment Cycle",
+        noticeperiodindays: "Notice Period In Days"
+      },
+      statusName: intialValue.status,
+      clientName: intialValue.clientId.label,
+      typeName: intialValue.type,
+      clientPropertyID: intialValue.clientProperty,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadLLlist(obj, 'pdf'))
+  }
 
 
   const handleShow = () => {
@@ -478,6 +510,8 @@ const LLlistReport = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

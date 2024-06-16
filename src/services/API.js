@@ -1,23 +1,23 @@
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
-const accessToken = sessionStorage.getItem("accessToken");
+const accessToken = localStorage.getItem("accessToken");
 // const env_URL_SERVER="http://192.168.10.183:8000/"
 const API = {
   LOGIN: "$env_URL_SERVERvalidateCredentials",
 };
 // import { userId } from "../utils/axios";
-// const userId = JSON.parse(sessionStorage.getItem("user"))?.id;
+// const userId = JSON.parse(localStorage.getItem("user"))?.id;
 
-const userId = 1234
+const userId = 1234;
 
-console.log(userId , "hello")
 const METHOD_POST = (data) => ({
   method: "POST",
   body: JSON.stringify(data),
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   },
 });
+
 const METHOD_POST_WITH_TOKEN = (data, token) => ({
   method: "POST",
   headers: {
@@ -378,7 +378,7 @@ const getClientInfo = async (data) => {
 const getClientProperty = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getClientProperty`,
-    METHOD_POST({...data, routename : 'temp'})
+    METHOD_POST({ ...data, routename: "temp" })
   );
   return response;
 };
@@ -973,14 +973,14 @@ const getLLTenant = async (data) => {
 
   return response;
 };
-const getPaymentStatusAdmin = async(data)=>{
+const getPaymentStatusAdmin = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getPaymentStatusAdmin`,
     METHOD_POST(data)
   );
 
   return response;
-}
+};
 const getDepartmentTypeAdmin = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getDepartmentTypeAdmin`,
@@ -1018,17 +1018,35 @@ const responseInterceptor = async (response) => {
   let updatedResponse = await response.json();
   return { data: updatedResponse, status: 200 };
 };
+
 const resetPassword = async (data) => {
   const response = await fetch(`${env_URL_SERVER}token`, METHOD_POST(data));
   return responseInterceptor(response);
 };
+
 const changePassword = async (data, token) => {
-  const response = await fetch(
-    `${env_URL_SERVER}reset`,
-    METHOD_POST_WITH_TOKEN(data, token)
-  );
-  return responseInterceptor(response);
+  try {
+    const response = await fetch(
+      `${env_URL_SERVER}changePassword`,
+      METHOD_POST(data, token)
+    );
+
+    const responseData = await response.json(); // Parse the response body as JSON
+
+    if (response.status === 200) {
+      return responseData; // Return the parsed data
+    } else if (response.status === 401) {
+      console.log(responseData.detail, "responseeee");
+      throw new Error(responseData.detail);
+    } else {
+      throw new Error(responseData.detail || 'An error occurred');
+    }
+  } catch (er) {
+    throw er;
+  }
 };
+
+
 const getProfessionalTypesAdmin = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getProfessionalTypesAdmin`,
@@ -1036,15 +1054,15 @@ const getProfessionalTypesAdmin = async (data) => {
   );
 
   return response;
-}
+};
 const dashboardData = async (data) => {
-  console.log({...data,user_id : userId})
+  console.log({ ...data, user_id: userId });
   const response = await fetch(
     `${env_URL_SERVER}dashboardData`,
     METHOD_POST(data)
   );
   return response;
-}
+};
 const getMandalAdmin = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getMandalAdmin`,
@@ -1052,7 +1070,7 @@ const getMandalAdmin = async (data) => {
   );
 
   return response;
-}
+};
 const deleteFromTable = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}deleteFromTable`,
@@ -1060,7 +1078,25 @@ const deleteFromTable = async (data) => {
   );
 
   return response;
+};
+const getGroupsAdmin = async (data) => {
+  const response = await fetch(
+    `${env_URL_SERVER}getGroupsAdmin`,
+    METHOD_POST(data)
+  );
+
+  return response;
 }
+const getCompanyKey = async (data) => {
+  const response = await fetch(
+    `${env_URL_SERVER}getCompanyKey`,
+    METHOD_POST(data)
+  );
+
+  return response;
+}
+
+
 export const APIService = {
   getCountries,
   getNewBuilderInfo,
@@ -1207,5 +1243,7 @@ export const APIService = {
   getProfessionalTypesAdmin,
   dashboardData,
   getMandalAdmin,
-  deleteFromTable
+  deleteFromTable,
+  getGroupsAdmin,
+  getCompanyKey
 };

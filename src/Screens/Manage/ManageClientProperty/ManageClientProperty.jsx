@@ -39,9 +39,11 @@ import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilte
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
 const ManageClientProperty = () => {
     const { user } = useAuth()
-    const menuRef = useRef()
+    const menuRef = useRef();
+    const canEdit = checkEditAccess();
     const { state, pathname } = useLocation()
     console.log(pathname)
     console.log(state)
@@ -159,10 +161,8 @@ const ManageClientProperty = () => {
         const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
-        console.log(result.data);
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        console.log(result);
+        setAllCountry(result);
     }
     const fetchClientTypeData = async () => {
         const data = {
@@ -269,12 +269,24 @@ const ManageClientProperty = () => {
         }
     }
     const [existingSociety, setExistingSociety] = useState([]);
+    function propertyHelper(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.projectid] = {
+            buildername : item.buildername,
+            projectname : item.projectname
+          }
+        });
+        return idNameObject;
+    }
     const getBuildersAndProjectsList = async () => {
         const data = {  };
         const response = await APIService.getBuildersAndProjectsList({...data,user_id : user.id});
         const res = await response.json();
         console.log(res.data);
-        setExistingSociety(res.data);
+        setExistingSociety(
+            propertyHelper(res.data)
+        );
     }
     const [propertyStatus, setPropertyStatus] = useState([]);
     const fetchPropertyStatus = async () => {
@@ -524,7 +536,7 @@ const ManageClientProperty = () => {
         
         
         setHyperLinkData()
-        fetchClientData();
+        
         fetchData();
         fetchStateData(5);
 
@@ -601,15 +613,7 @@ const ManageClientProperty = () => {
         setSelectedDialogue(4);
     }
     const [clientData, setClientData] = useState([]);
-    const fetchClientData = async () => {
-        const data = {
-            
-        }
-        const response = await APIService.getClientAdmin({...data,user_id : user.id})
-        const res = await response.json();
-        console.log(res)
-        setClientData(res.data);
-    }
+    
     // console.log(state.clientid)
     const initialValues = {
         "client_property": {
@@ -645,11 +649,7 @@ const ManageClientProperty = () => {
             "indexiicollected": false
         },
         "client_property_photos": [
-            {
-                "photolink": null,
-                "description": null,
-                "phototakenwhen": null
-            }
+            
         ],
         "client_property_owner": {
             "owner1name": null,
@@ -1688,7 +1688,7 @@ const ManageClientProperty = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" :""}</p>
                                 </div>
                             </div>
                         </div>
@@ -1897,6 +1897,7 @@ const ManageClientProperty = () => {
 
                             {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={clientNameText} setClientNameText={setClientNameText} clientid={state?.clientid} hyperlinkState={state}/>}
                             {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
+                            {console.log(allCountry)}
                             {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
 

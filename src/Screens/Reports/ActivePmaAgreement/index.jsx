@@ -28,10 +28,12 @@ import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext"
 
 const PmaInvoiceList = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
+  const {user} = useAuth();
   const {
     activePmaAgreement,
     status,
@@ -77,7 +79,7 @@ const PmaInvoiceList = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname",
         "propertydescription",
@@ -129,7 +131,7 @@ const PmaInvoiceList = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: [
           "clientname",
           "propertydescription",
@@ -175,7 +177,7 @@ const PmaInvoiceList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "clientname",
         "propertydescription",
@@ -213,15 +215,48 @@ const PmaInvoiceList = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadActivePmaAgreement(obj));
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["clientname",
+        "propertydescription",
+        "description",
+        "propertystatus",
+        "electricitybillingunit",
+        "propertytaxnumber",
+        "rentamount",
+        "startdate",
+        "enddate",
+        "lnlstartdate",
+        "lnlenddate",
+        "poastartdate",],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/activePmaAgreement",
+      colmap: {
+        clientname: "Client Name",
+        propertydescription: "Property Description",
+        description: "Care Taking Description",
+        propertystatus: "Property Status",
+        propertytaxnumber: "Property Tax Number",
+        electricitybillingunit: "Electricity Billing Unit",
+        rentamount: "Rent",
+        startdate: "PMA Start Date",
+        enddate: "PMA End Date",
+        lnlstartdate: "LnL Start Date",
+        lnlenddate: "LnL End Date",
+        poastartdate: "POA Start Date",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadActivePmaAgreement(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate) {
@@ -293,7 +328,8 @@ const PmaInvoiceList = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 11rem)"
         />
       </div>
       {toast && (

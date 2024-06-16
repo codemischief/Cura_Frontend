@@ -24,9 +24,11 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth(); 
   const {
     clientStatementAllEntitiesData,
     status,
@@ -53,7 +55,7 @@ const LobReceiptPayments = () => {
 
   const fetchLobData = async () => {
     const data = {
-      "user_id": 1234,
+      "user_id": user.id,
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": ["name"],
@@ -61,15 +63,15 @@ const LobReceiptPayments = () => {
       "pg_no": 0,
       "pg_size": 0
     };
-    const response = await APIService.getLob(data);
+    const response = await APIService.getLob({ ...data, user_id: user.id });
     const result = (await response.json());
     if (Array.isArray(result.data)) {
       setAllLOB(result.data);
     }
   }
   const fetchEntitiesData = async () => {
-    const data = { "user_id": 1234 };
-    const response = await APIService.getEntityAdmin(data)
+    const data = { "user_id": user.id };
+    const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
     const result = (await response.json());
     console.log(result.data);
 
@@ -104,7 +106,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     if (entity && lob) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         lobName: lob,
         entityName: entity,
         rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
@@ -145,7 +147,7 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (entity && lob) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         lobName: lob,
         entityName: entity,
         rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
@@ -184,7 +186,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       lobName: lob,
       entityName: entity,
       rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
@@ -220,6 +222,36 @@ const LobReceiptPayments = () => {
     //   dispatch(setStatus("success"));
     // });
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows:  ["id", "entity", "clientname", "type", "date", "amount", "orderdetails",
+        "lobname", "service", "fy", "mode"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/clientContactDetails",
+      colmap: {
+       "id": "ID",
+        "entity": "Entity",
+        "clientname": "Client Name",
+        "type": "Type",
+        "date": "date",
+        "amount": "Amount",
+        "orderdetails": "Order Details",
+        "lobname": "Lob Name",
+        "service": "Service",
+        "fy": "FY",
+        "mode": "Mode",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadClientStatementAllEntitiesDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (lob && entity) {
@@ -371,7 +403,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

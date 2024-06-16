@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../context/JwtContext";
 import {
   downloadDataXls,
   getData,
@@ -28,6 +29,7 @@ import Container from "../../../Components/common/Container";
 
 const ClientStatementByDate = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     Data,
     status,
@@ -74,7 +76,7 @@ const ClientStatementByDate = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate,
         enddate: endDate,
         rows: ["type",
@@ -126,7 +128,7 @@ const ClientStatementByDate = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate,
         enddate: endDate,
         rows: ["type",
@@ -173,7 +175,7 @@ const ClientStatementByDate = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       startdate: startDate,
       enddate: endDate,
       rows: ["type",
@@ -212,6 +214,49 @@ const ClientStatementByDate = () => {
     };
     dispatch(downloadDataXls(obj));
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: startDate,
+      enddate: endDate,
+      rows: ["type",
+        "id",
+        "clientname",
+        "date",
+        "amount",
+        "entity",
+        "tds",
+        "orderdetails",
+        "service",
+        "details",
+        "mode",
+        "lob_name"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/clientStatementByDate",
+      colmap: {
+        "type": "Type",
+        "id": "ID",
+        "clientname": "Client Name",
+        "date": "date",
+        "amount": "Amount",
+        "entity": "Entity",
+        "tds": "TDS",
+        "orderdetails": "Order Details",
+        "service": "Service",
+        "details": "Details",
+        "mode": "Mode",
+        "lob_name": "Lob Name",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -319,7 +364,8 @@ const ClientStatementByDate = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 15rem)"
         />
       </div>
       {toast && (

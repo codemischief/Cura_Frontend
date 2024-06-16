@@ -1,8 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import connectionDataColumn from "./Columns";
 import SimpleTableWithFooter from "../../../Components/common/table/CustomTableWithFooter";
@@ -24,9 +22,12 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth(); 
+
   const {
     entityReceiptPaymentsData,
     status,
@@ -49,8 +50,8 @@ const LobReceiptPayments = () => {
   const [allEntities, setAllEntites] = useState([]);
 
   const fetchEntitiesData = async () => {
-    const data = { "user_id": 1234 };
-    const response = await APIService.getEntityAdmin(data)
+    const data = { "user_id": user.id };
+    const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
     const result = (await response.json());
     console.log(result.data);
 
@@ -85,7 +86,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     if (startDate && endDate && entity) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
@@ -127,7 +128,7 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (startDate && endDate && entity) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
@@ -165,7 +166,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       entityName: entity,
@@ -186,6 +187,29 @@ const LobReceiptPayments = () => {
     };
     dispatch(downloadEntityReceiptPaymentsDataXls(obj))
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["entityname", "orderreceiptamount", "paymentamount", "diff"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      downloadType: "pdf",
+      routename: "/reports/entityReceiptPayments",
+      entityName: entity,
+      colmap: {
+       "entityname": "Entity",
+        "orderreceiptamount": "Receipt Amount",
+        "paymentamount": "Payment Amount",
+        "diff": "Difference"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(downloadEntityReceiptPaymentsDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -316,7 +340,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

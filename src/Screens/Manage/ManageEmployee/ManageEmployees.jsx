@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, CircularProgress , MenuItem } from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
@@ -38,12 +38,16 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
+import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageEmployees = () => {
     const { user } = useAuth()
     const menuRef = useRef();
     const navigate = useNavigate();
-    const { pathname } = useLocation()
+    const { pathname } = useLocation();
+    const canEdit = checkEditAccess();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -90,6 +94,20 @@ const ManageEmployees = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
+    const resetAllInputs = () => {
+        // toast.success('Filters Resetted!')
+
+        setEmployeeNameInput("")
+        setEmployeeIdInput("")
+        setPannoInput("")
+        setPhoneFilterInput("")
+        setEmailInput("")
+        setRoleInput("")
+        setDateOfJoiningInput("")
+        setLdowInput("")
+        setStatusInput("")
+        setIdInput("");
+    };
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchCountryData = async () => {
@@ -126,6 +144,16 @@ const ManageEmployees = () => {
             // }
         }
     }
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            name : item.name,
+            username : item.username
+          }
+        });
+        return idNameObject;
+    }
     const fetchUsersData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  user.id };
@@ -133,12 +161,9 @@ const ManageEmployees = () => {
         const response = await APIService.getUsers(data)
         const result = (await response.json());
 
-        console.log(result.data);
-        console.log('hey')
 
-        if (Array.isArray(result.data)) {
-            setAllUsername(result.data);
-        }
+            setAllUsername(convertToIdNameObject(result.data));
+        
     }
 
     const fetchRoleData = async () => {
@@ -1281,7 +1306,7 @@ const ManageEmployees = () => {
                             </div>
                         </div>
                         <div className="w-[10%] flex items-center">
-                            <div className='w-[65%] px-3 ml-[-1px]'>
+                            <div className='w-1/2 px-3 ml-[-1px]'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idInput} onChange={(e) => setIdInput(e.target.value)}
                                         onKeyDown={(event) => handleEnterToFilter(event, idInput,
@@ -1296,10 +1321,13 @@ const ManageEmployees = () => {
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
 
-                            <div className='w-[35%]  flex'>
-                                <div className='p-3'>
-
-                                </div>
+                            <div className='w-1/2 p-3  flex items-center'>
+                                <RefreshFilterButton
+                                    fetchData={fetchData}
+                                    resetAllInputs={resetAllInputs}
+                                    setFilterMapState={setFilterMapState}
+                                    filterMapping={filterMapping}
+                                />
                             </div>
                         </div>
                     </div>
@@ -1367,7 +1395,7 @@ const ManageEmployees = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='p-3'>
-                                    <p>Edit</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>
@@ -1549,11 +1577,11 @@ const ManageEmployees = () => {
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className='move cursor-move'>
 
-                                <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-base">Add New Employee</div>
                                     </div>
-                                    <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                    <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white absolute right-2">
                                         <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                                     </div>
                                 </div>
@@ -1595,7 +1623,39 @@ const ManageEmployees = () => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                            <UsernameDropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id" />
+                                        <ClientPropertySelectNative
+                        data={Object.keys(allUsername)}
+                        value={allUsername?.[formValues.userName]?.name ? allUsername?.[formValues.userName]?.name:null}
+                        placeholder="Select Username"
+                        isSticky={true}
+                        menuMaxHeight="18rem"
+                        noDataText="Select Username"
+                        headerText={{
+                            first : 'Name',
+                            second : 'Username'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {allUsername[item].name}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {allUsername[item].username}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            const temp = {...formValues}
+                            temp.userName = e.target.value 
+                            setFormValues(temp)
+                            
+                           }}
+                        />
+                                            {/* <UsernameDropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id" /> */}
                                             <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.userName}</div>
                                         </div>
                                         <div className="">

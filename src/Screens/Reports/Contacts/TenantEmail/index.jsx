@@ -7,6 +7,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../../context/JwtContext";
 import {
   downloadDataXls,
   getData,
@@ -28,7 +29,7 @@ import Container from "../../../../Components/common/Container";
 const TenantEmail = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
-
+  const {user} = useAuth();
   const {
     data,
     status,
@@ -75,7 +76,7 @@ const TenantEmail = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "fullname", "firstname", "lastname", "email1", "email2", "employername"
       ],
@@ -116,7 +117,7 @@ const TenantEmail = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: [
           "fullname", "firstname", "lastname", "email1", "email2", "employername"
         ],
@@ -153,7 +154,7 @@ const TenantEmail = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "fullname", "firstname", "lastname", "employername", "email1", "email2",
       ],
@@ -175,6 +176,32 @@ const TenantEmail = () => {
     };
     dispatch(downloadDataXls(obj))
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "fullname", "firstname", "lastname", "employername", "email1", "email2",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/tenantEmail",
+      colmap: {
+       "fullname": "Full Name",
+        "firstname": "First Name",
+        "lastname": "Last Name",
+        "employername": "Employer Name",
+        "email1": "Email 1",
+        "email2": "Email 2",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate) {
@@ -247,7 +274,8 @@ const TenantEmail = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

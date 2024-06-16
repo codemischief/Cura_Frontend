@@ -24,9 +24,11 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth(); 
   const {
     bankPaymentsReconciliation,
     status,
@@ -51,9 +53,9 @@ const LobReceiptPayments = () => {
 
   const fetchPaymentMode = async () => {
     const data = {
-      "user_id": 1234
+      "user_id": user.id
     }
-    const response = await APIService.getModesAdmin(data);
+    const response = await APIService.getModesAdmin({ ...data, user_id: user.id });
     const result = (await response.json());
     // console.log(result.data);
     setPaymentMode(result.data);
@@ -88,7 +90,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     if (startDate && endDate && bankName) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         bankName: bankName,
@@ -126,7 +128,7 @@ const LobReceiptPayments = () => {
   useEffect(() => {
     if (startDate && endDate && bankName) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         bankName: bankName,
@@ -164,7 +166,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       bankName: bankName,
@@ -185,15 +187,34 @@ const LobReceiptPayments = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadBankPaymentsReconciliation(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
+   
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      bankName: bankName,
+      rows: ["date", "bankst_dr", "contorderpayments", "order_payments", "contractual_payments",],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/bankPaymentsReconciliation",
+      colmap: {
+       "date": "Date",
+        "bankst_dr": "BankSt(DR)",
+        "contorderpayments": "Cont+Order Pay",
+        "order_payments": "Order pay",
+        "contractual_payments": "Cont Pay"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadBankPaymentsReconciliation(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate && endDate && bankName) {
@@ -316,6 +337,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (

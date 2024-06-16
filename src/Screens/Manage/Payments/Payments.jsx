@@ -17,6 +17,7 @@ import {
   Pagination,
   LinearProgress,
   CircularProgress,
+  MenuItem
 } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import * as XLSX from "xlsx";
@@ -43,12 +44,15 @@ import AddButton from "../../../Components/common/CustomButton.jsx";
 import EditButton from "../../../Components/common/buttons/EditButton.jsx";
 import DeleteButton from "../../../Components/common/buttons/deleteButton.jsx";
 import useAuth from "../../../context/JwtContext.jsx";
+import checkEditAccess from "../../../Components/common/checkRoleBase.js";
+import ClientPropertySelectNative from "../../../Components/common/select/ClientPropertySelectNative.jsx";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 const Payments = () => {
   const { user } = useAuth()
   const menuRef = useRef();
   const navigate = useNavigate();
-  const { pathname } = useLocation()
+  const { pathname } = useLocation();
+  const canEdit = checkEditAccess();
   const [totalItems, setTotalItems] = useState(0);
   const [currentPages, setCurrentPages] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
@@ -73,16 +77,26 @@ const Payments = () => {
     setCurrentPage(value);
     fetchPageData(value);
   };
+  function convertToIdNameObject(items) {
+    const idNameObject = {};
+    items.forEach((item) => {
+      idNameObject[item.id] = {
+        name : item.name,
+        username : item.username
+      }
+    });
+    return idNameObject;
+}
   const fetchUsersData = async () => {
     // setPageLoading(true);
     // const data = { "user_id":  user.id };
     const data = { user_id: user.id };
     const response = await APIService.getUsers(data);
     const result = await response.json();
-
-    if (Array.isArray(result.data)) {
-      setAllUsername(result.data);
-    }
+    setAllUsername(convertToIdNameObject(result.data))
+    
+      // setAllUsername(result.data);
+    
   };
   const fetchEntitiesData = async () => {
     // setPageLoading(true);
@@ -342,20 +356,9 @@ const Payments = () => {
   const [name2, setName2] = useState("");
   const handleAddPayment = async () => {
     console.log(formValues);
-
-    allUsername.map((item) => {
-      if (item.id == formValues.paymentto) {
-        console.log("here");
-        setName1((prev) => item.name);
-      }
-    });
-
-    allUsername.map((item) => {
-      if (item.id == formValues.paymentby) {
-        console.log("here");
-        setName2((prev) => item.name);
-      }
-    });
+    setName1(allUsername[formValues.paymentto].name)
+    setName2(allUsername[formValues.paymentby].name)
+    
 
     console.log(name1);
     console.log(name2);
@@ -1194,7 +1197,7 @@ const Payments = () => {
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
                             </button> */}
-              <AddButton onClick={handleOpen} sx={{ width: "320px" }} title="Add new contractual Payment" />
+              <AddButton onClick={handleOpen} sx={{ width: "320px" }} title="Add New Contractual Payment" />
             </div>
           </div>
         </div>
@@ -1646,7 +1649,7 @@ const Payments = () => {
                 </p>
               </div>
               <div className="w-1/2 p-4">
-                <p>Edit</p>
+                <p>{canEdit? "Edit": ""}</p>
               </div>
             </div>
           </div>
@@ -1826,13 +1829,13 @@ const Payments = () => {
         <>
           <Draggable handle="div.move">
             <div className="">
-              <div className="w-[1100px]  h-auto bg-white rounded-lg ">
+              <div className="w-[1100px]  h-auto bg-white rounded-lg relative">
                 <div className="move cursor-move">
                   <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                     <div className="mr-[410px] ml-[410px]">
                       <div className="text-base">New Contractual Payment</div>
                     </div>
-                    <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                    <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white absolute right-2">
                       <button onClick={handleClose}>
                         <img className="w-5 h-5" src={Cross} alt="cross" />
                       </button>
@@ -1875,7 +1878,40 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                        <PaymentDropDown
+
+                       <ClientPropertySelectNative
+                        data={Object.keys(allUsername)}
+                        value={allUsername?.[formValues.paymentto]?.name ? allUsername?.[formValues.paymentto]?.name:null}
+                        placeholder="Select Payment To"
+                        isSticky={true}
+                        menuMaxHeight="18rem"
+                        noDataText="Select Username"
+                        headerText={{
+                            first : 'Name',
+                            second : 'Username'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {allUsername[item].name}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {allUsername[item].username}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            const temp = {...formValues}
+                            temp.paymentto = e.target.value 
+                            setFormValues(temp)
+                            
+                           }}
+                        />
+                        {/* <PaymentDropDown
                           options={allUsername}
                           initialValue="Select Payment To"
                           leftLabel="Name"
@@ -1887,7 +1923,7 @@ const Payments = () => {
                           formValueName="paymentto"
                           value={formValues.paymentto}
                           idName="id"
-                        />
+                        /> */}
                         <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentto}
                         </div>
@@ -1918,8 +1954,40 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
+                         <ClientPropertySelectNative
+                        data={Object.keys(allUsername)}
+                        value={allUsername?.[formValues.paymentby]?.name ? allUsername?.[formValues.paymentby]?.name:null}
+                        placeholder="Select Payment By"
+                        isSticky={true}
+                        menuMaxHeight="18rem"
+                        noDataText="Select Username"
+                        headerText={{
+                            first : 'Name',
+                            second : 'Username'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {allUsername[item].name}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {allUsername[item].username}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            const temp = {...formValues}
+                            temp.paymentby = e.target.value 
+                            setFormValues(temp)
+                            
+                           }}
+                        />
 
-                        <PaymentDropDown
+                        {/* <PaymentDropDown
                           options={allUsername}
                           initialValue="Select Payment By"
                           leftLabel="Name"
@@ -1931,7 +1999,7 @@ const Payments = () => {
                           formValueName="paymentby"
                           value={formValues.paymentby}
                           idName="id"
-                        />
+                        /> */}
                         <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">
                           {formErrors.paymentby}
                         </div>

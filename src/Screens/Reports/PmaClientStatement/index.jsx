@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import useAuth from "./../../../context/JwtContext"
 import {
   downloadPmaClientStatement,
   getPmaClientStatement,
@@ -28,7 +29,7 @@ import Container from "../../../Components/common/Container";
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
-
+  const {user} = useAuth();
   const {
     pmaClientStatement,
     status,
@@ -77,7 +78,7 @@ const LobReceiptPayments = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["clientname", "date", "amount", "type", "orderdetails"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -115,7 +116,7 @@ const LobReceiptPayments = () => {
     } else {
 
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         rows: ["clientname", "date", "amount", "type", "orderdetails"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -145,7 +146,7 @@ const LobReceiptPayments = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["clientname", "date", "type", "orderdetails", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -163,24 +164,31 @@ const LobReceiptPayments = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadPmaClientStatement(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
 
-  const handleShow = () => {
-
-    dispatch(setInitialState())
-
-    setShowTable(true);
-
-
-  };
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["clientname", "date", "type", "orderdetails", "amount"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/pmaClientStatement",
+      colmap: {
+       "clientname": "Client Name",
+        "date": "Date",
+        "type": "Type",
+        "orderdetails": "Details",
+        "amount": "Amount"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadPmaClientStatement(obj, 'pdf'))
+  }
+  
   return (
     <Container>
 
@@ -225,7 +233,8 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (

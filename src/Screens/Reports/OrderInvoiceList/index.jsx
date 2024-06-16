@@ -1,9 +1,6 @@
-import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
+import { Button, Stack } from "@mui/material";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
-import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
@@ -22,11 +19,12 @@ import {
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
-import * as XLSX from "xlsx";
 import Container from "../../../Components/common/Container";
+import useAuth from "../../../context/JwtContext";
 
 const OrderInvoiceList = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     orderInvoiceData,
     status,
@@ -71,7 +69,7 @@ const OrderInvoiceList = () => {
   const handleRefresh = () => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -129,7 +127,7 @@ const OrderInvoiceList = () => {
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
-        user_id: 1234,
+        user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
@@ -179,7 +177,7 @@ const OrderInvoiceList = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [
@@ -226,15 +224,63 @@ const OrderInvoiceList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadInvoiceDataXls(obj)).then((response) => {
-      // const tableData = response.data;
-      // const worksheet = XLSX.utils.json_to_sheet(tableData);
-      // const workbook = XLSX.utils.book_new();
-      // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      // XLSX.writeFile(workbook, "OrderInvoiceList.xlsx");
-      // dispatch(setStatus("success"));
-    });
+    dispatch(downloadInvoiceDataXls(obj))
+    
+    
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      rows: [
+        "type",
+        "id",
+        "invoicedate",
+        "monthyear",
+        "fy",
+        "invoiceamount",
+        "entityname",
+        "mode",
+        "clientid",
+        "clientname",
+        "vendorname",
+        "orderid",
+        "orderdescription",
+        "serviceid",
+        "service",
+        "lobname",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/orderInvoiceList",
+      colmap: {
+       "type": "Type",
+        "id": "ID",
+        "invoicedate": "Invoice Date",
+        "monthyear": "Fiscal Month",
+        "fy": "Fiscal year",
+        "invoiceamount": "Amount",
+        "entityname": "Entity",
+        "mode": "Mode",
+        "clientid": "Client ID",
+        "clientname": "Client Name",
+        "vendorname": "Vendor Name",
+        "orderid": "Order ID",
+        "orderdescription": "Order Description",
+        "serviceid": "Service ID",
+        "service": "Service",
+        "lobname": "LOB Name"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadInvoiceDataXls(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -343,6 +389,8 @@ const OrderInvoiceList = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+             downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
       </Stack>

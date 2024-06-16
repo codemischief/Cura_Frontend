@@ -40,6 +40,7 @@ import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import { userId } from '../../../utils/axios';
 import useAuth from '../../../context/JwtContext';
+import checkEditAccess from '../../../Components/common/checkRoleBase';
 const ManageOrder = () => {
     // we have the module here
     const datarows = [
@@ -62,6 +63,7 @@ const ManageOrder = () => {
     const navigate = useNavigate()
     const {user} = useAuth()
     const { state , pathname} = useLocation()
+    const canEdit = checkEditAccess();
     console.log(pathname)
     console.log(state)
     const [existingOrder, setExistingOrder] = useState([]);
@@ -348,8 +350,8 @@ const ManageOrder = () => {
                 "status": Number(formValues.order_info.status),
                 "service": Number(formValues.order_info.service),
                 "clientpropertyid": Number(formValues.order_info.clientpropertyid),
-                "vendorid": Number(formValues.order_info.vendorid),
-                "assignedtooffice": 1,
+                "vendorid": formValues.order_info.vendorid ? Number(formValues.order_info.vendorid) : null,
+                "assignedtooffice": 2,
                 "entityid": 1,
                 "tallyledgerid": Number(formValues.order_info.tallyledgerid)
             },
@@ -1273,7 +1275,7 @@ const ManageOrder = () => {
                                 <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[110px] p-4'>
-                                <p>Edit</p>
+                                <p>{canEdit ? "Edit" : ""}</p>
                             </div>
                         </div>
                         <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto bg-white'>

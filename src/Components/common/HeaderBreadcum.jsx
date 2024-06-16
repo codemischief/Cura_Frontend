@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const HeaderBreadcrum = ({ heading, path , handleBack = () => {} }) => {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center space-x-3">
+    <div className="flex items-center space-x-3 mt-1">
       <button onClick={() => navigate(-1)}>
         <div className="rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center ">
 

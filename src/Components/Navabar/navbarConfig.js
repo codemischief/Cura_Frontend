@@ -32,6 +32,7 @@ export const navMenuConfig = [
           subheader: "Data Management",
           items: [
             { title: "Delete by ID", path: PATH_DASHBOARD.admin.deleteId },
+            { title: "Update Company Key", path: PATH_DASHBOARD.admin.updateCompanyKey},
           ],
         },
       ],
