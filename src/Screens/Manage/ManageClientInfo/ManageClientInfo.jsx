@@ -1507,32 +1507,38 @@ const ManageClientInfo = () => {
 
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
 
-
+                         {!pageLoading &&
+              existingClientInfo &&
+              existingClientInfo.length == 0 && (
+                <div className="h-10 border-gray-400 border-b-[1px] flex items-center">
+                  <h1 className="ml-10">No Records To Show</h1>
+                </div>
+              )}
                         {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingClientInfo && existingClientInfo.map((item, index) => {
                             return <div className='w-full h-12 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className="w-[85%] flex ">
+                                <div className="w-[85%] flex items-center">
                                     <div className='w-[3%] flex overflow-x-hidden'>
                                         <div className='p-3'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[13%]  flex '>
+                                    <div className='w-[13%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.clientname} </p>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex'>
+                                    <div className='w-[11%]  flex items-center'>
                                         <div className='p-3'>
                                             <p> {item.clienttypename}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex '>
+                                    <div className='w-[10%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.tenantofname} </p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex '>
+                                    <div className='w-[12%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.tenantofpropertyname}</p>
                                         </div>
