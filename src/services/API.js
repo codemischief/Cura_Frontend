@@ -1245,8 +1245,5 @@ export const APIService = {
   getMandalAdmin,
   deleteFromTable,
   getGroupsAdmin,
-<<<<<<< Updated upstream
   getCompanyKey
-=======
->>>>>>> Stashed changes
 };
