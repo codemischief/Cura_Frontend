@@ -107,18 +107,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
 
     // client name field
     const [options, setOptions] = useState([]);
-    const fetchClientData = async () => {
-        const data = {
-
-        }
-        const response = await APIService.getClientAdmin({...data,user_id : user.id})
-        const res = await response.json();
-        console.log(res.data)
-        setOptions(res.data.map(x => ({
-            value: x[0],
-            label: x[1]
-        })))
-    }
+    
     console.log(clientName)
     const [selectedOption, setSelectedOption] = useState({
         label: clientName,
