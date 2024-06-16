@@ -257,7 +257,7 @@ const ManageBankStatement = () => {
             "amount": Number(formValues.amount),
             "particulars": formValues.particulars,
             "crdr": formValues.crdr,
-            "vendorid": Number(formValues.vendor),
+            "vendorid": formValues.vendor ,
             'howreceived' : formValues.how
             // "createdby": userId || user.id
         }
