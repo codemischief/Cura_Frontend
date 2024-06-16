@@ -308,7 +308,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientproperty/llagreement/:clientname"
                 element={<ManageLLAgreement key="hyperlinked"/>}
-                element={<ManageVendorPayment />}
+               
               />
               <Route
                 path="/manage/manageclientinvoice/:orderid"
@@ -319,7 +319,7 @@ const App = () => {
                 element={<ManageOrderReceipt />}
               />
               <Route
-                path="/manage/manageclientinfo/orders/showall/:orderid"
+                path="/manage /manageclientinfo/orders/showall/:orderid"
                 element={<ShowAllOdersInformation />}
               />
               <Route

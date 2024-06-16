@@ -61,8 +61,8 @@ const ChangePassword = () => {
     handleBlur,
   } = formik;
   return (
-    <AuthLayout>
-      <div className="w-3/5 h-[712px] bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
+  
+      <div className="h-full mt-20 bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
         {!backToLogin ? (
           <div className="w-[400px] mt-[35px]">
             <div className="text-center text-[21px] mb-[150px]">
@@ -229,7 +229,7 @@ const ChangePassword = () => {
           </div>
         )}
       </div>
-    </AuthLayout>
+   
   );
 };
 
