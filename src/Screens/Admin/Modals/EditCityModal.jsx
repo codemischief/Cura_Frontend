@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
+import useAuth from '../../../context/JwtContext';
 const EditCityModal = ({ handleClose, initialCountry, initialData, openSuccess }) => {
+    const { user } = useAuth()
     console.log(initialData)
     // const [allCountry,setAllCountry] = useState(initialCountry) 
     const initialValues = {
@@ -67,6 +69,7 @@ const EditCityModal = ({ handleClose, initialCountry, initialData, openSuccess }
     const handleEdit = async () => {
         if (!validate()) return;
         const data = {
+            "user_id" : user.id,
             "city": formValues.cityName,
             "state": formValues.state,
             "countryid": formValues.country,

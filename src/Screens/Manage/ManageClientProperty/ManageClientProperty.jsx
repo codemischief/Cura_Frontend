@@ -269,12 +269,24 @@ const ManageClientProperty = () => {
         }
     }
     const [existingSociety, setExistingSociety] = useState([]);
+    function propertyHelper(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.projectid] = {
+            buildername : item.buildername,
+            projectname : item.projectname
+          }
+        });
+        return idNameObject;
+    }
     const getBuildersAndProjectsList = async () => {
         const data = {  };
         const response = await APIService.getBuildersAndProjectsList({...data,user_id : user.id});
         const res = await response.json();
         console.log(res.data);
-        setExistingSociety(res.data);
+        setExistingSociety(
+            propertyHelper(res.data)
+        );
     }
     const [propertyStatus, setPropertyStatus] = useState([]);
     const fetchPropertyStatus = async () => {
@@ -524,7 +536,7 @@ const ManageClientProperty = () => {
         
         
         setHyperLinkData()
-        fetchClientData();
+        
         fetchData();
         fetchStateData(5);
 
@@ -601,15 +613,7 @@ const ManageClientProperty = () => {
         setSelectedDialogue(4);
     }
     const [clientData, setClientData] = useState([]);
-    const fetchClientData = async () => {
-        const data = {
-            
-        }
-        const response = await APIService.getClientAdmin({...data,user_id : user.id})
-        const res = await response.json();
-        console.log(res)
-        setClientData(res.data);
-    }
+    
     // console.log(state.clientid)
     const initialValues = {
         "client_property": {

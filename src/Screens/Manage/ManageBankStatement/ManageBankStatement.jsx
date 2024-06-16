@@ -1,4 +1,4 @@
-import { CircularProgress, Modal, Pagination , LinearProgress, Backdrop} from "@mui/material";
+import { CircularProgress, Modal, Pagination , LinearProgress, Backdrop , MenuItem} from "@mui/material";
 import React, { useEffect, useState, useRef } from 'react';
 import { Link , useLocation, useNavigate} from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
@@ -37,6 +37,7 @@ import EditButton from "../../../Components/common/buttons/EditButton";
 import useAuth from "../../../context/JwtContext";
 import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
+import ClientPropertySelectNative from "../../../Components/common/select/ClientPropertySelectNative";
 const ManageBankStatement = () => {
     // we have the module here
     const { user } = useAuth()
@@ -91,6 +92,16 @@ const ManageBankStatement = () => {
     const [isSearchOn, setIsSearchOn] = useState(false);
 
     // const [selectedBuilder,setSelectedBuilder] = useState();
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            name : item.name,
+            username : item.username
+          }
+        });
+        return idNameObject;
+    }
     const [existingUsers,setExistingUsers] = useState([])
     const fetchUsersData = async () => {
         const data = {
@@ -98,7 +109,8 @@ const ManageBankStatement = () => {
         }
         const response = await APIService.getUsers(data)
         const res = await response.json()
-        setExistingUsers((prev) => res.data)
+        
+        setExistingUsers(convertToIdNameObject(res.data))
         
     }
    
@@ -1777,7 +1789,39 @@ const ManageBankStatement = () => {
                                                         ))}
                                                     </select> */}
                                                     
-                                                    <DropDown options={existingUsers} initialValue="Select Received By" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={(e) => handleCrChange(e)} formValueName="receivedBy" value={crFormValues.receivedBy} idName="id"/>
+                                                    <ClientPropertySelectNative
+                        data={Object.keys(existingUsers)}
+                        value={existingUsers?.[crFormValues.receivedBy]?.name ? existingUsers?.[crFormValues.receivedBy]?.name:null}
+                        placeholder="Select Payment By"
+                        isSticky={true}
+                        menuMaxHeight="18rem"
+                        noDataText="Select Username"
+                        headerText={{
+                            first : 'Name',
+                            second : 'Username'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {existingUsers[item].name}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {existingUsers[item].username}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            const temp = {...crFormValues}
+                            temp.receivedBy = e.target.value 
+                            setCrFormValues(temp)
+                            
+                           }}
+                        />
+                                                    {/* <DropDown options={existingUsers} initialValue="Select Received By" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={(e) => handleCrChange(e)} formValueName="receivedBy" value={crFormValues.receivedBy} idName="id"/> */}
                                                     <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.receivedBy}</div>
                                                 </div>
                                                 <div className="">
