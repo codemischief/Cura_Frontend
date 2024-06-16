@@ -311,7 +311,10 @@ export default function MenuDesktop({ isOffset, isHome }) {
   const handleClose = () => {
     setOpen(null);
   };
-
+  let filteredMenu =
+    user?.role_id === 1
+      ? navMenuConfig
+      : navMenuConfig?.filter((item) => item.title !== "Admin");
   return (
     <Stack
       width={"fit-content"}
@@ -321,7 +324,7 @@ export default function MenuDesktop({ isOffset, isHome }) {
       justifyContent={"center"}
       alignItems={"center"}
     >
-      {navMenuConfig?.map((link) => (
+      {filteredMenu?.map((link) => (
         <MenuDesktopItem
           key={link.title}
           item={link}
@@ -347,4 +350,3 @@ const isResourceAccessible = (modules, pathToCheck) => {
   if (pathToCheck?.includes("reports")) return pathToCheck;
   return modules[pathToCheck] && modules[pathToCheck]?.get ? pathToCheck : null;
 };
-
