@@ -486,7 +486,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                 value={clientPropertyData?.[formValues.clientProperty]?.propertyname ? clientPropertyData?.[formValues.clientProperty]?.propertyname:null}
                                                 placeholder="Select Client Property"
                                                 isSticky={true}
-                                                menuMaxHeight='20rem'
+                                                menuMaxHeight='18rem'
                                                 headerText={{
                                                     first : 'Property',
                                                     second : 'Builder'

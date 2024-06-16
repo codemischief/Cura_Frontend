@@ -312,7 +312,7 @@ export default function MenuDesktop({ isOffset, isHome }) {
     setOpen(null);
   };
   let filteredMenu =
-    user?.roleId === 1
+    user?.role_id === 1
       ? navMenuConfig
       : navMenuConfig?.filter((item) => item.title !== "Admin");
   return (

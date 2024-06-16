@@ -106,7 +106,7 @@ const SimpleTable = ({
               data?.map((rowData, rowIndex) => (
                 <tr
                   key={rowData.id}
-                  className="border-b-[1px] border-gray-400 h-[56px]"
+                  className="border-b-[1px] border-gray-400 h-[42px]"
                 >
                   {columns.map((column, colIndex) => (
                     <td

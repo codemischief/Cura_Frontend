@@ -533,6 +533,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                                value={clientPropertyData?.[formValues.clientProperty]?.propertyname ? clientPropertyData?.[formValues.clientProperty]?.propertyname:null}
                                                placeholder="Select Client Property"
                                                isSticky={true}
+                                               menuMaxHeight='18rem'
                                                headerText={{
                                                    first : 'Property',
                                                    second : 'Builder'

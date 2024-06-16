@@ -3,10 +3,10 @@ const styleConst = {
   //for custom Filter
   columnFlex: { p: 1, display: 'flex', flexDirection: 'column' },
   customFilterFCCommon: { m: 1, minWidth:20 },
-  cellStyleCommon: { wordBreak: 'break-word', padding: '4px', fontFamily: "Helvetica",
-  fontSize: '15px',
+  cellStyleCommon: { wordBreak: 'break-word', padding: '4px', fontFamily: "Open Sans",
+  fontSize: '13px',
   fontStyle: 'normal',
-  fontWeight: 500,
+  fontWeight: 400,
   lineHeight: '150%'
   ,}
 }

@@ -48,6 +48,7 @@ export const pmaSlice = createSlice({
       state.countPerPage = payload;
     },
     setInitialState: (state, { payload }) => {
+      (state.Data = []),
       (state.filter = []),
         (state.status = ""),
         (state.filter = []),

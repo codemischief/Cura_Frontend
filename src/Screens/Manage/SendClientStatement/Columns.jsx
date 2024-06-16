@@ -15,6 +15,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Sr No",
       cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5%" },
       sorting: false,
+      align : 'center',
       render: (index) => {
         return (
           <Stack

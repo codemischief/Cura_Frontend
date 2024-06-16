@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { Backdrop, CircularProgress, Typography, Modal , Button } from "@mui/material"
@@ -17,7 +17,7 @@ import useAuth from "../../../context/JwtContext"
 const UpdateCompanyKey = () => {
   const { user } = useAuth()
 //   let { state } = useLocation();
-  console.log(state)
+//   console.log(state)
   const navigate = useNavigate(-1)
   const [pageLoading, setPageLoading] = useState(false)
   const [id, setId] = useState("")
@@ -52,6 +52,16 @@ const UpdateCompanyKey = () => {
     // we do the hard delete here
     
   }
+  const fetchCompanyKey = async () => {
+     const d = {"user_id" : user.id}
+     const response = await APIService.getCompanyKey(d)
+     const res = await response.json()
+     console.log(res)
+     setId(res.data.companykey)
+  } 
+  useEffect(() => {
+    fetchCompanyKey()
+  },[])
   return (
     <div className='font-medium'>
       {/* {showCancelModel && <CancelModel isOpen={showCancelModel} message="No ID Found." />}
@@ -86,7 +96,7 @@ const UpdateCompanyKey = () => {
         <div className="w-full h-40 bg-[#F5F5F5] rounded-lg p-10 flex items-center ">
           <div className="flex space-x-4 items-center">
             <div className="flex flex-col justify-center text-[#505050]">
-              <label>Enter New Key </label>
+              <label>Enter Key </label>
               <div className="flex space-x-10 items-center ">
 
                 <input className="h-[30px] p-2 font-normal" value={id} onChange={(e) => setId(e.target.value)} type="number"  />
@@ -113,7 +123,7 @@ const UpdateCompanyKey = () => {
                 onClick={handleCheck}
                 disabled={!(id)}
               >
-                Delete
+                Update
               </Button>
 
               </div>
