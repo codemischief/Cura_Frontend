@@ -126,8 +126,8 @@ import ClientPhoneNo from "./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx
 import OwnerPhoneNo from "./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx";
 import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation/index.jsx";
 import AgedOrders from "./Screens/Reports/AgedOrders/index.jsx";
-import { v4 as uuidv4 } from "uuid";
 import UpdateCompanyKey from "./Screens/Admin/UpdateCompanyKey/index.jsx";
+import ChangePassword from "./Screens/Login/ChangePassword.jsx";
 const App = () => {
   const { isInitialized } = useAuth();
   const ROLES = {
@@ -157,7 +157,8 @@ const App = () => {
                 </AuthGuard>
               }
             >
-              <Route path="/dashboard" element={<Dashboard key={uuidv4()}/>} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/changepassword" element={<ChangePassword />} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
               <Route path="/admin/updatecompanykey" element={<UpdateCompanyKey/>}/>
               
@@ -168,16 +169,16 @@ const App = () => {
               <Route path="/manage/managebuilder" element={<ManageBuilder />} />
               <Route
                 path="/manage/manageprojectinfo"
-                element={<ManageProjectInfo key={uuidv4()}/>}
+                element={<ManageProjectInfo />}
               />
               <Route
                 path="/manage/managebuilder/manageproject/:id"
-                element={<ManageProjectInfo key={uuidv4()}/>}
+                element={<ManageProjectInfo />}
               />
               <Route path="/admin/deleteById" element={<DeleteById />} />
               <Route
                 path="/admin/deleteById/:pagename"
-                element={<DeletePage key={uuidv4()}/>}
+                element={<DeletePage />}
               />
               <Route path="/manage/manageOrder" element={<ManageOrder />} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
@@ -268,44 +269,44 @@ const App = () => {
               />
               <Route
                 path="manage/managebuilder/projects/:buildername"
-                element={<ManageBuilderProject key={uuidv4()}/>}
+                element={<ManageBuilderProject />}
               />
               <Route
                 path="/manage/managebuilder/contacts/:buildername"
-                element={<ManageBuilderContact key={uuidv4()}/>}
+                element={<ManageBuilderContact />}
               />
 
               <Route
                 path="/manage/managevendorpayment/:orderid"
-                element={<ManageVendorPayment key={uuidv4()}/>}
+                element={<ManageVendorPayment />}
               />
               <Route
                 path="/manage/manageclientinvoice/:orderid"
-                element={<ManageClientInvoice key={uuidv4()}/>}
+                element={<ManageClientInvoice />}
               />
               <Route
                 path="/manage/manageorderreceipt/:orderid"
-                element={<ManageOrderReceipt key={uuidv4()}/>}
+                element={<ManageOrderReceipt />}
               />
               <Route
                 path="/manage/manageclientinfo/orders/showall/:orderid"
-                element={<ShowAllOdersInformation key={uuidv4()}/>}
+                element={<ShowAllOdersInformation />}
               />
               <Route
                 path="/manage/manageclientinfo/properties/:clientname"
-                element={<ManageClientProperty key={uuidv4()}/>}
+                element={<ManageClientProperty />}
               />
               <Route
                 path="/manage/manageclientinfo/orders/:clientname"
-                element={<ManageOrder key={uuidv4()}/>}
+                element={<ManageOrder />}
               />
               <Route
                 path="/manage/manageclientproperty/pmaagreement/:clientname"
-                element={<ManagePmaArgreement key={uuidv4()}/>}
+                element={<ManagePmaArgreement />}
               />
               <Route
                 path="/manage/manageclientproperty/llagreement/:clientname"
-                element={<ManageLLAgreement key={uuidv4()}/>}
+                element={<ManageLLAgreement />}
               />
               <Route path="/manage/pmaBilling" element={<PmaBilling />} />
               

@@ -74,6 +74,7 @@ const allowSpecialRoutes = (routes) => {
   if (routes[PATH_DASHBOARD.manage.manageBuilder.root]) {
     routes["/manage/managebuilder/manageproject/"] = defaultpermission;
     routes["/manage/manageBuilder/contacts/"] = defaultpermission;
+    routes["changepassword"] = defaultpermission
   }
   if (routes[PATH_DASHBOARD.manage.clientInfo]) {
     routes["/manage/manageclientinfo/properties/"] = defaultpermission;
