@@ -207,6 +207,44 @@ const OrderStaticsView = () => {
     dispatch(downloadOrderStatisticsReport(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "service",
+        "on_hold",
+        "estimate_given",
+        "cancelled",
+        "closed",
+        "billed",
+        "inquiry",
+        "completed",
+        "in_progress",
+      ],
+      lobName:intialFields.lob,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/orderStaticsView",
+      colmap: {
+        service: "Service",
+        on_hold: "On Hold",
+        estimate_given: "Estimate Given",
+        cancelled: "Cancelled",
+        closed: "Closed",
+        billed: "Billed",
+        inquiry: "Inquiry",
+        completed: "Completed",
+        in_progress: "In Progress",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadOrderStatisticsReport(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (intialFields.lob) {
       dispatch(setInitialState());
@@ -314,7 +352,8 @@ const OrderStaticsView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 18rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 16rem)"
         />
       </div>
     </Stack>

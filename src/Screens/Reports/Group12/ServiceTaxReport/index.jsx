@@ -18,10 +18,11 @@ import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container";
 
 const ServiceTaxReport = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     serviceTaxReportData,
     status,
@@ -56,7 +57,7 @@ const ServiceTaxReport = () => {
     let obj = {
       user_id: user.id,
       rows: [
-        "clientname","servicetype","service","orderdescription","amount","paymentmodename","recddate","monthyear","fy"
+        "clientname", "servicetype", "service", "orderdescription", "amount", "paymentmodename", "recddate", "monthyear", "fy"
       ],
       sort_by: undefined,
       filters: formatedFilterData(filter),
@@ -98,7 +99,7 @@ const ServiceTaxReport = () => {
       let obj = {
         user_id: user.id,
         rows: [
-          "clientname","servicetype","service","orderdescription","amount","paymentmodename","recddate","monthyear","fy"
+          "clientname", "servicetype", "service", "orderdescription", "amount", "paymentmodename", "recddate", "monthyear", "fy"
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -130,7 +131,7 @@ const ServiceTaxReport = () => {
     let obj = {
       user_id: user.id,
       rows: [
-        "clientname","servicetype","service","orderdescription","amount","paymentmodename","recddate","monthyear","fy"
+        "clientname", "servicetype", "service", "orderdescription", "amount", "paymentmodename", "recddate", "monthyear", "fy"
       ],
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -140,13 +141,13 @@ const ServiceTaxReport = () => {
       pg_size: 0,
       colmap: {
         clientname: "Client Name",
-        servicetype:"Service Type",
-        service:"Service",
+        servicetype: "Service Type",
+        service: "Service",
         orderdescription: "Order Description",
         amount: "Amount",
         paymentmodename: "Payment Mode",
         recddate: "Received Date",
-        monthyear:"Month Year",
+        monthyear: "Month Year",
         fy: "Fincal Year",
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -154,8 +155,38 @@ const ServiceTaxReport = () => {
     dispatch(downloadServiceTaxReportData(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "clientname", "servicetype", "service", "orderdescription", "amount", "paymentmodename", "recddate", "monthyear", "fy"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/serviceTaxReport",
+      colmap: {
+        clientname: "Client Name",
+        servicetype: "Service Type",
+        service: "Service",
+        orderdescription: "Order Description",
+        amount: "Amount",
+        paymentmodename: "Payment Mode",
+        recddate: "Received Date",
+        monthyear: "Month Year",
+        fy: "Fincal Year",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadServiceTaxReportData(obj, 'pdf'))
+  }
+
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -193,10 +224,12 @@ const ServiceTaxReport = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+
+    </Container>
   );
 };
 

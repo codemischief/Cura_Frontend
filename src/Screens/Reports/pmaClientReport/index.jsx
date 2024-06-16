@@ -192,15 +192,36 @@ const PmaClientReport = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadPmaClientReport(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "clientid",
+        "fullname",
+        "email1",
+        "email2",
+        "email"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/pmaInvoiceList",
+      colmap: {
+        "clientid": "Client ID",
+        "fullname": "Client Name",
+        "email1": "Email1",
+        "email2": "Email2",
+        "email": "Client Portal Online Mail ID's"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadPmaClientReport(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate) {
@@ -273,6 +294,7 @@ const PmaClientReport = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             height="calc(100vh - 11rem)"
           />
         </div>

@@ -199,7 +199,6 @@ const LobReceiptPayments = () => {
   };
 
   const downloadPdf = () => {
-    console.log("start")
     let obj = {
       user_id: user.id,
       rows: ["lobname", "service", "orderreceiptamount", "paymentamount", "diff"],

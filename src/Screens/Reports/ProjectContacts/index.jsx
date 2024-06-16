@@ -181,15 +181,37 @@ const PmaInvoiceList = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadProjectContacts(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["buildername", "projectname", "city", "suburb", "contactname", "phone",
+        "email", "effectivedate", "role", "tenureenddate", "details"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/projectContact",
+      colmap: {
+        "buildername": "Builder Name",
+        "projectname": "Project Name",
+        "city": "City",
+        "suburb": "Suburb",
+        "contactname": "Contact Name",
+        "phone": "Contact phone",
+        "email": "Email ID",
+        "effectivedate": "Effective Date",
+        "role": "Role",
+        "tenureenddate": "Tenure End Date",
+        "details": "Details",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadProjectContacts(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (startDate) {
@@ -262,6 +284,7 @@ const PmaInvoiceList = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             height="calc(100vh - 11rem)"
           />
         </div>

@@ -88,7 +88,7 @@ export const getVendorPaymentPeriodView = (payloadObj) => async (dispatch) => {
   }
 };
 
-export const downloadVendorPaymentPeriodReport = (payloadObj) => async (
+export const downloadVendorPaymentPeriodReport = (payloadObj ,type) => async (
   dispatch
 ) => {
   try {
@@ -99,7 +99,7 @@ export const downloadVendorPaymentPeriodReport = (payloadObj) => async (
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -111,7 +111,7 @@ export const downloadVendorPaymentPeriodReport = (payloadObj) => async (
   }
 };
 
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -126,7 +126,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "reportVendorPaymentSummary.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "reportVendorPaymentSummary.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "reportVendorPaymentSummary.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }

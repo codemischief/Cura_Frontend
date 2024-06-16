@@ -180,6 +180,45 @@ const ActiveLLAgreementView = () => {
     dispatch(downloadActiveLLAgreementReport(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "clientname",
+        "propertydescription",
+        "startdate",
+        "actualenddate",
+        "status",
+        "startdatemonthyear",
+        "enddatemonthyear",
+        "orderstatus",
+        "depositamount",
+        "rentamount",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/activellagreement",
+      colmap: {
+        clientname: "Client Name",
+        propertydescription: "Property Description",
+        startdate: "Start Date",
+        actualenddate: "End Date",
+        status: "Status",
+        startdatemonthyear: "Start Month-Year",
+        enddatemonthyear: "End Month-Year",
+        orderstatus: "Order Status",
+        depositamount: "Deposit Amount",
+        rentamount: "Rent Amount",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadActiveLLAgreementReport(obj, 'pdf'))
+  }
+
   return (
     <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
       <div className="flex flex-col px-4">
@@ -226,6 +265,7 @@ const ActiveLLAgreementView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
+          downloadPdf={downloadPdf}
           height="calc(100vh - 12rem)"
         />
       </div>

@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
+import Container from "../../../../Components/common/Container";
 import {
   downloadVendorPaymentPeriodReport,
   getVendorPaymentPeriodView,
@@ -25,7 +26,7 @@ import useAuth from "../../../../context/JwtContext";
 
 const VendorPaymentPeriodView = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth(); 
+  const { user } = useAuth();
   const {
     vendorPaymentPeriodData,
     status,
@@ -36,7 +37,7 @@ const VendorPaymentPeriodView = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.vendorPaymentPeriod);
- 
+
   const [showTable, setShowTable] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [vendorData, setVendor] = useState([]);
@@ -72,15 +73,15 @@ const VendorPaymentPeriodView = () => {
   const handleRefresh = () => {
     if (
       intialFields.start_date &&
-      intialFields.end_date 
+      intialFields.end_date
     ) {
       let obj = {
         user_id: user.id,
         rows: [
-          "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
+          "vendorname", "mode_of_payment", "registered", "vattinno", "panno", "gstservicetaxno", "amount", "tds", "servicetaxamount"
         ],
-      
-        
+
+
         startdate: intialFields.start_date,
         enddate: intialFields.end_date,
         sort_by: undefined,
@@ -120,10 +121,10 @@ const VendorPaymentPeriodView = () => {
       let obj = {
         user_id: user.id,
         rows: [
-          "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
+          "vendorname", "mode_of_payment", "registered", "vattinno", "panno", "gstservicetaxno", "amount", "tds", "servicetaxamount"
         ],
-       
-        
+
+
         startdate: intialFields.start_date,
         enddate: intialFields.end_date,
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -144,9 +145,9 @@ const VendorPaymentPeriodView = () => {
     sorting.sort_by,
   ]);
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(setInitialState());
-  },[])
+  }, [])
   const handleSortingChange = (accessor) => {
     const sortOrder =
       accessor === sorting.sort_by && sorting.sort_order === "asc"
@@ -159,9 +160,9 @@ const VendorPaymentPeriodView = () => {
     let obj = {
       user_id: user.id,
       rows: [
-        "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
+        "vendorname", "mode_of_payment", "registered", "vattinno", "panno", "gstservicetaxno", "amount", "tds", "servicetaxamount"
       ],
-     
+
       startdate: intialFields.start_date,
       downloadType: "excel",
       enddate: intialFields.end_date,
@@ -175,17 +176,48 @@ const VendorPaymentPeriodView = () => {
         mode_of_payment: "Mode of Payment",
         registered: "Registered",
         vattinno: "VAT Tin No",
-        panno:"PAN No",
-        gstservicetaxno:"Service Tax No.",
-        amount:"Total Payment",
-        tds :"Total TDS",
-        servicetaxamount:"Total Service Tax"
-        
+        panno: "PAN No",
+        gstservicetaxno: "Service Tax No.",
+        amount: "Total Payment",
+        tds: "Total TDS",
+        servicetaxamount: "Total Service Tax"
+
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadVendorPaymentPeriodReport(obj));
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: intialFields.start_date,
+      enddate: intialFields.end_date,
+      rows: [
+        "vendorname", "mode_of_payment", "registered", "vattinno", "panno", "gstservicetaxno", "amount", "tds", "servicetaxamount"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/vendorpaymentsummary",
+      colmap: {
+        vendorname: "Vendor Name",
+        mode_of_payment: "Mode of Payment",
+        registered: "Registered",
+        vattinno: "VAT Tin No",
+        panno: "PAN No",
+        gstservicetaxno: "Service Tax No.",
+        amount: "Total Payment",
+        tds: "Total TDS",
+        servicetaxamount: "Total Service Tax"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadVendorPaymentPeriodReport(obj, 'pdf'))
+  }
 
   const handleShow = () => {
     if (intialFields.start_date && intialFields.end_date) {
@@ -201,7 +233,8 @@ const VendorPaymentPeriodView = () => {
   };
 
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -240,8 +273,8 @@ const VendorPaymentPeriodView = () => {
             alignItems={"center"}
             gap={"24px"}
           >
-           
-            
+
+
             <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select Start Date"}
@@ -279,9 +312,9 @@ const VendorPaymentPeriodView = () => {
               }}
               disabled={
                 !intialFields.start_date ||
-                !intialFields.end_date 
-               
-                
+                !intialFields.end_date
+
+
               }
             >
               Show
@@ -302,10 +335,11 @@ const VendorPaymentPeriodView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 18rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 15rem)"
         />
       </div>
-    </Stack>
+    </Container>
   );
 };
 
