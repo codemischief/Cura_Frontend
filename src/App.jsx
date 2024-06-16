@@ -127,6 +127,7 @@ import OwnerPhoneNo from "./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx";
 import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation/index.jsx";
 import AgedOrders from "./Screens/Reports/AgedOrders/index.jsx";
 import { v4 as uuidv4 } from "uuid";
+import UpdateCompanyKey from "./Screens/Admin/UpdateCompanyKey/index.jsx";
 const App = () => {
   const { isInitialized } = useAuth();
   const ROLES = {
@@ -158,6 +159,8 @@ const App = () => {
             >
               <Route path="/dashboard" element={<Dashboard key={uuidv4()}/>} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
+              <Route path="/admin/updatecompanykey" element={<UpdateCompanyKey/>}/>
+              
               <Route
                 path="/admin/manageemployees"
                 element={<ManageEmployees />}

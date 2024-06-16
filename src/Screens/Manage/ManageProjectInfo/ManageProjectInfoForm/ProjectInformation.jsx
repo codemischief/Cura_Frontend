@@ -358,7 +358,7 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                             value={formValues.project_info.builderid}
                             onChange={handleProjectInfoChange}
                         >
-                            <option value="none" >Select Builder Name</option>
+                            <option value="none" hidden>Select Builder Name</option>
                             {builderNameData.map((item) => (
                                 <option key={item.id} value={item.id} >
                                     {item.buildername}

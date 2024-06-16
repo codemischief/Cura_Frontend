@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Cross from "../../../assets/cross.png"
-import { CircularProgress, Modal } from '@mui/material'
+import { CircularProgress, Modal , MenuItem} from '@mui/material'
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative'
 import useAuth from '../../../context/JwtContext'
+import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative'
 const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => {
     const {user} = useAuth();
     console.log(currPma)
@@ -174,6 +176,16 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
     }
     const [clientPropertyData, setClientPropertyData] = useState([]);
     const [propertyText, setPropertyText] = useState("Select Client Property");
+    function clientHelper(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            buildername : item.buildername,
+            propertyname : item.propertyname
+          }
+        });
+        return idNameObject;
+    }
     const getClientPropertyByClientId = async (id) => {
         const data = {
             "client_id": id
@@ -182,10 +194,17 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
         const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res)
-        setClientPropertyData(res.data)
+        setClientPropertyData(clientHelper(res.data))
     }
     const [orders, setOrders] = useState([]);
     const [orderText, setOrderText] = useState("Select Order");
+    function orderHelper(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = item.ordername;
+        });
+        return idNameObject;
+    }
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
@@ -194,7 +213,8 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
-        setOrders(res.data)
+        setOrders(orderHelper(res.data))
+        // setOrders(res.data)
     }
 
     const [selectedOption, setSelectedOption] = useState({
@@ -301,22 +321,34 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                         control: (provided, state) => ({
                                                             ...provided,
                                                             minHeight: 23,
-                                                            lineHeight: '0.8',
-                                                            height: 4,
+                                                            // lineHeight: '0.8',
+                                                            height: '20px',
                                                             width: 230,
-                                                            fontSize: 10,
+                                                            fontSize: 12,
                                                             // padding: '1px'
+                                                            borderRadius : '2px'
                                                         }),
-                                                        // indicatorSeparator: (provided, state) => ({
-                                                        //   ...provided,
-                                                        //   lineHeight : '0.5',
-                                                        //   height : 2,
-                                                        //   fontSize : 12 // hide the indicator separator
-                                                        // }),
+                                                        indicatorSeparator: (provided, state) => ({
+                                                          display : 'none'
+                                                        }),
                                                         dropdownIndicator: (provided, state) => ({
                                                             ...provided,
-                                                            padding: '1px', // adjust padding for the dropdown indicator
+                                                            padding: '1px',
+                                                            paddingRight : '2px', // Adjust padding for the dropdown indicator
+                                                            width: 15, // Adjust width to make it smaller
+                                                            height: 15, // Adjust height to make it smaller
+                                                            display: 'flex', // Use flex to center the icon
+                                                            alignItems: 'center', // Center vertically
+                                                            justifyContent: 'center'
+                                                             // adjust padding for the dropdown indicator
                                                         }),
+                                                        input: (provided, state) => ({
+                                                            ...provided,
+                                                            margin: 0, // Remove any default margin
+                                                            padding: 0, // Remove any default padding
+                                                            fontSize: 12, // Match the font size
+                                                            height: 'auto', // Adjust input height
+                                                          }),
                                                         // options: (provided, state) => ({
                                                         //     ...provided,
                                                         //     fontSize: 10// adjust padding for the dropdown indicator
@@ -325,7 +357,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                             ...provided,
                                                             padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
                                                             margin: 0, // Ensure no extra margin
-                                                            fontSize: 10 // Adjust font size of individual options
+                                                            fontSize: 12 // Adjust font size of individual options
                                                         }),
                                                         menu: (provided, state) => ({
                                                             ...provided,
@@ -335,7 +367,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                         menuList: (provided, state) => ({
                                                             ...provided,
                                                             padding: 0, // Adjust padding of the menu list
-                                                            fontSize: 10,
+                                                            fontSize: 12,
                                                             maxHeight: 150 // Adjust font size of the menu list
                                                         }),
                                                         
@@ -357,7 +389,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                 <div className="text-[13px]">
                                                     Order <label className="text-red-500">*</label>
                                                 </div>
-                                                <select
+                                                {/* <select
                                                 className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="order"
                                                 value={formValues.order}
@@ -369,7 +401,36 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                         {item.ordername}
                                                     </option>
                                                 ))}
-                                            </select>
+                                            </select> */}
+                                               <OrderCustomSelectNative
+                                           data={Object.keys(orders)}
+                                           value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
+                                           placeholder="Select Orders"
+                                           isSticky={true}
+                                           headerText={{
+                                            first : 'Order Description',
+                                            second : 'ID',
+                                          }}
+                                          renderData={(item) => {
+                                            return (
+                                              <MenuItem value={item} key={item} sx={{ width : '224px', gap : '5px', fontSize : '12px'}}>
+                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                   {orders[item]}
+                                                </p>
+                                                <p className='w-[20%]'>
+                                                    {item}
+                                                </p>
+                                                
+                                               
+                                              </MenuItem>
+                                            );
+                                          }}
+                                          onChange={(e) => {
+                                            setFormValues({ ...formValues, order: e.target.value })
+                                           }}
+                                           
+                                        
+                                        />
                                                 {/* <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div> */}
                                             </div>
@@ -379,7 +440,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.actualEndDate}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[13px]">Reason for Early Termination if Applicable </div>
+                                                <div className="text-[13px]">Reason for Early Termination <span className='text-[10px]'>(if Applicable)</span> </div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="reason" value={formValues.reason} onChange={handleChange} />
 
                                             </div>
@@ -408,7 +469,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                 <div className="text-[13px]">
                                                     Client Property <label className="text-red-500">*</label>
                                                 </div>
-                                                <select
+                                                {/* <select
                                                 className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="clientProperty"
                                                 value={formValues.clientProperty}
@@ -419,7 +480,37 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                         {item.propertyname}
                                                     </option>
                                                 ))}
-                                            </select>
+                                            </select> */}
+                                            <ClientPropertySelectNative
+                                                data={Object.keys(clientPropertyData)}
+                                                value={clientPropertyData?.[formValues.clientProperty]?.propertyname ? clientPropertyData?.[formValues.clientProperty]?.propertyname:null}
+                                                placeholder="Select Client Property"
+                                                isSticky={true}
+                                                menuMaxHeight='20rem'
+                                                headerText={{
+                                                    first : 'Property',
+                                                    second : 'Builder'
+                                                }}
+                                                renderData={(item) => {
+                                                    return (
+                                                    <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                                        <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                        {clientPropertyData[item].propertyname}
+                                                        </p>
+                                                        <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                        {clientPropertyData[item].buildername}
+                                                        </p>
+                                                        
+                                                    
+                                                    </MenuItem>
+                                                    );
+                                                }}
+                                                onChange={(e) => {
+                                                    const temp = {...formValues}
+                                                    temp.clientProperty = e.target.value 
+                                                    setFormValues(temp)
+                                                }}
+                                                />
                                                 {/* <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div> */}
                                             </div>

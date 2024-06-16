@@ -11,6 +11,7 @@ const OrderCustomSelectNative = ({
   menuMaxHeight = "14rem",
   renderData,
   isSticky = false,
+  width = '224px',
   headerText = {
     first : 'ID',
     second : 'Order Description',
@@ -75,7 +76,7 @@ const OrderCustomSelectNative = ({
             fontWeight: 400,
             fontFamily: "Open Sans",
             lineHeight: "3em",
-            width:"224px",
+            width:`${width}`,
             height:'23px'
           },
           paddingTop: "0px",

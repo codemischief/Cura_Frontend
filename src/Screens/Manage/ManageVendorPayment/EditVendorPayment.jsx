@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { CircularProgress, Modal, useScrollTrigger } from '@mui/material'
+import { CircularProgress, Modal, useScrollTrigger, MenuItem, Tooltip } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import Draggable from 'react-draggable'
 import useAuth from '../../../context/JwtContext'
+import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative'
+import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative'
 const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, showSuccess, showCancel }) => {
     const {user} = useAuth()
     
@@ -96,7 +98,13 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
         console.log(res.data)
-        setOrders(res.data)
+        setOrders((prev) => {
+            const temp = {}
+             res.data.forEach((item) => {
+                temp[item.id] = item.ordername;
+              });
+            return temp
+        })
     }
     const [tempFormValues, setTempFormValues] = useState({})
     const getOrdersData = async (id) => {
@@ -304,13 +312,13 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                         <div className=" space-y-3 py-5">
                                             <div className="">
                                                 <div className="text-sm text-[#787878] mb-1">Cura Office </div>
-                                                <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                                <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value= {formValues.curaoffice} onChange={handleChange}>Pune</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px] text-[#787878]">
                                                     Client
                                                 </div>
-                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={selectedOption.label} onChange={handleChange} readOnly />
+                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={selectedOption.label} onChange={handleChange} readOnly />
                                                 {/* <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
@@ -351,7 +359,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                                     Mode <label className="text-red-500">*</label>
                                                 </div>
                                                 <select
-                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                    className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                                                     name="mode"
                                                     value={formValues.mode}
                                                     onChange={handleChange}
@@ -396,13 +404,43 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                         <div className=" space-y-3 py-5">
                                             <div className="">
                                                 <div className="text-sm text-[#787878]">Payment ID </div>
-                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={currPayment} readOnly />
+                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={currPayment} readOnly />
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px] text-[#787878]">
-                                                    Order
+                                                    Order <label className="text-red-500">*</label>
                                                 </div>
-                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.ordername} readOnly />
+                                                {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.ordername} readOnly /> */}
+                                                <OrderCustomSelectNative
+                                           data={Object.keys(orders)}
+                                           value={orders?.[formValues.orderid] ? orders?.[formValues.orderid]:null}
+                                           placeholder="Select Orders"
+                                           isSticky={true}
+                                           width={'230px'}
+                                           headerText={{
+                                            first : 'Order Description',
+                                            second : 'ID',
+                                          }}
+                                          renderData={(item) => {
+                                            return (
+                                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                   {orders[item]}
+                                                </p>
+                                                <p className='w-[20%]'>
+                                                    {item}
+                                                </p>
+                                                
+                                               
+                                              </MenuItem>
+                                            );
+                                          }}
+                                          onChange={(e) => {
+                                            setFormValues({ ...formValues, orderid: e.target.value })
+                                           }}
+                                           
+                                        
+                                        />
                                                 {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="orderid"
@@ -449,16 +487,48 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                                 </option>
                                             ))}
                                         </select> */}
-                                                <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
+                                        <ClientPropertySelectNative
+                        data={Object.keys(usersData)}
+                        value={usersData?.[formValues.paymentby]?.name ? usersData?.[formValues.paymentby]?.name:null}
+                        placeholder="Select Payment By"
+                        isSticky={true}
+                        menuMaxHeight="16rem"
+                        noDataText="Select Username"
+                        headerText={{
+                            first : 'Name',
+                            second : 'Username'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {usersData[item].name}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {usersData[item].username}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            const temp = {...formValues}
+                            temp.paymentby = e.target.value 
+                            setFormValues(temp)
+                            
+                           }}
+                        />
+                                                {/* <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" /> */}
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.paymentBy}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm text-[#787878]">Order Date </div>
-                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderdate} readOnly />
+                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderdate} readOnly />
                                             </div>
                                             <div className="">
                                                 <div className="text-sm text-[#787878]">Order Status </div>
-                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderstatus} readOnly />
+                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderstatus} readOnly />
                                             </div>
                                         </div>
                                     </div>

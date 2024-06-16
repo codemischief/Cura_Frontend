@@ -16,6 +16,7 @@ export const routeMapObj = Object.freeze({
 
   Employee: PATH_DASHBOARD.admin.manageEmployees,
   deletebyid: PATH_DASHBOARD.admin.deleteId,
+  changeCompanyKey : PATH_DASHBOARD.admin.updateCompanyKey,
   getLobEntityPayments: PATH_DASHBOARD.admin.lobReceiptPayments,
   EntityReceiptPayments: PATH_DASHBOARD.admin.entityReceiptPayment,
   LOBReceiptPayments: PATH_DASHBOARD.admin.lobReceiptPaymentsConsolidated,

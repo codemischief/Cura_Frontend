@@ -11,6 +11,9 @@ const ClientPropertySelectNative = ({
   menuMaxHeight = "9rem",
   renderData,
   isSticky = false,
+  width1 = '50%',
+  width2 = '50%',
+  noDataText = 'Select Client With Properties',
   headerText = {
     first : 'ID',
     second : 'Order Description',
@@ -84,11 +87,11 @@ const ClientPropertySelectNative = ({
         }}
         {...props}
       >
-        {isSticky && <MenuItem disabled style={{opacity:"1.2"}} sx={{ position: "sticky", top: 0, backgroundColor: "gray", zIndex: 99, color:"black",display:"flex", opacity : '0.5', gap : '45px' , fontSize : '12px'}}>
-          <p className="w-[85%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+        {isSticky && <MenuItem disabled style={{opacity:"1.2"}} sx={{ position: "sticky", top: 0, backgroundColor: "gray", zIndex: 99, color:"black",display:"flex", opacity : '0.5', fontSize : '12px'}}>
+          <p className={`w-[${width1}]`} style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
               {headerText.first}
           </p>
-          <p className='w-[50%]'>
+          <p className={`w-[${width2}]`}>
               {headerText.second}
           </p>
          {/* <span>{headerText.first}</span>
@@ -99,7 +102,7 @@ const ClientPropertySelectNative = ({
           <MenuItem value="" disabled style={{
             fontSize : '12px'
           }}>
-            Select Client With Orders
+            {noDataText}
           </MenuItem>
         )}
         {data?.length > 0 && data?.map((item) => renderData(item))}

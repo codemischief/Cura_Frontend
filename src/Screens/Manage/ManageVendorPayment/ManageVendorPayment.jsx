@@ -42,6 +42,7 @@ import useAuth from "../../../context/JwtContext";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import OrderCustomSelectNative from "../../../Components/common/select/OrderCustomSelectNative";
+import ClientPropertySelectNative from "../../../Components/common/select/ClientPropertySelectNative";
 
 const ManageVendorPayment = () => {
     const {user} = useAuth()
@@ -234,17 +235,27 @@ const ManageVendorPayment = () => {
     }
 
     const [usersData, setUsersData] = useState([]);
+    function helperUser(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            name : item.name,
+            username : item.username
+          }
+        });
+        return idNameObject;
+    }
     const fetchUsersData = async () => {
         const data = {
             "user_id": user.id
         }
         const response = await APIService.getUsers(data)
         const res = await response.json()
-        const existing = { ...formValues }
-        existing.receivedBy = res.data[0].id,
-            console.log(existing.receivedBy)
-        setFormValues(existing)
-        setUsersData(res.data)
+        // const existing = { ...formValues }
+        // existing.receivedBy = res.data[0].id,
+        //     console.log(existing.receivedBy)
+        // setFormValues(existing)
+        setUsersData(helperUser(res.data))
     }
 
     const [vendorData, setVendorData] = useState([])
@@ -1599,7 +1610,7 @@ const ManageVendorPayment = () => {
                                         <div className=" space-y-3 py-5">
                                             <div className="">
                                                 <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
-                                                <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                                <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px] mb-0.5">
@@ -1621,7 +1632,7 @@ const ManageVendorPayment = () => {
                                                             minHeight: 23,
                                                             // lineHeight: '0.8',
                                                             height: '20px',
-                                                            width: 224,
+                                                            width: 230,
                                                             fontSize: 12,
                                                             // padding: '1px'
                                                             borderRadius : '2px'
@@ -1659,7 +1670,7 @@ const ManageVendorPayment = () => {
                                                         }),
                                                         menu: (provided, state) => ({
                                                             ...provided,
-                                                            width: 224, // Adjust the width of the dropdown menu
+                                                            width: 230, // Adjust the width of the dropdown menu
                                                             zIndex: 9999 // Ensure the menu appears above other elements
                                                         }),
                                                         menuList: (provided, state) => ({
@@ -1678,7 +1689,7 @@ const ManageVendorPayment = () => {
                                                     Mode <label className="text-red-500">*</label>
                                                 </div>
                                                 <select
-                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                    className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                                                     name="mode"
                                                     value={formValues.mode}
                                                     onChange={handleChange}
@@ -1733,13 +1744,14 @@ const ManageVendorPayment = () => {
                                            value={orders?.[formValues.orderid] ? orders?.[formValues.orderid]:null}
                                            placeholder="Select Orders"
                                            isSticky={true}
+                                           width={'230px'}
                                            headerText={{
                                             first : 'Order Description',
                                             second : 'ID',
                                           }}
                                           renderData={(item) => {
                                             return (
-                                              <MenuItem value={item} key={item} sx={{ width : '224px', gap : '5px', fontSize : '12px'}}>
+                                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
                                                 <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
                                                    {orders[item]}
                                                 </p>
@@ -1796,7 +1808,39 @@ const ManageVendorPayment = () => {
                                                     ))}
                                                 </select> */}
                                                 {/* <OrderDropDown options={user} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
-                                                <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
+                                                <ClientPropertySelectNative
+                        data={Object.keys(usersData)}
+                        value={usersData?.[formValues.paymentby]?.name ? usersData?.[formValues.paymentby]?.name:null}
+                        placeholder="Select Payment By"
+                        isSticky={true}
+                        menuMaxHeight="16rem"
+                        noDataText="Select Username"
+                        headerText={{
+                            first : 'Name',
+                            second : 'Username'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {usersData[item].name}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {usersData[item].username}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            const temp = {...formValues}
+                            temp.paymentby = e.target.value 
+                            setFormValues(temp)
+                            
+                           }}
+                        />
+                                                {/* <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" /> */}
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.paymentby}</div>
                                             </div>
                                             <div className="">
