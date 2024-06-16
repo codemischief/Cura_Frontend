@@ -65,7 +65,7 @@ const ChangePassword = () => {
       <div className="h-full mt-20 bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
         {!backToLogin ? (
           <div className="w-[400px] mt-[35px]">
-            <div className="text-center text-[21px] mb-[150px]">
+            <div className="text-center text-[21px] mb-[50px]">
               Reset your password
             </div>
             <FormikProvider value={values}>

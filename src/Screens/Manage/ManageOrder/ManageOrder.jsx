@@ -350,7 +350,7 @@ const ManageOrder = () => {
                 "status": Number(formValues.order_info.status),
                 "service": Number(formValues.order_info.service),
                 "clientpropertyid": Number(formValues.order_info.clientpropertyid),
-                "vendorid": Number(formValues.order_info.vendorid),
+                "vendorid": formValues.order_info.vendorid ? Number(formValues.order_info.vendorid) : null,
                 "assignedtooffice": 2,
                 "entityid": 1,
                 "tallyledgerid": Number(formValues.order_info.tallyledgerid)

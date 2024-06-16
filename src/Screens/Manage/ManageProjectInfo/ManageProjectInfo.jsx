@@ -673,7 +673,7 @@ const ManageProjectInfo = () => {
             "penthouse": false,
             "other": false,
             "duplex": false,
-            "rowhouse": null,
+            "rowhouse": false,
             "otheraccomodationtypes": null,
             "sourceofwater": null
         },
