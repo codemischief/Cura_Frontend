@@ -30,6 +30,15 @@ import { toast } from "react-toastify";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageBuilder = () => {
+    
+    const dataRows = [
+        "buildername",
+        "country",
+        "city", 
+        "suburb",
+        "id",
+    ]
+        
     const {user} = useAuth()
     const {pathname} = useLocation()
     const menuRef = useRef();
@@ -101,7 +110,7 @@ const ManageBuilder = () => {
         try {
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -131,7 +140,7 @@ const ManageBuilder = () => {
         setCurrentPage(page)
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -155,7 +164,7 @@ const ManageBuilder = () => {
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": "desc",
@@ -209,7 +218,7 @@ const ManageBuilder = () => {
         setCurrentPage(1)
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -235,7 +244,7 @@ const ManageBuilder = () => {
         setCurrentPage(1);
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": "desc",
@@ -253,10 +262,12 @@ const ManageBuilder = () => {
         // 
         setExistingBuilders(result);
     }
-
+    
     const deleteBuilder = async (item) => {
         setShowDelete(true);
-        setCurrentBuilderId(item);
+        setCurrentBuilderId(item.id);
+        setCurrentBuilder(item.buildername)
+        console.log(currentBuilder)
         setDeleted(true);
     }
     const [errorMessage, setErrorMessage] = useState("");
@@ -624,7 +635,7 @@ const ManageBuilder = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -680,7 +691,7 @@ const ManageBuilder = () => {
         })
         const data = {
             "user_id": user.id,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -971,7 +982,7 @@ const ManageBuilder = () => {
                                     </div>
                                     <div className='w-1/2 flex justify-center items-center gap-2 ml-0.5'>
                                         <EditButton handleEdit={editBuilder} rowData={item}/>
-                                        <DeleteButton handleDelete={deleteBuilder} rowData={item.id}/>
+                                        <DeleteButton handleDelete={deleteBuilder} rowData={item}/>
                         
                                     </div>
                                 </div>

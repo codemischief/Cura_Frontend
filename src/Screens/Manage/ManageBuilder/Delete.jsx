@@ -47,7 +47,7 @@ const Delete = (props) => {
                                 <img className="h-10 w-10" src={DeletePhoto} alt="delete photo" />
                             </div>
                             <div className="mt-4 w-full text-center">
-                                <p>Are you sure you want to delete the builder</p>
+                                <p>Are you sure you want to delete the builder {props.currentBuilder}</p>
                             </div>
                             <div className="my-5 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={() => deleteCountry(props.item)}>Delete</button>

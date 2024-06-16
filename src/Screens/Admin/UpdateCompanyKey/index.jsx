@@ -35,10 +35,11 @@ const UpdateCompanyKey = () => {
     setShowSuccess(true);
     setTimeout(function () {
       setShowSuccess(false)
-    }, 3000)
+    }, 2000)
   }
   const handleCheck = async () => {
     // here we check if the id actually exists or not
+    setOpenDialog(true)
     try {
 
       
@@ -64,8 +65,9 @@ const UpdateCompanyKey = () => {
   },[])
   return (
     <div className='font-medium'>
-      {/* {showCancelModel && <CancelModel isOpen={showCancelModel} message="No ID Found." />}
-      {showSuccess && <SucessfullModal isOpen={showSuccess} message={`Successfully Deleted ${state.entityname}`} />} */}
+      
+      {showSuccess && <SucessfullModal isOpen={showSuccess} message="Successfully Updated Company Key"/>}
+      {showCancelModel && <CancelModel isOpen={showCancelModel} message="Proccess Cancelled, No Changes Saved."/>}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={pageLoading}
@@ -142,11 +144,11 @@ const UpdateCompanyKey = () => {
       >
         <>
           <Draggable>
-            <div className="bg-white rounded-lg w-[39.8865rem] h-[18.70369rem] flex items-center justify-center relative">
+            <div className="bg-white rounded-lg w-[39.8865rem] h-[200px] flex items-center justify-center relative">
               <div className="w-auto h-auto  ">
-                <div className="  h-[40px] justify-center flex items-center ">
+                <div className="  h-[30px] justify-center flex items-center ">
 
-                  <div className="text-[16px] font-semibold">Delete </div>
+                  <div className="text-[16px] font-semibold">Save Company Key </div>
 
                   <div className="absolute right-4 top-5">
                     <CrossIcon
@@ -156,29 +158,31 @@ const UpdateCompanyKey = () => {
                   </div>
                 </div>
                 <div className="flex justify-center items-center">
-                  <DeleteIcon />
+                  {/* <DeleteIcon /> */}
                 </div>
                 <span className="text-red-700 flex justify-center">
 
                 </span>
                 <div className="mt-4 w-full text-center">
-                  <p>{state.fielduiname} : {data[state.fieldbackendname]}</p>
+                  <p></p>
                 </div>
                 <div className="mt-4 w-full text-center">
-                  <p>Are you sure you want to delete this {state.entityname}?</p>
+                  <p>Do you want to update company key : {id} ?</p>
                 </div>
                 <div className="my-5 flex justify-center items-center gap-[10px]">
                   <button
-                    className={`w-[100px] h-[35px] rounded-md ${false ? "bg-gray-500 cursor-not-allowed" : "bg-red-700"
+                    className={`w-[100px] h-[35px] rounded-md ${false ? "bg-gray-500 cursor-not-allowed" : "bg-[#004DD7]"
                       } text-white`}
                     disabled={false}
                     onClick={handleDelete}
                   >
-                    {/* {isloading ? "Deleting..." : "Delete"} */} Delete
+                    {/* {isloading ? "Deleting..." : "Delete"} */} Save
                   </button>
                   <button
                     className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
-                    onClick={() => { setOpenDialog(false) }}
+                    onClick={() => {
+                       setOpenDialog(false)
+                      openCancelModal() }}
                   >
                     Cancel
                   </button>
