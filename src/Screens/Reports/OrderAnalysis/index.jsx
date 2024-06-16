@@ -286,6 +286,41 @@ const OrderAnalysis = () => {
     dispatch(dowmloadOrderAnalysis(obj))
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "service",
+        "clientname",
+        "orderid",
+        "orderdescription",
+        "orderstatus",
+        "totalorderpayment",
+        "totalinvoiceamt",
+        "totalorderreceipt",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/orderanalysis",
+      colmap: {
+        service: "Service",
+        clientname: "Client Name",
+        orderid: "Order ID",
+        orderdescription: "Order Description",
+        orderstatus: "Order Status",
+        totalorderpayment: "OP Amount",
+        totalinvoiceamt: "OI Amount",
+        totalorderreceipt: "OP Amount",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(dowmloadOrderAnalysis(obj, 'pdf'))
+  }
+
   const handleShow = () => {
    dispatch(setInitialState())
    setShowTable(true)
@@ -452,7 +487,6 @@ const OrderAnalysis = () => {
                   border: "1px solid #004DD7",
                   fontWeight: "600px",
                   lineHeight: "18.9px",
-                  marginTop: "14px",
                   "&:hover": {
                     //you want this to be the same as the backgroundColor above
                     backgroundColor: "#004DD7",
@@ -480,6 +514,7 @@ const OrderAnalysis = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             height="calc(100vh - 15rem)"
           />
         </div>

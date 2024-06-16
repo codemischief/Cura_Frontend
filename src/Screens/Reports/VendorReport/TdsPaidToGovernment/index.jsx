@@ -18,11 +18,12 @@ import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container";
 
 const TdsPaidByVendorView = () => {
   const dispatch = useDispatch();
   const isInitialMount = useRef(true);
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   const {
     tdsPaidGovtData,
@@ -153,8 +154,33 @@ const TdsPaidByVendorView = () => {
     dispatch(downloadTdsPaidToGovtReport(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["order_description", "amount", "date", "payment_description", "vendorname"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/tdsPaidToGovernment",
+      colmap: {
+        order_description: "Order Description",
+        amount: "Amount",
+        date: "Date",
+        registered: "Registered",
+        payment_description: "Payment Description",
+        vendorname: "Vendor Name",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadTdsPaidToGovtReport(obj, 'pdf'))
+  }
+
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -192,10 +218,11 @@ const TdsPaidByVendorView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+    </Container>
   );
 };
 

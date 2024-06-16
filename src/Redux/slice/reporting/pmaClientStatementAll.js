@@ -95,7 +95,7 @@ export const getPmaClientStatementAll =
   };
 
 export const downloadPmaClientStatementAll =
-  (payloadObj, year, month) => async (dispatch) => {
+  (payloadObj, year, month ,type) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
@@ -104,7 +104,7 @@ export const downloadPmaClientStatementAll =
       );
       if ((response.data.filename, payloadObj.user_id)) {
         await dispatch(
-          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+          downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
         );
       }
       dispatch(setStatus("success"));
@@ -115,7 +115,7 @@ export const downloadPmaClientStatementAll =
       dispatch(setStatus("error"));
     }
   };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -130,7 +130,12 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "PMA Client Statement-CI,CR and OR.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "PMA Client Statement-CI,CR and OR.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "PMA Client Statement-CI,CR and OR.pdf");
+    }
+
   } catch (error) {
     console.log("error", error);
   }

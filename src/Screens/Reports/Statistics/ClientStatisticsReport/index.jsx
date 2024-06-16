@@ -163,6 +163,26 @@ const ClientStatistics = () => {
     dispatch(downloadDataXls(obj))
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["name", "total"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/clientStatistics",
+      colmap: {
+        "name": "Client Type",
+        "total": "No. of Records",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadDataXls(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (startDate) {
 
@@ -234,7 +254,8 @@ const ClientStatistics = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (
