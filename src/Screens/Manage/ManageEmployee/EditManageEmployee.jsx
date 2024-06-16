@@ -2,12 +2,13 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Cross from "../../../assets/cross.png";
 import { APIService } from '../../../services/API';
-import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, CircularProgress, MenuItem } from "@mui/material";
 import Draggable from 'react-draggable';
 import Checkbox from '@mui/material/Checkbox';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import UsernameDropDown from '../../../Components/Dropdown/UsernameDropDown';
 import useAuth from '../../../context/JwtContext';
+import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative';
 const EditManageEmployee = (props) => {
     const {user} = useAuth()
     console.log(props.item);
@@ -52,17 +53,22 @@ const EditManageEmployee = (props) => {
         // console.log(result);
         setAllCity(result);
     }
-
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            name : item.name,
+            username : item.username
+          }
+        });
+        return idNameObject;
+    }
     const fetchUsersData = async () => {
         // const data = { "user_id":  user.id };
         const data = { "user_id": user.id, };
         const response = await APIService.getUsers(data)
         const result = (await response.json()).data;
-        // console.log(result);
-
-        if (Array.isArray(result)) {
-            setAllUsername(result);
-        }
+        setAllUsername(convertToIdNameObject(result))
     }
 
     const fetchRoleData = async () => {
@@ -459,8 +465,40 @@ const EditManageEmployee = (props) => {
                                                     </option>
                                                 })}
                                             </select> */}
-                                            <UsernameDropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id"/>
-                                            <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.username}</div>
+                                             <ClientPropertySelectNative
+                        data={Object.keys(allUsername)}
+                        value={allUsername?.[formValues.userName]?.name ? allUsername?.[formValues.userName]?.name:null}
+                        placeholder="Select Username"
+                        isSticky={true}
+                        menuMaxHeight="18rem"
+                        noDataText="Select Username"
+                        headerText={{
+                            first : 'Name',
+                            second : 'Username'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {allUsername[item].name}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {allUsername[item].username}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            const temp = {...formValues}
+                            temp.userName = e.target.value 
+                            setFormValues(temp)
+                            
+                           }}
+                        />
+                                            {/* <UsernameDropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id"/>
+                                            <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.username}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Date of joining <label className="text-red-500">*</label></div>
