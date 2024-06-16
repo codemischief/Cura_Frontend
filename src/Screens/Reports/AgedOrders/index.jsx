@@ -218,6 +218,33 @@ const AgedOrders = () => {
     dispatch(dowmloadData(obj))
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["service",
+        "clientname",
+        "propertydescription",
+        "briefdescription",
+        "agingdays"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/agedOrders",
+      colmap: {
+        service: "Service",
+        clientname: "Client Name",
+        propertydescription: "Property Description",
+        briefdescription: "Brief Description",
+        agingdays: "Aging",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(dowmloadData(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     dispatch(setInitialState())
     setShowTable(true)
@@ -343,6 +370,7 @@ const AgedOrders = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
              height = {"calc(100vh - 15rem)"}
           />
         </div>
