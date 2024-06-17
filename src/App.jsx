@@ -120,7 +120,7 @@ import EntityBlankReport from "./Screens/Reports/Group12/EntityBlankReport/index
 import OwnerWithNoProperty from "./Screens/Reports/Group12/OwnerWIthNoProperty/index.jsx";
 import PropertyWithNoProjectView from "./Screens/Reports/Group12/PropertyWithNoProject/index.jsx";
 import ServiceTaxReport from "./Screens/Reports/Group12/ServiceTaxReport/index.jsx";
-import VendorSummary from "./Screens/Reports/VendorReport/VendorSummary/index.jsx";
+import VendorSummary from "./Screens/Reports/VendorReport/vendorSummary/index.jsx";
 import ClientPhoneNo from "./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx";
 import OwnerPhoneNo from "./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx";
 import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation/index.jsx";
