@@ -113,13 +113,13 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
         const data = {
             "receivedby":Number(formValues.receivedBy),
             "amount": Number(formValues.amountReceived),
-            "tds":Number(formValues.TDS),
+            "tds":formValues.TDS,
             "paymentmode":Number(formValues.receiptMode),
             "recddate":formValues.receivedDate,
             "clientid":formValues.client,
             "receiptdesc":formValues.receiptDescription,
-            "serviceamount":Number(formValues.serviceamount),
-            "reimbursementamount": Number(formValues.reimbursementAmount),
+            "serviceamount":formValues.serviceamount,
+            "reimbursementamount": formValues.reimbursementAmount,
             "entityid":1,
             "howreceivedid": Number(formValues.howreceived),
             "officeid":2,
@@ -369,15 +369,15 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                 <div className=" space-y-4 py-5">
                                     <div className="">
                                         <div className="text-sm">Service Amount </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="serviceamount" value={formValues.serviceamount} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="serviceamount" value={formValues.serviceamount} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Reimbursement Amount </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] absolute">{formErrors.amountReceived}</div>
                                     </div>
                                     <div className="">

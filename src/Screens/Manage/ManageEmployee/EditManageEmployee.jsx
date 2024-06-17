@@ -188,7 +188,7 @@ const EditManageEmployee = (props) => {
             "city": formValues.city,
             "state": formValues.state,
             "country": Number(formValues.country),
-            "lobid": formValues.lob,
+            "lobid": formValues.lob ? Number(formValues.lob) : formValues.lob,
             "zip": formValues.zip,
             "dated": formValues.dated,
             "createdby": user.id,
@@ -534,7 +534,9 @@ const EditManageEmployee = (props) => {
                                                 value={formValues.lob}
                                                 defaultValue="Select lob"
                                                 onChange={handleChange}
-                                            >{allLOB && allLOB.map((item) => {
+                                            >
+                                                <option value="none" hidden>Select a LOB</option>
+                                                {allLOB && allLOB.map((item) => {
                                                 return <option value={item.id} >
                                                         {item.name}
                                                     </option>

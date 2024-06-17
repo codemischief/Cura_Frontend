@@ -394,7 +394,7 @@ const ManageEmployees = () => {
             "dob": formValues.dob,
             "panno": formValues.panNo,
             "status": formValues.status,
-            "phoneno": Number(formValues.phNo),
+            "phoneno": formValues.phNo,
             "email": formValues.email,
             "addressline1": formValues.addressLine1,
             "addressline2": formValues.addressLine2,
@@ -407,7 +407,7 @@ const ManageEmployees = () => {
             "createdby": user.id,
             "isdeleted": false,
             "entityid": formValues.entity,
-            "lobid": Number(formValues.lob),
+            "lobid": formValues.lob ? Number(formValues.lob) : formValues.lob,
             "lastdateofworking": formValues.lastDOW,
             "designation": formValues.designation
         }
@@ -1745,7 +1745,7 @@ const ManageEmployees = () => {
                                         </div> */}
                                         <div className="">
                                             <div className="text-sm">Zip Code</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
