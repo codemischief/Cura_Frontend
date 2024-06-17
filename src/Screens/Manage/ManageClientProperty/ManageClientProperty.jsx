@@ -1144,8 +1144,10 @@ const ManageClientProperty = () => {
             openAddSuccess();
         }
     }
-    const handleDelete = (id) => {
-        setCurrItem(id)
+    const [currPropertyName,setCurrPropertyName] = useState("")
+    const handleDelete = (item) => {
+        setCurrItem(item.id)
+        setCurrPropertyName(item.project)
         setShowDeleteModal(true);
     }
     const deleteClientProperty = async (id) => {
@@ -1410,7 +1412,7 @@ const ManageClientProperty = () => {
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Property created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Property Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
-            {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)} handleDelete={deleteClientProperty}
+            {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)} handleDelete={deleteClientProperty} currPropertyName={currPropertyName}
                 item={currItem} showCancel={openCancelModal} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new property created." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
@@ -1603,12 +1605,12 @@ const ManageClientProperty = () => {
 
                             <div className='w-1/2  flex items-center justify-center'>
                                 <div className=''>
-                                   <RefreshFilterButton
+                                   {/* <RefreshFilterButton
                                     fetchData={fetchData}
                                     setFilterMapState={setFilterMapState}
                                     resetAllInputs={resetAllInputs}
                                     filterMapping={filterMapping}
-                                   />
+                                   /> */}
                                 </div>
                             </div>
                         </div>
@@ -1775,7 +1777,7 @@ const ManageClientProperty = () => {
                                         />
                                         <DeleteButton
                                          handleDelete={handleDelete}
-                                         rowData={item.id}
+                                         rowData={item}
                                         />
                                        
                                     </div>

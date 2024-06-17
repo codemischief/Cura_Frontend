@@ -4,7 +4,9 @@ import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
 import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
 import useAuth from '../../../../context/JwtContext';
-const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, propertyData, setPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors ,setClientName, orderText, setOrderText }) => {
+const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, propertyData, setPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors ,setClientName, orderText, setOrderText, clientData }) => {
+
+    
     const {user} = useAuth()
     // const [propertyData,setPropertyData] = useState(clientPropertyData)
     const handleClose = () => {
@@ -158,7 +160,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
     return (
         <div>
             <div className="h-auto w-full">
-                <div className="flex gap-[48px] justify-center items-center">
+                <div className="flex gap-[48px] justify-center">
                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                         <div className="">
                             <div className="text-[13px]">Cura office</div>
@@ -229,8 +231,14 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                             </select>
                             <div className="text-[10px] text-[#CD0000] ">{formErrors.service}</div>
                         </div>
+                        <div className="text-[12px]">
+                           <h1><span className='font-bold'>Mobile No</span> : {clientData.mobileno}</h1>
+                           <h1><span className='font-bold'>Phone No</span> : {clientData.phoneno}</h1>
+                           <h1><span className='font-bold'>Work No</span> : {clientData.workno}</h1>
+                        </div>
+                        
                     </div>
-                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                    <div className=" space-y-[12px] py-[20px] px-[10px] ">
                         <div className="">
                             <div className="text-[13px]">Client Name<label className="text-red-500">*</label></div>
                             <AsyncSelect
@@ -327,8 +335,12 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                                 ))}
                             </select>
                         </div>
+                        <div className="text-[12px]">
+                           <h1><span className='font-bold'>Email 1 </span>: {clientData.email1}</h1>
+                           <h1><span className='font-bold'>Email 2</span> : {clientData.email2} </h1>
+                        </div>
                     </div>
-                    <div className=" space-y-[12px] py-[20px] px-[10px] mt-5 ">
+                    <div className=" space-y-[12px] py-[20px] px-[10px]  ">
                         <div className="">
                             <div className="text-[13px]">Tally Ledger</div>
                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="tallyledgerid" value={formValues.order_info.tallyledgerid} onChange={handleChange} >

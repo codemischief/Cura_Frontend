@@ -1322,12 +1322,7 @@ const ManageEmployees = () => {
                             </div>
 
                             <div className='w-1/2 p-3  flex items-center'>
-                                <RefreshFilterButton
-                                    fetchData={fetchData}
-                                    resetAllInputs={resetAllInputs}
-                                    setFilterMapState={setFilterMapState}
-                                    filterMapping={filterMapping}
-                                />
+                               
                             </div>
                         </div>
                     </div>

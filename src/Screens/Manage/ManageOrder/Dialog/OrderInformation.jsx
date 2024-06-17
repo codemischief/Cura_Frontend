@@ -146,6 +146,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                             <input className="bg-[#F5F5F5] w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Cura"} name="Entity" readOnly />
                         </div>
                         <div className="">
+                            {console.log(formValues.order_info.owner)}
                             <div className="text-[13px]">Assigned to <label className="text-red-500">*</label></div>
                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="owner" value={formValues.order_info.owner} onChange={handleChange} >
                                 <option value={null} hidden >Select User</option>
