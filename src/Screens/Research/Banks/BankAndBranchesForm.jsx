@@ -15,41 +15,17 @@ import {
 } from "../../../Redux/slice/Research/BanksAndBranchesSlice"
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
+import useAuth from "../../../context/JwtContext";
 
 const validationSchema = Yup.object().shape({
   bankname : Yup.string().required('Enter Bank Name '),
   bankaddress : Yup.string().required('Enter Bank Address'),
 
 });
-// {
-//   "user_id": 1234,
-//   "country": 5,
-//   "onsiteopportunity": true,
-//   "city": "Pune",
-//   "state": "Maharashtra",
-//   "admincontactmail": "admin@example.com",
-//   "zip": "10001",
-//   "hc": "Healthcare",
-//   "website": "www.example.com",
-//   "admincontactphone": "1234567890",
-//   "contactname1": "Jane Smith",
-//   "contactmail1": "jane@example.com",
-//   "contactphone1": "2345678901",
-//   "contactname2": "Michael Johnson",
-//   "contactmail2": "michael@example.com",
-//   "contactphone2": "3456789012",
-//   "hrcontactname": "Emily Brown",
-//   "hrcontactmail": "hr@example.com",
-//   "hrcontactphone": "4567890123",
-//   "admincontactname": "Admin Name",
-//   "employername": "Example Corp",
-//   "industry": "Technology",
-//   "addressline1": "123 Main St",
-//   "addressline2": "Suite 101",
-//   "suburb": "Downtown"
-// }
+
 const BankAndBranchesForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
+  const {user} = useAuth(); 
 
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
@@ -88,7 +64,7 @@ const BankAndBranchesForm = ({ isOpen, handleClose, editData, openSucess }) => {
     try {
       const data = {
        
-        user_id: 1234,
+        user_id: user.id,
         name : values.bankname,
         branchaddress : values.bankaddress,
         emailid : values.emailid,

@@ -25,8 +25,10 @@ import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 // import AgentForm from "./AgentForm"
 import OwnerForm from "./OwnerForm";
+import useAuth from "../../../context/JwtContext";
 const ResearchOwner = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     OwnerData,
     status,
@@ -49,7 +51,7 @@ const ResearchOwner = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "get_owners_view",
         item_id: data.id,
       };
@@ -82,7 +84,7 @@ const ResearchOwner = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "corporation",
@@ -154,7 +156,7 @@ const ResearchOwner = () => {
    
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "corporation",
         "name",
@@ -204,7 +206,7 @@ const ResearchOwner = () => {
 
   const deleteOwners = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteOwner(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Real Estate Agent Deleted Successfully");

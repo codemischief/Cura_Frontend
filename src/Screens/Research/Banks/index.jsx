@@ -24,8 +24,10 @@ import AlertModal, {
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import BankAndBranchesForm from "./BankAndBranchesForm";
+import useAuth from "../../../context/JwtContext";
 const ResearchBanks = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     BankAndBranchesData,
     status,
@@ -48,7 +50,7 @@ const ResearchBanks = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "banksandbranches",
         item_id: data.id,
       };
@@ -81,7 +83,7 @@ const ResearchBanks = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "id",
@@ -151,7 +153,7 @@ const ResearchBanks = () => {
     }, {});
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "name",
         "emailid",
@@ -186,7 +188,7 @@ const ResearchBanks = () => {
 
   const deleteBanksAndBranchesfnc = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteBanksAndBranches(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Banks And Branch Deleted Successfully");

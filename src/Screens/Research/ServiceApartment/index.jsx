@@ -24,8 +24,10 @@ import AlertModal, {
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import ServiceApartmentForm from "./ServiceApartmentForm";
+import useAuth from "../../../context/JwtContext";
 const ResearchServiceApartments = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth(); 
   const {
     ServiceApartmentData,
     status,
@@ -48,7 +50,7 @@ const ResearchServiceApartments = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "serviceapartmentsandguesthouses",
         item_id: data.id,
       };
@@ -81,7 +83,7 @@ const ResearchServiceApartments = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "name",
@@ -148,7 +150,7 @@ const ResearchServiceApartments = () => {
     
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "name",
         "apartments_guesthouse",
@@ -187,7 +189,7 @@ const ResearchServiceApartments = () => {
 
   const deleteServiceApartments = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteServiceApartment(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Service Apartment Deleted Successfully");

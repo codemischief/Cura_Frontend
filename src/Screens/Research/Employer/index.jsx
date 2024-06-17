@@ -24,8 +24,10 @@ import AlertModal, {
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import EmployerForm from "./EmployerForm"
+import useAuth from "../../../context/JwtContext";
 const ResearchEmployer = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     EmployerData,
     status,
@@ -48,7 +50,7 @@ const ResearchEmployer = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "get_research_employer_view",
         item_id: data.id,
       };
@@ -81,7 +83,7 @@ const ResearchEmployer = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "id",
@@ -151,7 +153,7 @@ const ResearchEmployer = () => {
     }, {});
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "employername",
         "industry",
@@ -187,7 +189,7 @@ const ResearchEmployer = () => {
 
   const deleteEmployers = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteEmployer(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Employer Deleted Successfully");

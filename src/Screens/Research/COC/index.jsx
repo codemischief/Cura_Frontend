@@ -182,6 +182,7 @@ const ResearchBusinessGroup = () => {
     }, {});
 
     let obj = {
+      user_id:user.id,
       rows: [
         "groupname",
         "name",
@@ -210,7 +211,7 @@ const ResearchBusinessGroup = () => {
   const deleteBusinessGroupFnc = async () => {
     try {
       setDeleteLoading(true);
-      const data = { id: isDeleteDialogue };
+      const data = { user_id:user.id  , id: isDeleteDialogue };
       await dispatch(deleteBusinessGroup(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Prospect Deleted Successfully");

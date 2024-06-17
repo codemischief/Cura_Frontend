@@ -25,8 +25,10 @@ import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import EmployerForm from "./EmployerForm";
 import AddButton from "../../../Components/common/CustomButton";
+import useAuth from "../../../context/JwtContext";
 const ResearchEducational = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth(); 
   const {
     Data,
     status,
@@ -49,7 +51,7 @@ const ResearchEducational = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "get_research_colleges_view",
         item_id: data.id,
       };
@@ -82,7 +84,7 @@ const ResearchEducational = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: ["type","name","city","suburb","emailid","phoneno","id"],
       filters: formatedFilterData(filter),
@@ -145,7 +147,7 @@ const ResearchEducational = () => {
     }, {});
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["type","name","city","suburb","emailid","phoneno","id"],
       colmap : {
         "type" : "Institute Type",
@@ -175,7 +177,7 @@ const ResearchEducational = () => {
 
   const deleteEmployers = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteData(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Educational Institute Deleted Successfully");
