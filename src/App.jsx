@@ -1,3 +1,4 @@
+import React from "react";
 import Login from "./Screens/Login/Login";
 import Dashboard from "./Screens/Dashboard/Dashboard";
 import NotFound from "./Screens/NotFound/notFound";
@@ -21,7 +22,7 @@ import ManageVendor from "./Screens/Manage/ManageVendor/ManagerVendor";
 import ManageVendorInvoice from "./Screens/Manage/ManageVendorInvoice/ManageVendorInvoice";
 import ManageVendorPayment from "./Screens/Manage/ManageVendorPayment/ManageVendorPayment";
 
-import { Route, Routes, Outlet } from "react-router-dom";
+import { Route, Routes, Outlet, useNavigate } from "react-router-dom";
 import LOB from "./Screens/Admin/LOB";
 import Service from "./Screens/Admin/Service";
 import ResearchAgent from "./Screens/Research/Agent/index.jsx";
@@ -127,8 +128,15 @@ import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation
 import AgedOrders from "./Screens/Reports/AgedOrders/index.jsx";
 import UpdateCompanyKey from "./Screens/Admin/UpdateCompanyKey/index.jsx";
 import ChangePassword from "./Screens/Login/ChangePassword.jsx";
+import { setNavigate } from "./services/setNavigation.js";
 const App = () => {
   const { isInitialized } = useAuth();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    setNavigate(navigate);
+  }, [navigate]);
+
   const ROLES = {
     Registered: "3",
     Public: "2",

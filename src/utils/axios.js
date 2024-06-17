@@ -1,5 +1,7 @@
 import axios from "axios";
-
+import { redirectToLogin } from "../services/setNavigation";
+import { toast } from "react-toastify";
+let toastShown = false;
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 export const accessToken = localStorage.getItem("accessToken");
 export const userId = JSON.parse(localStorage.getItem("user"))?.id;
@@ -22,7 +24,7 @@ const axiosInstance = axios.create({
 
 const logPayload = {
   token: `Bearer ${accessToken}`,
-  user_id: userId,
+  // user_id: userId,
 };
 // Request interceptor to set headers
 // axiosInstance.interceptors.request.use(
@@ -53,7 +55,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const { headers } = config;
     headers["Authorization"] = `Bearer ${accessToken}`;
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
+    // const userId = JSON.parse(localStorage.getItem("user"))?.id;
     // Merge the common payload with the user's request data
     if (config.appendLog) {
       config.data = {
@@ -64,7 +66,7 @@ axiosInstance.interceptors.request.use(
     }
     config.data = {
       ...config.data,
-      user_id: userId,
+      // user_id: userId,
     };
 
     return config;
@@ -80,10 +82,20 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
+    if (
+      (error.response && error.response.status === 401) ||
+      error.response.status === 498
+    ) {
       // Handle unauthorized access, e.g., redirect to login
-      window.location.href = "/login";
+      if (!toastShown) {
+        toastShown = true;
+        setTimeout(() => (toastShown = false), 1000); // Reset after 1 second
+        localStorage.clear();
+        redirectToLogin();
+        toast.error("Unauthorized!");
+      }
     }
+
     return Promise.reject(error);
   }
 );
