@@ -14,6 +14,7 @@ import {
 } from "../../../Redux/slice/Research/ProspectSlice";
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelectNative from "../../../Components/common/select/CustomSelectNative";
+import useAuth from "../../../context/JwtContext";
 
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Select Country"),
@@ -27,6 +28,7 @@ const validationSchema = Yup.object().shape({
 
 const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const { countryData } = useSelector((state) => state.commonApi);
   console.log(countryData)
   console.log('hey')
@@ -38,7 +40,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const { formSubmissionStatus } = useSelector((state) => state.prospect);
 
   const fetchCityData = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     setCityData(result);
@@ -55,14 +57,14 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   }, []);
 
   const fetchStateData = async (id) => {
-    const data = { user_id: 1234, country_id: id };
+    const data = { user_id: user.id, country_id: id };
     const response = await APIService.getState(data);
     const result = await response.json();
     setStateData(result.data);
   };
 
   const fetchCity = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = await response.json();
     setCityData(result.data);
@@ -92,7 +94,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const handleConfirm = async () => {
     try {
       const data = {
-        // user_id: 1234,
+        user_id: user.id,
         personname: values.personname,
         suburb: values.suburb,
         city: values.city,
