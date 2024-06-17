@@ -54,6 +54,7 @@ const logPayload = {
 axiosInstance.interceptors.request.use(
   (config) => {
     const { headers } = config;
+    const accessToken = localStorage.getItem("accessToken");
     headers["Authorization"] = `Bearer ${accessToken}`;
     // const userId = JSON.parse(localStorage.getItem("user"))?.id;
     // Merge the common payload with the user's request data
