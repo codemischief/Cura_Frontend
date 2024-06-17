@@ -1061,7 +1061,6 @@ const changePassword = async (data, token) => {
   }
 };
 
-
 const getProfessionalTypesAdmin = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getProfessionalTypesAdmin`,
@@ -1071,7 +1070,7 @@ const getProfessionalTypesAdmin = async (data) => {
   return handleResponse(response)
 };
 
-const handleResponse = (response)=>{
+export const handleResponse = (response)=>{
   if (!response.ok) {
     // Handle HTTP errors
     const statusCode = response.status;
@@ -1146,9 +1145,8 @@ const changeCompanyKey = async (data) => {
     `${env_URL_SERVER}changeCompanyKey`,
     METHOD_POST(data)
   );
-  return response
-}
-
+  return response;
+};
 
 export const APIService = {
   getCountries,
@@ -1299,5 +1297,5 @@ export const APIService = {
   deleteFromTable,
   getGroupsAdmin,
   getCompanyKey,
-  changeCompanyKey
+  changeCompanyKey,
 };
