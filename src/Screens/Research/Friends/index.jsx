@@ -24,8 +24,10 @@ import AlertModal, {
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import FriendsForm from "./FriendsForm";
+import useAuth from "../../../context/JwtContext";
 const ResearchFriends = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     FriendsData,
     status,
@@ -48,7 +50,7 @@ const ResearchFriends = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "get_research_friends_view",
         item_id: data.id,
       };
@@ -81,7 +83,7 @@ const ResearchFriends = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "id",
@@ -148,7 +150,7 @@ const ResearchFriends = () => {
    
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "name",
         "city",
@@ -188,7 +190,7 @@ const ResearchFriends = () => {
 
   const deleteFriends = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteFriends(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Friend Deleted Successfully");

@@ -47,9 +47,9 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     const [vendorData, setVendorData] = useState([])
     const [tallyLedgerData, setTallyLedgerData] = useState([])
     const [pageLoading, setPageLoading] = useState(false);
+    const [clientData,setClientData] = useState({})
 
-
-
+  
     // const [initialOrderData,setInitialOrderData] = useState({...initialValues});
     function helper1(updateArrayPhotos, insertArrayPhotos) {
         var size = formValues.order_photos.length
@@ -167,6 +167,13 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         if (id != null) {
             console.log(res.data);
             setClientName(res.data.clientname);
+            const temp = {...clientData}
+            temp.homeno = res.data.homephone
+            temp.workno = res.data.workphone 
+            temp.mobileno = res.data.mobilephone
+            temp.email1 = res.data.email1 
+            temp.email2 = res.data.email2 
+            setClientData(temp)
             // fetchClientPropertyData(res.data.id)
             console.log(clientName)
         }
@@ -394,7 +401,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                         </div>
                         }
                         {!pageLoading && <>
-                            {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} propertyData={clientPropertyData} setPropertyData={setClientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} setClientName={setClientName} orderText={orderText} setOrderText={setOrderText} />}
+                            {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} propertyData={clientPropertyData} setPropertyData={setClientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} setClientName={setClientName} orderText={orderText} setOrderText={setOrderText} clientData={clientData}/>}
                             {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} currOrderId={currOrderId} />}
                             {selectedDialog == 3 && <EditOrderStatusHistory formValues={formValues} setFormValues={setFormValues} orderId={currOrderId} />}
                         </>

@@ -1060,15 +1060,15 @@ const ManageClientProperty = () => {
         const data = {
             "client_property": {
                 "clientid": formValues.client_property.clientid,
-                "propertytype": Number(formValues.client_property.propertytype),
-                "leveloffurnishing": Number(formValues.client_property.leveloffurnishing),
-                "numberofparkings": Number(formValues.client_property.numberofparkings),
+                "propertytype": formValues.client_property.propertytype ? Number(formValues.client_property.propertytype) : formValues.client_property.propertytype,
+                "leveloffurnishing": formValues.client_property.leveloffurnishing ? Number(formValues.client_property.leveloffurnishing) : formValues.client_property.leveloffurnishing,
+                "numberofparkings": formValues.client_property.numberofparkings ? Number(formValues.client_property.numberofparkings) : formValues.client_property.numberofparkings,
                 "state": formValues.client_property.state,
                 "city": formValues.client_property.city,
                 "suburb": formValues.client_property.suburb,
                 "country": 5,
-                "projectid": Number(formValues.client_property.projectid),
-                "status": Number(formValues.client_property.status),
+                "projectid": formValues.client_property.projectid ? Number(formValues.client_property.projectid) : formValues.client_property.projectid,
+                "status": formValues.client_property.status ? Number(formValues.client_property.status) : formValues.client_property.status,
                 "propertydescription": formValues.client_property.propertydescription,
                 "layoutdetails": formValues.client_property.layoutdetails,
                 "email": "",
@@ -1076,7 +1076,7 @@ const ManageClientProperty = () => {
                 "initialpossessiondate": formValues.client_property.initialpossessiondate,
                 "electricityconsumernumber": formValues.client_property.electricityconsumernumber,
                 "otherelectricitydetails": formValues.client_property.otherelectricitydetails,
-                "electricitybillingduedate": Number(formValues.client_property.electricitybillingduedate),
+                "electricitybillingduedate": formValues.client_property.electricitybillingduedate ? Number(formValues.client_property.electricitybillingduedate) : formValues.client_property.electricitybillingduedate,
                 "comments": formValues.client_property.comments,
                 "propertytaxnumber": formValues.client_property.propertytaxnumber,
                 "clientservicemanager": formValues.client_property.clientservicemanager,
@@ -1144,8 +1144,10 @@ const ManageClientProperty = () => {
             openAddSuccess();
         }
     }
-    const handleDelete = (id) => {
-        setCurrItem(id)
+    const [currPropertyName,setCurrPropertyName] = useState("")
+    const handleDelete = (item) => {
+        setCurrItem(item.id)
+        setCurrPropertyName(item.project)
         setShowDeleteModal(true);
     }
     const deleteClientProperty = async (id) => {
@@ -1410,7 +1412,7 @@ const ManageClientProperty = () => {
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Property created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Property Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
-            {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)} handleDelete={deleteClientProperty}
+            {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)} handleDelete={deleteClientProperty} currPropertyName={currPropertyName}
                 item={currItem} showCancel={openCancelModal} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new property created." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
@@ -1603,12 +1605,12 @@ const ManageClientProperty = () => {
 
                             <div className='w-1/2  flex items-center justify-center'>
                                 <div className=''>
-                                   <RefreshFilterButton
+                                   {/* <RefreshFilterButton
                                     fetchData={fetchData}
                                     setFilterMapState={setFilterMapState}
                                     resetAllInputs={resetAllInputs}
                                     filterMapping={filterMapping}
-                                   />
+                                   /> */}
                                 </div>
                             </div>
                         </div>
@@ -1775,7 +1777,7 @@ const ManageClientProperty = () => {
                                         />
                                         <DeleteButton
                                          handleDelete={handleDelete}
-                                         rowData={item.id}
+                                         rowData={item}
                                         />
                                        
                                     </div>

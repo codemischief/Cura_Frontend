@@ -295,8 +295,8 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
         }
         const data = {
             "id": currItem.id,
-            "clientpropertyid": formValues.clientProperty,
-            "orderid": formValues.order,
+            "clientpropertyid": Number(formValues.clientProperty),
+            "orderid": Number(formValues.order),
             "durationinmonth": formValues.durationInMonth,
             "depositamount": formValues.depositeAmount,
             "startdate": formValues.startDate,
@@ -568,12 +568,12 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Rent Amount </div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="rentAmount" value={formValues.rentAmount} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="rentAmount" value={formValues.rentAmount} onChange={handleChange} />
 
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Deposit Amount </div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="depositeAmount" value={formValues.depositeAmount} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="depositeAmount" value={formValues.depositeAmount} onChange={handleChange} />
 
                                             </div>
                                             <div className="">
@@ -635,7 +635,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Duration in Months <label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.durationInMonth}</div>
                                             </div>
                                             <div className="">
@@ -653,6 +653,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                                     value={formValues.rentPaymentDate}
                                                     onChange={handleChange}
                                                 >
+                                                    <option value="none" hidden>Select a Payment Date</option>
                                                     {rentPaymentDate.map((item) => (
                                                         <option key={item.id} value={item.day}>
                                                             {item.day}
@@ -663,7 +664,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Notice Period in Days </div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="noticePeriod" value={formValues.noticePeriod} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="noticePeriod" value={formValues.noticePeriod} onChange={handleChange} />
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">

@@ -56,7 +56,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const fetchCountryData = async () => {
     setLoading(true);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],
@@ -78,7 +78,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
 
   const fetchCityData = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     const resultConverted = await result?.reduce((acc, current) => {
@@ -103,7 +103,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   }, []);
 
   const fetchStateData = async (id) => {
-    const data = { user_id: 1234, country_id: id };
+    const data = { user_id: user.id, country_id: id };
     const response = await APIService.getState(data);
     const result = await response.json();
     setStateData(result.data);

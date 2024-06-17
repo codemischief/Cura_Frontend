@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "@/utils/axios";
 import FileSaver from "file-saver";
 import {
   clientReceiptFormatData,

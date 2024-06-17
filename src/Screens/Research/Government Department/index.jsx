@@ -23,9 +23,11 @@ import AlertModal, {
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
-import GovernmentDepartmentForm from "./GovernmentDepartmentForm"
+import GovernmentDepartmentForm from "./GovernmentDepartmentForm";
+import useAuth from "../../../context/JwtContext";
 const ResearchGovernmentDepartment = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth(); 
   const {
     GovernmentDepartmentData,
     status,
@@ -48,7 +50,7 @@ const ResearchGovernmentDepartment = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "get_research_govt_agencies_view",
         item_id: data.id,
       };
@@ -81,7 +83,7 @@ const ResearchGovernmentDepartment = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "id",
@@ -146,7 +148,7 @@ const ResearchGovernmentDepartment = () => {
     
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "agencyname",
         "departmenttype",
@@ -181,7 +183,7 @@ const ResearchGovernmentDepartment = () => {
 
   const deleteGovt = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteGovernmentDepartment(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Department Deleted Successfully");

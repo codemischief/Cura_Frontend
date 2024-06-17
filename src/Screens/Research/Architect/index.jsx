@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
@@ -13,6 +13,7 @@ import {
   downloadArchitect,
   getArchitect,
   setCountPerPage,
+  setInitialState,
   setPageNumber,
   setSorting,
 } from "../../../Redux/slice/Research/ArchitectSlice";
@@ -26,10 +27,12 @@ import errorHandler from "../../../Components/common/ErrorHandler";
 import EmployerForm from "./EmployerForm"
 const ResearchArchitect = () => {
   const dispatch = useDispatch();
+  const isInitialMount = useRef(true);
   const {
     ArchitectData,
     status,
     totalCount,
+   
     sorting,
     countPerPage,
     pageNo,
@@ -125,7 +128,13 @@ const ResearchArchitect = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    fetchData();
+    if (isInitialMount.current) {
+      dispatch(setInitialState());
+      isInitialMount.current = false;
+    }else {
+      fetchData();
+    }
+    
   }, [
     filter,
     countPerPage,

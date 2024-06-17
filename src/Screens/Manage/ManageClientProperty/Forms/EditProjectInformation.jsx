@@ -537,7 +537,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
           </div>
 
           <div className="">
-            <div className="text-[13px]">Text For Posting </div>
+            <div className="text-[13px]">Detailed Address</div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"

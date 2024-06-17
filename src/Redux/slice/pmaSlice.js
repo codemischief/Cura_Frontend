@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "@/utils/axios";
 import { env_URL_SERVER, updatedResponsePmaData } from "../helper";
 import FileSaver from "file-saver";
 const initialState = {

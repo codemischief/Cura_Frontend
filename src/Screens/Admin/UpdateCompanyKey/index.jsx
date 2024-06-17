@@ -14,6 +14,7 @@ import DeleteIcon from "../../../Components/Svg/DeleteIcon"
 import CancelModel from "../../../Components/modals/CancelModel"
 import SucessfullModal from "../../../Components/modals/SucessfullModal"
 import useAuth from "../../../context/JwtContext"
+import { toast } from "react-toastify"
 const UpdateCompanyKey = () => {
   const { user } = useAuth()
 //   let { state } = useLocation();
@@ -49,9 +50,19 @@ const UpdateCompanyKey = () => {
     }
 
   }
-  const handleDelete = async () => {
+  const handleUpdate = async () => {
     // we do the hard delete here
-    
+    const data =  {
+      "user_id" : user.id,
+      "companykey" : id
+    }
+    try {
+        const response = await APIService.changeCompanyKey(data)
+        const res = await response.json()
+        openSuccess()
+    } catch(err) {
+         toast.error('Something Went Wrong! Please Try again')
+    }
   }
   const fetchCompanyKey = async () => {
      const d = {"user_id" : user.id}
@@ -174,7 +185,7 @@ const UpdateCompanyKey = () => {
                     className={`w-[100px] h-[35px] rounded-md ${false ? "bg-gray-500 cursor-not-allowed" : "bg-[#004DD7]"
                       } text-white`}
                     disabled={false}
-                    onClick={handleDelete}
+                    onClick={handleUpdate}
                   >
                     {/* {isloading ? "Deleting..." : "Delete"} */} Save
                   </button>

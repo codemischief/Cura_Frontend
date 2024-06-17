@@ -24,8 +24,10 @@ import AlertModal, {
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import MandalsForm from "./MandalsForm";
+import useAuth from "../../../context/JwtContext";
 const ResearchMandals = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     MandalsData,
     status,
@@ -50,7 +52,7 @@ const ResearchMandals = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "get_research_mandalas_view",
         item_id: data.id,
       };
@@ -83,7 +85,7 @@ const ResearchMandals = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "id",
@@ -152,7 +154,7 @@ const ResearchMandals = () => {
     
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id",
         "name",
@@ -181,7 +183,7 @@ const ResearchMandals = () => {
 
   const deleteMandalsFnc = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteMandals(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Mandals Deleted Successfully");

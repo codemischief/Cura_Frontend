@@ -25,7 +25,7 @@ import * as XLSX from "xlsx";
 import Container from "../../../../Components/common/Container";
 import useAuth from "../../../../context/JwtContext";
 
-const vendorSummary = () => {
+const VendorSummary = () => {
   const dispatch = useDispatch();
   const {user} = useAuth();
   const isInitialMount = useRef(true);
@@ -242,4 +242,4 @@ const vendorSummary = () => {
   );
 };
 
-export default vendorSummary;
+export default VendorSummary;

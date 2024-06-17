@@ -24,8 +24,10 @@ import AlertModal, {
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import AgentForm from "./AgentForm"
+import useAuth from "../../../context/JwtContext";
 const ResearchAgent = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     AgentData,
     status,
@@ -48,7 +50,7 @@ const ResearchAgent = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "realestateagents",
         item_id: data.id,
       };
@@ -81,7 +83,7 @@ const ResearchAgent = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "id",
@@ -154,7 +156,7 @@ const ResearchAgent = () => {
     }, {});
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "id",
         "nameofagent",
@@ -183,9 +185,9 @@ const ResearchAgent = () => {
     setEditData({});
   };
 
-  const deleteAgents = async () => {
+  const deleteAgent = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteAgents(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Real Estate Agent Deleted Successfully");
@@ -296,7 +298,7 @@ const ResearchAgent = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteAgents}
+          handleDelete={deleteAgent}
           deleteError={deleteError}
         />
       )}

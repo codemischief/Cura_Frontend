@@ -15,15 +15,18 @@ import {
 } from "../../../Redux/slice/Research/GovernmentDepartmentSlice"
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
+import useAuth from "../../../context/JwtContext";
 
 const validationSchema = Yup.object().shape({
   departmentname : Yup.string().required('Enter Department Name'),
   countryId: Yup.string().required("Select Country"),
   state: Yup.string().required("Select State"),
   city: Yup.string().required("Select City"),
+  departmenttype  : Yup.string().required('Select Department Type'),
 });
 const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
@@ -36,7 +39,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
   const fetchCountryData = async () => {
     setLoading(true);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],
@@ -51,7 +54,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
   };
 
   const fetchCityData = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     setCityData(result);
@@ -72,14 +75,14 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
   }, []);
 
   const fetchStateData = async (id) => {
-    const data = { user_id: 1234, country_id: id };
+    const data = { user_id: user.id, country_id: id };
     const response = await APIService.getState(data);
     const result = await response.json();
     setStateData(result.data);
   };
 
   const fetchCity = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = await response.json();
     setCityData(result.data);
@@ -112,7 +115,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
   const handleConfirm = async () => {
     try {
       const data = {
-        user_id: 1234,
+        user_id: user.id,
         agencyname : values.departmentname,
         addressline1 : values.adressline1,
         addressline2 : values.adressline2,
@@ -189,7 +192,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
     fetchCity(e.target.value);
   };
   const fetchDepartmentTypeData = async () => {
-     const data = {"user_id" : 1234}
+     const data = {"user_id" : user.id,}
      const response = await APIService.getDepartmentTypeAdmin(data)
      const res = await response.json()
      setDepartmentTypeData(res.data)
@@ -449,15 +452,10 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                                   );
                                 })}
                             </select>
-                            {/* <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="industry"
-                              value={formik.values.industry}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            /> */}
+                            <div className="inputValidationError">
+                              {/* {formErrors.city} */}
+                              {errors.departmenttype && <div>{errors.departmenttype}</div>}
+                            </div>
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}

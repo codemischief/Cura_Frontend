@@ -1,10 +1,13 @@
 import FileSaver from "file-saver";
-import axios from "../../../utils/axios";
+// import axios from "@/utils/axios";
+import axios from "@/utils/axios";
 import { createSlice } from "@reduxjs/toolkit";
 import { env_URL_SERVER, updatedResponsePmaData } from "../../helper";
-import { moduleMethods } from "../../../utils/axios";
+// import { moduleMethods } from "../../../utils/axios";
+// import { moduleMethods } from "../../../utils/axios";
 import { v4 as uuidv4 } from "uuid";
-
+import { moduleMethods } from "@/utils/axios";
+console.log("moduleMethods", moduleMethods);
 const modulename = "ResearchProspect";
 
 const initialState = {
@@ -83,10 +86,7 @@ export const {
 export const getPropect = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
-    const response = await axios.post(
-      `getResearchProspect`,
-      payloadObj
-    );
+    const response = await axios.post(`getResearchProspect`, payloadObj);
 
     dispatch(setPropectusData({ data: response.data }));
     dispatch(setStatus("success"));
@@ -99,7 +99,7 @@ export const addProspectData = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}addResearchProspect`,
+      `addResearchProspect`,
       {
         ...payload,
         reqid: uuidv4(),
@@ -123,7 +123,7 @@ export const editProspectData = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `editResearchProspect`,
+      `${env_URL_SERVER}editResearchProspect`,
       {
         ...payload,
         reqid: uuidv4(),
@@ -145,7 +145,7 @@ export const editProspectData = (payload) => async (dispatch) => {
 export const downloadProspectusDataXls = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
-    const response = await axios.post(`getResearchProspect`, payloadObj);
+    const response = await axios.post(`${env_URL_SERVER}getResearchProspect`, payloadObj);
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
         downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
@@ -162,7 +162,7 @@ export const downloadProspectusDataXls = (payloadObj) => async (dispatch) => {
 export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `download/${filename}`,
+      `${env_URL_SERVER}download/${filename}`,
       {
         filename: filename,
         user_id: userId,
@@ -183,7 +183,7 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
 export const deleteProspect = (payload) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `deleteResearchProspect`,
+      `${env_URL_SERVER}deleteResearchProspect`,
       {
         ...payload,
         reqid: uuidv4(),

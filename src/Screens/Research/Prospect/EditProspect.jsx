@@ -5,8 +5,10 @@ import { Modal } from "@mui/material";
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
+import useAuth from '../../../context/JwtContext';
 const EditProspect = (props) => {
     console.log(props.item);
+    const {user} = useAuth();
     const [editModalInput,setEditModalInput] = useState(props.item.personname);
     const [errorMessage,setErrorMessage] = useState("");
     const [allCountry, setAllCountry] = useState([]);
@@ -16,7 +18,7 @@ const EditProspect = (props) => {
     const [pageLoading,setPageLoading] = useState(false);
     const [cityId,setCityId] = useState(0);
     const fetchCityId = async (name) => {
-        const data = {"user_id":1234,"attr_name":"city","item_name":name,"table_name":"cities"};
+        const data = {"user_id":user.id,"attr_name":"city","item_name":name,"table_name":"cities"};
         const response = await APIService.getItemByAttr(data);
         const result = await response.json();
         setCityId(result.data.id);
@@ -25,7 +27,7 @@ const EditProspect = (props) => {
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
@@ -38,7 +40,7 @@ const EditProspect = (props) => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
+        const data = { "user_id": user.id, "country_id": id };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         await fetchCityData(props.item.state);
@@ -48,7 +50,7 @@ const EditProspect = (props) => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_name": id };
+        const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -65,7 +67,7 @@ const EditProspect = (props) => {
         }
 
         const data = {
-            "user_id": 1234,
+            "user_id": user.id,
             "id": props.item.id,
             "personname": formValues.personname,
             "suburb": formValues.suburb,

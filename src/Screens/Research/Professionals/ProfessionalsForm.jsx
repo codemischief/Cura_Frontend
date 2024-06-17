@@ -15,6 +15,7 @@ import {
 } from "../../../Redux/slice/Research/ProfessionalsSlice"
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
+import useAuth from "../../../context/JwtContext";
 
 const validationSchema = Yup.object().shape({
   type : Yup.string().required('Select Type'),
@@ -25,6 +26,7 @@ const validationSchema = Yup.object().shape({
 });
 const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const [countryData, setCountryData] = useState({
     arr: [],
     obj: {},
@@ -40,7 +42,7 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const fetchCountryData = async () => {
     setLoading(true);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],
@@ -60,14 +62,14 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
 
   const fetchCityData = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     setCityData(result);
   };
   const fetchTypeData = async () => {
     const d = {
-      "user_id" : 1234
+      "user_id" : user.id
     }
     const response = await APIService.getProfessionalTypesAdmin(d)
     const res = await response.json()
@@ -90,14 +92,14 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   }, []);
 
   const fetchStateData = async (id) => {
-    const data = { user_id: 1234, country_id: id };
+    const data = { user_id: user.id, country_id: id };
     const response = await APIService.getState(data);
     const result = await response.json();
     setStateData(result.data);
   };
 
   const fetchCity = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = await response.json();
     setCityData(result.data);
@@ -127,7 +129,7 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const handleConfirm = async () => {
     try {
       const data = {
-        user_id: 1234,
+        user_id: user.id,
         name: values.name,
         typeid: values.type,
         emailid: values.emailid,

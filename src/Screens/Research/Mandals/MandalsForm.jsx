@@ -14,6 +14,7 @@ import CustomSelect from "../../../Components/common/select/CustomSelect";
 import { addMandals, editMandals } from "../../../Redux/slice/Research/MandalSlice";
 import CustomSelectNative from "../../../Components/common/select/CustomSelectNative";
 import { getCountries } from "../../../Redux/slice/commonApis";
+import useAuth from "../../../context/JwtContext";
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Select Country"),
   state: Yup.string().required("Select State"),
@@ -21,6 +22,7 @@ const validationSchema = Yup.object().shape({
 });
 const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const { countryData } = useSelector((state) => state.commonApi);
   console.log(countryData)
 
@@ -35,7 +37,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   
 
   const fetchCityData = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     setCityData(result);
@@ -43,7 +45,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const fetchCountryData = async () => {
     // setLoading(true);
     const data = {
-      user_id: 1234,
+      user_id: user.id,
       rows: ["id", "name"],
       filters: [],
       sort_by: [],
@@ -70,7 +72,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
   const [typeData,setTypeData] = useState([])
   const fetchTypeData = async () => {
-    const d = {"user_id" : 1234}
+    const d = {"user_id" : user.id}
     const response = await APIService.getMandalAdmin(d)
     const res = await response.json()
     setTypeData(res.data)
@@ -91,14 +93,14 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   }, []);
 
   const fetchStateData = async (id) => {
-    const data = { user_id: 1234, country_id: id };
+    const data = { user_id: user.id, country_id: id };
     const response = await APIService.getState(data);
     const result = await response.json();
     setStateData(result.data);
   };
 
   const fetchCity = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = await response.json();
     setCityData(result.data);
@@ -135,7 +137,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     try {
       const data = {
         // {
-          user_id:1234,
+          user_id: user.id,
           name:values.name,
           typeid: values.type,
           emailid:values.emailid,

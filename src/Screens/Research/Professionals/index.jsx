@@ -25,8 +25,10 @@ import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 // import FriendsForm from "./FriendsForm";
 import ProfessionalsForm from "./ProfessionalsForm";
+import useAuth from "../../../context/JwtContext";
 const ResearchProfessionals = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const {
     ProfessionalsData,
     status,
@@ -49,7 +51,7 @@ const ResearchProfessionals = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "get_professionals_view",
         item_id: data.id,
       };
@@ -82,7 +84,7 @@ const ResearchProfessionals = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
         "id",
@@ -149,7 +151,7 @@ const ResearchProfessionals = () => {
    
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "name",
         "type",
@@ -188,7 +190,7 @@ const ResearchProfessionals = () => {
 
   const deleteProfessionalsFnc = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteProfessionals(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Professional Deleted Successfully");

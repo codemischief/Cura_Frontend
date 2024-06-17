@@ -14,6 +14,7 @@ import {
 } from "../../../Redux/slice/Research/ProspectSlice";
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelectNative from "../../../Components/common/select/CustomSelectNative";
+import useAuth from "../../../context/JwtContext";
 
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Select Country"),
@@ -27,6 +28,7 @@ const validationSchema = Yup.object().shape({
 
 const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const { countryData } = useSelector((state) => state.commonApi);
   console.log(countryData)
   console.log('hey')
@@ -38,7 +40,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const { formSubmissionStatus } = useSelector((state) => state.prospect);
 
   const fetchCityData = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     setCityData(result);
@@ -55,14 +57,14 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   }, []);
 
   const fetchStateData = async (id) => {
-    const data = { user_id: 1234, country_id: id };
+    const data = { user_id: user.id, country_id: id };
     const response = await APIService.getState(data);
     const result = await response.json();
     setStateData(result.data);
   };
 
   const fetchCity = async (id) => {
-    const data = { user_id: 1234, state_name: id };
+    const data = { user_id: user.id, state_name: id };
     const response = await APIService.getCities(data);
     const result = await response.json();
     setCityData(result.data);
@@ -81,6 +83,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         : "",
       suburb: editData?.suburb ? editData.suburb : "",
       id: editData?.id ? editData.id : undefined,
+      phoneno : editData?.phoneno ? editData?.phoneno : null,
+      email : editData?.email1 ? editData?.email1 : null
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -92,12 +96,12 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const handleConfirm = async () => {
     try {
       const data = {
-        // user_id: 1234,
+        user_id: user.id,
         personname: values.personname,
         suburb: values.suburb,
         city: values.city,
         state: values.state,
-        phoneno: values.phoneNumber,
+        phoneno: values.phoneno,
         email1: values.email,
         country: Number(values.countryId),
         propertylocation: values.propertylocation,
@@ -201,7 +205,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Country Name
+                                Country 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
@@ -228,7 +232,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                State Name
+                                State 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
@@ -253,7 +257,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                City Name
+                                City 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
@@ -314,6 +318,51 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                 )}
                             </div>
                           </div>
+                          
+                        </div>
+                        <div className="space-y-[10px] py-[20px] px-[10px]">
+                        <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Email 
+                              </label>
+                              {/* <span className="requiredError">*</span> */}
+                            </div>
+                            <input
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="email"
+                              value={formik.values.email}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                            />
+                            <div className="inputValidationError">
+                              {touched.email && errors.email && (
+                                <div>{errors.email}</div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Phone No
+                              </label>
+                              {/* <span className="requiredError">*</span> */}
+                            </div>
+                            <input
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="phoneno"
+                              value={formik.values.phoneno}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                            />
+                            <div className="inputValidationError">
+                              {touched.phoneno && errors.phoneno && (
+                                <div>{errors.phoneno}</div>
+                              )}
+                            </div>
+                          </div>
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
@@ -321,8 +370,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
+                            <textarea
+                              className="inputFieldBorder inputFieldValue min-h-[70px] max-h-[70px]"
                               type="text"
                               name="possibleservices"
                               value={formik.values.possibleservices}
@@ -336,7 +385,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                 )}
                             </div>
                           </div>
-                        </div>
+                        </div> 
                       </div>
                     </div>
 

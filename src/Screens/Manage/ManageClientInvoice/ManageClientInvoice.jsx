@@ -374,18 +374,17 @@ const ManageClientInvoice = () => {
         }
         // setPageLoading(true);
         const data = {
-            "clientid": Number(formValues.client),
+            "clientid": Number(formValues.client) ,
             "orderid": Number(formValues.order),
             "estimatedate": formValues.estimateDate,
-            "estimateamount": Number(formValues.estimateAmount),
-            "invoicedate": formValues.invoiceDate,
-            "invoiceamount": Number(formValues.invoiceAmount),
+            "estimateamount": formValues.estimateAmount ? Number(formValues.estimateAmount) : formValues.estimateAmount,
+            "invoicedate": formValues.invoiceDate, 
+            "invoiceamount": formValues.invoiceAmount ? Number(formValues.invoiceAmount) : formValues.invoiceAmount,
             "quotedescription": formValues.invoiceDescription,
             "createdon": "2024-10-09",
-            "baseamount": Number(formValues.baseAmount),
-            "tax": Number(formValues.gst),
+            "baseamount": formValues.baseAmount ? Number(formValues.baseAmount) : formValues.baseAmount,
+            "tax": formValues.gst ? Number(formValues.gst) : formValues.gst,
             "entity": 1
-
         }
         const response = await APIService.addClientInvoice({...data, user_id : user.id});
 
@@ -397,6 +396,10 @@ const ManageClientInvoice = () => {
         if (result.result == "success") {
             setFormValues(initialValues);
             openAddSuccess();
+            setSelectedOption({
+                label : 'Select Client',
+                value : null
+            })
         } else {
             openFailureModal();
             setErrorMessage(result.message)
@@ -408,13 +411,13 @@ const ManageClientInvoice = () => {
 
     const initialValues = {
         client: state?.clientid,
-        estimateAmount: "",
-        baseAmount: "",
-        invoiceAmount: "",
-        invoiceDescription: "",
+        estimateAmount: null,
+        baseAmount: null,
+        invoiceAmount: null,
+        invoiceDescription: null,
         order: state?.orderid,
         estimateDate: null,
-        gst: "",
+        gst: null,
         invoiceDate: null
     };
     const [formValues, setFormValues] = useState(initialValues);

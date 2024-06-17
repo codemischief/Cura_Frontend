@@ -719,7 +719,7 @@ const ManageClientReceipt = () => {
         const data = {
             "receivedby": formValues.receivedBy,
             "amount": Number(formValues.amountReceived),
-            "tds": Number(formValues.TDS),
+            "tds": formValues.TDS,
             "recddate": formValues.receivedDate,
             "paymentmode": Number(formValues.receiptMode),
             "clientid": formValues.client,
