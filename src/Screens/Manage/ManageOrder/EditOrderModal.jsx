@@ -99,11 +99,11 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                 "additionalcomments": formValues.order_info.additionalcomments,
                 "status": Number(formValues.order_info.status),
                 "service": Number(formValues.order_info.service),
-                "clientpropertyid": Number(formValues.order_info.clientpropertyid),
-                "vendorid": Number(formValues.order_info.vendorid),
+                "clientpropertyid": formValues.order_info.clientpropertyid ? Number(formValues.order_info.clientpropertyid) : formValues.order_info.clientpropertyid,
+                "vendorid": formValues.order_info.vendorid ? Number(formValues.order_info.vendorid) : formValues.order_info.vendorid,
                 "assignedtooffice": 2,
                 "entityid": 1,
-                "tallyledgerid": formValues.order_info.tallyledgerid
+                "tallyledgerid": formValues.order_info.tallyledgerid ? Number(formValues.order_info.tallyledgerid) : formValues.order_info.tallyledgerid
             },
             "order_photos": {
                 "update": updateArrayPhotos,

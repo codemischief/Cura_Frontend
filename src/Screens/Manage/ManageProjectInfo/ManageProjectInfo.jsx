@@ -400,7 +400,7 @@ const ManageProjectInfo = () => {
                 "policechowkey": formValues.project_info.policechowkey,
                 "maintenance_details": formValues.project_info.maintenance_details,
                 "numberoffloors": Number(formValues.project_info.numberoffloors),
-                "numberofbuildings": Number(formValues.project_info.numberofbuildings),
+                "numberofbuildings": Number(formValues.project_info.numberofbuildings) ,
                 "approxtotalunits": formValues.project_info.approxtotalunits,
                 "tenantstudentsallowed": formValues.project_info.tenantstudentsallowed,
                 "tenantworkingbachelorsallowed": formValues.project_info.tenantworkingbachelorsallowed,

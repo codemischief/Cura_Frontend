@@ -158,7 +158,6 @@ const ResearchAgent = () => {
     let obj = {
       user_id: user.id,
       rows: [
-        "id",
         "nameofagent",
         "agencyname",
         "emailid",
@@ -166,8 +165,20 @@ const ResearchAgent = () => {
         "phoneno2",
         "localitiesdealing",
         "nameofpartners",
-        "registered"
+        "registered",
+        "id",
       ],
+      colmap : {
+         "nameofagent" : "Name Of Agent",
+        "agencyname" : "Agency Name",
+        "emailid" : "Email ID",
+        "phoneno" : "Phone Number",
+        "phoneno2" : "Whatsapp Number",
+        "localitiesdealing" : "Localities Dealing",
+        "nameofpartners" : "Name Of Partners",
+        "registered" : "Registered",
+        "id" : "ID",
+      },
       // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",

@@ -1145,7 +1145,7 @@ const changeCompanyKey = async (data) => {
     `${env_URL_SERVER}changeCompanyKey`,
     METHOD_POST(data)
   );
-  return response;
+  return handleResponse(response);
 };
 
 export const APIService = {

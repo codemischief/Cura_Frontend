@@ -380,19 +380,7 @@ const OwnerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </select>
                             
                           </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Email </div> */}
-                            <label className="inputFieldLabel">Address</label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="address"
-                              value={formik.values.address}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
+                          
                           
                         </div>
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
@@ -568,7 +556,36 @@ const OwnerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           </div>
                           
                         </div>
-                         
+                         <div className="space-y-[10px] py-[20px] px-[10px]">
+                         <div className="">
+                            {/* <div className="text-[13px]">Email </div> */}
+                            <label className="inputFieldLabel">Address</label>
+                            <textarea
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue min-h-[70px] max-h-[70px]"
+                              type="text"
+                              name="address"
+                              value={formik.values.address}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                          <div className="">
+                            {/* <div className="text-[13px]">Phone Number </div> */}
+                            <label className="inputFieldLabel">
+                              Property Details
+                            </label>
+                            <textarea
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue min-h-[70px] max-h-[70px]"
+                              type="text"
+                              name="propertydetails"
+                              value={formik.values.propertydetails}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                         </div>
 
 
                         

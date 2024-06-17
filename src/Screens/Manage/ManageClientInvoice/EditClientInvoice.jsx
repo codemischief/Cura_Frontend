@@ -12,14 +12,14 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
     const {user} = useAuth()
 
     const initialValues = {
-        client: "",
-        estimateAmount: "",
-        baseAmount: "",
-        invoiceAmount: "",
-        invoiceDescription: "",
+        client: null,
+        estimateAmount: null,
+        baseAmount: null,
+        invoiceAmount: null,
+        invoiceDescription: null,
         order: null,
         estimateDate: null,
-        gst: "",
+        gst: null,
         invoiceDate: null
     };
     const [formValues, setFormValues] = useState(initialValues)
@@ -109,12 +109,11 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
             "clientid": formValues.client,
             "orderid": formValues.order,
             "estimatedate": formValues.estimateDate,
-            "estimateamount": formValues.estimateAmount,
+            "estimateamount": formValues.estimateAmount ? Number(formValues.estimateAmount) : null,
             "invoicedate": formValues.invoiceDate,
-            "invoiceamount": formValues.invoiceAmount,
+            "invoiceamount": formValues.invoiceAmount ? Number(formValues.invoiceAmount) : null,
             "quotedescription": formValues.invoiceDescription,
-            "createdon": "2024-10-09",
-            "baseamount": formValues.baseAmount,
+            "baseamount": formValues.baseAmount ? Number(formValues.baseAmount) : null,
             "tax": formValues.gst,
             "entity": 1
         }
@@ -405,7 +404,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                     </div>
                                     <div className="">
                                         <div className="text-sm">GST / ST</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="gst" value={formValues.gst} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Invoice Date</div>

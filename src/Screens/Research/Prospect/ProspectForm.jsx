@@ -330,7 +330,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="email"
                               value={formik.values.email}
                               onBlur={handleBlur}
