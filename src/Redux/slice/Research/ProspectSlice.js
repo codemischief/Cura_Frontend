@@ -84,7 +84,7 @@ export const getPropect = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `getResearchProspect`,
+      `${env_URL_SERVER}getResearchProspect`,
       payloadObj
     );
 
@@ -123,7 +123,7 @@ export const editProspectData = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `editResearchProspect`,
+      `${env_URL_SERVER}editResearchProspect`,
       {
         ...payload,
         reqid: uuidv4(),
@@ -145,7 +145,7 @@ export const editProspectData = (payload) => async (dispatch) => {
 export const downloadProspectusDataXls = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
-    const response = await axios.post(`getResearchProspect`, payloadObj);
+    const response = await axios.post(`${env_URL_SERVER}getResearchProspect`, payloadObj);
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
         downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
@@ -162,7 +162,7 @@ export const downloadProspectusDataXls = (payloadObj) => async (dispatch) => {
 export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `download/${filename}`,
+      `${env_URL_SERVER}download/${filename}`,
       {
         filename: filename,
         user_id: userId,
@@ -183,7 +183,7 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
 export const deleteProspect = (payload) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `deleteResearchProspect`,
+      `${env_URL_SERVER}deleteResearchProspect`,
       {
         ...payload,
         reqid: uuidv4(),
