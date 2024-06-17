@@ -290,7 +290,7 @@ const Service = () => {
     const addService = async () => {
         const data = {
             "user_id": user.id,
-            "lob": Number(formValues.lob),
+            "lob": formValues.lob,
             "service": formValues.serviceName,
             "active": true,
             "servicetype": "New service",

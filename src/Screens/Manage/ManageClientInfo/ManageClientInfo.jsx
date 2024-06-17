@@ -894,7 +894,7 @@ const ManageClientInfo = () => {
                 "includeinmailinglist": !formValues.client_info.includeinmailinglist,
                 "entityid": Number(formValues.client_info.entityid),
                 "tenantof": formValues.client_info.tenantof,
-                "tenantofproperty": Number(formValues.client_info.tenentofproperty)
+                "tenantofproperty": formValues.client_info.tenentofproperty ? Number(formValues.client_info.tenentofproperty) : formValues.client_info.tenentofproperty
             },
             "client_access": formValues.client_access,
             "client_bank_info": formValues.client_bank_info,

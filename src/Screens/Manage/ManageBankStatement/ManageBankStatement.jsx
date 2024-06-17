@@ -252,9 +252,9 @@ const ManageBankStatement = () => {
         console.log('called')
         const data = {
             "user_id": user.id,
-            "modeofpayment": Number(formValues.modeofpayment),
+            "modeofpayment": formValues.modeofpayment,
             "date": formValues.date,
-            "amount": Number(formValues.amount),
+            "amount":formValues.amount,
             "particulars": formValues.particulars,
             "crdr": formValues.crdr,
             "vendorid": formValues.vendor ,
@@ -279,19 +279,19 @@ const ManageBankStatement = () => {
             return ;
         }
         const data = {
-            "user_id": userId || user.id,
-            "receivedby": Number(crFormValues.receivedBy),
-            "paymentmode": Number(crFormValues.receiptMode),
+            "user_id": user.id,
+            "receivedby": crFormValues.receivedBy,
+            "paymentmode": crFormValues.receiptMode,
             "recddate": crFormValues.receivedDate,
             "entityid": 1,
-            "amount": Number(crFormValues.amountReceived),
-            "howreceivedid": Number(crFormValues.howReceived),
-            "clientid": Number(crFormValues.client),
+            "amount": crFormValues.amountReceived,
+            "howreceivedid": crFormValues.howReceived,
+            "clientid": crFormValues.client,
             "receiptdesc": crFormValues.receiptDescription,
-            "serviceamount": Number(crFormValues.serviceAmount),
-            "reimbursementamount": Number(crFormValues.reimbursementAmount),
-            "tds": Number(crFormValues.TDS),
-            "banktransactionid" : Number(statementIdForClientReceipt),
+            "serviceamount": crFormValues.serviceAmount,
+            "reimbursementamount": crFormValues.reimbursementAmount,
+            "tds": crFormValues.TDS,
+            "banktransactionid" : statementIdForClientReceipt,
             
             "officeid" : 2
         }
@@ -1779,7 +1779,7 @@ const ManageBankStatement = () => {
                                                     <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Pune" value="Pune" disabled />
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[14px]">Recieved By<label className="text-red-500">*</label></div>
+                                                    <div className="text-[14px]">Received By<label className="text-red-500">*</label></div>
                                                     {/* <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} required >
                                                         <option >Select Employee</option>
                                                         {existingUsers && existingUsers.map(item => (

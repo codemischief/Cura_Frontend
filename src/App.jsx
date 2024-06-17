@@ -4,7 +4,6 @@ import NotFound from "./Screens/NotFound/notFound";
 import Country from "./Screens/Admin/Country";
 import City from "./Screens/Admin/City";
 import Locality from "./Screens/Admin/Locality";
-import State from "./Screens/Admin/State";
 import ManageUser from "./Screens/Manage/ManageUser/ManageUser";
 import ManageProjectInfo from "./Screens/Manage/ManageProjectInfo/ManageProjectInfo";
 import ManageOrder from "./Screens/Manage/ManageOrder/ManageOrder";
@@ -183,7 +182,7 @@ const App = () => {
               <Route path="/manage/manageOrder" element={<ManageOrder />} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
               <Route path="/admin/country" element={<Country />} />
-              <Route path="/admin/state" element={<State />} />
+              
               <Route path="/admin/city" element={<City />} />
               <Route path="/admin/locality" element={<Locality />} />
               <Route path="/admin/LOB" element={<LOB />} />

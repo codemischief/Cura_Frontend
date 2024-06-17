@@ -64,10 +64,10 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
     setClientNameText(e.label)
     const existing = { ...formValues }
     const temp = { ...existing.client_property }
-    temp.clientid = e.value
-    setCurrClientName(e.label)
     existing.client_property = temp;
+    temp.clientid = e.value
     setFormValues(existing)
+    setCurrClientName(e.label)
     console.log(formValues)
     setSelectedOption(e)
   }
@@ -294,7 +294,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
             <div className="text-[13px]">
               Society/Project Name <label className="text-red-500">*</label>
             </div>
-                      {console.log(existingSociety)}
+                      
             
                         <ClientPropertySelectNative
                         data={Object.keys(existingSociety)}
