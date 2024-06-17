@@ -1,5 +1,5 @@
 import FileSaver from "file-saver";
-import axios from "axios";
+import axios from "@/utils/axios";
 import { createSlice } from "@reduxjs/toolkit";
 import { env_URL_SERVER, updatedResponsePmaData } from "../../helper";
 import { moduleMethods } from "../../../utils/axios";
