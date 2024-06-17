@@ -59,7 +59,7 @@ const CustomSelectNative = ({
           "&.MuiOutlinedInput-root": {
             "& fieldset": {
               border: "none", // Default border color
-              borderRadius: 0,q
+              borderRadius: 0,
             },
             
             fontSize: "0.6875rem",
