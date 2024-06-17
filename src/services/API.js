@@ -1095,6 +1095,13 @@ const getCompanyKey = async (data) => {
 
   return response;
 }
+const changeCompanyKey = async (data) => {
+  const response = await fetch(
+    `${env_URL_SERVER}changeCompanyKey`,
+    METHOD_POST(data)
+  );
+  return response
+}
 
 
 export const APIService = {
@@ -1245,5 +1252,6 @@ export const APIService = {
   getMandalAdmin,
   deleteFromTable,
   getGroupsAdmin,
-  getCompanyKey
+  getCompanyKey,
+  changeCompanyKey
 };

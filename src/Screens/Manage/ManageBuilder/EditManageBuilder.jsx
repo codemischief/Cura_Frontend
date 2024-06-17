@@ -39,7 +39,7 @@ const EditManageBuilder = (props) => {
     const editNewBuilder = async () => {
         const data = {
             "user_id": user.id,
-            "builder_id": Number(props.builder.id),
+            "builder_id": props.builder.id,
             "builder_name": formValues.builderName,
             "phone_1": formValues.phone1,
             "phone_2": formValues.phone2,
@@ -48,9 +48,9 @@ const EditManageBuilder = (props) => {
             "addressline1": formValues.address1,
             "addressline2":formValues.address2,
             "suburb":formValues.suburb,
-            "city": Number(formValues.city),
+            "city": formValues.city,
             "state": formValues.state,
-            "country": Number(formValues.country),
+            "country": formValues.country,
             "zip": formValues.zip,
             "website": formValues.website,
             "comments": formValues.comment
@@ -386,7 +386,7 @@ const EditManageBuilder = (props) => {
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
-                                {isLoading && <CircularProgress />}
+                                
                             </div>
                         </form>
                     </div>

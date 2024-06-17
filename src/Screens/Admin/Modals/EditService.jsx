@@ -78,8 +78,8 @@ const EditService = ({
     }
     const data = {
       user_id: user.id,
-      id: Number(currService),
-      lob: Number(formValues.lob),
+      id: currService,
+      lob: formValues.lob,
       service: formValues.serviceName,
       active: true,
       servicetype: "New service",

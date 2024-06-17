@@ -59,15 +59,15 @@ const EditManageStatement = (props) => {
        
             const data = {
             "user_id": user.id,
-            "id": Number(props.bankStatement.item.id),
-            "modeofpayment": Number(formValues.modeofpayment),
-            "date":String(formValues.date),
+            "id": props.bankStatement.item.id,
+            "modeofpayment": formValues.modeofpayment,
+            "date":formValues.date,
             "amount":formValues.amount,
-            "particulars":String(formValues.particulars),
+            "particulars":formValues.particulars,
             "crdr": formValues.crdr,
-            "receivedby":Number(formValues.how),
-            "vendorid":Number(formValues.vendor),
-            "howreceived" : Number(formValues.how)
+            "receivedby":formValues.how,
+            "vendorid":formValues.vendor,
+            "howreceived" : formValues.how
             // "createdby":user.id
 
         }
