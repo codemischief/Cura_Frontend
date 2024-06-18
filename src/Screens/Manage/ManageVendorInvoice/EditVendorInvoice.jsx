@@ -253,7 +253,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                         <div className="pt-0.5">
                                             <div className="text-[13px]">Vendor</div>
                                             <select className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                                <option value={null}> Select Vendor</option>
+                                                <option value={null} hidden> Select Vendor</option>
                                                 {vendorData.map(item => (
                                                     <option key={item[0]} value={item[0]}>
                                                         {item[1]}
