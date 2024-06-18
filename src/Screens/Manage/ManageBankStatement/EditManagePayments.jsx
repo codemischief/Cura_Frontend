@@ -80,13 +80,13 @@ const EditManageStatement = (props) => {
     };
     console.log(props)
     const initialValues = {
-        modeofpayment: props.bankStatement.item?.modeofpayment ,
-        particulars: props.bankStatement.item?.particulars,
-        amount: props.bankStatement.item?.amount,
-        vendor: props.bankStatement.item?.vendorid,
-        date: props.bankStatement.item?.date,
-        crdr: props.bankStatement.item?.crdr,
-        how: props.bankStatement.item?.receivedhow,
+        modeofpayment: null ,
+        particulars: null,
+        amount: null,
+        vendor: null,
+        date: null,
+        crdr: null,
+        how: null,
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -109,13 +109,28 @@ const EditManageStatement = (props) => {
         setIsLoading(false);
     };
     const [currentMode,setCurrentMode]=useState("")
+    const fetchInitialData = async (id) => {
+        const data = {
+            user_id : user.id,
+            table_name : "get_bankst_view",
+            item_id : props.bankStatement.item.id
+         }
+         const response = await APIService.getItembyId(data)
+         const res = await response.json()
+         console.log(res.data)
+         const temp = {...formValues}
+         temp.amount = res.data.amount
+         temp.crdr = res.data.crdr
+         temp.date = res.data.date
+         temp.how = res.data.receivedhow
+         temp.modeofpayment = res.data.modeofpayment
+         temp.particulars = res.data.particulars
+         temp.vendor = res.data.vendorid
+         setFormValues(temp)
+
+    }
     useEffect(() => {
-        const modeOfThisItem=props.bankStatement.item.modeofpayment;
-        mode.map(ele =>{
-            if( modeOfThisItem == ele[0]){
-                setCurrentMode(ele[1])
-            }
-        })
+        fetchInitialData()
     }, []);
     // validate form and to throw Error message
     const validate = ()  => {
@@ -205,6 +220,7 @@ const EditManageStatement = (props) => {
                                             <div className="text-[13px]"> Mode <label className="text-red-500">*</label></div>
                                             <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
                                             {/* <option>{currentMode}</option> */}
+                                                <option value="" hidden>Select Mode</option>
                                                 {mode && mode.map(item => (
                                                     <option key={item[0]} value={item[0]}>
                                                         {item[1]}
@@ -228,7 +244,7 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[13px]">Vendor</div> 
                                             <select className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                                <option hidden>Select A Vendor</option>
+                                                <option hidden value="">Select A Vendor</option>
                                                 {vendorList && vendorList.map(item => (
                                                     <option value={item[0]}>
                                                         {item[1]}
@@ -248,6 +264,7 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[13px]">DR/CR <label className="text-red-500">*</label></div>
                                             <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="crdr" value={formValues.crdr} onChange={handleChange} required>
+                                                <option value="" hidden>Select CR/DR</option>
                                                 {crdr && crdr.map(item => (
                                                     <option key={item.id} value={item.value}>
                                                         {item.label}
