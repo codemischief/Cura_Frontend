@@ -3,10 +3,11 @@ import searchIcon from "../../assets/searchIcon.png";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Backdrop, CircularProgress } from "@mui/material";
-
+import { Refresh } from "@mui/icons-material";
 import { APIService } from "../../services/API";
 
 import useAuth from "../../context/JwtContext";
+import RefreshFilterButton from "../../Components/common/buttons/RefreshFilterButton";
 const Dashboard = () => {
   const {user} = useAuth()
   const [pageLoading,setPageLoading] = useState(false)
@@ -76,12 +77,22 @@ const Dashboard = () => {
         <div className="bg-white w-full h-full p-3 rounded-[5px] ">
           <div className="w-full h-full">
             {/* this is the internal div */}
-            <div className="w-full h-[55px] bg-[#DAE7FF] pl-5 pt-3 rounded-md">
+            <div className="w-full h-[55px] bg-[#DAE7FF] pl-5 pt-3 rounded-md flex justify-around">
               {/* this will havw the header */}
-              <h1 className="font-sans text-2xl">My Orders</h1>
+              <h1 className="font-sans text-2xl w-[80%]">My Orders</h1>
+              <div className="w-[100px]">
+                <div className="border-solid border-gray border-[0.5px] rounded-md w-full h-8 flex items-center justify-center space-x-1 p-2 cursor-pointer text-[0.8vw] bg-[#f5f5f5]"
+                      onClick={fetchDashboardData}
+              >
+                  <p className='text-[1.2em]'>Refresh</p>
+                  <Refresh sx={{ height: "0.6em", width: "0.6em" }} />
+              </div>
+
+              </div>
             </div>
             <div className="w-full">
               {/* this will have the items */}
+              
               <div className=" w-full h-[45px] flex border-gray-400 border-b-[1px] font-semibold">
                 {/* this will have the index */}
                 <div className="w-[30%] h-full  px-3 py-3">

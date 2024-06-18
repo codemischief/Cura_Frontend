@@ -377,12 +377,12 @@ const ManageClientInvoice = () => {
             "clientid": Number(formValues.client) ,
             "orderid": Number(formValues.order),
             "estimatedate": formValues.estimateDate,
-            "estimateamount": formValues.estimateAmount ? Number(formValues.estimateAmount) : formValues.estimateAmount,
+            "estimateamount": formValues.estimateAmount ? Number(formValues.estimateAmount) : null,
             "invoicedate": formValues.invoiceDate, 
-            "invoiceamount": formValues.invoiceAmount ? Number(formValues.invoiceAmount) : formValues.invoiceAmount,
+            "invoiceamount": formValues.invoiceAmount ? Number(formValues.invoiceAmount) : null,
             "quotedescription": formValues.invoiceDescription,
             "createdon": "2024-10-09",
-            "baseamount": formValues.baseAmount ? Number(formValues.baseAmount) : formValues.baseAmount,
+            "baseamount": formValues.baseAmount ? Number(formValues.baseAmount) : null,
             "tax": formValues.gst ? Number(formValues.gst) : formValues.gst,
             "entity": 1
         }
@@ -1228,7 +1228,7 @@ const ManageClientInvoice = () => {
                                     </div> */}
                                     <div className='w-[12%]  flex pl-0.5'>
                                         <div className='p-3'>
-                                            <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : "0.00"}</p>
+                                            <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex pl-1'>
@@ -1506,7 +1506,7 @@ const ManageClientInvoice = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-sm">GST / ST</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="gst" value={formValues.gst} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Invoice Date</div>

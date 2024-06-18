@@ -408,8 +408,8 @@ const ManageVendorPayment = () => {
             "vendorid": Number(formValues.vendorid),
             "mode": Number(formValues.mode),
             "description": formValues.description,
-            "tds": Number(formValues.tds),
-            "servicetaxamount": Number(formValues.servicetaxamount),
+            "tds": formValues.tds ? Number(formValues.tds) : null,
+            "servicetaxamount": formValues.servicetaxamount ? Number(formValues.servicetaxamount) : null,
             "entityid": 1,
             "officeid": 2
         }
@@ -1705,12 +1705,12 @@ const ManageVendorPayment = () => {
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Amount Paid <label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="amount" value={formValues.amount} onChange={handleChange} />
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.amount}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">GST/ST </div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="servicetaxamount" value={formValues.servicetaxamount} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="servicetaxamount" value={formValues.servicetaxamount} onChange={handleChange} />
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px] mb-0.5">Description </div>
@@ -1791,7 +1791,7 @@ const ManageVendorPayment = () => {
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">TDS Deducted </div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="tds" value={formValues.tds} onChange={handleChange} />
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>

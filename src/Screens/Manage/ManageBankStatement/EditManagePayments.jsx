@@ -53,10 +53,6 @@ const EditManageStatement = (props) => {
     }
 
     const editBankStatement = async () => {
-            // setVendorId((formValues.vendor).split(",", 1));
-        // setModeEdit((formValues.modeofpayment).split(",", 1)[0]);
-        // setRecievedBy((formValues.how).split(",", 1))
-       
             const data = {
             "user_id": user.id,
             "id": props.bankStatement.item.id,
@@ -68,10 +64,8 @@ const EditManageStatement = (props) => {
             "receivedby":formValues.how,
             "vendorid":formValues.vendor,
             "howreceived" : formValues.how
-            // "createdby":user.id
-
         }
-                const response = await APIService.editBankStatement(data);
+        const response = await APIService.editBankStatement(data);
         if (response.ok) {
             props.showSuccess();
         } else {

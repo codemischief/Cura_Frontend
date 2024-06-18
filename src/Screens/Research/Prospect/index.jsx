@@ -184,6 +184,7 @@ const PropectusPage = () => {
     }, {});
 
     let obj = {
+      user_id : user.id,
       rows: [
         "personname",
         "suburb",
@@ -212,7 +213,7 @@ const PropectusPage = () => {
   const deleteProspects = async () => {
     try {
       setDeleteLoading(true);
-      const data = { id: isDeleteDialogue };
+      const data = {user_id : user.id, id: isDeleteDialogue };
       await dispatch(deleteProspect(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Prospect Deleted Successfully");

@@ -113,7 +113,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
       admincontactname : editData?.admincontactname ? editData.admincontactname : null,
       admincontactphone : editData?.admincontactphone ? editData.admincontactphone : null,
       admincontactmail : editData?.admincontactmail ? editData.admincontactmail : null,
-      hc : editData?.hc ? editData.hc : null,
+      notes : editData?.notes ? editData.notes : null,
       website : editData?.website ? editData.website : null,
       contactname1 : editData?.contactname1 ? editData.contactname1 : null,
       contactphone1 : editData?.contactphone1 ? editData.contactphone1 : null,
@@ -121,7 +121,8 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
       contactname2 : editData?.contactname2 ? editData.contactname2 : null,
       contactphone2 : editData?.contactphone2 ? editData.contactphone2 : null,
       contactmail2 : editData?.contactmail2 ? editData.contactmail2 : null,
-      onsiteopportunity : editData?.onsiteopportunity ? editData.onsiteopportunity : false
+      onsiteopportunity : editData?.onsiteopportunity ? editData.onsiteopportunity : false,
+      headcount : editData?.hc ? editData.hc : null,
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -140,7 +141,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
         state: values.state,
         admincontactmail : values.admincontactmail,
         zip : values.zip,
-        hc : values.hc,
+        notes : values.notes,
         website : values.website,
         admincontactphone : values.admincontactphone,
         contactname1 : values.contactname1,
@@ -157,7 +158,8 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
         industry : values.industry,
         addressline1 : values.adressline1,
         addressline2 : values.adressline2,
-        suburb: values.suburb
+        suburb: values.suburb,
+        hc : values.headcount
       };
 
       if (editData?.id) {
@@ -596,8 +598,8 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="hc"
-                              value={formik.values.hc}
+                              name="notes"
+                              value={formik.values.notes}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
@@ -722,6 +724,23 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               type="email"
                               name="contactmail2"
                               value={formik.values.contactmail2}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                            />
+                            
+                          </div>
+                          <div className="">
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Head Count
+                              </label>
+                              
+                            </div>
+                            <input
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="headcount"
+                              value={formik.values.headcount}
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
