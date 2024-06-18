@@ -28,7 +28,7 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import useAuth from "../../../context/JwtContext";
-
+// import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 const OrderReceiptList = () => {
   const dispatch = useDispatch();
   const {user} = useAuth()
@@ -52,7 +52,7 @@ const OrderReceiptList = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [height, setHeight] = useState("calc(100vh - 15rem)");
-
+  const [openConfirmation,setOpenConfimation] = useState(false)
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -320,6 +320,17 @@ const OrderReceiptList = () => {
     let floorValue = Math.floor(number * 100) / 100; // Get floor value with two decimal places
     return floorValue.toFixed(2); // Convert to string with exactly two decimal places
   }
+  const [email,setEmail] = useState("")
+  const getClientInfo = async () => {
+      const data = {
+        user_id : user.id,
+        table_name : "get_client_info_view",
+        item_id : selectedOption.value
+      }
+      const response = await APIService.getItembyId(data)
+      const res = await response.json()
+      setEmail(res.data.email1)
+  }
   return (
     <Container>
       <div className="flex flex-col px-4">
@@ -340,7 +351,9 @@ const OrderReceiptList = () => {
               <CustomButton
                 title="Send Client Statement"
                 onClick={() => {
-                  sendEmail()
+                  // sendEmail()
+                  getClientInfo()
+                  setOpenConfimation(true)
                   showTable && setOpenModal(true);
                 }}
               />
@@ -551,7 +564,36 @@ const OrderReceiptList = () => {
           message="New Receipt Added Successfully"
         />
       )}
-
+       {openConfirmation && (
+        <ConfirmationModal
+          open={openConfirmation}
+          // loading={formSubmissionStatus === "loading"}
+          btnTitle={"Send"}
+          onClose={() => {
+            setOpenConfimation(false);
+          }}
+          // errors={{}}
+          onSubmit={sendEmail}
+          title={"Send Email"}
+          description={
+            <div className="flex flex-col items-center">
+              <p className="">Email : {email}</p>
+              <Typography
+                sx={{
+                  fontFamily: "Open Sans",
+                  fontSize: "14px",
+                  fontStyle: "normal",
+                  fontWeight: 400,
+                  lineHeight: "150%" /* 21px */,
+                  color: "#282828",
+                }}
+              >
+                Are you sure you want to email Client Statement?
+              </Typography>
+            </div>
+          }
+        />
+      )}
     </Container>
   );
 };
