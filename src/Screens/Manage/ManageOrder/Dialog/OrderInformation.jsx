@@ -3,6 +3,8 @@ import { useState } from 'react';
 import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
 import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
+import ClientPropertySelectNative from '../../../../Components/common/select/ClientPropertySelectNative';
+import { MenuItem } from '@mui/material';
 import useAuth from '../../../../context/JwtContext';
 const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, serviceData, vendorData, tallyLedgerData, formErrors , hyperlinkstate, orderText,setOrderText, propertyData, setPropertyData}) => {
     const {user} = useAuth()
@@ -76,13 +78,24 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
     //       }
     //       return errors;
     //   };
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            buildername : item.buildername,
+            propertyname : item.propertyname
+          }
+        });
+        return idNameObject;
+    }
     const getClientPropertyByClientId = async (id) => {
         const data = {
             "client_id": id
         }
         const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
-        setPropertyData((prev) => res.data)
+        setPropertyData(convertToIdNameObject(res.data))
+        
 
     }
     // client name field
@@ -178,7 +191,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                         </div>
                         <div className="">
                             <div className="text-[13px]">Client Property</div>
-                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="clientpropertyid" value={formValues.order_info.clientpropertyid} onChange={handleChange} >
+                            {/* <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="clientpropertyid" value={formValues.order_info.clientpropertyid} onChange={handleChange} >
                                 <option value={null} hidden> Select Client Property</option>
                                 {console.log(propertyData)}
                                 {propertyData.map(item => (
@@ -186,7 +199,40 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                                         {item.propertyname}
                                     </option>
                                 ))}
-                            </select>
+                            </select> */}
+                            <ClientPropertySelectNative
+                        data={Object.keys(propertyData)}
+                        value={propertyData?.[formValues.order_info.clientpropertyid]?.propertyname ? propertyData?.[formValues.order_info.clientpropertyid]?.propertyname:null}
+                        placeholder="Select Client Property"
+                        isSticky={true}
+                        menuMaxHeight='14rem'
+                        headerText={{
+                            first : 'Property',
+                            second : 'Builder'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {propertyData[item].propertyname}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {propertyData[item].buildername}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            setFormValues({
+                                ...formValues, order_info: {
+                                    ...formValues.order_info,
+                                    clientpropertyid: e.target.value
+                                }
+                            })
+                           }}
+                        />
                             {/* <PropertyDropDown options={propertyData} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
                             handleChange(e)
                         }} formValueName="clientpropertyid" value={formValues.order_info.clientpropertyid}  /> */}
@@ -236,7 +282,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                                         minHeight: 23,
                                         // lineHeight: '0.8',
                                         height: '20px',
-                                        width: 224,
+                                        width: 230,
                                         fontSize: 12,
                                         // padding: '1px'
                                         borderRadius : '2px'
@@ -274,7 +320,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                                     }),
                                     menu: (provided, state) => ({
                                         ...provided,
-                                        width: 224, // Adjust the width of the dropdown menu
+                                        width: 230, // Adjust the width of the dropdown menu
                                         zIndex: 9999 // Ensure the menu appears above other elements
                                     }),
                                     menuList: (provided, state) => ({

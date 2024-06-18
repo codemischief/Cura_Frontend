@@ -215,6 +215,17 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         setOrderStatusData(res.data)
     }
     // const [clientPropertyData,setClientPropertyData] = useState([])
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            buildername : item.buildername,
+            propertyname : item.propertyname
+          }
+        });
+        return idNameObject;
+    }
+
     const getClientPropertyByClientId = async (id) => {
         const data = {
             
@@ -223,7 +234,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
-        setClientPropertyData((prev) => res.data)
+        setClientPropertyData(convertToIdNameObject(res.data))
     }
     
     // const [serviceData,setServiceData] = useState([])

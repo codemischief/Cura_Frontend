@@ -45,16 +45,12 @@ const ManageBankStatement = () => {
     const navigate = useNavigate()
     const dataRows = [
         "mode",
-        "modeofpayment",
         "date",
         "crdr",
         "amount",
         "particulars",
         "clientname",
-        "id",
-        "creditdebit",
-        'vendorid',
-        'receivedhow'
+        "id"
     ]
     const menuRef = useRef();
     const canEdit = checkEditAccess();
@@ -940,40 +936,33 @@ const ManageBankStatement = () => {
         TDS: 0,
         receiptDescription: null,
     })
-    const openCreditRecipt = (item) => {
+    const openCreditRecipt = async (item) => {
         setStatementIdForClientReceipt((prev) => item.id)
         console.log(item)
-        const modeOfThisItem = item.modeofpayment;
-        mode.map(ele => {
-            if (modeOfThisItem == ele[0]) {
-                setCurrentMode(ele[1])
-            }
-        })
-        // {
-        //     mode: 'DAP-ICICI-42',
-        //     date: '2024-03-20',
-        //     crdr: 'CR',
-        //     amount: 112.11,
-        //     particulars: 'put any description or notes here',
-        //     clientname: '',
-        //     id: 100160
-        //   }
+        const data = {
+            user_id : user.id,
+            table_name : "get_bankst_view",
+            item_id : item.id
+        }
+        const response = await APIService.getItembyId(data)
+        const res = await response.json()
+        
         console.log(item)
         const temp = {...crFormValues}
-        temp.receiptMode = item.modeofpayment
-        temp.receivedDate = item.date 
-        temp.amountReceived = item.amount 
-        temp.serviceAmount = item.amount
-        temp.howReceived = item.receivedhow
+        temp.receiptMode = res.data.modeofpayment
+        temp.receivedDate = res.data.date 
+        temp.amountReceived = res.data.amount 
+        temp.serviceAmount = res.data.amount
+        temp.howReceived = res.data.receivedhow
         setCrFormValues(temp)
         const initialValues = {
-            modeofpayment: currentMode,
-            particulars: item.particulars,
-            amount: item.amount,
-            vendor: item.vendor,
-            date: item.date,
-            crdr: item.crdr,
-            how: item.how,
+            modeofpayment: res.data.modeofpayment,
+            particulars: res.data.particulars,
+            amount: res.data.amount,
+            vendor: res.data.vendor,
+            date: res.data.date,
+            crdr: res.data.crdr,
+            how: res.data.receivedhow,
         };
         setFormValues(initialValues);
 
@@ -1227,6 +1216,9 @@ const ManageBankStatement = () => {
             modeamount : 0.00
          }
     ])
+    const fetchCrValues = () => {
+        // in this we will fetch the values for Client Receipt
+    }
     return (
         <div className="font-medium">
             <Backdrop
@@ -1474,7 +1466,7 @@ const ManageBankStatement = () => {
                                         {/* <p>{dayjs(item.date, "dd-mmm-yyyy")}</p> */}
                                     </div>
                                     <div className='w-[10%]  p-4'>
-                                        <p>{item.creditdebit}</p>
+                                        <p>{item.crdr}</p>
                                         {/* <p>{item.crdr === "CR" ? "Credit" : ""}</p>
                                         <p>{item.crdr === "DR" ? "Debit" : ""}</p> */}
                                         {/* <p>{item.crdr === "CR" ? "Credit" : "Debit"}</p> */}
@@ -1694,7 +1686,7 @@ const ManageBankStatement = () => {
                                                 <div className="">
                                                     <div className="text-[13px]">Vendor</div>
                                                     <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                                        <option >Select Vendor </option>
+                                                        <option value="" hidden>Select Vendor </option>
                                                         {vendorList && vendorList.map(item => (
                                                             <option value={item[0]}>
                                                                 {item[1]}
@@ -1837,7 +1829,7 @@ const ManageBankStatement = () => {
                                                     <div className="text-[10px] text-[#CD0000] absolute">{formErrors.modeofpayment}</div>
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[14px]">Recieved Date<label className="text-red-500">*</label></div>
+                                                    <div className="text-[14px]">Received Date<label className="text-red-500">*</label></div>
                                                     <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="receivedDate" value={crFormValues.receivedDate} onChange={handleCrChange} disabled />
 
                                                     <div className="text-[12px] text-[#CD0000] absolute">{crFormErrors.receivedDate}</div>
@@ -1851,7 +1843,7 @@ const ManageBankStatement = () => {
                                                 <div className="">
                                                     <div className="text-[14px]">How Received?<label className="text-red-500">*</label></div>
                                                     <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="howReceived" value={crFormValues.howReceived} onChange={handleCrChange} required>
-                                                        <option hidden>Select How Recieved</option>
+                                                        <option hidden>Select How Received</option>
                                                         {howReceived && howReceived.map(item => (
                                                             <option key={item} value={item[0]}>
                                                                 {item[1]}

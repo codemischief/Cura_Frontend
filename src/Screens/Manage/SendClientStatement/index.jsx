@@ -12,7 +12,7 @@ import AsyncSelect from "react-select/async";
 import { APIService } from '../../../services/API';
 import Container from "../../../Components/common/Container";
 import { formatDate } from "../../../utils/formatDate";
-
+import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import {
   downloadData,
@@ -47,7 +47,7 @@ const OrderReceiptList = () => {
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
-  const [toast, setToast] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -100,6 +100,7 @@ const OrderReceiptList = () => {
         pg_size: +countPerPage,
       };
       dispatch(getData(obj));
+      
     }
   };
 
@@ -284,7 +285,11 @@ const OrderReceiptList = () => {
     return results
   }
   const sendEmail = () => {
-    
+    if(email == "") {
+      setOpenConfimation(false)
+      toast.error("Email Doesn't Exist For Client")
+      return 
+    }
     let obj = {
       user_id: user.id,
       startdate: startDate ?? "2021-01-01",
@@ -315,6 +320,9 @@ const OrderReceiptList = () => {
       order: sorting.sort_order ? sorting.sort_order : "",
     };
     dispatch(getData(obj));
+    setOpenConfimation(false)
+    setShowModal(true)
+
   }
   function floorDecimal(number) {
     let floorValue = Math.floor(number * 100) / 100; // Get floor value with two decimal places
@@ -471,7 +479,6 @@ const OrderReceiptList = () => {
                 lineHeight: "18.9px",
                 marginTop: "12px",
                 "&:hover": {
-                  //you want this to be the same as the backgroundColor above
                   backgroundColor: "#004DD7",
                   color: "#fff",
                 },
@@ -558,12 +565,13 @@ const OrderReceiptList = () => {
           height={height}
         />
       </div>
-      {toast && (
+      {showModal && (
         <SucessfullModal
-          isOpen={toast}
-          message="New Receipt Added Successfully"
+          isOpen={showModal}
+          message="Client Statement Sent Successfully"
         />
       )}
+      
        {openConfirmation && (
         <ConfirmationModal
           open={openConfirmation}
