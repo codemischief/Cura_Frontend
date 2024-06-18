@@ -330,17 +330,17 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Estimate Amount</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Base Amount</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="baseAmount" value={formValues.baseAmount} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="baseAmount" value={formValues.baseAmount} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Invoice Amount</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Quote/Invoice Description <label className="text-red-500">*</label></div>
