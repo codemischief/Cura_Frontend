@@ -24,32 +24,7 @@ const axiosInstance = axios.create({
 
 const logPayload = {
   token: `Bearer ${accessToken}`,
-  // user_id: userId,
 };
-// Request interceptor to set headers
-// axiosInstance.interceptors.request.use(
-//   (config) => {
-//     const { headers } = config;
-//     // const reqid = uuidv4();
-
-//     // Add the static header values
-//     headers["Authorization"] = `Bearer ${accessToken}`;
-//     // headers["reqid"] = reqid;
-//     // headers["userid"] = userId;
-//     headers["Content-Type"] = "application/json";
-
-//     // Add dynamic headers if available in config
-//     // if (config.modulename && config.methodname) {
-//     //   headers["modulename"] = config.modulename;
-//     //   headers["methodname"] = config.methodname;
-//     // }
-
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -84,10 +59,8 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (
-      (error.response && error.response.status === 401) ||
       error.response.status === 498
     ) {
-      // Handle unauthorized access, e.g., redirect to login
       if (!toastShown) {
         toastShown = true;
         setTimeout(() => (toastShown = false), 1000); // Reset after 1 second
@@ -96,9 +69,25 @@ axiosInstance.interceptors.response.use(
         toast.error("Unauthorized!");
       }
     }
+    else if( error.response.status===401 || error.response.status===403 || error.response.status===400){
+      if(!toastShown){
+        toastShown = true;
+        setTimeout(() => (toastShown = false), 1000)
+        toast.error("Bad Request: The request was invalid.");
+      }
+    }
+    else if(statusCode === 404){
+      if(!toastShown){
+        toastShown = true;
+        setTimeout(() => (toastShown = false), 1000)
+        toast.error("Not Found: The resource was not found.");
+      }
+     
+    }
 
     return Promise.reject(error);
   }
 );
 
 export default axiosInstance;
+
