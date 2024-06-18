@@ -17,13 +17,13 @@ const Delete = (props) => {
         // props.setShowDelete(true);
         
         console.log(props);
-        setShowLoading(true);
+        // setShowLoading(true);
         const data = {"user_id":user.id,"id": props.currentStatement};
         console.log(data);
         const response = await APIService.deleteBankStatement(data);
         props.closeDialog(false);
           await props.fetchData();
-          setShowLoading(false);
+        //   setShowLoading(false);
           if((await response.json()).result === "success"){
             setShowSucess(true);
           }

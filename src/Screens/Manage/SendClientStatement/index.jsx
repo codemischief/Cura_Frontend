@@ -12,7 +12,7 @@ import AsyncSelect from "react-select/async";
 import { APIService } from '../../../services/API';
 import Container from "../../../Components/common/Container";
 import { formatDate } from "../../../utils/formatDate";
-
+import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import {
   downloadData,
@@ -28,7 +28,7 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import useAuth from "../../../context/JwtContext";
-
+// import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 const OrderReceiptList = () => {
   const dispatch = useDispatch();
   const {user} = useAuth()
@@ -47,12 +47,12 @@ const OrderReceiptList = () => {
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
-  const [toast, setToast] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [height, setHeight] = useState("calc(100vh - 15rem)");
-
+  const [openConfirmation,setOpenConfimation] = useState(false)
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -100,6 +100,7 @@ const OrderReceiptList = () => {
         pg_size: +countPerPage,
       };
       dispatch(getData(obj));
+      
     }
   };
 
@@ -284,7 +285,11 @@ const OrderReceiptList = () => {
     return results
   }
   const sendEmail = () => {
-    
+    if(email == "") {
+      setOpenConfimation(false)
+      toast.error("Email Doesn't Exist For Client")
+      return 
+    }
     let obj = {
       user_id: user.id,
       startdate: startDate ?? "2021-01-01",
@@ -315,10 +320,24 @@ const OrderReceiptList = () => {
       order: sorting.sort_order ? sorting.sort_order : "",
     };
     dispatch(getData(obj));
+    setOpenConfimation(false)
+    setShowModal(true)
+
   }
   function floorDecimal(number) {
     let floorValue = Math.floor(number * 100) / 100; // Get floor value with two decimal places
     return floorValue.toFixed(2); // Convert to string with exactly two decimal places
+  }
+  const [email,setEmail] = useState("")
+  const getClientInfo = async () => {
+      const data = {
+        user_id : user.id,
+        table_name : "get_client_info_view",
+        item_id : selectedOption.value
+      }
+      const response = await APIService.getItembyId(data)
+      const res = await response.json()
+      setEmail(res.data.email1)
   }
   return (
     <Container>
@@ -340,7 +359,9 @@ const OrderReceiptList = () => {
               <CustomButton
                 title="Send Client Statement"
                 onClick={() => {
-                  sendEmail()
+                  // sendEmail()
+                  getClientInfo()
+                  setOpenConfimation(true)
                   showTable && setOpenModal(true);
                 }}
               />
@@ -458,7 +479,6 @@ const OrderReceiptList = () => {
                 lineHeight: "18.9px",
                 marginTop: "12px",
                 "&:hover": {
-                  //you want this to be the same as the backgroundColor above
                   backgroundColor: "#004DD7",
                   color: "#fff",
                 },
@@ -545,13 +565,43 @@ const OrderReceiptList = () => {
           height={height}
         />
       </div>
-      {toast && (
+      {showModal && (
         <SucessfullModal
-          isOpen={toast}
-          message="New Receipt Added Successfully"
+          isOpen={showModal}
+          message="Client Statement Sent Successfully"
         />
       )}
-
+      
+       {openConfirmation && (
+        <ConfirmationModal
+          open={openConfirmation}
+          // loading={formSubmissionStatus === "loading"}
+          btnTitle={"Send"}
+          onClose={() => {
+            setOpenConfimation(false);
+          }}
+          // errors={{}}
+          onSubmit={sendEmail}
+          title={"Send Email"}
+          description={
+            <div className="flex flex-col items-center">
+              <p className="">Email : {email}</p>
+              <Typography
+                sx={{
+                  fontFamily: "Open Sans",
+                  fontSize: "14px",
+                  fontStyle: "normal",
+                  fontWeight: 400,
+                  lineHeight: "150%" /* 21px */,
+                  color: "#282828",
+                }}
+              >
+                Are you sure you want to email Client Statement?
+              </Typography>
+            </div>
+          }
+        />
+      )}
     </Container>
   );
 };

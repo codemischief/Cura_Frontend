@@ -240,7 +240,11 @@ const EditClientProperty = (props) => {
                 updateArrayClientPhotos.push(tempObj);
               }
           }else {
-                insertArrayClientPhotos.push(tempObj);
+                if((initialClientPropertyData.client_property_photos.photolink != null ||initialClientPropertyData.client_property_photos.photolink != "") &&  (initialClientPropertyData.client_property_photos.description != null ||initialClientPropertyData.client_property_photos.description != "") && (initialClientPropertyData.client_property_photos.phototakenwhen != null ||initialClientPropertyData.client_property_photos.phototakenwhen != "")) {
+                }else {
+                    insertArrayClientPhotos.push(tempObj);
+                }
+                
           }
         }
     }

@@ -70,7 +70,13 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                     updateArrayPhotos.push(tempObj);
                 }
             } else {
-                insertArrayPhotos.push(tempObj);
+                const flag = false;
+                Object.keys(formValues.order_photos[i]).forEach(key => {
+                if(formValues.order_photos[i].key != null && formValues.order_photos[i].key != "") {
+                    flag = true
+                }
+                })
+                if(flag) insertArrayPhotos.push(tempObj);
             }
         }
     }
@@ -191,13 +197,23 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
 
     // we need to fetch the utility routes here
     // const [usersData,setUsersData] = useState([])
+
     const fetchUsersData = async () => {
         const data = {
             
         }
         const response = await APIService.getUsers({...data,user_id : user.id})
         const res = await response.json()
-        setUsersData(res.data);
+         setUsersData(() => {
+            const idNameObject = {};
+            res.data.forEach((item) => {
+              idNameObject[item.id] = {
+                name : item.name,
+                username : item.username
+              }
+            });
+            return idNameObject;
+        })
     }
 
     // const [orderStatusData,setOrderStatusData] = useState([])
@@ -209,6 +225,17 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         setOrderStatusData(res.data)
     }
     // const [clientPropertyData,setClientPropertyData] = useState([])
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            buildername : item.buildername,
+            propertyname : item.propertyname
+          }
+        });
+        return idNameObject;
+    }
+
     const getClientPropertyByClientId = async (id) => {
         const data = {
             
@@ -217,7 +244,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
-        setClientPropertyData((prev) => res.data)
+        setClientPropertyData(convertToIdNameObject(res.data))
     }
     
     // const [serviceData,setServiceData] = useState([])

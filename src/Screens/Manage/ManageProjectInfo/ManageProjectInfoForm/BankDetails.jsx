@@ -6,7 +6,7 @@ const BankDetails = ({formValues,setFormValues}) => {
   const handleAdd = () => {
     setFormValues({...formValues,project_bank_details : [
       ...formValues.project_bank_details, {
-        "bankname": null,
+            "bankname": null,
             "bankbranch": null,
             "bankcity": null,
             "bankaccountholdername": null,

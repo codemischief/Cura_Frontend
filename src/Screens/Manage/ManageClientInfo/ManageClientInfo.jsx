@@ -858,9 +858,31 @@ const ManageClientInfo = () => {
         setShowAddConfirmation(true);
 
     }
+    [
+        {
+
+        },
+        {
+
+        }
+    ]
+    const arrayHelper = (arr) => {
+        const temp = []
+        for(var i=0;i <arr.length ; i++) {
+            
+            const flag = false;
+            Object.keys(arr[i]).forEach(key => {
+               if(arr[i].key != null && arr[i].key != "") {
+                flag = true
+               }
+            })
+            if(flag) temp.push(arr[i])
+        }
+        return temp
+    }
     const addClientInfo = async () => {
         // setButtonLoading(true);
-
+        
         const data = {
 
             "client_info": {
@@ -896,8 +918,8 @@ const ManageClientInfo = () => {
                 "tenantof": formValues.client_info.tenantof,
                 "tenantofproperty": formValues.client_info.tenentofproperty ? Number(formValues.client_info.tenentofproperty) : formValues.client_info.tenentofproperty
             },
-            "client_access": formValues.client_access,
-            "client_bank_info": formValues.client_bank_info,
+            "client_access": arrayHelper(formValues.client_access),
+            "client_bank_info": arrayHelper(formValues.client_bank_info),
             "client_legal_info": {
                 "fulllegalname": formValues.client_legal_info.fulllegalname,
                 "panno": formValues.client_legal_info.panno,

@@ -1056,6 +1056,20 @@ const ManageClientProperty = () => {
         setCurrClientProperty(formValues.client_property.clientid)
         showAddConfirmation(true);
     }
+    const arrayHelper = (arr) => {
+        const temp = []
+        for(var i=0;i <arr.length ; i++) {
+            
+            const flag = false;
+            Object.keys(arr[i]).forEach(key => {
+               if(arr[i].key != null && arr[i].key != "") {
+                flag = true
+               }
+            })
+            if(flag) temp.push(arr[i])
+        }
+        return temp
+    }
     const addClientProperty = async () => {
         const data = {
             "client_property": {
@@ -1090,7 +1104,7 @@ const ManageClientProperty = () => {
                 "electricitybillingunit": formValues.client_property.electricitybillingunit,
                 "indexiicollected": formValues.client_property.indexiicollected
             },
-            "client_property_photos": formValues.client_property_photos,
+            "client_property_photos": arrayHelper(formValues.client_property_photos),
             "client_property_owner": {
                 "owner1name": formValues.client_property_owner.owner1name,
                 "owner1panno": formValues.client_property_owner.owner1panno,

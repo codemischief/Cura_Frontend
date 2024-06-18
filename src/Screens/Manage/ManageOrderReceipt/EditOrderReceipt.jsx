@@ -108,7 +108,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
             "id": receiptId,
             "receivedby": formValues.receivedBy,
             "amount": formValues.pendingAmount - formValues.amountReceived,
-            "tds": formValues.TDS,
+            "tds": formValues.TDS ? Number(formValues.TDS): null,
             "recddate": formValues.receivedDate,
             "paymentmode": formValues.receiptMode,
             "receiptdesc": formValues.receiptDescription,
@@ -342,7 +342,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">TDS </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="TDS" value={formValues.TDS} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Receipt Description </div>
@@ -381,7 +381,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
                                             <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.amountReceived}</div>
                                         </div>
                                         <div className="">

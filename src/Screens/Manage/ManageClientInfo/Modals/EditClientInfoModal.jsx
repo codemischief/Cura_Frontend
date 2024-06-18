@@ -157,10 +157,10 @@ const EditClientInfoModal = (props) => {
                     updateArrayAccess.push(tempObj);
                 }
             } else {
-                if (tempObj.onlineclue != null && tempObj.onlinemailid != "" && tempObj.onlinepwd != "") {
+                if (tempObj.onlineclue == "" && tempObj.onlinemailid == "" && tempObj.onlinepwd == "") {
+                }else {
                     insertArrayAccess.push(tempObj);
                 }
-
             }
         }
     }

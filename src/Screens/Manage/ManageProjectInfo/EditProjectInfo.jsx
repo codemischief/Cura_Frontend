@@ -306,7 +306,14 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
                 updateBankDetails.push(tempObj);
             }
         }else {
-                insertBankDetails.push(tempObj);   
+            const flag = false;
+            Object.keys(formValues.project_bank_details[i]).forEach(key => {
+               if(formValues.project_bank_details[i].key != null && formValues.project_bank_details[i].key != "") {
+                flag = true
+               }
+            })
+            if(flag) insertBankDetails.push(tempObj)
+                
         }
       }
     }
@@ -328,7 +335,13 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
                 updateContacts.push(tempObj);
             }
         }else {
-                insertContacts.push(tempObj);   
+            const flag = false;
+            Object.keys(formValues.project_contacts[i]).forEach(key => {
+               if(formValues.project_contacts[i].key != null && formValues.project_contacts[i].key != "") {
+                flag = true
+               }
+            })
+            if(flag)  insertContacts.push(tempObj);   
         }
       }
     }
@@ -350,7 +363,13 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
                 updatePhotos.push(tempObj);
             }
         }else {
-            insertPhotos.push(tempObj);   
+            const flag = false;
+            Object.keys(formValues.project_photos[i]).forEach(key => {
+               if(formValues.project_photos[i].key != null && formValues.project_photos[i].key != "") {
+                flag = true
+               }
+            })
+            if(flag) insertPhotos.push(tempObj);   
         }
       }
     }

@@ -686,13 +686,13 @@ const ManageLLAgreement = () => {
             "clientpropertyid": Number(formValues.clientProperty),
             "orderid": Number(formValues.order),
             "durationinmonth": formValues.durationInMonth,
-            "depositamount": formValues.depositeAmount,
+            "depositamount": formValues.depositeAmount ? Number(formValues.depositeAmount) : null,
             "startdate": formValues.startDate,
             "actualenddate": formValues.endDate,
-            "rentamount" : formValues.rentAmount,
+            "rentamount" : formValues.rentAmount ? Number(formValues.rentAmount) : null,
             "registrationtype": formValues.registrationType,
             "rentpaymentdate": formValues.rentPaymentDate,
-            "noticeperiodindays": formValues.noticePeriod,
+            "noticeperiodindays": formValues.noticePeriod ? Number(formValues.noticePeriod) : null,
             "active": formValues.status,
             "llscancopy": formValues.scan
         }
