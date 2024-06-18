@@ -161,7 +161,45 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                         <div className="">
                             {console.log(formValues.order_info.owner)}
                             <div className="text-[13px]">Assigned to <label className="text-red-500">*</label></div>
-                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="owner" value={formValues.order_info.owner} onChange={handleChange} >
+                            <ClientPropertySelectNative
+                        data={Object.keys(usersData)}
+                        value={usersData?.[formValues.order_info.owner]?.name ? usersData?.[formValues.order_info.owner]?.name:null}
+                        placeholder="Select Payment To"
+                        isSticky={true}
+                        menuMaxHeight="18rem"
+                        noDataText="Select Username"
+                        headerText={{
+                            first : 'Name',
+                            second : 'Username'
+                        }}
+                        renderData={(item) => {
+                            return (
+                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                   {usersData[item].name}
+                                </p>
+                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                  {usersData[item].username}
+                                </p>
+                                
+                               
+                              </MenuItem>
+                            );
+                          }}
+                          onChange={(e) => {
+                            const temp = {...formValues}
+                            const ex = temp.order_info 
+                            ex.owner = e.target.value 
+                            temp.order_info = ex 
+                            setFormValues(temp)
+                            
+                           }}
+                        />
+
+
+
+
+                            {/* <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="owner" value={formValues.order_info.owner} onChange={handleChange} >
                                 <option value={null} hidden >Select User</option>
                                 {usersData.map(item => (
                                     <option key={item.id} value={item.id}>
@@ -169,7 +207,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                                     </option>
                                 ))}
 
-                            </select>
+                            </select> */}
                             <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] ">
                                 <p> {formErrors.owner}</p>
                                 

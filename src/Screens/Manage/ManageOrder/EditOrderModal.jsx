@@ -197,13 +197,23 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
 
     // we need to fetch the utility routes here
     // const [usersData,setUsersData] = useState([])
+
     const fetchUsersData = async () => {
         const data = {
             
         }
         const response = await APIService.getUsers({...data,user_id : user.id})
         const res = await response.json()
-        setUsersData(res.data);
+         setUsersData(() => {
+            const idNameObject = {};
+            res.data.forEach((item) => {
+              idNameObject[item.id] = {
+                name : item.name,
+                username : item.username
+              }
+            });
+            return idNameObject;
+        })
     }
 
     // const [orderStatusData,setOrderStatusData] = useState([])
