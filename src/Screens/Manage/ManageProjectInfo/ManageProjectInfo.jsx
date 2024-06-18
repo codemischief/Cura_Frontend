@@ -372,6 +372,20 @@ const ManageProjectInfo = () => {
         setCurrProject((prev) => formValues.project_info.projectname)
         setShowAddConfirmation(true)
     }
+    const arrayHelper = (arr) => {
+        const temp = []
+        for(var i=0;i <arr.length ; i++) {
+            
+            const flag = false;
+            Object.keys(arr[i]).forEach(key => {
+               if(arr[i].key != null && arr[i].key != "") {
+                flag = true
+               }
+            })
+            if(flag) temp.push(arr[i])
+        }
+        return temp
+    }
     const addProjectInfo = async () => {
         
         const data = {
@@ -432,9 +446,9 @@ const ManageProjectInfo = () => {
                 "otheraccomodationtypes": formValues.project_amenities.otheraccomodationtypes,
                 "sourceofwater": formValues.project_amenities.sourceofwater
             },
-            "project_bank_details": formValues.project_bank_details,
-            "project_contacts": formValues.project_contacts,
-            "project_photos": formValues.project_photos
+            "project_bank_details": arrayHelper(formValues.project_bank_details),
+            "project_contacts": arrayHelper(formValues.project_contacts),
+            "project_photos": arrayHelper(formValues.project_photos)
         }
          
         const response = await APIService.addProject(data)

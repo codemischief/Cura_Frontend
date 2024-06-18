@@ -69,6 +69,7 @@ const UpdateCompanyKey = () => {
      const response = await APIService.getCompanyKey(d)
      const res = await response.json()
      console.log(res)
+     setOpenDialog(false)
      setId(res.data.companykey)
   } 
   useEffect(() => {

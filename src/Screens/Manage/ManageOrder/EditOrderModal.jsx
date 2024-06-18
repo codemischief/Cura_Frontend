@@ -70,7 +70,13 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                     updateArrayPhotos.push(tempObj);
                 }
             } else {
-                insertArrayPhotos.push(tempObj);
+                const flag = false;
+                Object.keys(formValues.order_photos[i]).forEach(key => {
+                if(formValues.order_photos[i].key != null && formValues.order_photos[i].key != "") {
+                    flag = true
+                }
+                })
+                if(flag) insertArrayPhotos.push(tempObj);
             }
         }
     }

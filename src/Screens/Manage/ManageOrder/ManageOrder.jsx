@@ -332,6 +332,20 @@ const ManageOrder = () => {
         setShowAddConfirmation(true)
 
     }
+    const arrayHelper = (arr) => {
+        const temp = []
+        for(var i=0;i <arr.length ; i++) {
+            
+            const flag = false;
+            Object.keys(arr[i]).forEach(key => {
+               if(arr[i].key != null && arr[i].key != "") {
+                flag = true
+               }
+            })
+            if(flag) temp.push(arr[i])
+        }
+        return temp
+    }
     const addOrder = async () => {
         console.log('clicked')
         setSubmit(true)
@@ -355,7 +369,7 @@ const ManageOrder = () => {
                 "entityid": 1,
                 "tallyledgerid": formValues.order_info.tallyledgerid ? Number(formValues.order_info.tallyledgerid) : formValues.order_info.tallyledgerid
             },
-            "order_photos": formValues.order_photos
+            "order_photos": arrayHelper(formValues.order_photos)
         }
         const response = await APIService.addOrder({...data,user_id : user.id});
         const res = await response.json();
