@@ -16,7 +16,7 @@ export const routeMapObj = Object.freeze({
 
   Employee: PATH_DASHBOARD.admin.manageEmployees,
   deletebyid: PATH_DASHBOARD.admin.deleteId,
-  companykey : PATH_DASHBOARD.admin.updateCompanyKey,
+  companykey: PATH_DASHBOARD.admin.updateCompanyKey,
   getLobEntityPayments: PATH_DASHBOARD.admin.lobReceiptPayments,
   EntityReceiptPayments: PATH_DASHBOARD.admin.entityReceiptPayment,
   LOBReceiptPayments: PATH_DASHBOARD.admin.lobReceiptPaymentsConsolidated,
@@ -40,7 +40,7 @@ export const routeMapObj = Object.freeze({
   BuilderInfo: PATH_DASHBOARD.manage.manageBuilder.root,
   ProjectInfo: PATH_DASHBOARD.manage.projectManagementInfo,
   // send client-statement is pending....
-  ClientStatement : PATH_DASHBOARD.manage.ClientStatement,
+  ClientStatement: PATH_DASHBOARD.manage.ClientStatement,
   BankStatement: PATH_DASHBOARD.manage.bankStatement,
   Order: PATH_DASHBOARD.manage.manageOrder,
   OrderReceipt: PATH_DASHBOARD.manage.orderReceipt,
@@ -55,6 +55,7 @@ export const routeMapObj = Object.freeze({
   ClientInvoice: PATH_DASHBOARD.manage.clientInvoice,
   ClientReceipt: PATH_DASHBOARD.manage.clientReceipt,
   VendorInvoice: PATH_DASHBOARD.manage.vendorInvoice,
+  BuilderContact: "/manage/manageBuilder/contacts/",
 });
 
 export const replaceKeys = (access_rights) => {
@@ -71,11 +72,11 @@ let defaultpermission = { add: true, delete: true, edit: true, get: true };
 
 const allowSpecialRoutes = (routes) => {
   routes["/dashboard"] = defaultpermission;
-  routes["/changepassword"] = defaultpermission
+  routes["/changepassword"] = defaultpermission;
   if (routes[PATH_DASHBOARD.manage.manageBuilder.root]) {
-    routes["/manage/managebuilder/manageproject/"] = defaultpermission;
-    routes["/manage/manageBuilder/contacts/"] = defaultpermission;
-    
+    routes["/manage/managebuilder/manageproject/"] =
+      routes[PATH_DASHBOARD.manage.projectManagementInfo];
+    // routes["/manage/manageBuilder/contacts/"] = defaultpermission;
   }
   if (routes[PATH_DASHBOARD.manage.clientInfo]) {
     routes["/manage/manageclientinfo/properties/"] = defaultpermission;

@@ -1190,6 +1190,7 @@ const Payments = () => {
                   <input
                     className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                     value={amountFilterInput}
+                    type="number"
                     onChange={(e) => setAmountFilterInput(e.target.value)}
                     onKeyDown={(event) =>
                       handleEnterToFilter(

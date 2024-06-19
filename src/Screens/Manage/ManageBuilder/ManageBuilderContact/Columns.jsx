@@ -161,12 +161,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       render: (rowData) => {
         return (
           <div className="flex gap-2 justify-start ">
-            {/* <Create
-              sx={{ width: "20px", height: "20px", color : '#c6c6c6', cursor : 'pointer'}}
 
-              onClick={() => handleEdit(rowData)}
-            /> */}
-            
             <EditButton
               handleEdit={handleEdit}
               rowData={rowData}
@@ -175,11 +170,6 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
                  handleDelete={handleDelete}
                  rowData={rowData}
             />
-            {/* <Delete
-
-              sx={{ width: "20px", height: "20px", color : '#c6c6c6' , cursor : 'pointer'}}
-              onClick={() => handleDelete(rowData)}
-            /> */}
           </div>
         );
       },
