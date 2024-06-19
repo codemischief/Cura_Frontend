@@ -24,6 +24,7 @@ import errorHandler from "../../../../Components/common/ErrorHandler";
 import ContactForm from "./ContactForm"
 import { useLocation } from "react-router-dom";
 import useAuth from "../../../../context/JwtContext";
+import AddButton from "../../../../Components/common/CustomButton";
 const ManageBuilderContact = () => {
   const {user} = useAuth()
   const dispatch = useDispatch();
@@ -266,10 +267,8 @@ const ManageBuilderContact = () => {
               className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg"
               onClick={handleFormOpen}
             >
-              <div className="flex items-center justify-center gap-4">
-                Add New Contact
-                <PlusOutlined className="fill-white stroke-2" />
-              </div>
+              <AddButton onClick={handleFormOpen} title="Add New Contact"/>
+              
             </button>
           </div>
         </div>
