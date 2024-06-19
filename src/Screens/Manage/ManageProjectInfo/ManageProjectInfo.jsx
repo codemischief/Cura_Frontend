@@ -370,7 +370,7 @@ const ManageProjectInfo = () => {
             
             let flag = false;
             Object.keys(arr[i]).forEach(key => {
-               if(arr[i].key != null && arr[i].key != "") {
+               if(arr[i][key] != null && arr[i][key] != "") {
                 flag = true
                }
             })

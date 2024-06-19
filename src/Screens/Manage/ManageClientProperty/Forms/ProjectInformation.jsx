@@ -51,25 +51,20 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
   }
   const [selectedOption, setSelectedOption] = useState({
     label: clientname,
-    value: clientid
+    value: clientid ? clientid : null
   });
   const [query, setQuery] = useState('')
   const handleClientNameChange = (e) => {
-    console.log('hey')
-    console.log(e)
-    //  setFormValues({...formValues,client_property : {
-    //   ...formValues.client_property,
-    //   clientid : e.value
-    //  }})
+    setSelectedOption(e)
     setClientNameText(e.label)
-    const existing = { ...formValues }
-    const temp = { ...existing.client_property }
-    existing.client_property = temp;
-    temp.clientid = e.value
-    setFormValues(existing)
+    console.log(e.value)
+    const temp = {...formValues}
+    const ex = temp.client_property
+    ex.clientid = e.value 
+    temp.client_property = ex 
+    setFormValues(temp)
     setCurrClientName(e.label)
     console.log(formValues)
-    setSelectedOption(e)
   }
   const loadOptions = async (e) => {
     console.log(e)
@@ -381,7 +376,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               </div>
               <input
                 className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-                type="text"
+                type="number"
                 name="numberofparkings"
                 value={formValues.client_property.numberofparkings}
                 onChange={handleChange}

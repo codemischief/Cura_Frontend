@@ -6,15 +6,15 @@ const EditBankDetails = ({formValues,setFormValues}) => {
   const handleAdd = () => {
     setFormValues({...formValues,client_bank_info : [
       ...formValues.client_bank_info, {
-        "bankname":"",
-        "bankbranch":"",
-        "bankcity":"",
-        "bankaccountno":"",
-        "bankaccountholdername":"",
-        "bankifsccode":"",
-        "bankmicrcode":"",
-        "bankaccounttype":"",
-        "description":""
+        "bankname":null,
+        "bankbranch":null,
+        "bankcity":null,
+        "bankaccountno":null,
+        "bankaccountholdername":null,
+        "bankifsccode":null,
+        "bankmicrcode":null,
+        "bankaccounttype":null,
+        "description":null
     }
     ]})
   }

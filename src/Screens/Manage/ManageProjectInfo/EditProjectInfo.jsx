@@ -303,7 +303,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
         }else {
             let flag = false;
             Object.keys(formValues.project_bank_details[i]).forEach(key => {
-               if(formValues.project_bank_details[i].key != null && formValues.project_bank_details[i].key != "") {
+               if(formValues.project_bank_details[i][key] != null && formValues.project_bank_details[i][key] != "") {
                 flag = true
                }
             })
@@ -332,7 +332,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
         }else {
             let flag = false;
             Object.keys(formValues.project_contacts[i]).forEach(key => {
-               if(formValues.project_contacts[i].key != null && formValues.project_contacts[i].key != "") {
+               if(formValues.project_contacts[i][key] != null && formValues.project_contacts[i][key] != "") {
                 flag = true
                }
             })
@@ -360,7 +360,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
         }else {
             let flag = false;
             Object.keys(formValues.project_photos[i]).forEach(key => {
-               if(formValues.project_photos[i].key != null && formValues.project_photos[i].key != "") {
+               if(formValues.project_photos[i][key] != null && formValues.project_photos[i][key] != "") {
                 flag = true
                }
             })

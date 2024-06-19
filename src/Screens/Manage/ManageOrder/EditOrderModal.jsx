@@ -72,7 +72,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
             } else {
                 let flag = false;
                 Object.keys(formValues.order_photos[i]).forEach(key => {
-                if(formValues.order_photos[i].key != null && formValues.order_photos[i].key != "") {
+                if(formValues.order_photos[i][key] != null && formValues.order_photos[i][key] != "") {
                     flag = true
                 }
                 })

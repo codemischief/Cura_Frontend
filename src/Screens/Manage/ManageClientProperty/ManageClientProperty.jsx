@@ -511,7 +511,7 @@ const ManageClientProperty = () => {
         setPageLoading(false);
     }
     const setHyperLinkData = () => {
-        if(state != null) {
+        if(state !== null) {
             console.log(state)
             setClientNameText(state.clientname)
             const temp = {...formValues}
@@ -524,8 +524,10 @@ const ManageClientProperty = () => {
     }
     useEffect(() => {
         
-        
-        setHyperLinkData()
+        if(state != null) {
+
+            setHyperLinkData()
+        }
         
         fetchData();
         fetchStateData(5);
@@ -578,6 +580,7 @@ const ManageClientProperty = () => {
         openAddCancelModal();
     }
     const initials = () => {
+        setClientNameText('Select Client')
         setHyperLinkData()
         setFormValues(initialValues);
         setFormErrors({});
@@ -704,7 +707,7 @@ const ManageClientProperty = () => {
     const validate = () => {
         console.log(formValues)
         var res = true;
-        if (!formValues.client_property.clientid) {
+        if (formValues.client_property.clientid == null || formValues.client_property.clientid == "") {
             setFormErrors((existing) => {
                 return { ...existing, clientid: "Enter Client Name" }
             })
@@ -1052,7 +1055,7 @@ const ManageClientProperty = () => {
             
             let flag = false;
             Object.keys(arr[i]).forEach(key => {
-               if(arr[i].key != null && arr[i].key != "") {
+               if(arr[i][key] != null && arr[i][key] != "") {
                 flag = true
                }
             })

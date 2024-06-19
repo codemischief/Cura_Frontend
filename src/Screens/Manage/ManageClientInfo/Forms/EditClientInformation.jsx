@@ -275,24 +275,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 exis.city = null
                                 temp.client_info = exis 
                                 setFormValues(temp)
-                                // setFormValues({
-                                //     ...formValues, client_info: {
-                                //         ...formValues.client_info,
-                                //         country: e.target.value
-                                //     }
-                                // })
-                                // setFormValues({
-                                //     ...formValues, client_info: {
-                                //         ...formValues.client_info,
-                                //         state: null
-                                //     }
-                                // })
-                                // setFormValues({
-                                //     ...formValues, client_info: {
-                                //         ...formValues.client_info,
-                                //         city: null
-                                //     }
-                                // })
+                                
                                 setAllState([])
                                 fetchStateData(e.target.value)
                                 setAllCity([]);
@@ -314,7 +297,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
 
                             })}
                         </select>
-                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
+                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.country}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Address Line 2 </div>
@@ -364,7 +347,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 fetchCityData(e.target.value)
                             }
                         }>
-                            <option value="">Select State</option>
+                            <option value="" hidden>Select State</option>
                             {allState.map(item => {
                                 if (item[0] == formValues.client_info.state) {
                                     return <option key={item[0]} selected>
@@ -377,7 +360,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 }
                             })}
                         </select>
-                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
+                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.state}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Pin Code </div>
@@ -502,7 +485,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 }
 })}
                         </select>
-                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
+                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.city}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Area/Locality </div>

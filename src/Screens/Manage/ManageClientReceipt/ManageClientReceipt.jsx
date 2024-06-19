@@ -1030,7 +1030,7 @@ const ManageClientReceipt = () => {
             "orderid": Number(orFormValues.order),
             "receiptdesc": orFormValues.receiptDescription,
             "entityid": 1,
-            "officeid" : 1
+            "officeid" : 2
         }
         const response = await APIService.addOrderReceipt({...data,user_id : user.id})
         const res = await response.json()

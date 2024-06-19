@@ -184,7 +184,7 @@ useEffect(() => {
           <div className="">
             <div className="text-[14px]">Relation </div>
             <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="relation" value={formValues.client_legal_info.relation} onChange={handleChange} >
-              <option >Select Relation</option>
+              <option value="" hidden>Select Relation</option>
               {relationData && relationData.map(item => (
                 <option key={item.id} value={item.id}>
                   {item.name}
