@@ -29,6 +29,7 @@ import { handleError } from "../../../utils/ErrorHandler";
 import { toast } from "react-toastify";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
+import FileSaver from "file-saver";
 const ManageBuilder = () => {
     
     const dataRows = [
