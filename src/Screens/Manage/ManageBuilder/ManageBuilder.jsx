@@ -718,6 +718,7 @@ const ManageBuilder = () => {
         setTimeout(function () {
             setShowEditSuccess(false)
         }, 2000)
+        fetchBuilderData()
     }
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
