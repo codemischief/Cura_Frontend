@@ -859,14 +859,18 @@ const ManageClientInfo = () => {
     ]
     const arrayHelper = (arr) => {
         const temp = []
+        console.log(arr)
         for(var i=0;i <arr.length ; i++) {
             
             let flag = false;
-            Object.keys(arr[i]).forEach(key => {
-               if(arr[i].key != null && arr[i].key != "") {
+            Object.keys(arr[i]).forEach((key) => {
+                // console.log(key)
+                // console.log(arr[i][key])
+               if(arr[i][key] != null && arr[i][key] != "" && arr[i][key] != '') {
                 flag = true
                }
             })
+            console.log(flag)
             if(flag) temp.push(arr[i])
         }
         return temp
