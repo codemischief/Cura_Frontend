@@ -838,6 +838,16 @@ const ManageClientReceipt = () => {
         fetchFiltered(existing);
     }
     const fetchFiltered = async (mapState) => {
+        setClientNameFilter(false);
+        setAmountFilter(false);
+        setServiceAmountFilter(false);
+        setReimbusmentAmountFilter(false);
+        setReceivedDateFilter(false);
+        setReceivedModeFilter(false);
+        setReceivedByFilter(false);
+        setTDSFilter(false);
+        setIdFilter(false);
+        setDownloadModal(false)
         setFilterMapState(mapState)
         const tempArray = [];
         // we need to query thru the object
@@ -1240,7 +1250,7 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[10%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} 
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='number' value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} 
                                 
                                 onKeyDown={(event) => handleEnterToFilter(event,amountFilterInput,
                                     setAmountFilterInput,
@@ -1255,7 +1265,7 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[13%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceAmountFilterInput} onChange={(e) => setServiceAmountFilterInput(e.target.value)} 
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='number' value={serviceAmountFilterInput} onChange={(e) => setServiceAmountFilterInput(e.target.value)} 
                                 
                                 onKeyDown={(event) => handleEnterToFilter(event,serviceAmountFilterInput,
                                     setServiceAmountFilterInput,
@@ -1271,7 +1281,7 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[12%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={reimbusmentAmountFilterInput} onChange={(e) => setReimbusmentAmountFilterInput(e.target.value)} 
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='number' value={reimbusmentAmountFilterInput} onChange={(e) => setReimbusmentAmountFilterInput(e.target.value)} 
                                 
                                 onKeyDown={(event) => handleEnterToFilter(event,reimbusmentAmountFilterInput,
                                     setReimbusmentAmountFilterInput,
@@ -1332,7 +1342,7 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[7%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[55%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={TDSFilterInput} onChange={(e) => setTDSFilterInput(e.target.value)} 
+                                <input className="w-[55%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='number' value={TDSFilterInput} onChange={(e) => setTDSFilterInput(e.target.value)} 
                                 
                                 onKeyDown={(event) => handleEnterToFilter(event,TDSFilterInput,
                                     setTDSFilterInput,
@@ -1349,7 +1359,7 @@ const ManageClientReceipt = () => {
                     <div className="w-[13%] flex">
                         <div className='w-1/2 px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[60%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
+                                <input className="w-[60%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='number' value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
                                 
                                 onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
                                     setIdFilterInput,
@@ -1362,14 +1372,14 @@ const ManageClientReceipt = () => {
                         </div>
 
                         <div className='w-1/2  flex items-center justify-center'>
-                            <RefreshFilterButton
+                            {/* <RefreshFilterButton
 
                               fetchData={fetchData}
                               filterMapping={filterMapping}
                               setFilterMapState={setFilterMapState}
                               resetAllInputs={resetAllInputs}
                             
-                            />
+                            /> */}
                         </div>
                     </div>
                 </div>

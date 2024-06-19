@@ -611,6 +611,7 @@ const ManageBuilder = () => {
         const tempArray = [];
         // we need to query thru the object
         // 
+        setFilterMapState(mapState)
         
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
@@ -827,6 +828,7 @@ const ManageBuilder = () => {
                                         'buildername')}
 
                                 />
+                                {console.log(filterMapState)}
                                 {filterMapState.buildername.filterType == "" ? <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {builderFilter && <CharacterFilter inputVariable={builderFilterInput} setInputVariable={setBuilderFilterInput} handleFilter={newHandleFilter} filterColumn='buildername' menuRef={menuRef} filterType={filterMapState.buildername.filterType} />}
@@ -881,7 +883,7 @@ const ManageBuilder = () => {
                     <div className="w-[15%] flex items-center">
                         <div className='w-1/2  px-3 py-2.5'>
                             <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }}
+                                <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" type="number" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }}
                                     onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
                                         setIdFilterInput,
                                         'equalTo',

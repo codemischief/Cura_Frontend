@@ -1341,7 +1341,7 @@ const ManageClientProperty = () => {
                         <div className="w-[15%] flex">
                             <div className='w-1/2   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" type="number" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
                                     
                                     onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
                                         setIdFilterInput,

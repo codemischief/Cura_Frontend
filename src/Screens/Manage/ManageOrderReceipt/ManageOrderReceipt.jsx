@@ -1359,7 +1359,7 @@ const ManageOrderReceipt = () => {
 
                         <div className='w-[8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}
+                                <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='number' value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}
 
                                     onKeyDown={(event) => handleEnterToFilter(event, amountFilterInput,
                                         setAmountFilterInput,
@@ -1440,7 +1440,7 @@ const ManageOrderReceipt = () => {
 
                         <div className='w-[65%] px-3 py-2 ml-[-3px] '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
+                                <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="number" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
 
                                     onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
                                         setIdFilterInput,

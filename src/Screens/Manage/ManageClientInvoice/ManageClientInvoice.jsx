@@ -1036,7 +1036,7 @@ const ManageClientInvoice = () => {
 
                             <div className='w-[12%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)} 
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='number' value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)} 
                                     onKeyDown={(event) => handleEnterToFilter(event,invoiceAmountFilterInput,
                                         setInvoiceAmountFilterInput,
                                         'equalTo',
@@ -1093,7 +1093,7 @@ const ManageClientInvoice = () => {
                         <div className="w-[10%] flex">
                             <div className='w-[55%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
+                                    <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type='number' value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
                                         setIdFilterInput,
                                         'equalTo',
