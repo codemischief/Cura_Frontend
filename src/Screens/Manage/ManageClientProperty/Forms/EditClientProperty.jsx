@@ -387,7 +387,8 @@ const EditClientProperty = (props) => {
               "comments": formValues.client_property.comments,
               "gasconnectiondetails": formValues.client_property.gasconnectiondetails,
               "textforposting": formValues.client_property.textforposting,
-              "indexiicollected" : formValues.client_property.indexiicollected
+              "indexiicollected" : formValues.client_property.indexiicollected,
+              "propertyownedbyclientonly" : formValues.client_property.propertyownedbyclientonly
             },
             "client_property_photos": {
               "update" : updateArrayClientPhotos,

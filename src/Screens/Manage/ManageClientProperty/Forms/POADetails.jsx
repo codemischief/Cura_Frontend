@@ -43,7 +43,7 @@ const fetchCityData = async (id) => {
       <div className="flex gap-10 justify-center mt-3 mb-5">
         <div className=" space-y-2 ">
           <div className="">
-            <div className="text-[13px]">Legal Name </div>
+            <div className="text-[13px]"> Full Legal Name </div>
             <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="poalegalname" value={formValues.client_property_poa.poalegalname} onChange={handleChange} />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>

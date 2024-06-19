@@ -233,7 +233,7 @@ const EditClientInfoModal = (props) => {
             }))
         }
 
-        if (formValues.client_info.clienttype === 'Select Client Type') {
+        if (formValues.client_info.clienttype === null) {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -245,7 +245,7 @@ const EditClientInfoModal = (props) => {
                 clienttype: ""
             }))
         }
-        if (formValues.client_info.state === "") {
+        if (formValues.client_info.state === "" || formValues.client_info.state == null) {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -257,7 +257,7 @@ const EditClientInfoModal = (props) => {
                 state: ""
             }))
         }
-        if (formValues.client_info.city === "") {
+        if (formValues.client_info.city === "" || formValues.client_info.city == null) {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,

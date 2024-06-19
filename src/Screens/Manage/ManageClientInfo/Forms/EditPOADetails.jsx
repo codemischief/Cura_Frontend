@@ -100,7 +100,7 @@ const fetchCityData = async (id) => {
                     }
                 })
             }}>
-              <option value={"none"} className='hidden'>Select city</option>
+              <option value="" hidden>Select city</option>
               {allCity.map(item => {
                 if(item.city == formValues.client_poa.poacity) {
                     return <option value={item.city} selected>

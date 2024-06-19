@@ -55,15 +55,15 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
   const [selectedOption, setSelectedOption] = useState(clientNameOption);
   const [query, setQuery] = useState('')
   const handleClientNameChange = (e) => {
+    setSelectedOption(e)
 
     console.log('hey')
     console.log(e)
-    const existing = { ...formValues }
-    const temp = { ...existing.client_property }
-    temp.tenantof = e.value
-    existing.client_property = temp;
+    const existing = {...formValues}
+    const temp = existing.client_property
+    temp.clientid = e.value
+    existing.client_property = temp
     setFormValues(existing)
-    setSelectedOption(e)
   }
   const loadOptions = async (e) => {
     console.log(e)
@@ -379,7 +379,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
               </div>
               <input
                 className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-                type="text"
+                type="number"
                 name="numberofparkings"
                 value={formValues.client_property.numberofparkings}
                 onChange={handleChange}

@@ -68,7 +68,7 @@ const fetchCityData = async (id) => {
                fetchStateData(e.target.value);
               }
             }>
-              <option value={"none"} className='hidden'>Select country</option>
+              <option value="" className='hidden'>Select country</option>
               {country && country.map(item => {
                 if(item.id == 5) {
                   return <option key={item.id} value={item.id} selected>
@@ -91,7 +91,7 @@ const fetchCityData = async (id) => {
                   poacity : e.target.value
               }})
             }}>
-              <option value={"none"} className='hidden'>Select city</option>
+              <option value="" hidden>Select city</option>
               {allCity && allCity.map(item => (
                 <option  value={item.city}>
                   {item.city}

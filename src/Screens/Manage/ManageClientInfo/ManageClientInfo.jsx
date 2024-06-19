@@ -662,7 +662,7 @@ const ManageClientInfo = () => {
     const [formErrorsClientInfo, setFormErrorsClientInfo] = useState({});
     const validate = () => {
         var res = true
-        if (formValues.client_info.salutation === "") {
+        if (formValues.client_info.salutation === "" || formValues.client_info.salutation === null) {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -677,7 +677,7 @@ const ManageClientInfo = () => {
         }
 
 
-        if (formValues.client_info.firstname === "") {
+        if (formValues.client_info.firstname === "" || formValues.client_info.firstname === null) {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -691,7 +691,7 @@ const ManageClientInfo = () => {
             }))
         }
 
-        if (formValues.client_info.lastname === "") {
+        if (formValues.client_info.lastname === "" || formValues.client_info.lastname === null) {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -704,7 +704,7 @@ const ManageClientInfo = () => {
             }))
         }
 
-        if (formValues.client_info.clienttype === null) {
+        if (formValues.client_info.clienttype === null || formValues.client_info.clienttype === "") {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -927,7 +927,7 @@ const ManageClientInfo = () => {
                 "zip": formValues.client_legal_info.zip,
                 "occupation": formValues.client_legal_info.occupation,
                 "birthyear": formValues.client_legal_info.birthyear,
-                "employername": "GHI JKL",
+                "employername": formValues.client_legal_info.employername,
                 "relation": formValues.client_legal_info.relation,
                 "relationwith": formValues.client_legal_info.relationwith
             },
@@ -937,7 +937,7 @@ const ManageClientInfo = () => {
                 "poaaddressline1": formValues.client_poa.poaaddressline1,
                 "poaaddressline2": formValues.client_poa.poaaddressline2,
                 "poasuburb": formValues.client_poa.poasuburb,
-                "poacity": formValues.client_poa.poacity || 5,
+                "poacity": formValues.client_poa.poacity ,
                 "poastate": formValues.client_poa.poastate,
                 "poacountry": formValues.client_poa.poacountry,
                 "poazip": formValues.client_poa.poazip,
