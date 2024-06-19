@@ -1,45 +1,35 @@
-import React from 'react';
-import { Outlet, Link ,useNavigate , useLocation} from "react-router-dom";
-import backLink from "../../../assets/back.png";
-import searchIcon from "../../../assets/searchIcon.png";
-import nextIcon from "../../../assets/next.png";
-import refreshIcon from "../../../assets/refresh.png";
-import downloadIcon from "../../../assets/download.png";
-import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
-import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, Backdrop, CircularProgress} from "@mui/material";
-import { APIService } from '../../../services/API';
-import ProjectInformation from "./Forms/ProjectInformation"
-import * as XLSX from 'xlsx';
+import { Backdrop, CircularProgress, Modal, Pagination } from "@mui/material";
 import FileSaver from 'file-saver';
-import Photos from "./Forms/Photos";
-import POADetails from "./Forms/POADetails";
-import OwnerDetails from "./Forms/OwnerDetails"
-import Pdf from "../../../assets/pdf.png";
-import Excel from "../../../assets/excel.png"
-import Filter from "../../../assets/filter.png"
-import Add from "../../../assets/add.png";
+import React, { useEffect, useRef, useState } from 'react';
+import Draggable from 'react-draggable';
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import CancelModel from './../../../Components/modals/CancelModel';
-import Joystick from "../../../assets/four_direction_arrow.png";
-import Trash from "../../../assets/trash.png"
-import Edit from "../../../assets/edit.png"
-import SaveConfirmationClientProperty from './Forms/SaveConfirmationClientProperty';
-import EditClientProperty from './Forms/EditClientProperty';
-import Select from "react-select"
-import DeleteClientProperty from './DeleteClientProperty';
-const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
-import Draggable from 'react-draggable';
-import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
-import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
-import useAuth from '../../../context/JwtContext';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
+import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import ActiveFilter from "../../../assets/active_filter.png";
+import backLink from "../../../assets/back.png";
+import Cross from "../../../assets/cross.png";
+import downloadIcon from "../../../assets/download.png";
+import Excel from "../../../assets/excel.png";
+import Filter from "../../../assets/filter.png";
+import Pdf from "../../../assets/pdf.png";
+import refreshIcon from "../../../assets/refresh.png";
+import searchIcon from "../../../assets/searchIcon.png";
+import useAuth from '../../../context/JwtContext';
+import { APIService } from '../../../services/API';
+import CancelModel from './../../../Components/modals/CancelModel';
+import DeleteClientProperty from './DeleteClientProperty';
+import EditClientProperty from './Forms/EditClientProperty';
+import OwnerDetails from "./Forms/OwnerDetails";
+import POADetails from "./Forms/POADetails";
+import Photos from "./Forms/Photos";
+import ProjectInformation from "./Forms/ProjectInformation";
+import SaveConfirmationClientProperty from './Forms/SaveConfirmationClientProperty';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientProperty = () => {
     const { user } = useAuth()
     const menuRef = useRef();
@@ -1060,7 +1050,7 @@ const ManageClientProperty = () => {
         const temp = []
         for(var i=0;i <arr.length ; i++) {
             
-            const flag = false;
+            let flag = false;
             Object.keys(arr[i]).forEach(key => {
                if(arr[i].key != null && arr[i].key != "") {
                 flag = true

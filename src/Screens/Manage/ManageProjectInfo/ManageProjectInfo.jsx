@@ -1,44 +1,36 @@
-import React, { useRef } from 'react';
-import { Outlet, Link , useLocation, useNavigate} from "react-router-dom";
-import backLink from "../../../assets/back.png";
-import searchIcon from "../../../assets/searchIcon.png";
-import nextIcon from "../../../assets/next.png";
-import refreshIcon from "../../../assets/refresh.png";
-import downloadIcon from "../../../assets/download.png";
-import { useState, useEffect } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
-import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress , Backdrop , CircularProgress} from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
-import { APIService } from '../../../services/API';
-import Pdf from "../../../assets/pdf.png";
-import Excel from "../../../assets/excel.png"
-import Edit from "../../../assets/edit.png"
-import Trash from "../../../assets/trash.png"
-import Filter from "../../../assets/filter.png"
-import Add from "../../../assets/add.png";
-import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
-import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
-import BankDetails from "./ManageProjectInfoForm/BankDetails";
-import Contact from './ManageProjectInfoForm/Contact';
-import Photos from './ManageProjectInfoForm/Photos';
-import EditProjectInfo from './EditProjectInfo';
-import SucessfullModal from "../../../Components/modals/SucessfullModal"
-import CancelModel from './../../../Components/modals/CancelModel';
-import DeleteProjectInfo from './DeleteProjectInfo';
+import { Backdrop, CircularProgress, Modal, Pagination } from "@mui/material";
+import FileSaver from 'file-saver';
+import React, { useEffect, useRef, useState } from 'react';
+import Draggable from 'react-draggable';
+import { useLocation, useNavigate } from "react-router-dom";
 import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
-import * as XLSX from 'xlsx';
-import FileSaver from 'file-saver';
-import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
-import Draggable from 'react-draggable';
-const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
-import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
-import useAuth from '../../../context/JwtContext';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
+import SucessfullModal from "../../../Components/modals/SucessfullModal";
+import ActiveFilter from "../../../assets/active_filter.png";
+import backLink from "../../../assets/back.png";
+import Cross from "../../../assets/cross.png";
+import downloadIcon from "../../../assets/download.png";
+import Excel from "../../../assets/excel.png";
+import Filter from "../../../assets/filter.png";
+import Pdf from "../../../assets/pdf.png";
+import refreshIcon from "../../../assets/refresh.png";
+import searchIcon from "../../../assets/searchIcon.png";
+import useAuth from '../../../context/JwtContext';
+import { APIService } from '../../../services/API';
+import CancelModel from './../../../Components/modals/CancelModel';
+import DeleteProjectInfo from './DeleteProjectInfo';
+import EditProjectInfo from './EditProjectInfo';
+import BankDetails from "./ManageProjectInfoForm/BankDetails";
+import Contact from './ManageProjectInfoForm/Contact';
+import Photos from './ManageProjectInfoForm/Photos';
+import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
+import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
+import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageProjectInfo = () => {
     const {pathname} = useLocation()
     const {user} = useAuth()
@@ -376,7 +368,7 @@ const ManageProjectInfo = () => {
         const temp = []
         for(var i=0;i <arr.length ; i++) {
             
-            const flag = false;
+            let flag = false;
             Object.keys(arr[i]).forEach(key => {
                if(arr[i].key != null && arr[i].key != "") {
                 flag = true
