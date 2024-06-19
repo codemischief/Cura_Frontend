@@ -1,12 +1,12 @@
+import { CircularProgress, Modal } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Modal , CircularProgress} from '@mui/material'
-import Cross from "../../../assets/cross.png"
-import EditOrderInformation from './Dialog/EditOrderInformation'
-import EditPhotos from './Dialog/EditPhotos'
-import EditOrderStatusHistory from './Dialog/EditOrderStatusHistory'
-import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable'
+import Cross from "../../../assets/cross.png"
 import useAuth from '../../../context/JwtContext'
+import { APIService } from '../../../services/API'
+import EditOrderInformation from './Dialog/EditOrderInformation'
+import EditOrderStatusHistory from './Dialog/EditOrderStatusHistory'
+import EditPhotos from './Dialog/EditPhotos'
 const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) => {
     const {user} = useAuth()
     const initialValues = {
@@ -70,7 +70,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                     updateArrayPhotos.push(tempObj);
                 }
             } else {
-                const flag = false;
+                let flag = false;
                 Object.keys(formValues.order_photos[i]).forEach(key => {
                 if(formValues.order_photos[i].key != null && formValues.order_photos[i].key != "") {
                     flag = true

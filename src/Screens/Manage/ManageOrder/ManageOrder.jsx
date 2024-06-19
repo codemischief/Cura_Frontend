@@ -1,46 +1,37 @@
-import React from 'react';
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import backLink from "../../../assets/back.png";
-import searchIcon from "../../../assets/searchIcon.png";
-import nextIcon from "../../../assets/next.png";
-import refreshIcon from "../../../assets/refresh.png";
-import downloadIcon from "../../../assets/download.png";
-import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
-import Cross from "../../../assets/cross.png";
-import Add from "./../../../assets/add.png";
-import Pdf from "../../../assets/pdf.png";
-import Excel from "../../../assets/excel.png"
-import Filter from "../../../assets/filter.png"
-import { Modal } from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
-import { CircularProgress, Pagination, LinearProgress, Backdrop } from "@mui/material";
-import { APIService } from '../../../services/API';
-import Edit from "../../../assets/edit.png"
-import Trash from "../../../assets/trash.png";
-import * as XLSX from 'xlsx';
+import { Backdrop, CircularProgress, Modal, Pagination } from "@mui/material";
 import FileSaver from 'file-saver';
-import OrderInformation from './Dialog/OrderInformation';
-import Photos from './Dialog/Photos';
-import OrderStatusHistory from './Dialog/OrderStatusHistory';
-import CharacterFilter from "../../../Components/Filters/CharacterFilter"
+import React, { useEffect, useRef, useState } from 'react';
+import Draggable from 'react-draggable';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import CharacterFilter from "../../../Components/Filters/CharacterFilter";
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
-import SucessfullModal from "../../../Components/modals/SucessfullModal";
-import CancelModel from './../../../Components/modals/CancelModel';
-import SaveConfirmationOrder from './SaveConfirmationOrder';
-import DeleteOrder from './DeleteOrderModal';
-import EditOrderModal from './EditOrderModal';
-import Draggable from 'react-draggable';
-import { formatDate } from '../../../utils/formatDate';
-const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
-import ActiveFilter from "../../../assets/active_filter.png";
 import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
-import { userId } from '../../../utils/axios';
-import useAuth from '../../../context/JwtContext';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
+import SucessfullModal from "../../../Components/modals/SucessfullModal";
+import ActiveFilter from "../../../assets/active_filter.png";
+import backLink from "../../../assets/back.png";
+import Cross from "../../../assets/cross.png";
+import downloadIcon from "../../../assets/download.png";
+import Excel from "../../../assets/excel.png";
+import Filter from "../../../assets/filter.png";
+import Pdf from "../../../assets/pdf.png";
+import refreshIcon from "../../../assets/refresh.png";
+import searchIcon from "../../../assets/searchIcon.png";
+import useAuth from '../../../context/JwtContext';
+import { APIService } from '../../../services/API';
+import { userId } from '../../../utils/axios';
+import { formatDate } from '../../../utils/formatDate';
+import CancelModel from './../../../Components/modals/CancelModel';
+import DeleteOrder from './DeleteOrderModal';
+import OrderInformation from './Dialog/OrderInformation';
+import OrderStatusHistory from './Dialog/OrderStatusHistory';
+import Photos from './Dialog/Photos';
+import EditOrderModal from './EditOrderModal';
+import SaveConfirmationOrder from './SaveConfirmationOrder';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageOrder = () => {
     // we have the module here
     const datarows = [
@@ -336,7 +327,7 @@ const ManageOrder = () => {
         const temp = []
         for(var i=0;i <arr.length ; i++) {
             
-            const flag = false;
+            let flag = false;
             Object.keys(arr[i]).forEach(key => {
                if(arr[i].key != null && arr[i].key != "") {
                 flag = true

@@ -1,19 +1,14 @@
-import React, { useState ,useEffect} from 'react'
-import { Modal } from '@mui/material'
-import Cross from "../../../assets/cross.png"
-import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
-import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
-import BankDetails from "./ManageProjectInfoForm/BankDetails";
-import Contact from './ManageProjectInfoForm/Contact';
-import Photos from './ManageProjectInfoForm/Photos';
-import EditProjectInformation from './ManageProjectInfoForm/EditProjectInformation';
-import EditProjectDetails from './ManageProjectInfoForm/EditProjectDetails';
+import { Modal } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import Draggable from 'react-draggable';
+import Cross from "../../../assets/cross.png";
+import useAuth from '../../../context/JwtContext';
+import { APIService } from '../../../services/API';
 import EditBankDetails from './ManageProjectInfoForm/EditBankDetails';
 import EditContact from './ManageProjectInfoForm/EditContact';
 import EditPhotos from './ManageProjectInfoForm/EditPhotos';
-import { APIService } from '../../../services/API';
-import Draggable from 'react-draggable';
-import useAuth from '../../../context/JwtContext';
+import EditProjectDetails from './ManageProjectInfoForm/EditProjectDetails';
+import EditProjectInformation from './ManageProjectInfoForm/EditProjectInformation';
 const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state}) => {
     const { user } = useAuth()
     const [selectedDialogue,setSelectedDialogue] = useState(1)
@@ -306,7 +301,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
                 updateBankDetails.push(tempObj);
             }
         }else {
-            const flag = false;
+            let flag = false;
             Object.keys(formValues.project_bank_details[i]).forEach(key => {
                if(formValues.project_bank_details[i].key != null && formValues.project_bank_details[i].key != "") {
                 flag = true
@@ -335,7 +330,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
                 updateContacts.push(tempObj);
             }
         }else {
-            const flag = false;
+            let flag = false;
             Object.keys(formValues.project_contacts[i]).forEach(key => {
                if(formValues.project_contacts[i].key != null && formValues.project_contacts[i].key != "") {
                 flag = true
@@ -363,7 +358,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
                 updatePhotos.push(tempObj);
             }
         }else {
-            const flag = false;
+            let flag = false;
             Object.keys(formValues.project_photos[i]).forEach(key => {
                if(formValues.project_photos[i].key != null && formValues.project_photos[i].key != "") {
                 flag = true
