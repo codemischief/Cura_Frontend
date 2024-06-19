@@ -21,10 +21,11 @@ import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container";
 
 const OrderPaymentB2CView = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     orderPaymentB2CView,
     status,
@@ -72,8 +73,8 @@ const OrderPaymentB2CView = () => {
     const data = {
       user_id: user.id,
     };
-    const mode = await APIService.getModesAdmin({...data , user_id:user.id});
-    const entity = await APIService.getEntityAdmin({...data , user_id:user.id});
+    const mode = await APIService.getModesAdmin({ ...data, user_id: user.id });
+    const entity = await APIService.getEntityAdmin({ ...data, user_id: user.id });
     setEntityData((await entity.json()).data);
     setModeData((await mode.json()).data);
   };
@@ -81,7 +82,7 @@ const OrderPaymentB2CView = () => {
   useState(() => {
     getEntityAndMode();
     dispatch(setInitialState())
-    
+
   }, []);
 
   const handleRefresh = () => {
@@ -92,7 +93,7 @@ const OrderPaymentB2CView = () => {
       intialFields.entity
     ) {
       let obj = {
-        user_id:user.id,
+        user_id: user.id,
         rows: [
           "uniqueid",
           "date",
@@ -149,7 +150,7 @@ const OrderPaymentB2CView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       let obj = {
-        user_id:user.id,
+        user_id: user.id,
         rows: [
           "uniqueid",
           "date",
@@ -199,7 +200,7 @@ const OrderPaymentB2CView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id:user.id,
+      user_id: user.id,
       rows: [
         "uniqueid",
         "date",
@@ -245,6 +246,55 @@ const OrderPaymentB2CView = () => {
     dispatch(downloadOrderPaymentB2CReport(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "uniqueid",
+        "date",
+        "voucher",
+        "vouchertype",
+        "vouchernumber",
+        "drledger",
+        "crledger",
+        "ledgeramount",
+        "narration",
+        "instrumentno",
+        "instrumentdate",
+      ],
+      paymentMode: !isNaN(+intialFields.mode)
+        ? +intialFields.mode
+        : intialFields.mode,
+      entityid: !isNaN(+intialFields.entity)
+        ? +intialFields.entity
+        : intialFields.entity,
+      startdate: intialFields.start_date,
+      enddate: intialFields.end_date,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/orderpaymentbanktocash",
+      colmap: {
+        uniqueid: "Unique ID",
+        date: "Date",
+        voucher: "Type",
+        vouchertype: "Voucher Type",
+        vouchernumber: "Voucher Number",
+        drledger: "DR. Ledger",
+        crledger: "CR. Ledger",
+        ledgeramount: "Ledger Amount",
+        narration: "Narration",
+        instrumentno: "Instrument Number",
+        instrumentdate: "Instrument Date",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadOrderPaymentB2CReport(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       dispatch(setInitialState());
@@ -259,7 +309,8 @@ const OrderPaymentB2CView = () => {
   };
 
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -395,11 +446,12 @@ const OrderPaymentB2CView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 18rem)"
+          height="calc(100vh - 15rem)"
 
         />
       </div>
-    </Stack>
+    </Container>
+
   );
 };
 

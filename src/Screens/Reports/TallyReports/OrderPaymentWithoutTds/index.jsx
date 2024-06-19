@@ -20,10 +20,11 @@ import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container"
 
 const OrderPaymentWithoutTdsView = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     orderPaymentWithoutTdsView,
     status,
@@ -71,8 +72,8 @@ const OrderPaymentWithoutTdsView = () => {
     const data = {
       user_id: user.id,
     };
-    const mode = await APIService.getModesAdmin({...data , user_id:user.id});
-    const entity = await APIService.getEntityAdmin({...data , user_id:user.id});
+    const mode = await APIService.getModesAdmin({ ...data, user_id: user.id });
+    const entity = await APIService.getEntityAdmin({ ...data, user_id: user.id });
     setEntityData((await entity.json()).data);
     setModeData((await mode.json()).data);
   };
@@ -90,7 +91,7 @@ const OrderPaymentWithoutTdsView = () => {
       intialFields.entity
     ) {
       let obj = {
-        user_id:user.id,
+        user_id: user.id,
         rows: [
           "uniqueid",
           "date",
@@ -123,6 +124,8 @@ const OrderPaymentWithoutTdsView = () => {
     }
   };
 
+
+
   const handleSearch = () => {
     setSearch(searchInput);
     dispatch(setPageNumber(1));
@@ -147,7 +150,7 @@ const OrderPaymentWithoutTdsView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       let obj = {
-        user_id:user.id,
+        user_id: user.id,
         rows: [
           "uniqueid",
           "date",
@@ -197,7 +200,7 @@ const OrderPaymentWithoutTdsView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id:user.id,
+      user_id: user.id,
       rows: [
         "uniqueid",
         "date",
@@ -243,6 +246,55 @@ const OrderPaymentWithoutTdsView = () => {
     dispatch(downloadOrderPaymentWithoutTdsReport(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "uniqueid",
+        "date",
+        "voucher",
+        "vouchertype",
+        "vouchernumber",
+        "drledger",
+        "crledger",
+        "ledgeramount",
+        "narration",
+        "instrumentno",
+        "instrumentdate",
+      ],
+      paymentMode: !isNaN(+intialFields.mode)
+        ? +intialFields.mode
+        : intialFields.mode,
+      entityid: !isNaN(+intialFields.entity)
+        ? +intialFields.entity
+        : intialFields.entity,
+      startdate: intialFields.start_date,
+      enddate: intialFields.end_date,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/orderpaymentwithouttds",
+      colmap: {
+        uniqueid: "Unique ID",
+        date: "Date",
+        voucher: "Type",
+        vouchertype: "Voucher Type",
+        vouchernumber: "Voucher Number",
+        drledger: "DR. Ledger",
+        crledger: "CR. Ledger",
+        ledgeramount: "Ledger Amount",
+        narration: "Narration",
+        instrumentno: "Instrument Number",
+        instrumentdate: "Instrument Date",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadOrderPaymentWithoutTdsReport(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       dispatch(setInitialState());
@@ -257,7 +309,8 @@ const OrderPaymentWithoutTdsView = () => {
   };
 
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -393,10 +446,12 @@ const OrderPaymentWithoutTdsView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 18rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 15rem)"
         />
       </div>
-    </Stack>
+    </Container>
+
   );
 };
 

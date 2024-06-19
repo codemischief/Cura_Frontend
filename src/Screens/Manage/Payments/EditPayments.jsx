@@ -357,19 +357,19 @@ const EditPayments = (props) => {
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]">Edit Contractual Payments </div>
                                     </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white absolute right-2">
                                         <img onClick={() => { close() }} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                                     </div>
                                 </div>
                                 </div>
                                 {pageLoading && <div className='flex justify-center items-center mt-9 space-x-7 mb-6'><CircularProgress /><h1>Fetching Payment Data</h1></div>}
                                 {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
-                                {!pageLoading && <div className="h-auto w-full mt-[5px] ">
-                                    <div className="flex gap-[48px] justify-center">
-                                        <div className=" space-y-5 py-[20px] px-[10px]">
+                                {!pageLoading && <div className="h-auto w-full mt-1 ">
+                                    <div className="flex gap-12 justify-center">
+                                        <div className=" space-y-3 py-5">
                                             <div className="">
                                                 <div className="text-[13px] text-[#787878] mb-0.5">Cura Office </div>
-                                                <div className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                                <div className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                             </div>
                                             <div className="pt-0.5">
                                                 <div className="text-[13px] mb-1">Payment To <label className="text-red-500">*</label></div>
@@ -477,16 +477,16 @@ const EditPayments = (props) => {
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Amount <label className="text-red-500">*</label></div>
-                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="amount" value={formValues.amount} onChange={handleChange} />
+                                                <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="amount" value={formValues.amount} onChange={handleChange} />
                                                 <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.amount}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Deduction </div>
-                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="deduction" value={formValues.deduction} onChange={handleChange} />
+                                                <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="deduction" value={formValues.deduction} onChange={handleChange} />
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Payment For <label className="text-red-500">*</label></div>
-                                                <select className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
+                                                <select className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
                                                     <option hidden>Select Payment For</option>
                                                     {paymentFor.map(item => (
                                                         <option key={item.id} value={item.id}>
@@ -498,13 +498,13 @@ const EditPayments = (props) => {
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Description </div>
-                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                                <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                             </div>
                                         </div>
-                                        <div className=" space-y-5 py-[20px] px-[10px]">
+                                        <div className="space-y-3 py-5">
                                             <div className="">
                                                 <div className="text-[13px]">Payment Mode <label className="text-red-500">*</label></div>
-                                                <select className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
+                                                <select className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
                                                     {paymentMode.map(item => (
                                                         <option key={item[0]} value={item[0]}>
                                                             {item[1]}
@@ -513,9 +513,9 @@ const EditPayments = (props) => {
                                                 </select>
                                                 <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.paymentmode}</div>
                                             </div>
-                                            <div className="">
+                                            <div className="pt-0.5">
                                                 <div className="text-[13px]">Entity <label className="text-red-500">*</label></div>
-                                                <select className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entityid" value={formValues.entityid} onChange={handleChange} >
+                                                <select className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entityid" value={formValues.entityid} onChange={handleChange} >
                                                     {allEntities.map(item => (
                                                         <option key={item[0]} value={item[0]}>
                                                             {item[1]}
@@ -524,14 +524,14 @@ const EditPayments = (props) => {
                                                 </select>
                                                 <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.entityid}</div>
                                             </div>
-                                            <div className="">
+                                            <div className="pt-0.5">
                                                 <div className="text-[13px]">Paid On <label className="text-red-500">*</label></div>
-                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
+                                                <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
                                                 <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.paidon}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Month <label className="text-red-500">*</label></div>
-                                                <select className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
+                                                <select className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
                                                     {selectedMonth.map(item => (
                                                         <option key={item.id} value={item.month}>
                                                             {item.month}
@@ -542,12 +542,12 @@ const EditPayments = (props) => {
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">TDS <label className="text-red-500">*</label></div>
-                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="tds" value={formValues.tds} onChange={handleChange} />
+                                                <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="tds" value={formValues.tds} onChange={handleChange} />
                                                 <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.tds}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Profession Tax <label className="text-red-500">*</label></div>
-                                                <input className="w-[224px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
+                                                <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
                                                 <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.professiontax}</div>
                                             </div>
                                         </div>
@@ -556,7 +556,7 @@ const EditPayments = (props) => {
 
                                 <div className="flex flex-col items-center gap-2">
 
-                                    <div className=" mb-2 flex justify-center items-center gap-[10px]">
+                                    <div className=" mt-3 mb-2 flex justify-center items-center gap-[10px]">
                                         <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleEdit}>Save</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { close() }}>Cancel</button>
                                     </div>

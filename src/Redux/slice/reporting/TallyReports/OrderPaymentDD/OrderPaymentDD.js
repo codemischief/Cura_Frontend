@@ -94,7 +94,7 @@ export const getorderPaymentDDView =
   };
 
 export const downloadorderPaymentDDReport =
-  (payloadObj) => async (dispatch) => {
+  (payloadObj ,type) => async (dispatch) => {
     
     try {
       dispatch(setStatus("loading"));
@@ -105,7 +105,7 @@ export const downloadorderPaymentDDReport =
       
       if ((response.data.filename, payloadObj.user_id)) {
         await dispatch(
-          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+          downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
         );
       }
       dispatch(setStatus("success"));
@@ -117,7 +117,7 @@ export const downloadorderPaymentDDReport =
     }
   };
 
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -132,7 +132,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "Order-payment-with-DD.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "Order-payment-with-DD.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "Order-payment-with-DD.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }
