@@ -1351,7 +1351,7 @@ const ManagePmaArgreement = () => {
 
                         <div className='w-[65%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='number' value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
                                         setIdFilterInput,
                                         'equalTo',

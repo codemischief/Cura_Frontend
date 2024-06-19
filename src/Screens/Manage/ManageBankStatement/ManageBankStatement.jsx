@@ -1330,7 +1330,7 @@ const ManageBankStatement = () => {
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="number" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,amountFilterInput,
                                         setAmountFilterInput,
                                         'equalTo',
@@ -1379,7 +1379,7 @@ const ManageBankStatement = () => {
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  px-4 py-2.5'>
                                 <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none text-[11px]" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} 
+                                    <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none text-[11px]" type="number" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} 
                                     onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
                                         setIdFilterInput,
                                         'equalTo',
