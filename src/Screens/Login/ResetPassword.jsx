@@ -36,11 +36,11 @@ const ResetPassword = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       try {
-        const response = await APIService.changePassword(
+        const response = await APIService.resetOldPassword(
           { password: values.password },
           token
         );
-        if (response.status === 200) {
+        if (response.result === "success") {
           setBackToLogin(true);
         }
         toast.success("Login success");

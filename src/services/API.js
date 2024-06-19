@@ -1091,6 +1091,31 @@ const changePassword = async (data, token) => {
   }
 };
 
+const resetOldPassword = async (data, token) => {
+  try {
+    const response = await fetch(
+      `${env_URL_SERVER}reset`,
+      METHOD_POST_WITH_TOKEN(data, token)
+    );
+
+    const responseData = await response.json(); // Parse the response body as JSON
+
+    if (response.status === 200) {
+      return responseData; // Return the parsed data
+    } else if (response.status === 401) {
+      throw new Error(responseData.detail);
+    } else if (response.status === 498) {
+      localStorage.clear();
+      redirectToLogin(); // Redirect to login page
+      return;
+    } else {
+      throw new Error(responseData.detail || "An error occurred");
+    }
+  } catch (er) {
+    throw er;
+  }
+};
+
 const getProfessionalTypesAdmin = async (data) => {
   const response = await fetch(
     `${env_URL_SERVER}getProfessionalTypesAdmin`,
@@ -1326,6 +1351,7 @@ export const APIService = {
   getDepartmentTypeAdmin,
   resetPassword,
   changePassword,
+  resetOldPassword,
   getPaymentStatusAdmin,
   getProfessionalTypesAdmin,
   dashboardData,
