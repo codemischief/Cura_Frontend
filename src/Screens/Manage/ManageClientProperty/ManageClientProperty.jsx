@@ -408,6 +408,7 @@ const ManageClientProperty = () => {
     }
     const setHyperLinkData = () => {
         if(state !== null) {
+            console.log('here')
             console.log(state)
             setClientNameText(state.clientname)
             const temp = {...formValues}
