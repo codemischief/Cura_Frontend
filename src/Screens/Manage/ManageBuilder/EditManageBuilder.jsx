@@ -227,14 +227,16 @@ const EditManageBuilder = (props) => {
                 className='flex justify-center items-center' >
                     {!isLoading && 
                 <div className='flex justify-center rounded-lg'>
-                    {/* <Draggable> */}
+                    <Draggable handle='div.move'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg  ">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Edit Builder</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
-                                <img onClick={() => {close()}} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                        <div className='move cursor-move'>
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">Edit Builder</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                    <img onClick={() => {close()}} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                </div>
                             </div>
                         </div>
                         <form onSubmit={handleSubmit}>
@@ -390,7 +392,7 @@ const EditManageBuilder = (props) => {
                             </div>
                         </form>
                     </div>
-                    {/* </Draggable> */}
+                    </Draggable>
                 </div>}
             </Modal>
         </>

@@ -21,10 +21,11 @@ import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container";
 
 const OrderPaymentDDView = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     orderPaymentDDView,
     status,
@@ -47,7 +48,7 @@ const OrderPaymentDDView = () => {
     mode: 5,
     entity: "",
   });
-  
+
 
   const columns = useMemo(() => connectionDataColumn(), []);
 
@@ -73,8 +74,8 @@ const OrderPaymentDDView = () => {
     const data = {
       user_id: user.id,
     };
-    const mode = await APIService.getModesAdmin({...data , user_id:user.id});
-    const entity = await APIService.getEntityAdmin({...data , user_id:user.id});
+    const mode = await APIService.getModesAdmin({ ...data, user_id: user.id });
+    const entity = await APIService.getEntityAdmin({ ...data, user_id: user.id });
     setEntityData((await entity.json()).data);
     setModeData((await mode.json()).data);
   };
@@ -92,7 +93,7 @@ const OrderPaymentDDView = () => {
       intialFields.entity
     ) {
       let obj = {
-        user_id:user.id,
+        user_id: user.id,
         rows: [
           "uniqueid",
           "date",
@@ -149,8 +150,8 @@ const OrderPaymentDDView = () => {
   useEffect(() => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       let obj = {
-        user_id:user.id,
-        rows: 
+        user_id: user.id,
+        rows:
           [
             "uniqueid",
             "date",
@@ -163,8 +164,8 @@ const OrderPaymentDDView = () => {
             "narration",
             "instrumentno",
             "instrumentdate",
-          
-        ],
+
+          ],
         paymentMode: !isNaN(+intialFields.mode)
           ? +intialFields.mode
           : intialFields.mode,
@@ -201,7 +202,7 @@ const OrderPaymentDDView = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id:user.id,
+      user_id: user.id,
       rows: [
         "uniqueid",
         "date",
@@ -247,6 +248,55 @@ const OrderPaymentDDView = () => {
     dispatch(downloadorderPaymentDDReport(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "uniqueid",
+        "date",
+        "voucher",
+        "vouchertype",
+        "vouchernumber",
+        "drledger",
+        "crledger",
+        "ledgeramount",
+        "narration",
+        "instrumentno",
+        "instrumentdate",
+      ],
+      paymentMode: !isNaN(+intialFields.mode)
+        ? +intialFields.mode
+        : intialFields.mode,
+      entityid: !isNaN(+intialFields.entity)
+        ? +intialFields.entity
+        : intialFields.entity,
+      startdate: intialFields.start_date,
+      enddate: intialFields.end_date,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/OrderPaymentDD",
+      colmap: {
+        uniqueid: "Unique ID",
+        date: "Date",
+        voucher: "Type",
+        vouchertype: "Voucher Type",
+        vouchernumber: "Voucher Number",
+        drledger: "DR. Ledger",
+        crledger: "CR. Ledger",
+        ledgeramount: "Ledger Amount",
+        narration: "Narration",
+        instrumentno: "Instrument Number",
+        instrumentdate: "Instrument Date",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadorderPaymentDDReport(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
       dispatch(setInitialState());
@@ -261,11 +311,13 @@ const OrderPaymentDDView = () => {
   };
 
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "px" }}>
+    <Container>
+
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between items-center h-[59px]">
           <HeaderBreadcrum
-            
+
             heading={"Order Payment-Taxes"}
             path={["Reports", "Tally Report", " Order Payment-Taxes"]}
           />
@@ -398,11 +450,12 @@ const OrderPaymentDDView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 18rem)"
-          
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 16rem)"
+
         />
       </div>
-    </Stack>
+    </Container>
   );
 };
 

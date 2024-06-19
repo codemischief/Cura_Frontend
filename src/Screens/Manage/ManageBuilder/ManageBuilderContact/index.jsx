@@ -98,7 +98,6 @@ const ManageBuilderContact = () => {
         "suburb",
         "city",
         "id",
-          
       ],
       filters: formatedFilterData(filter),
       sort_by: sorting.sort_by ? [sorting.sort_by] : [],

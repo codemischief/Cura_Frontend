@@ -1845,13 +1845,13 @@ const Payments = () => {
                 {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
                 <div className="h-auto w-full mt-1 ">
                   <div className="flex gap-12 justify-center">
-                    <div className=" space-y-5 py-5">
+                    <div className=" space-y-3 py-5">
                       <div className="">
                         <div className="text-sm text-[#787878] mb-0.5">
                           Cura Office{" "}
                         </div>
                         <div
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]"
                           type="text"
                           name="curaoffice"
                           value={formValues.curaoffice}
@@ -1860,7 +1860,7 @@ const Payments = () => {
                           Pune
                         </div>
                       </div>
-                      <div className="pt-0.5">
+                      <div className="">
                         <div className="text-sm mb-1">
                           Payment To <label className="text-red-500">*</label>
                         </div>
@@ -1928,7 +1928,7 @@ const Payments = () => {
                           {formErrors.paymentto}
                         </div>
                       </div>
-                      <div className="pt-0.5">
+                      <div className="">
                         <div className="text-sm mb-1">
                           Payment By <label className="text-red-500">*</label>
                         </div>
@@ -2010,7 +2010,7 @@ const Payments = () => {
                           Amount <label className="text-red-500">*</label>
                         </div>
                         <input
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                           type="number"
                           name="amount"
                           value={formValues.amount}
@@ -2023,7 +2023,7 @@ const Payments = () => {
                       <div className="">
                         <div className="text-sm">Deduction </div>
                         <input
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                           type="text"
                           name="deduction"
                           value={formValues.deduction}
@@ -2035,7 +2035,7 @@ const Payments = () => {
                           Payment For <label className="text-red-500">*</label>
                         </div>
                         <select
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                           name="paymentfor"
                           value={formValues.paymentfor}
                           onChange={handleChange}
@@ -2054,7 +2054,7 @@ const Payments = () => {
                       <div className="">
                         <div className="text-sm">Description </div>
                         <input
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                           type="text"
                           name="description"
                           value={formValues.description}
@@ -2062,13 +2062,13 @@ const Payments = () => {
                         />
                       </div>
                     </div>
-                    <div className=" space-y-5 py-5">
+                    <div className=" space-y-3 py-5">
                       <div className="">
                         <div className="text-sm">
                           Payment Mode <label className="text-red-500">*</label>
                         </div>
                         <select
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                           name="paymentmode"
                           value={formValues.paymentmode}
                           onChange={handleChange}
@@ -2084,12 +2084,12 @@ const Payments = () => {
                           {formErrors.paymentmode}
                         </div>
                       </div>
-                      <div className="">
+                      <div className="pt-0.5">
                         <div className="text-sm">
                           Entity <label className="text-red-500">*</label>
                         </div>
                         <select
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                           name="entity"
                           value={formValues.entity}
                           onChange={handleChange}
@@ -2102,12 +2102,12 @@ const Payments = () => {
                         </select>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
                       </div>
-                      <div className="">
+                      <div className="pt-0.5">
                         <div className="text-sm">
                           Paid On <label className="text-red-500">*</label>
                         </div>
                         <input
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                           type="date"
                           name="paidon"
                           value={formValues.paidon}
@@ -2122,7 +2122,7 @@ const Payments = () => {
                           Month <label className="text-red-500">*</label>
                         </div>
                         <select
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                           name="month"
                           value={formValues.month}
                           onChange={handleChange}
@@ -2143,7 +2143,7 @@ const Payments = () => {
                           TDS <label className="text-red-500">*</label>
                         </div>
                         <input
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                           type="number"
                           name="tds"
                           value={formValues.tds}
@@ -2159,7 +2159,7 @@ const Payments = () => {
                           <label className="text-red-500">*</label>
                         </div>
                         <input
-                          className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                          className="w-56 h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                           type="number"
                           name="professiontax"
                           value={formValues.professiontax}

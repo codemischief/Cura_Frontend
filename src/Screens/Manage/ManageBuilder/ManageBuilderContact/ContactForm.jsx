@@ -88,6 +88,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
   }, []);
 
   const fetchStateData = async (id) => {
+    if(id == null) return 
     const data = { user_id: user.id, country_id: id };
     const response = await APIService.getState(data);
     const result = await response.json();
