@@ -371,6 +371,8 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
         //  }})
         const existing = { ...formValues }
         existing.client = e.value
+        existing.order = null
+        existing.clientProperty = null
         getOrdersByClientId(e.value)
         getClientPropertyByClientId(e.value)
         setFormValues(existing)
