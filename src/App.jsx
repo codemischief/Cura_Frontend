@@ -180,7 +180,7 @@ const App = () => {
               />
               <Route
                 path="/manage/managebuilder/manageproject/:id"
-                element={<ManageProjectInfo />}
+                element={<ManageProjectInfo key="hyperlinked"/>}
               />
               <Route path="/admin/deleteById" element={<DeleteById />} />
               <Route
