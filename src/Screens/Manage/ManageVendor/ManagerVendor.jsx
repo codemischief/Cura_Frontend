@@ -176,6 +176,7 @@ const ManageVendor = () => {
 
     const [orders, setOrders] = useState([]);
     const getOrdersByClientId = async (id) => {
+        if(id == null) return 
         console.log('hello')
         const data = {
             "user_id": user.id,

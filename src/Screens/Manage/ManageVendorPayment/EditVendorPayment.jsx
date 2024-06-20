@@ -90,6 +90,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         }, 1000)
     }
     const getOrdersByClientId = async (id) => {
+        if(id != null) return 
         // console.log('hello')
         const data = {
             "user_id": user.id,
