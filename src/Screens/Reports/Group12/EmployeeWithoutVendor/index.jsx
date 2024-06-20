@@ -18,6 +18,7 @@ import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container"
 
 const EmployeeWithoutVendor = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const EmployeeWithoutVendor = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const isInitialMount = useRef(true);
-  const {user} = useAuth()
+  const { user } = useAuth()
 
   const columns = useMemo(() => connectionDataColumn(), []);
 
@@ -54,10 +55,10 @@ const EmployeeWithoutVendor = () => {
 
   const handleRefresh = () => {
     let obj = {
-      user_id:user.id,
-      
-      rows:  [
-        "username","userstatus","vendorname"
+      user_id: user.id,
+
+      rows: [
+        "username", "userstatus", "vendorname"
       ],
       sort_by: undefined,
       filters: formatedFilterData(filter),
@@ -91,16 +92,16 @@ const EmployeeWithoutVendor = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    
+
     if (isInitialMount.current) {
       dispatch(setInitialState());
       isInitialMount.current = false;
     }
-    else{
+    else {
       let obj = {
-        user_id:user.id,
-        rows:  [
-          "username","userstatus","vendorname"
+        user_id: user.id,
+        rows: [
+          "username", "userstatus", "vendorname"
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -130,9 +131,9 @@ const EmployeeWithoutVendor = () => {
 
   const downloadExcel = async () => {
     let obj = {
-      user_id:user.id,
-      rows:  [
-        "username","userstatus","vendorname"
+      user_id: user.id,
+      rows: [
+        "username", "userstatus", "vendorname"
       ],
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -144,15 +145,39 @@ const EmployeeWithoutVendor = () => {
         username: "Username",
         userstatus: "User Status",
         vendorname: "Vendor Name",
-        
+
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadEmployeeWithoutVendor(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "username", "userstatus", "vendorname"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/employeeWithoutVendor",
+      colmap: {
+        username: "Username",
+        userstatus: "User Status",
+        vendorname: "Vendor Name",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadEmployeeWithoutVendor(obj, 'pdf'))
+  }
+
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -190,10 +215,12 @@ const EmployeeWithoutVendor = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+
+    </Container>
   );
 };
 

@@ -196,7 +196,7 @@ const ClientPhoneNo = () => {
         <div className="flex justify-between">
           <HeaderBreadcrum
             heading={"Client's Phone No.s"}
-            path={["Reports", "Contacts", "Client's Phone No.s"]}
+            path={["Admin", "Client's Phone No.s"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
            {showTable && <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">

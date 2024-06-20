@@ -18,10 +18,11 @@ import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container";
 
 const ClientsWithOrderButNoEmail = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     clientsWithOrderButNoEmail,
     status,
@@ -55,8 +56,8 @@ const ClientsWithOrderButNoEmail = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: user.id,
-      rows:  [
-        "fullname","clienttypename","countryname","email1"
+      rows: [
+        "fullname", "clienttypename", "countryname", "email1"
       ],
       sort_by: undefined,
       filters: formatedFilterData(filter),
@@ -95,20 +96,20 @@ const ClientsWithOrderButNoEmail = () => {
       isInitialMount.current = false;
     }
     else {
-    let obj = {
-      user_id: user.id,
-      rows:  [
-        "fullname","clienttypename","countryname","email1"
-      ],
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      filters: formatedFilterData(filter),
-      search_key: search,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      order: sorting.sort_order ? sorting.sort_order : undefined,
-    };
-    dispatch(getClientsWithOrderButNoEmail(obj));
-  }
+      let obj = {
+        user_id: user.id,
+        rows: [
+          "fullname", "clienttypename", "countryname", "email1"
+        ],
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        filters: formatedFilterData(filter),
+        search_key: search,
+        pg_no: +pageNo,
+        pg_size: +countPerPage,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
+      };
+      dispatch(getClientsWithOrderButNoEmail(obj));
+    }
   }, [
     filter,
     countPerPage,
@@ -129,8 +130,8 @@ const ClientsWithOrderButNoEmail = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: user.id,
-      rows:  [
-        "fullname","clienttypename","countryname","email1"
+      rows: [
+        "fullname", "clienttypename", "countryname", "email1"
       ],
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -143,15 +144,40 @@ const ClientsWithOrderButNoEmail = () => {
         clienttypename: "Client Type Name",
         countryname: "Country Name",
         email1: "Email",
-        
+
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadClientsWithOrderButNoEmail(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "fullname", "clienttypename", "countryname", "email1"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/clientsWithOrderButNoEmail",
+      colmap: {
+        fullname: "Client Name",
+        clienttypename: "Client Type Name",
+        countryname: "Country Name",
+        email1: "Email",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadClientsWithOrderButNoEmail(obj, 'pdf'))
+  }
+
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -189,10 +215,12 @@ const ClientsWithOrderButNoEmail = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+
+    </Container>
   );
 };
 

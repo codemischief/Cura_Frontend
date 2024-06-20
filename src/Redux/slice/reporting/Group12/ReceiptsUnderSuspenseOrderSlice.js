@@ -87,7 +87,7 @@ export const getreceiptsUnderSuspenseOrder = (payloadObj) => async (dispatch) =>
   }
 };
 
-export const downloadreceiptsUnderSuspenseOrder = (payloadObj) => async (
+export const downloadreceiptsUnderSuspenseOrder = (payloadObj ,type) => async (
   dispatch
 ) => {
   try {
@@ -98,7 +98,7 @@ export const downloadreceiptsUnderSuspenseOrder = (payloadObj) => async (
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -110,7 +110,7 @@ export const downloadreceiptsUnderSuspenseOrder = (payloadObj) => async (
   }
 };
 
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -125,7 +125,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "reportExceptionReceiptUnderSuspeseOrder.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "reportExceptionReceiptUnderSuspeseOrder.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "reportExceptionReceiptUnderSuspeseOrder.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }

@@ -22,7 +22,7 @@ import Container from "../../../../Components/common/Container";
 
 const ReceiptsUnderSuspenseOrder = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     receiptsUnderSuspenseOrder,
     status,
@@ -146,15 +146,43 @@ const ReceiptsUnderSuspenseOrder = () => {
         paymentmode: "Mode Of Payment",
         paymentby: "Payment By",
         amount: "Amount",
-        receiptdescription:"Payment Description"
+        receiptdescription: "Payment Description"
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadreceiptsUnderSuspenseOrder(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "clientname", "orderdesc", "recddate", "paymentmode", "paymentby", "amount", "receiptdescription"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/receiptsUnderSuspenseOrder",
+      colmap: {
+        clientname: "Client Name",
+        orderdesc: "Order Description",
+        recddate: "Date",
+        paymentmode: "Mode Of Payment",
+        paymentby: "Payment By",
+        amount: "Amount",
+        receiptdescription: "Payment Description"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadreceiptsUnderSuspenseOrder(obj, 'pdf'))
+  }
+
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -192,10 +220,11 @@ const ReceiptsUnderSuspenseOrder = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+  </Container >
   );
 };
 
