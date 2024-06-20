@@ -12,12 +12,13 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
   // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
   const { user} = useAuth()
   useEffect(() => {
-    const temp = { ...formValues }
-    const ex = temp.client_property
-    ex.clientid = clientid
-    temp.client_property = ex
-    setFormValues(temp)
-    
+    if(clientid != null) {
+      const temp = { ...formValues }
+      const ex = temp.client_property
+      ex.clientid = clientid
+      temp.client_property = ex
+      setFormValues(temp)
+    }  
   }, [])
   const [state, setState] = useState(initialStates);
   const [city, setCity] = useState(initialCities);
@@ -62,6 +63,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
     const ex = temp.client_property
     ex.clientid = e.value 
     temp.client_property = ex 
+    console.log(temp)
     setFormValues(temp)
     setCurrClientName(e.label)
     console.log(formValues)
