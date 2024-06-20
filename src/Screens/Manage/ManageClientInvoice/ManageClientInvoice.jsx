@@ -1106,12 +1106,12 @@ const ManageClientInvoice = () => {
                             </div>
 
                             <div className='w-[45%]  flex items-center'>
-                                <RefreshFilterButton
+                                {/* <RefreshFilterButton
                                  fetchData={fetchData}
                                  filterMapping={filterMapping}
                                  setFilterMapState={setFilterMapState}
                                  resetAllInputs={resetAllInputs}
-                                />
+                                /> */}
                             </div>
                         </div>
                     </div>

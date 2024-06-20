@@ -1184,6 +1184,7 @@ const ManageOrderReceipt = () => {
         orderstatus: null
     })
     const getOrderData = async (id) => {
+        console.log('called')
         const data = {  "orderid": Number(id) }
         const response = await APIService.getOrderPending({...data,user_id : user.id})
         const res = await response.json()
@@ -1193,6 +1194,7 @@ const ManageOrderReceipt = () => {
         temp.orderdate = res.data.orderdate
         temp.orderstatus = res.data.orderstatus
         setOrderData(temp)
+    
     }
     const [orderText, setOrderText] = useState("Select Order")
 
@@ -1899,6 +1901,7 @@ const ManageOrderReceipt = () => {
                                             );
                                           }}
                                           onChange={(e) => {
+                                            getOrderData(e.target.value)
                                             setFormValues({ ...formValues, order: e.target.value })
                                            }}
                                            

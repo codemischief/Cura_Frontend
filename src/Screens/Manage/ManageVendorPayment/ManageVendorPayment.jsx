@@ -1739,6 +1739,7 @@ const ManageVendorPayment = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
+                                                {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
                                                 <OrderCustomSelectNative
                                            data={Object.keys(orders)}
                                            value={orders?.[formValues.orderid] ? orders?.[formValues.orderid]:null}
@@ -1764,16 +1765,14 @@ const ManageVendorPayment = () => {
                                             );
                                           }}
                                           onChange={(e) => {
+                                            getOrderData(e.target.value)
                                             setFormValues({ ...formValues, orderid: e.target.value })
                                            }}
                                            
                                         
-                                        />
-                                                    {/* {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
-                                                    <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
-                                                        handleChange(e)
-                                                        getOrderData(e.target.value)
-                                                    }} formValueName="orderid" value={formValues.orderid} />} */}
+                                        />}
+                                                    
+                                                    
 
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.orderid}</div>
                                             </div>
