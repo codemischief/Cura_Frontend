@@ -148,6 +148,27 @@ const LobReceiptPayments = () => {
     dispatch(downloadClientTraceReportDataXls(obj))
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      clientID:selectedOption.value,
+      rows: ["type","relatedid"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/clientTraceReport",
+      colmap: {
+        "type": "Type",
+        "relatedid": "ID",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadClientTraceReportDataXls(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (selectedOption.value) {
 
@@ -199,7 +220,7 @@ const LobReceiptPayments = () => {
   return (
     <Container>
       
-    <Stack gap="1rem">
+    
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -334,7 +355,8 @@ const LobReceiptPayments = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 15rem)"
           />
       </div>
       {toast && (
@@ -343,7 +365,7 @@ const LobReceiptPayments = () => {
           message="New Receipt Added Successfully"
         />
       )}
-    </Stack>
+
       </Container>
   );
 };

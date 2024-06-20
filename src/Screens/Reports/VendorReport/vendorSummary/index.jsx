@@ -166,15 +166,34 @@ const VendorSummary = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadData(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["clientname","briefdescription","vendorname","service","ownername","estimateamount","invoiceamount","paymentamount","computedpending"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/vendorSummary",
+      colmap: {
+        "clientname": "Client Name",
+        "briefdescription": "Order Description",
+        "service": "Service",
+        "ownername": "Order Owner",
+        "vendorname": "Vendor Name",
+        "estimateamount": "Total Estimate Amount",
+        "invoiceamount": "Total Invoice Amount",
+        "paymentamount": "total Payment Amount",
+        "computedpending": "Computed Pending",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadData(obj, 'pdf'))
+  }
 
   const handleShow = () => {
 
@@ -186,8 +205,6 @@ const VendorSummary = () => {
   };
   return (
     <Container>
-
-      <Stack gap="1rem">
 
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
@@ -228,7 +245,8 @@ const VendorSummary = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-            height="calc(100vh - 12rem)"
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 11rem)"
           />
         </div>
         {toast && (
@@ -237,7 +255,7 @@ const VendorSummary = () => {
             message="New Receipt Added Successfully"
           />
         )}
-      </Stack>
+     
     </Container>
   );
 };

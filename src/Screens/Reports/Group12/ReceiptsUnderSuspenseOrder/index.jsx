@@ -18,6 +18,7 @@ import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container";
 
 const ReceiptsUnderSuspenseOrder = () => {
   const dispatch = useDispatch();

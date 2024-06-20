@@ -18,10 +18,11 @@ import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../.././../../Components/common/Container"
 
 const PaymentUnderSuspenseOrder = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     paymentUnderSuspenseOrder,
     status,
@@ -55,7 +56,7 @@ const PaymentUnderSuspenseOrder = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: user.id,
-      rows: ["clientname","orderdesc","paymentdate","paymentmode","paymentby","amount", "paymentdescription"],
+      rows: ["clientname", "orderdesc", "paymentdate", "paymentmode", "paymentby", "amount", "paymentdescription"],
       sort_by: undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -88,15 +89,15 @@ const PaymentUnderSuspenseOrder = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    
+
     if (isInitialMount.current) {
       dispatch(setInitialState());
       isInitialMount.current = false;
     }
-    else{
+    else {
       let obj = {
         user_id: user.id,
-        rows: ["clientname","orderdesc","paymentdate","paymentmode","paymentby","amount",'paymentdescription'],
+        rows: ["clientname", "orderdesc", "paymentdate", "paymentmode", "paymentby", "amount", 'paymentdescription'],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
@@ -126,7 +127,7 @@ const PaymentUnderSuspenseOrder = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: user.id,
-      rows: ["clientname","orderdesc","paymentdate","paymentmode","paymentby","amount", "paymentdescription"],
+      rows: ["clientname", "orderdesc", "paymentdate", "paymentmode", "paymentby", "amount", "paymentdescription"],
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -141,15 +142,40 @@ const PaymentUnderSuspenseOrder = () => {
         paymentby: "Payment By",
         amount: "Amount",
         paymentdescription: "Payment Description",
-        
+
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadPaymentUnderSuspenseOrder(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["clientname", "orderdesc", "paymentdate", "paymentmode", "paymentby", "amount", "paymentdescription"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/paymentUnderSuspenseOrder",
+      colmap: {
+        clientname: "Client Name",
+        orderdesc: "Order Description",
+        paymentdate: "Payment Date",
+        paymentmode: "Payment Mode",
+        paymentby: "Payment By",
+        amount: "Amount",
+        paymentdescription: "Payment Description",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadPaymentUnderSuspenseOrder(obj, 'pdf'))
+  }
+
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -187,10 +213,11 @@ const PaymentUnderSuspenseOrder = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+    </Container>
   );
 };
 
