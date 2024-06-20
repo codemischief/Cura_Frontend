@@ -316,6 +316,9 @@ const Payments = () => {
   const [name1, setName1] = useState("");
   const [name2, setName2] = useState("");
   const handleAddPayment = async () => {
+    if (!validate()) {
+      return;
+    }
     console.log(formValues);
     setName1(allUsername[formValues.paymentto].name)
     setName2(allUsername[formValues.paymentby].name)
@@ -324,15 +327,11 @@ const Payments = () => {
     console.log(name1);
     console.log(name2);
 
-    if (!validate()) {
-      return;
-    }
-    setPageLoading(true);
+   
+    // setPageLoading(true);
     setIsPaymentsDialogue(false);
-    setTimeout(() => {
-      setPageLoading(false);
-      setOpenAddConfirmation(true);
-    }, 1000);
+    setOpenAddConfirmation(true);
+   
   };
   const addPayment = async () => {
     const data = {
@@ -463,7 +462,7 @@ const Payments = () => {
 
   const validate = () => {
     var res = true;
-    if (!formValues.paymentto || formValues.paymentto == "") {
+    if (formValues.paymentto === null || formValues.paymentto === "") {
       setFormErrors((existing) => {
         return { ...existing, paymentto: "Select a name to pay" };
       });
@@ -473,7 +472,7 @@ const Payments = () => {
         return { ...existing, paymentto: "" };
       });
     }
-    if (!formValues.paymentby || formValues.paymentby == "") {
+    if (formValues.paymentby === null || formValues.paymentby === "") {
       setFormErrors((existing) => {
         return { ...existing, paymentby: "Select a name to pay from" };
       });
@@ -486,7 +485,7 @@ const Payments = () => {
     // console.log(formValues.amount);
     // const temp = Number(formValues.amount);
 
-    if (!formValues.amount) {
+    if (formValues.amount === null || formValues.amount === "") {
       setFormErrors((existing) => {
         return { ...existing, amount: "Enter Amount to pay" };
       });
@@ -496,7 +495,7 @@ const Payments = () => {
         return { ...existing, amount: "" };
       });
     }
-    if (!formValues.paymentfor) {
+    if (formValues.paymentfor === null || formValues.paymentfor === "") {
       setFormErrors((existing) => {
         return { ...existing, paymentfor: "Select Tally ledger" };
       });
@@ -506,7 +505,7 @@ const Payments = () => {
         return { ...existing, paymentfor: "" };
       });
     }
-    if (!formValues.paymentmode) {
+    if (formValues.paymentmode === null || formValues.paymentmode === "") {
       setFormErrors((existing) => {
         return { ...existing, paymentmode: "Select a payment mode" };
       });
@@ -516,7 +515,7 @@ const Payments = () => {
         return { ...existing, paymentmode: "" };
       });
     }
-    if (!formValues.entity) {
+    if (formValues.entity === null || formValues.entity === "") {
       setFormErrors((existing) => {
         return { ...existing, entity: "Select entity" };
       });
@@ -526,7 +525,7 @@ const Payments = () => {
         return { ...existing, entity: "" };
       });
     }
-    if (!formValues.paidon) {
+    if (formValues.paidon === null || formValues.paidon === "") {
       setFormErrors((existing) => {
         return { ...existing, paidon: "Enter payment date" };
       });
@@ -536,7 +535,7 @@ const Payments = () => {
         return { ...existing, paidon: "" };
       });
     }
-    if (!formValues.month) {
+    if (formValues.month === null || formValues.month === "") {
       setFormErrors((existing) => {
         return { ...existing, month: "Select payment month" };
       });
@@ -546,7 +545,7 @@ const Payments = () => {
         return { ...existing, month: "" };
       });
     }
-    if (!formValues.tds) {
+    if (formValues.tds === null || formValues.tds === "") {
       setFormErrors((existing) => {
         return { ...existing, tds: "Enter TDS" };
       });
@@ -556,7 +555,7 @@ const Payments = () => {
         return { ...existing, tds: "" };
       });
     }
-    if (!formValues.professiontax) {
+    if (formValues.professiontax === "" || formValues.professiontax === null) {
       setFormErrors((existing) => {
         return { ...existing, professiontax: "Enter Profession Tax" };
       });

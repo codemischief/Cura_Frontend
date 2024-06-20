@@ -179,8 +179,9 @@ const EditPayments = (props) => {
     };
 
     const validate = () => {
+        console.log(formValues)
         var res = true;
-        if (!formValues.paymentto || formValues.paymentto == "") {
+        if (formValues.paymentto === null || formValues.paymentto === "") {
             setFormErrors((existing) => {
                 return { ...existing, paymentto: "Select a name to pay" }
             })
@@ -190,7 +191,7 @@ const EditPayments = (props) => {
                 return { ...existing, paymentto: "" }
             })
         }
-        if (!formValues.paymentby || formValues.paymentby == "") {
+        if (formValues.paymentby === null || formValues.paymentby === "") {
             setFormErrors((existing) => {
                 return { ...existing, paymentby: "Select a name to pay from" }
             })
@@ -203,7 +204,7 @@ const EditPayments = (props) => {
         // console.log(formValues.amount);
         // const temp = Number(formValues.amount);
 
-        if (!formValues.amount) {
+        if (formValues.amount === "" || formValues.amount === null) {
             setFormErrors((existing) => {
                 return { ...existing, amount: "Enter Amount to pay" }
             })
@@ -213,7 +214,7 @@ const EditPayments = (props) => {
                 return { ...existing, amount: "" }
             })
         }
-        if (!formValues.paymentfor) {
+        if (formValues.paymentfor === "" || formValues.paymentfor === null) {
             setFormErrors((existing) => {
                 return { ...existing, paymentfor: "Select Tally ledger" }
             })
@@ -223,7 +224,7 @@ const EditPayments = (props) => {
                 return { ...existing, paymentfor: "" }
             })
         }
-        if (!formValues.paymentmode) {
+        if (formValues.paymentmode === "" || formValues.paymentmode === null) {
             setFormErrors((existing) => {
                 return { ...existing, paymentmode: "Select a Payment mode" }
             })
@@ -233,7 +234,7 @@ const EditPayments = (props) => {
                 return { ...existing, paymentmode: "" }
             })
         }
-        if (!formValues.entityid) {
+        if (formValues.entityid === "" || formValues.entityid === null) {
             setFormErrors((existing) => {
                 return { ...existing, entityid: "Select Entity" }
             })
@@ -243,7 +244,7 @@ const EditPayments = (props) => {
                 return { ...existing, entityid: "" }
             })
         }
-        if (!formValues.paidon) {
+        if (formValues.paidon === "" || formValues.paidon === null) {
             setFormErrors((existing) => {
                 return { ...existing, paidon: "Enter Payment Date" }
             })
@@ -253,7 +254,7 @@ const EditPayments = (props) => {
                 return { ...existing, paidon: "" }
             })
         }
-        if (!formValues.month) {
+        if (formValues.month === "" || formValues.month === null) {
             setFormErrors((existing) => {
                 return { ...existing, month: "Select Payment Month" }
             })
@@ -263,7 +264,7 @@ const EditPayments = (props) => {
                 return { ...existing, month: "" }
             })
         }
-        if (!formValues.tds) {
+        if (formValues.tds === "" || formValues.tds === null) {
             setFormErrors((existing) => {
                 return { ...existing, tds: "Enter TDS" }
             })
@@ -273,7 +274,7 @@ const EditPayments = (props) => {
                 return { ...existing, tds: "" }
             })
         }
-        if (!formValues.professiontax) {
+        if (formValues.professiontax === "" || formValues.professiontax === null) {
             setFormErrors((existing) => {
                 return { ...existing, professiontax: "Enter Profession Tax" }
             })
