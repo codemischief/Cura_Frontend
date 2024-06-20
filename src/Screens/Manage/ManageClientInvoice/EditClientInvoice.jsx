@@ -28,7 +28,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState({})
     const [pageLoading,setPageLoading] = useState(false)
     const fetchInitialData = async () => {
         setPageLoading(true)
@@ -172,7 +172,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         return idNameObject;
     }
     const getOrdersByClientId = async (id) => {
-        
+        if(id == null) return 
         const data = {
             "client_id": id
         }

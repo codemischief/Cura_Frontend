@@ -87,7 +87,7 @@ export const getentityBlankReportData = (payloadObj) => async (dispatch) => {
   }
 };
 
-export const downloadEntityBlankReportData = (payloadObj) => async (
+export const downloadEntityBlankReportData = (payloadObj ,type) => async (
   dispatch
 ) => {
   try {
@@ -98,7 +98,7 @@ export const downloadEntityBlankReportData = (payloadObj) => async (
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadEntityBlankReport(response.data.filename, payloadObj.user_id)
+        downloadEntityBlankReport(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -110,7 +110,7 @@ export const downloadEntityBlankReportData = (payloadObj) => async (
   }
 };
 
-export const downloadEntityBlankReport = (filename, userId) => async (dispatch) => {
+export const downloadEntityBlankReport = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -125,7 +125,11 @@ export const downloadEntityBlankReport = (filename, userId) => async (dispatch) 
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "reportExceptionEntityBlank.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "reportExceptionEntityBlank.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "reportExceptionEntityBlank.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }

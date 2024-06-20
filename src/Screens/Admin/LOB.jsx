@@ -214,22 +214,22 @@ const LOB = () => {
     }
     const deleteLob = async (name) => {
         // we write delete lob logic here
-        setPageLoading(true);
+        // setPageLoading(true);
         const data = {
 
             "name": String(name)
         }
         const response = await APIService.deleteLob({...data,user_id : user.id});
         setDeleteLobModal(false);
+        // setPageLoading(false);
         const res = await response.json()
-        console.log("this is the error")
+        
         console.log(res.result)
         if (res.result == 'success') {
             openDeleteSuccess();
             // console.log('hi')
         }
         fetchData();
-        setPageLoading(false);
     }
     const [isLobDialogue, setIsLobDialogue] = React.useState(false);
     const handleOpen = () => {

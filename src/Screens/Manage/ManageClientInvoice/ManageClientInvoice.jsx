@@ -165,6 +165,7 @@ const ManageClientInvoice = () => {
     }
     const [orders, setOrders] = useState({});
     const getOrdersByClientId = async (id) => {
+        if(id == null) return 
         console.log('hello')
         const data = {
             "client_id": id
@@ -345,7 +346,7 @@ const ManageClientInvoice = () => {
                 value: null
             }
         )
-        setOrders([]);
+        setOrders({});
         setOrderText("Select Order");
 
         setIsClientInvoiceDialogue(false);

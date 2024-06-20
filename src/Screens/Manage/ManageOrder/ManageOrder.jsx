@@ -937,6 +937,7 @@ const ManageOrder = () => {
         }
     }
     const [orderText,setOrderText] = useState('Select Client Property')
+    
     return (
         <div className=" font-medium">
             {/* <Navbar/> */}
@@ -1338,6 +1339,8 @@ const ManageOrder = () => {
                                         <div className='w-[120px] p-4'>
                                             <p>{item.createdbyname}</p>
                                         </div>
+                                        {/* state={{ orderid: item.id,clientid : item.clientid, clientname : item.clientname , orderdescription : item.briefdescription , hyperlinked : true }} */}
+                                        {/* ={`/manage/managevendorpayment/${item.id}`}  */}
                                         <Link to={`/manage/managevendorpayment/${item.id}`} state={{ orderid: item.id,clientid : item.clientid, clientname : item.clientname , orderdescription : item.briefdescription , hyperlinked : true }}>
 
                                             <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>

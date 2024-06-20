@@ -18,10 +18,11 @@ import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container";
 
 const BankTransactionsWithWrongUserName = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     BankTransactionsWithWrongUserName,
     status,
@@ -55,8 +56,8 @@ const BankTransactionsWithWrongUserName = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: user.id,
-      rows:  [
-        "type","clientname","orderdescription","mode_of_payment","doneby","amount"
+      rows: [
+        "type", "clientname", "orderdescription", "mode_of_payment", "doneby", "amount"
       ],
       sort_by: undefined,
       filters: formatedFilterData(filter),
@@ -95,20 +96,20 @@ const BankTransactionsWithWrongUserName = () => {
       isInitialMount.current = false;
     }
     else {
-    let obj = {
-      user_id: user.id,
-      rows: [
-        "type","clientname","orderdescription","mode_of_payment","doneby","amount"
-      ],
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      filters: formatedFilterData(filter),
-      search_key: search,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      order: sorting.sort_order ? sorting.sort_order : undefined,
-    };
-    dispatch(getBankTransactionsWithWrongUserName(obj));
-  }
+      let obj = {
+        user_id: user.id,
+        rows: [
+          "type", "clientname", "orderdescription", "mode_of_payment", "doneby", "amount"
+        ],
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        filters: formatedFilterData(filter),
+        search_key: search,
+        pg_no: +pageNo,
+        pg_size: +countPerPage,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
+      };
+      dispatch(getBankTransactionsWithWrongUserName(obj));
+    }
   }, [
     filter,
     countPerPage,
@@ -129,8 +130,8 @@ const BankTransactionsWithWrongUserName = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: user.id,
-      rows:  [
-        "type","clientname","orderdescription","mode_of_payment","doneby","amount"
+      rows: [
+        "type", "clientname", "orderdescription", "mode_of_payment", "doneby", "amount"
       ],
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -145,15 +146,42 @@ const BankTransactionsWithWrongUserName = () => {
         mode_of_payment: "Mode of Payment",
         doneby: "Done By",
         amount: "Amount",
-        
+
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadData(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "type", "clientname", "orderdescription", "mode_of_payment", "doneby", "amount"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/bankTransactionsWithWrongUserName",
+      colmap: {
+        type: "Type",
+        clientname: "Client Name",
+        orderdescription: "Order Description",
+        mode_of_payment: "Mode of Payment",
+        doneby: "Done By",
+        amount: "Amount",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadData(obj, 'pdf'))
+  }
+
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -191,10 +219,11 @@ const BankTransactionsWithWrongUserName = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+    </Container>
   );
 };
 

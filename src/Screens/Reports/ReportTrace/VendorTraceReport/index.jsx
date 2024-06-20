@@ -148,6 +148,27 @@ const VendorTraceReport = () => {
     dispatch(downloadDataXls(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      vendorID: selectedOption.value,
+      rows: ["type", "vendorid"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/vendorTraceReport",
+      colmap: {
+        "type": "Type",
+        "vendorid": "ID",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadDataXls(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (selectedOption.value) {
 
@@ -199,7 +220,7 @@ const VendorTraceReport = () => {
   return (
     <Container>
 
-      <Stack gap="1rem">
+      
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
@@ -334,7 +355,8 @@ const VendorTraceReport = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
-
+            downloadPdf={downloadPdf}
+            height="calc(100vh - 15rem)"
           />
         </div>
         {toast && (
@@ -343,7 +365,7 @@ const VendorTraceReport = () => {
             message="New Receipt Added Successfully"
           />
         )}
-      </Stack>
+      
     </Container>
   );
 };

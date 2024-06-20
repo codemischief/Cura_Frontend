@@ -344,6 +344,7 @@ const ManageVendorInvoice = () => {
         return idNameObject;
     }
     const getOrdersByClientId = async (id) => {
+        if(id == null) return 
         const data = {
             "user_id": user.id,
             "client_id": id

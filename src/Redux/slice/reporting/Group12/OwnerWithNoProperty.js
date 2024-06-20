@@ -86,7 +86,7 @@ export const getOwnerWithNoProperty = (payloadObj) => async (dispatch) => {
   }
 };
 
-export const downloadOwnerWithNoReport = (payloadObj) => async (
+export const downloadOwnerWithNoReport = (payloadObj ,type) => async (
   dispatch
 ) => {
   try {
@@ -97,7 +97,7 @@ export const downloadOwnerWithNoReport = (payloadObj) => async (
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -109,7 +109,7 @@ export const downloadOwnerWithNoReport = (payloadObj) => async (
   }
 };
 
-export const downloadXlsEndpoint = (filename, userId) => async () => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async () => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -124,7 +124,11 @@ export const downloadXlsEndpoint = (filename, userId) => async () => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "reportOwnerWithNoProperty.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "reportOwnerWithNoProperty.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "reportOwnerWithNoProperty.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }

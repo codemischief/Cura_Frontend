@@ -348,8 +348,9 @@ const Locality = () => {
             setFormValues(initialValues);
             openSuccess();
         } else {
-            setErrorMessage(res.message)
+            setErrorMessage(res.detail)
             openFailure();
+            setFormValues(initialValues);
         }
 
         fetchData();

@@ -243,6 +243,7 @@ const ManageLLAgreement = () => {
     const [orders, setOrders] = useState([]);
 
     const getOrdersByClientId = async (id) => {
+        if(id == null) return 
         console.log('hello')
         const data = {
             
@@ -426,7 +427,10 @@ const ManageLLAgreement = () => {
             v.label = state.clientname 
             v.value = state.clientid 
             setSelectedOption(v)
-            getOrdersByClientId(state.clientid)
+            if(state.clientid != null) {
+
+                getOrdersByClientId(state.clientid)
+            }
             const temp = {...formValues}
             temp.client = state.clientid 
             temp.clientProperty = state.clientPropertyId

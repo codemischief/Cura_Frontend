@@ -87,7 +87,7 @@ export const getBankTransactionsWithWrongUserName = (payloadObj) => async (dispa
   }
 };
 
-export const downloadData = (payloadObj) => async (
+export const downloadData = (payloadObj ,type) => async (
   dispatch
 ) => {
   try {
@@ -98,7 +98,7 @@ export const downloadData = (payloadObj) => async (
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadBankTransactionsWithWrongUserName(response.data.filename, payloadObj.user_id)
+        downloadBankTransactionsWithWrongUserName(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -110,7 +110,7 @@ export const downloadData = (payloadObj) => async (
   }
 };
 
-export const downloadBankTransactionsWithWrongUserName = (filename, userId) => async (dispatch) => {
+export const downloadBankTransactionsWithWrongUserName = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -125,7 +125,11 @@ export const downloadBankTransactionsWithWrongUserName = (filename, userId) => a
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "reportExceptionBankStWrongNames.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "reportExceptionBankStWrongNames.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "reportExceptionBankStWrongNames.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }

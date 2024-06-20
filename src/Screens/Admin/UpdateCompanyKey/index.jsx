@@ -99,7 +99,7 @@ const UpdateCompanyKey = () => {
             </div>
 
             <div className='flex-col'>
-              <h1 className='text-[18px]'>Update Company Key</h1>
+              <h1 className='text-[18px]'>Enter New Company Key</h1>
               <p className='text-[14px]'>Admin &gt; Update Company Key</p>
             </div>
           </div>
