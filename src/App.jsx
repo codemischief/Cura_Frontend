@@ -1,141 +1,34 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Login from "./Screens/Login/Login";
-import Dashboard from "./Screens/Dashboard/Dashboard";
-import NotFound from "./Screens/NotFound/notFound";
-import Country from "./Screens/Admin/Country";
-import City from "./Screens/Admin/City";
-import Locality from "./Screens/Admin/Locality";
-import ManageUser from "./Screens/Manage/ManageUser/ManageUser";
-import ManageProjectInfo from "./Screens/Manage/ManageProjectInfo/ManageProjectInfo";
-import ManageOrder from "./Screens/Manage/ManageOrder/ManageOrder";
-import ManageEmployees from "./Screens/Manage/ManageEmployee/ManageEmployees";
-import ManageBuilder from "./Screens/Manage/ManageBuilder/ManageBuilder";
-import Payments from "./Screens/Manage/Payments/Payments";
-import ManageClientInfo from "./Screens/Manage/ManageClientInfo/ManageClientInfo";
-import ManageClientProperty from "./Screens/Manage/ManageClientProperty/ManageClientProperty";
-import ManageClientReceipt from "./Screens/Manage/ManageClientReceipt/ManageClientReceipt";
-import ManageLLAgreement from "./Screens/Manage/ManageLLAgreement/ManageLLAgreement";
-import ManagePmaArgreement from "./Screens/Manage/ManagePmaAgreement/ManagePmaAgreement copy";
-import ManageOrderReceipt from "./Screens/Manage/ManageOrderReceipt/ManageOrderReceipt";
-import ManageClientInvoice from "./Screens/Manage/ManageClientInvoice/ManageClientInvoice";
-import ManageVendor from "./Screens/Manage/ManageVendor/ManagerVendor";
-import ManageVendorInvoice from "./Screens/Manage/ManageVendorInvoice/ManageVendorInvoice";
-import ManageVendorPayment from "./Screens/Manage/ManageVendorPayment/ManageVendorPayment";
 
 import { Route, Routes, Outlet, useNavigate } from "react-router-dom";
-import LOB from "./Screens/Admin/LOB";
-import Service from "./Screens/Admin/Service";
-import ResearchAgent from "./Screens/Research/Agent/index.jsx";
-import ManageBankStatement from "./Screens/Manage/ManageBankStatement/ManageBankStatement";
-import ManageBuilderProject from "./Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject";
-import ManageBuilderContact from "./Screens/Manage/ManageBuilder/ManageBuilderContact/index.jsx";
 
-import PmaBilling from "./Screens/Manage/pma";
-import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
-import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
-import OrderInvoiceList from "./Screens/Reports/OrderInvoiceList";
-import LobReceiptPayments from "./Screens/Reports/LobReceiptPayments";``
-import EntityReceiptPayments from "./Screens/Reports/EntityReceiptPayments";
-import LobReceiptPaymentsConsolidated from "./Screens/Reports/LobReceiptPaymentsConsolidated";
-
-import DeleteById from "./Screens/Admin/DeleteById/DeleteById";
-import SendClientStatement from "./Screens/Manage/SendClientStatement";
-
-import ClientReceiptList from "./Screens/Reports/ClientReceiptList";
-import VendorInvoiceList from "./Screens/Reports/VendorInvoiceList";
-import DeletePage from "./Screens/Admin/DeleteById/DeletePage";
-import PmaBillingTrendView from "./Screens/Reports/reportPmaBillingTrendView";
-import PmaClientReport from "./Screens/Reports/pmaClientReport";
-import PmaInvoiceList from "./Screens/Reports/PmaInvoiceList";
-import PmaClientReceivable from "./Screens/Reports/PmaClientReceivables/index.jsx";
-import ActivePmaAgreement from "./Screens/Reports/ActivePmaAgreement";
-import ProjectContact from "./Screens/Reports/ProjectContacts";
-import AdvanceHoldingAmount from "./Screens/Reports/AdvanceHoldingAmount";
-import PmaClientStatementAll from "./Screens/Reports/PMAClientStatementAll";
-
-import ShowAllOdersInformation from "./Screens/Manage/ManageOrder/ShowAllOrdersInformation/index.jsx";
-
-import PmaClientStatement from "./Screens/Reports/PmaClientStatement";
-import NonPmaClientStatement from "./Screens/Reports/NonPmaClientStatement";
-import NonPmaClientReceivables from "./Screens/Reports/NonPmaClientReceivables";
-import ClientStatementAll from "./Screens/Reports/ClientStatement-CI,CRAndOR";
-import DuplicateClientReport from "./Screens/Reports/DupilcateClientsReport";
-import ClientBankDetails from "./Screens/Reports/ClientBankDetails";
-import MonthlyBankSummary from "./Screens/Reports/MonthlyBankSummary";
-import BankTransferReconciliation from "./Screens/Reports/BankTransferReconciliation";
-import ClientOrderReceiptMismatchDetails from "./Screens/Reports/ClientOrderReceiptMismatchDetails";
-import BankReceiptReconciliation from "./Screens/Reports/BankReceiptsReconciliation";
-import BankPaymentReconciliation from "./Screens/Reports/BankPaymentReconciliation";
-import PrivateLayout from "./layout/Privatelayout";
-import AuthGuard from "./context/AuthGuard";
-import useAuth from "./context/JwtContext";
-import PropectusPage from "./Screens/Research/Prospect";
-import ClientTraceReport from "./Screens/Reports/ReportTrace/ClientTraceReport";
-import OrderTraceReport from "./Screens/Reports/ReportTrace/OrderTraceReport/index.jsx";
-import VendorTraceReport from "./Screens/Reports/ReportTrace/VendorTraceReport/index.jsx";
-import { CircularProgress } from "@mui/material";
-import UnAuthorized from "./Screens/UnAuthorized/UnAuthorized.jsx";
-import ClientReceiptView from "./Screens/Reports/TallyReports/ClientReceipt/index.jsx";
-import OrderPaymentDDView from "./Screens/Reports/TallyReports/OrderPaymentDD/index.jsx";
-import OrderPaymentB2CView from "./Screens/Reports/TallyReports/OrderPaymentB2C/index.jsx";
-import OrderPaymentB2BView from "./Screens/Reports/TallyReports/OrderPaymentB2B/index.jsx";
-import OrderPaymentWithTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithTds/index.jsx";
-import OrderPaymentWithoutTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithoutTds/index.jsx";
-import OrderReceiptToInvoiceServiceTax from "./Screens/Reports/TallyReports/OrderReceiptToServiceTax/index.jsx";
-import ClientStatistics from "./Screens/Reports/Statistics/ClientStatisticsReport/index.jsx";
-import ResearchEmployer from "./Screens/Research/Employer/index.jsx";
-import ResearchGovernmentDepartment from "./Screens/Research/Government Department/index.jsx";
-
-import ResearchOwner from "./Screens/Research/Owner/index.jsx";
-import ResearchFriends from "./Screens/Research/Friends/index.jsx";
-import ResearchBanks from "./Screens/Research/Banks/index.jsx";
-import ResearchBusinessGroup from "./Screens/Research/COC/index.jsx";
-import ResearchProfessionals from "./Screens/Research/Professionals/index.jsx";
-import ResearchMandals from "./Screens/Research/Mandals/index.jsx";
-import ResearchArchitect from "./Screens/Research/Architect/index.jsx";
-import ResearchEducational from "./Screens/Research/Educational/index.jsx";
-import ResearchServiceApartments from "./Screens/Research/ServiceApartment/index.jsx";
-
-import VendorStatementView from "./Screens/Reports/VendorReport/VendorStatement/index.jsx";
-import TdsPaidToGovernement from "./Screens/Reports/VendorReport/TdsPaidToGovernment/index.jsx";
-import TdsPaidByVendorView from "./Screens/Reports/VendorReport/TDSPaidByvendor/index.jsx";
-import VendorPaymentPeriodView from "./Screens/Reports/VendorReport/VendorPaymentPeriod/index.jsx";
-import StatisticsReport from "./Screens/Reports/Statistics/StatisticsReport/index.jsx";
-import ServiceTaxPaidByVendor from "./Screens/Reports/Statistics/ServiceTaxPaidByVendor/index.jsx";
-import TenantEmail from "./Screens/Reports/Contacts/TenantEmail/index.jsx";
-import ResetPassword from "./Screens/Login/ResetPassword.jsx";
-import RequestResetPassword from "./Screens/Login/RequestResetPassword.jsx";
-import OwnerMailId from "./Screens/Reports/Contacts/OwnerMailId/index.jsx";
-import ClientContactDetails from "./Screens/Reports/Contacts/ClientContactsDetails/index.jsx";
-import OrderStaticsView from "./Screens/Reports/Statistics/OrderStatisticsReport/index.jsx";
-import ActiveLLAgreementView from "./Screens/Reports/ActiveLlAgreement/index.jsx";
-import OrderAnalysis from "./Screens/Reports/OrderAnalysis/index.jsx";
-import LLlistReport from "./Screens/Reports/LLlist/index.jsx";
-import ClientStatementByDate from "./Screens/Reports/ClientStatementByDate/index.jsx";
-import PaymentUnderSuspenseOrder from "./Screens/Reports/Group12/PaymentUnderSuspenseOrder/index.jsx";
-import ReceiptsUnderSuspenseOrder from "./Screens/Reports/Group12/ReceiptsUnderSuspenseOrder/index.jsx";
-import ClientsWithOrderButNoEmail from "./Screens/Reports/Group12/ClientsWithOrderButNoEmail/index.jsx";
-import EmployeeWithoutVendor from "./Screens/Reports/Group12/EmployeeWithoutVendor/index.jsx";
-import BankTransactionsWithWrongUserName from "./Screens/Reports/Group12/BankTransactionsWithWrongUserName/index.jsx";
-import EntityBlankReport from "./Screens/Reports/Group12/EntityBlankReport/index.jsx";
-import OwnerWithNoProperty from "./Screens/Reports/Group12/OwnerWIthNoProperty/index.jsx";
-import PropertyWithNoProjectView from "./Screens/Reports/Group12/PropertyWithNoProject/index.jsx";
-import ServiceTaxReport from "./Screens/Reports/Group12/ServiceTaxReport/index.jsx";
-import VendorSummary from "./Screens/Reports/VendorReport/vendorSummary/index.jsx";
-import ClientPhoneNo from "./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx";
-import OwnerPhoneNo from "./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx";
-import BankBalanceReconcilation from "./Screens/Reports/BankBalanceReconcilation/index.jsx";
-import AgedOrders from "./Screens/Reports/AgedOrders/index.jsx";
-import UpdateCompanyKey from "./Screens/Admin/UpdateCompanyKey/index.jsx";
-import ChangePassword from "./Screens/Login/ChangePassword.jsx";
 import { setNavigate } from "./services/setNavigation.js";
+import { setAccessToken } from "./utils/axios.js";
+import useAuth from "./context/JwtContext.jsx";
+import { CircularProgress } from "@mui/material";
+import AuthGuard from "./context/AuthGuard";
+
+const Loadable = (Component) => (props) => {
+  return (
+    <Suspense fallback={<div>loading...</div>}>
+      <Component {...props} />
+    </Suspense>
+  );
+};
+
 const App = () => {
-  const { isInitialized } = useAuth();
+  const { isInitialized, accessToken, user } = useAuth();
   const navigate = useNavigate();
 
   React.useEffect(() => {
     setNavigate(navigate);
   }, [navigate]);
+
+  React.useEffect(() => {
+    if (accessToken) setAccessToken(accessToken);
+    console.log("accessToken", accessToken);
+  }, [accessToken]);
 
   const ROLES = {
     Registered: "3",
@@ -164,10 +57,20 @@ const App = () => {
                 </AuthGuard>
               }
             >
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <Suspense fallback={<div>..loading!</div>}>
+                    <Dashboard />
+                  </Suspense>
+                }
+              />
               <Route path="/changepassword" element={<ChangePassword />} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
-              <Route path="/admin/updatecompanykey" element={<UpdateCompanyKey/>}/>
+              <Route
+                path="/admin/updatecompanykey"
+                element={<UpdateCompanyKey />}
+              />
 
               <Route
                 path="/admin/manageemployees"
@@ -180,7 +83,7 @@ const App = () => {
               />
               <Route
                 path="/manage/managebuilder/manageproject/:id"
-                element={<ManageProjectInfo key="hyperlinked"/>}
+                element={<ManageProjectInfo key="hyperlinked" />}
               />
               <Route path="/admin/deleteById" element={<DeleteById />} />
               <Route
@@ -190,7 +93,7 @@ const App = () => {
               <Route path="/manage/manageOrder" element={<ManageOrder />} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
               <Route path="/admin/country" element={<Country />} />
-              
+
               <Route path="/admin/city" element={<City />} />
               <Route path="/admin/locality" element={<Locality />} />
               <Route path="/admin/LOB" element={<LOB />} />
@@ -274,7 +177,7 @@ const App = () => {
                 path="/manage/sendclientstatement"
                 element={<SendClientStatement />}
               />
-              
+
               <Route
                 path="manage/managebuilder/projects/:buildername"
                 element={<ManageBuilderProject />}
@@ -286,23 +189,23 @@ const App = () => {
 
               <Route
                 path="/manage/managevendorpayment/:orderid"
-                element={<ManageVendorPayment key="hyperlinked"/>}
+                element={<ManageVendorPayment key="hyperlinked" />}
               />
               <Route
                 path="/manage/manageclientinvoice/:orderid"
-                element={<ManageClientInvoice key="hyperlinked"/>}
+                element={<ManageClientInvoice key="hyperlinked" />}
               />
               <Route
                 path="/manage/manageorderreceipt/:orderid"
-                element={<ManageOrderReceipt key="hyperlinked"/>}
+                element={<ManageOrderReceipt key="hyperlinked" />}
               />
               <Route
                 path="/manage/manageclientinfo/orders/showall/:orderid"
-                element={<ShowAllOdersInformation/>}
+                element={<ShowAllOdersInformation />}
               />
               <Route
                 path="/manage/manageclientinfo/properties/:clientname"
-                element={<ManageClientProperty key="hyperlinked"/>}
+                element={<ManageClientProperty key="hyperlinked" />}
               />
               <Route
                 path="/manage/manageclientinfo/orders/:clientname"
@@ -310,12 +213,11 @@ const App = () => {
               />
               <Route
                 path="/manage/manageclientproperty/pmaagreement/:clientname"
-                element={<ManagePmaArgreement key="hyperlinked"/>}
+                element={<ManagePmaArgreement key="hyperlinked" />}
               />
               <Route
                 path="/manage/manageclientproperty/llagreement/:clientname"
-                element={<ManageLLAgreement key="hyperlinked"/>}
-               
+                element={<ManageLLAgreement key="hyperlinked" />}
               />
               <Route
                 path="/manage/manageclientinvoice/:orderid"
@@ -346,7 +248,7 @@ const App = () => {
                 element={<ManageLLAgreement />}
               />
               <Route path="/manage/pmaBilling" element={<PmaBilling />} />
-              
+
               <Route
                 path="/reports/orderPaymentList"
                 element={<OrderPaymentList />}
@@ -523,14 +425,8 @@ const App = () => {
                 path="reports/serviceTaxPaidByVendor"
                 element={<ServiceTaxPaidByVendor />}
               />
-              <Route
-                path="reports/tenantEmail"
-                element={<TenantEmail />}
-              />
-              <Route
-                path="reports/ownerMailId"
-                element={<OwnerMailId />}
-              />
+              <Route path="reports/tenantEmail" element={<TenantEmail />} />
+              <Route path="reports/ownerMailId" element={<OwnerMailId />} />
               <Route
                 path="reports/clientContactDetails"
                 element={<ClientContactDetails />}
@@ -547,10 +443,7 @@ const App = () => {
                 path="/reports/orderanalysis"
                 element={<OrderAnalysis />}
               />
-              <Route
-                path="/reports/Lllist"
-                element={<LLlistReport />}
-              />
+              <Route path="/reports/Lllist" element={<LLlistReport />} />
               <Route
                 path="/reports/clientstatics"
                 element={<ClientStatistics />}
@@ -595,26 +488,14 @@ const App = () => {
                 path="reports/serviceTaxReport"
                 element={<ServiceTaxReport />}
               />
-              <Route
-                path="reports/vendorSummary"
-                element={<VendorSummary />}
-              />
-              <Route
-                path="reports/clientphoneno"
-                element={<ClientPhoneNo />}
-              />
-              <Route
-                path="reports/ownerphoneno"
-                element={<OwnerPhoneNo />}
-              />
+              <Route path="reports/vendorSummary" element={<VendorSummary />} />
+              <Route path="reports/clientphoneno" element={<ClientPhoneNo />} />
+              <Route path="reports/ownerphoneno" element={<OwnerPhoneNo />} />
               <Route
                 path="reports/bankbalancereconciliation"
                 element={<BankBalanceReconcilation />}
               />
-              <Route
-                path="reports/agedOrders"
-                element={<AgedOrders />}
-              />
+              <Route path="reports/agedOrders" element={<AgedOrders />} />
             </Route>
 
             <Route path="/*" element={<NotFound />} />
@@ -628,3 +509,391 @@ const App = () => {
 };
 
 export default App;
+
+const Dashboard = Loadable(
+  React.lazy(() => import("./Screens/Dashboard/Dashboard"))
+);
+
+const NotFound = Loadable(
+  React.lazy(() => import("./Screens/NotFound/notFound"))
+);
+const Country = Loadable(React.lazy(() => import("./Screens/Admin/Country")));
+const City = Loadable(React.lazy(() => import("./Screens/Admin/City")));
+const Locality = Loadable(React.lazy(() => import("./Screens/Admin/Locality")));
+const ManageUser = Loadable(
+  React.lazy(() => import("./Screens/Manage/ManageUser/ManageUser"))
+);
+const ManageProjectInfo = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManageProjectInfo/ManageProjectInfo")
+  )
+);
+
+const ManageOrder = Loadable(
+  React.lazy(() => import("./Screens/Manage/ManageOrder/ManageOrder"))
+);
+const ManageEmployees = Loadable(
+  React.lazy(() => import("./Screens/Manage/ManageEmployee/ManageEmployees"))
+);
+const ManageBuilder = Loadable(
+  React.lazy(() => import("./Screens/Manage/ManageBuilder/ManageBuilder"))
+);
+const Payments = Loadable(
+  React.lazy(() => import("./Screens/Manage/Payments/Payments"))
+);
+const ManageClientInfo = Loadable(
+  React.lazy(() => import("./Screens/Manage/ManageClientInfo/ManageClientInfo"))
+);
+const ManageClientProperty = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManageClientProperty/ManageClientProperty")
+  )
+);
+const ManageClientReceipt = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManageClientReceipt/ManageClientReceipt")
+  )
+);
+const ManageLLAgreement = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManageLLAgreement/ManageLLAgreement")
+  )
+);
+const ManagePmaArgreement = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManagePmaAgreement/ManagePmaAgreement copy")
+  )
+);
+const ManageOrderReceipt = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManageOrderReceipt/ManageOrderReceipt")
+  )
+);
+const ManageClientInvoice = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManageClientInvoice/ManageClientInvoice")
+  )
+);
+const ManageVendor = Loadable(
+  React.lazy(() => import("./Screens/Manage/ManageVendor/ManagerVendor"))
+);
+const ManageVendorInvoice = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManageVendorInvoice/ManageVendorInvoice")
+  )
+);
+const ManageVendorPayment = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManageVendorPayment/ManageVendorPayment")
+  )
+);
+const LOB = Loadable(() => import("./Screens/Admin/LOB"));
+const Service = Loadable(() => import("./Screens/Admin/Service"));
+const ResearchAgent = Loadable(() =>
+  import("./Screens/Research/Agent/index.jsx")
+);
+const ManageBankStatement = Loadable(() =>
+  import("./Screens/Manage/ManageBankStatement/ManageBankStatement")
+);
+const ManageBuilderProject = Loadable(() =>
+  import(
+    "./Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject"
+  )
+);
+const ManageBuilderContact = Loadable(() =>
+  import("./Screens/Manage/ManageBuilder/ManageBuilderContact/index.jsx")
+);
+const PmaBilling = Loadable(React.lazy(() => import("./Screens/Manage/pma")));
+const OrderPaymentList = Loadable(
+  React.lazy(() => import("./Screens/Reports/OrderPaymentList"))
+);
+const OrderReceiptList = Loadable(
+  React.lazy(() => import("./Screens/Reports/OrderReceiptList"))
+);
+const OrderInvoiceList = Loadable(
+  React.lazy(() => import("./Screens/Reports/OrderInvoiceList"))
+);
+const LobReceiptPayments = Loadable(
+  React.lazy(() => import("./Screens/Reports/LobReceiptPayments"))
+);
+const EntityReceiptPayments = Loadable(
+  React.lazy(() => import("./Screens/Reports/EntityReceiptPayments"))
+);
+const LobReceiptPaymentsConsolidated = Loadable(
+  React.lazy(() => import("./Screens/Reports/LobReceiptPaymentsConsolidated"))
+);
+const DeleteById = Loadable(
+  React.lazy(() => import("./Screens/Admin/DeleteById/DeleteById"))
+);
+const SendClientStatement = Loadable(
+  React.lazy(() => import("./Screens/Manage/SendClientStatement"))
+);
+const ClientReceiptList = Loadable(
+  React.lazy(() => import("./Screens/Reports/ClientReceiptList"))
+);
+const VendorInvoiceList = Loadable(
+  React.lazy(() => import("./Screens/Reports/VendorInvoiceList"))
+);
+const DeletePage = Loadable(
+  React.lazy(() => import("./Screens/Admin/DeleteById/DeletePage"))
+);
+const PmaBillingTrendView = Loadable(() =>
+  import("./Screens/Reports/reportPmaBillingTrendView")
+);
+const PmaClientReport = Loadable(() =>
+  import("./Screens/Reports/pmaClientReport")
+);
+const PmaInvoiceList = Loadable(() =>
+  import("./Screens/Reports/PmaInvoiceList")
+);
+const PmaClientReceivable = Loadable(() =>
+  import("./Screens/Reports/PmaClientReceivables/index.jsx")
+);
+const ActivePmaAgreement = Loadable(() =>
+  import("./Screens/Reports/ActivePmaAgreement")
+);
+const ProjectContact = Loadable(() =>
+  import("./Screens/Reports/ProjectContacts")
+);
+const AdvanceHoldingAmount = Loadable(() =>
+  import("./Screens/Reports/AdvanceHoldingAmount")
+);
+const PmaClientStatementAll = Loadable(() =>
+  import("./Screens/Reports/PMAClientStatementAll")
+);
+const ShowAllOdersInformation = Loadable(
+  React.lazy(() =>
+    import("./Screens/Manage/ManageOrder/ShowAllOrdersInformation/index.jsx")
+  )
+);
+const PmaClientStatement = Loadable(
+  React.lazy(() => import("./Screens/Reports/PmaClientStatement"))
+);
+const NonPmaClientStatement = Loadable(
+  React.lazy(() => import("./Screens/Reports/NonPmaClientStatement"))
+);
+const NonPmaClientReceivables = Loadable(
+  React.lazy(() => import("./Screens/Reports/NonPmaClientReceivables"))
+);
+const ClientStatementAll = Loadable(
+  React.lazy(() => import("./Screens/Reports/ClientStatement-CI,CRAndOR"))
+);
+const DuplicateClientReport = Loadable(
+  React.lazy(() => import("./Screens/Reports/DupilcateClientsReport"))
+);
+const ClientBankDetails = Loadable(
+  React.lazy(() => import("./Screens/Reports/ClientBankDetails"))
+);
+const MonthlyBankSummary = Loadable(
+  React.lazy(() => import("./Screens/Reports/MonthlyBankSummary"))
+);
+const BankTransferReconciliation = Loadable(
+  React.lazy(() => import("./Screens/Reports/BankTransferReconciliation"))
+);
+const ClientOrderReceiptMismatchDetails = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/ClientOrderReceiptMismatchDetails")
+  )
+);
+const BankReceiptReconciliation = Loadable(
+  React.lazy(() => import("./Screens/Reports/BankReceiptsReconciliation"))
+);
+const BankPaymentReconciliation = Loadable(
+  React.lazy(() => import("./Screens/Reports/BankPaymentReconciliation"))
+);
+const PrivateLayout = Loadable(
+  React.lazy(() => import("./layout/Privatelayout"))
+);
+
+const PropectusPage = Loadable(
+  React.lazy(() => import("./Screens/Research/Prospect"))
+);
+const ClientTraceReport = Loadable(
+  React.lazy(() => import("./Screens/Reports/ReportTrace/ClientTraceReport"))
+);
+const OrderTraceReport = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/ReportTrace/OrderTraceReport/index.jsx")
+  )
+);
+const VendorTraceReport = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/ReportTrace/VendorTraceReport/index.jsx")
+  )
+);
+const UnAuthorized = Loadable(
+  React.lazy(() => import("./Screens/UnAuthorized/UnAuthorized.jsx"))
+);
+const ClientReceiptView = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/TallyReports/ClientReceipt/index.jsx")
+  )
+);
+const OrderPaymentDDView = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/TallyReports/OrderPaymentDD/index.jsx")
+  )
+);
+const OrderPaymentB2CView = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/TallyReports/OrderPaymentB2C/index.jsx")
+  )
+);
+const OrderPaymentB2BView = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/TallyReports/OrderPaymentB2B/index.jsx")
+  )
+);
+const OrderPaymentWithTdsView = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/TallyReports/OrderPaymentWithTds/index.jsx")
+  )
+);
+const OrderPaymentWithoutTdsView = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/TallyReports/OrderPaymentWithoutTds/index.jsx")
+  )
+);
+const OrderReceiptToInvoiceServiceTax = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/TallyReports/OrderReceiptToServiceTax/index.jsx")
+  )
+);
+const ClientStatistics = Loadable(
+  React.lazy(() =>
+    import("./Screens/Reports/Statistics/ClientStatisticsReport/index.jsx")
+  )
+);
+const ResearchEmployer = Loadable(
+  React.lazy(() => import("./Screens/Research/Employer/index.jsx"))
+);
+const ResearchGovernmentDepartment = Loadable(
+  React.lazy(() => import("./Screens/Research/Government Department/index.jsx"))
+);
+
+const ResearchOwner = Loadable(() =>
+  import("./Screens/Research/Owner/index.jsx")
+);
+const ResearchFriends = Loadable(() =>
+  import("./Screens/Research/Friends/index.jsx")
+);
+const ResearchBanks = Loadable(() =>
+  import("./Screens/Research/Banks/index.jsx")
+);
+const ResearchBusinessGroup = Loadable(() =>
+  import("./Screens/Research/COC/index.jsx")
+);
+const ResearchProfessionals = Loadable(() =>
+  import("./Screens/Research/Professionals/index.jsx")
+);
+const ResearchMandals = Loadable(() =>
+  import("./Screens/Research/Mandals/index.jsx")
+);
+const ResearchArchitect = Loadable(() =>
+  import("./Screens/Research/Architect/index.jsx")
+);
+const ResearchEducational = Loadable(() =>
+  import("./Screens/Research/Educational/index.jsx")
+);
+const ResearchServiceApartments = Loadable(() =>
+  import("./Screens/Research/ServiceApartment/index.jsx")
+);
+
+const VendorStatementView = Loadable(() =>
+  import("./Screens/Reports/VendorReport/VendorStatement/index.jsx")
+);
+const TdsPaidToGovernement = Loadable(() =>
+  import("./Screens/Reports/VendorReport/TdsPaidToGovernment/index.jsx")
+);
+const TdsPaidByVendorView = Loadable(() =>
+  import("./Screens/Reports/VendorReport/TDSPaidByvendor/index.jsx")
+);
+const VendorPaymentPeriodView = Loadable(() =>
+  import("./Screens/Reports/VendorReport/VendorPaymentPeriod/index.jsx")
+);
+const StatisticsReport = Loadable(() =>
+  import("./Screens/Reports/Statistics/StatisticsReport/index.jsx")
+);
+const ServiceTaxPaidByVendor = Loadable(() =>
+  import("./Screens/Reports/Statistics/ServiceTaxPaidByVendor/index.jsx")
+);
+const TenantEmail = Loadable(() =>
+  import("./Screens/Reports/Contacts/TenantEmail/index.jsx")
+);
+const ResetPassword = Loadable(() =>
+  import("./Screens/Login/ResetPassword.jsx")
+);
+const RequestResetPassword = Loadable(() =>
+  import("./Screens/Login/RequestResetPassword.jsx")
+);
+const OwnerMailId = Loadable(() =>
+  import("./Screens/Reports/Contacts/OwnerMailId/index.jsx")
+);
+const ClientContactDetails = Loadable(() =>
+  import("./Screens/Reports/Contacts/ClientContactsDetails/index.jsx")
+);
+const OrderStaticsView = Loadable(() =>
+  import("./Screens/Reports/Statistics/OrderStatisticsReport/index.jsx")
+);
+const ActiveLLAgreementView = Loadable(() =>
+  import("./Screens/Reports/ActiveLlAgreement/index.jsx")
+);
+const OrderAnalysis = Loadable(() =>
+  import("./Screens/Reports/OrderAnalysis/index.jsx")
+);
+const LLlistReport = Loadable(() =>
+  import("./Screens/Reports/LLlist/index.jsx")
+);
+const ClientStatementByDate = Loadable(() =>
+  import("./Screens/Reports/ClientStatementByDate/index.jsx")
+);
+const PaymentUnderSuspenseOrder = Loadable(() =>
+  import("./Screens/Reports/Group12/PaymentUnderSuspenseOrder/index.jsx")
+);
+const ReceiptsUnderSuspenseOrder = Loadable(() =>
+  import("./Screens/Reports/Group12/ReceiptsUnderSuspenseOrder/index.jsx")
+);
+const ClientsWithOrderButNoEmail = Loadable(() =>
+  import("./Screens/Reports/Group12/ClientsWithOrderButNoEmail/index.jsx")
+);
+const EmployeeWithoutVendor = Loadable(() =>
+  import("./Screens/Reports/Group12/EmployeeWithoutVendor/index.jsx")
+);
+const BankTransactionsWithWrongUserName = Loadable(() =>
+  import(
+    "./Screens/Reports/Group12/BankTransactionsWithWrongUserName/index.jsx"
+  )
+);
+const EntityBlankReport = Loadable(() =>
+  import("./Screens/Reports/Group12/EntityBlankReport/index.jsx")
+);
+const OwnerWithNoProperty = Loadable(() =>
+  import("./Screens/Reports/Group12/OwnerWIthNoProperty/index.jsx")
+);
+const PropertyWithNoProjectView = Loadable(() =>
+  import("./Screens/Reports/Group12/PropertyWithNoProject/index.jsx")
+);
+const ServiceTaxReport = Loadable(() =>
+  import("./Screens/Reports/Group12/ServiceTaxReport/index.jsx")
+);
+const VendorSummary = Loadable(() =>
+  import("./Screens/Reports/VendorReport/vendorSummary/index.jsx")
+);
+const ClientPhoneNo = Loadable(() =>
+  import("./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx")
+);
+const OwnerPhoneNo = Loadable(() =>
+  import("./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx")
+);
+const BankBalanceReconcilation = Loadable(() =>
+  import("./Screens/Reports/BankBalanceReconcilation/index.jsx")
+);
+const AgedOrders = Loadable(() =>
+  import("./Screens/Reports/AgedOrders/index.jsx")
+);
+const UpdateCompanyKey = Loadable(() =>
+  import("./Screens/Admin/UpdateCompanyKey/index.jsx")
+);
+const ChangePassword = Loadable(() =>
+  import("./Screens/Login/ChangePassword.jsx")
+);

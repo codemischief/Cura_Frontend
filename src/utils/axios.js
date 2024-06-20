@@ -1,9 +1,22 @@
 import axios from "axios";
 import { redirectToLogin } from "../services/setNavigation";
 import { toast } from "react-toastify";
+// import useAuth from "../context/JwtContext";
+let apiToken = null;
+
+export const setAccessToken = (apiTokenParam) => {
+  apiToken = apiTokenParam;
+};
+
+export const getToken = () => {
+  if (apiToken) {
+    return apiToken;
+  }
+};
+
 let toastShown = false;
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
-export const accessToken = localStorage.getItem("accessToken");
+// export const accessToken = localStorage.getItem("accessToken");
 export const userId = JSON.parse(localStorage.getItem("user"))?.id;
 // customHeaderMethods
 export const moduleMethods = Object.freeze({
@@ -22,32 +35,30 @@ const axiosInstance = axios.create({
   },
 });
 
-const logPayload = {
-  token: `Bearer ${accessToken}`,
-};
+// const logPayload = {
+//   token: `Bearer ${accessToken}`,
+// };
 
 axiosInstance.interceptors.request.use(
   (config) => {
     const { headers } = config;
+    // const accessToken = localStorage.getItem("accessToken");
+    const accessToken = getToken();
 
-    const accessToken = localStorage.getItem("accessToken");
-
-  
+    if (accessToken) {
       headers["Authorization"] = `Bearer ${accessToken}`;
-    
 
-    if (config.appendLog) {
-      config.data = {
-        // ...logPayload,
-        ...config.data, 
-      };
-    } else {
-      config.data = {
-        ...config.data,
-        
-      };
+      if (config.appendLog) {
+        config.data = {
+          // ...logPayload,
+          ...config.data,
+        };
+      } else {
+        config.data = {
+          ...config.data,
+        };
+      }
     }
-
     return config;
   },
   (error) => {
@@ -60,9 +71,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (
-      error.response.status === 498
-    ) {
+    if (error.response.status === 498) {
       if (!toastShown) {
         toastShown = true;
         setTimeout(() => (toastShown = false), 1000); // Reset after 1 second
@@ -70,21 +79,22 @@ axiosInstance.interceptors.response.use(
         redirectToLogin();
         toast.error("Unauthorized!");
       }
-    }
-    else if( error.response.status===401 || error.response.status===403 || error.response.status===400){
-      if(!toastShown){
+    } else if (
+      error.response.status === 401 ||
+      error.response.status === 403 ||
+      error.response.status === 400
+    ) {
+      if (!toastShown) {
         toastShown = true;
-        setTimeout(() => (toastShown = false), 1000)
+        setTimeout(() => (toastShown = false), 1000);
         toast.error("Bad Request: The request was invalid.");
       }
-    }
-    else if(statusCode === 404){
-      if(!toastShown){
+    } else if (statusCode === 404) {
+      if (!toastShown) {
         toastShown = true;
-        setTimeout(() => (toastShown = false), 1000)
+        setTimeout(() => (toastShown = false), 1000);
         toast.error("Not Found: The resource was not found.");
       }
-     
     }
 
     return Promise.reject(error);
@@ -92,4 +102,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
