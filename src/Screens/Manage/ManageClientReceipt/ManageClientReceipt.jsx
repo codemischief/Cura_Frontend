@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, Backdrop,CircularProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, Backdrop,CircularProgress , MenuItem} from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -40,6 +40,7 @@ import DeleteButton from '../../../Components/common/buttons/deleteButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import useAuth from '../../../context/JwtContext';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
+import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
 const ManageClientReceipt = () => {
     const {user} = useAuth()
     const canEdit = checkEditAccess();
@@ -1068,7 +1069,13 @@ const ManageClientReceipt = () => {
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
         console.log(res.data)
-        setOrOrders(res.data)
+        setOrOrders((prev) => {
+            const temp = {}
+             res.data.forEach((item) => {
+                temp[item.id] = item.ordername;
+              });
+            return temp
+        })
     }
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
@@ -1969,10 +1976,46 @@ const ManageClientReceipt = () => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                         <OrderDropDown options={orOrders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
+                                        {/* <OrderCustomSelectNative/> */}
+                                        <OrderCustomSelectNative
+                                           data={Object.keys(orOrders)}
+                                           value={orOrders?.[orFormValues.order] ? orOrders?.[orFormValues.order]:null}
+                                           placeholder="Select Orders"
+                                           isSticky={true}
+                                           width={'230px'}
+                                           menuMaxHeight='20rem'
+                                           headerText={{
+                                            first : 'Order Description',
+                                            second : 'ID',
+                                          }}
+                                          renderData={(item) => {
+                                            return (
+                                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                   {orOrders[item]}
+                                                </p>
+                                                <p className='w-[20%]'>
+                                                    {item}
+                                                </p>
+                                                
+                                               
+                                              </MenuItem>
+                                            );
+                                          }}
+                                          onChange={(e) => {
+                                            
+                                            const temp = {...orFormValues}
+                                            temp.order = e.target.value 
+                                            setOrFormValues(temp)
+                                            getOrderData(e.target.value)
+                                   }}
+                                           
+                                        
+                                        />
+                                         {/* <OrderDropDown options={orOrders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
                                                  handleOrChange(e)
                                                  getOrderData(e.target.value)
-                                        }} formValueName="order" value={orFormValues.order}  />
+                                        }} formValueName="order" value={orFormValues.order}  /> */}
                                         <div className="text-[10px] text-[#CD0000] absolute">{orFormErrors.order}</div>
                                     </div>
                                     <div className="">
