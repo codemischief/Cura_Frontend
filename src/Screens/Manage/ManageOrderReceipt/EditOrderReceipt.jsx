@@ -138,7 +138,10 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         const existing = { ...formValues };
         existing.client = res.data.clientid
         existing.clientname = res.data.clientname
-        getOrdersByClientId(res.data.clientid)
+        if(res?.data?.client != null) {
+
+            getOrdersByClientId(res.data.clientid)
+        }
         existing.order = res.data.orderid
         existing.receiptMode = res.data.paymentmode
         existing.receivedBy = res.data.receivedby
@@ -195,6 +198,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
     //     setUsersData(res.data)
     // }
     const getOrdersByClientId = async (id) => {
+        if(id == null) return 
         console.log('hello')
         const data = {
             "client_id": id

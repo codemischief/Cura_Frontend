@@ -111,23 +111,7 @@ const ManageBankStatement = () => {
     }
    
     
-    const getEmployees = async () => {
-        const data = {
-            "user_id": userId || user.id,
-            "rows": ["employeename"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": 0,
-            "pg_size": 0
-        }
-        const employee = await APIService.getEmployees(data);
-
-        const temp = await employee.json();
-        const t = temp.total_count;
-        const result = temp.data;
-        setEmployees(result);
-    }
+    
 
 
     const getCRDetails = async () => {
@@ -379,7 +363,7 @@ const ManageBankStatement = () => {
         getCRDetails();
         getVendorAdmin();
         fetchBankStatement();
-        getEmployees();
+        // getEmployees();
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setModeFilter(false);

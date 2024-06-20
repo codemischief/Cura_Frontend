@@ -693,6 +693,7 @@ const ManageClientReceipt = () => {
     const [orders,setOrders] = useState([]);
 
     const getOrdersByClientId = async (id) => {
+        if(id == null) return 
         console.log('hello')
         const data = {
             "client_id" : id
@@ -1062,6 +1063,7 @@ const ManageClientReceipt = () => {
     }
     const [orOrders,setOrOrders] = useState([])
     const getOrOrdersByClientId = async (id) => {
+        if(id == null) return 
         console.log('hello')
         const data = {
             "client_id" : id

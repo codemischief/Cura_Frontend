@@ -407,6 +407,7 @@ const ManageOrderReceipt = () => {
         return idNameObject;
     }
     const getOrdersByClientId = async (id) => {
+        if(id == null) return 
         console.log('hello')
         const data = {
             "client_id": id

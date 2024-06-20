@@ -206,7 +206,10 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
         temp.label = res.data.clientname
         temp.value = res.data.clientid
         getClientPropertyByClientId(res.data.clientid)
-        getOrdersByClientId(res.data.clientid)
+        if(res?.data?.clientid != null) {
+
+            getOrdersByClientId(res.data.clientid)
+        }
         setSelectedOption(temp)
         setFormValues(existing)
         
@@ -340,6 +343,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
     }
 
     const getOrdersByClientId = async (id) => {
+        if(id == null) return 
         console.log('hello')
         const data = {
             "client_id": id
