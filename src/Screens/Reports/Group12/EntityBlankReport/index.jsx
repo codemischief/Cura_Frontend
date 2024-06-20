@@ -18,6 +18,7 @@ import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTableWithFooter";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container";
 
 const EntityBlankReport = () => {
   const dispatch = useDispatch();
@@ -157,14 +158,45 @@ const EntityBlankReport = () => {
     dispatch(downloadEntityBlankReportData(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "id","clientname","type","date","amount","orderdetails","lobname","service","fy","mode"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/entityBlankReport",
+      colmap: {
+        id: "ID",
+        clientname:"Client Name",
+        type:"Type",
+        date: "Date",
+        amount: "Amount",
+        orderdetails: "Order Details",
+        lobname:"LOB",
+        service: "Service",
+        fy: "FY",
+        mode: "Mode",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadEntityBlankReportData(obj, 'pdf'))
+  }
+
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
             heading={"Entity blank for Transactions (CR,OR,OI,VI,OP)"}
             path={["Reports", "Exceptions", "Entity blank for Transactions (CR,OR,OI,VI,OP)"]}
-          />
+            />
           <div className="flex justify-between gap-7 h-[36px]">
             <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
               <p>
@@ -184,23 +216,24 @@ const EntityBlankReport = () => {
 
         <SimpleTable
         pageName={"entityBlankReport"}
-          columns={columns}
-          data={entityBlankReportData}
-          totalData={totalAmount}
-          pageNo={pageNo}
-          isLoading={status === "loading"}
-          totalCount={totalCount}
-          style={"text-center"}
-          countPerPage={countPerPage}
-          handlePageCountChange={handlePageCountChange}
-          handlePageChange={handlePageChange}
-          handleRefresh={handleRefresh}
-          handleSortingChange={handleSortingChange}
-          downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+        columns={columns}
+        data={entityBlankReportData}
+        totalData={totalAmount}
+        pageNo={pageNo}
+        isLoading={status === "loading"}
+        totalCount={totalCount}
+        style={"text-center"}
+        countPerPage={countPerPage}
+        handlePageCountChange={handlePageCountChange}
+        handlePageChange={handlePageChange}
+        handleRefresh={handleRefresh}
+        handleSortingChange={handleSortingChange}
+        downloadExcel={downloadExcel}
+        downloadPdf={downloadPdf}
+        height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+  </Container>
   );
 };
 

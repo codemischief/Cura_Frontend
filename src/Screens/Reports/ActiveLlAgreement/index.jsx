@@ -18,10 +18,11 @@ import { formatedFilterData } from "../../../utils/filters";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import useAuth from "../../../context/JwtContext";
+import Container from "../../../Components/common/Container"
 
 const ActiveLLAgreementView = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     activeLlAgreement,
     status,
@@ -78,7 +79,7 @@ const ActiveLLAgreementView = () => {
     setSearch(searchInput);
     dispatch(setPageNumber(1));
   };
-  
+
 
   // useEffect(()=>{
   //  setInitialState
@@ -215,12 +216,13 @@ const ActiveLLAgreementView = () => {
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
-    }; 
+    };
     dispatch(downloadActiveLLAgreementReport(obj, 'pdf'))
   }
 
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
+
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -250,7 +252,7 @@ const ActiveLLAgreementView = () => {
           direction={"row"}
           alignItems={"center"}
           height={"3.875rem"}
-        ></Stack> */}
+          ></Stack> */}
         <SimpleTable
           columns={columns}
           data={activeLlAgreement}
@@ -266,10 +268,10 @@ const ActiveLLAgreementView = () => {
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
           downloadPdf={downloadPdf}
-          height="calc(100vh - 12rem)"
+          height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+    </Container>
   );
 };
 

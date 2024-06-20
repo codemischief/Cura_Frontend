@@ -18,10 +18,11 @@ import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
+import Container from "../../../../Components/common/Container";
 
 const OwnerPaymentView = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     ownerWithNoReport,
     status,
@@ -56,8 +57,8 @@ const OwnerPaymentView = () => {
     let obj = {
       user_id: user.id,
       "rows": [
-  "id","fullname","clienttype_text"
-],
+        "id", "fullname", "clienttype_text"
+      ],
       sort_by: undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -90,17 +91,17 @@ const OwnerPaymentView = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    
+
     if (isInitialMount.current) {
       dispatch(setInitialState());
       isInitialMount.current = false;
     }
-    else{
+    else {
       let obj = {
         user_id: user.id,
         rows: [
-  "id","fullname","clienttype_text"
-],
+          "id", "fullname", "clienttype_text"
+        ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
@@ -131,8 +132,8 @@ const OwnerPaymentView = () => {
     let obj = {
       user_id: user.id,
       rows: [
-  "id","fullname","clienttype_text"
-],
+        "id", "fullname", "clienttype_text"
+      ],
       downloadType: "excel",
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -143,16 +144,37 @@ const OwnerPaymentView = () => {
         id: "ID",
         fullname: "Client Name",
         clienttype_text: "Client Type",
-      
-        
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadOwnerWithNoReport(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "id", "fullname", "clienttype_text"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/ownerwithnoproperty",
+      colmap: {
+        id: "ID",
+        fullname: "Client Name",
+        clienttype_text: "Client Type",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadOwnerWithNoReport(obj, 'pdf'))
+  }
+
   return (
-    <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
+    <Container>
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -190,10 +212,11 @@ const OwnerPaymentView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 14rem)"
+          downloadPdf={downloadPdf}
+          height="calc(100vh - 11rem)"
         />
       </div>
-    </Stack>
+    </Container>
   );
 };
 
