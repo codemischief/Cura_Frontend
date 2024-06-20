@@ -41,6 +41,7 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import useAuth from '../../../context/JwtContext';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 const ManageClientReceipt = () => {
     const {user} = useAuth()
     const canEdit = checkEditAccess();
@@ -56,7 +57,6 @@ const ManageClientReceipt = () => {
         "paymentmodename",
         "receivedbyname",
         "tds",
-        "clientid",
         "id",
     ]
     const menuRef = useRef();
@@ -916,10 +916,24 @@ const ManageClientReceipt = () => {
 
     const [orModel , setOrModel] = useState(false);
 
-    const handleOpenOrModel = (item) => {
+    const handleOpenOrModel = async (item) => {
+        const data = {
+            user_id : user.id,
+            table_name : "client_receipt",
+            item_id : item.id
+        }
+        const response = await APIService.getItembyId(data)
+        const res = await response.json()
+        console.log(res.data)
+        console.log(item);
         const existing = {...orFormValues}
-        existing.client = item.clientid 
-        getOrOrdersByClientId(item.clientid)
+        existing.client = res?.data?.clientid
+        existing.amountReceived = res?.data?.amount
+        existing.receivedDate = res?.data?.recddate
+        existing.TDS = res?.data?.tds 
+        existing.receiptMode = res?.data?.paymentmode
+        existing.receivedBy = res?.data?.receivedby
+        getOrOrdersByClientId(res?.data?.clientid)
         setOrFormValues(existing)
         const temp = {...orSelectedOption}
         temp.label = item.clientname 
@@ -1948,7 +1962,7 @@ const ManageClientReceipt = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">TDS </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="TDS" value={null} onChange={handleOrChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="TDS" value={orFormValues.TDS} onChange={handleOrChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px] mb-0.5">Receipt Description </div>

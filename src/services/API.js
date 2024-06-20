@@ -1841,6 +1841,7 @@ const download = async (data, filename) => {
 };
 
 const responseInterceptor = async (response) => {
+  console.log(response)
   if (!response.ok) {
     // Handle HTTP errors
     const statusCode = response.status;
@@ -1978,7 +1979,7 @@ const getProfessionalTypesAdmin = async (data) => {
   return handleResponse(response);
 };
 
-export const handleResponse = (response) => {
+export const handleResponse = async (response) => {
   if (response.ok) return response;
 
   // Handle HTTP errors
@@ -1988,7 +1989,7 @@ export const handleResponse = (response) => {
     401: "Unauthorized: Authentication failed or credentials are missing.",
     403: "Forbidden: Access token expired",
     404: "Not Found: The resource was not found.",
-    498: "Unauthorized",
+    498: "Unauthorized"
   };
   const showToast = (message) => {
     if (!toastShown) {
@@ -2009,8 +2010,9 @@ export const handleResponse = (response) => {
 
     throw new Error(errorMessages[statusCode]);
   } else {
-    showToast(`HTTP Error: ${statusCode}`);
-    throw new Error(`HTTP Error: ${statusCode}`);
+    const message = await response.json()
+    showToast(`${message.detail}`);
+    throw new Error(`HTTP Error: ${statusCode}${message.detail}`);
   }
 };
 

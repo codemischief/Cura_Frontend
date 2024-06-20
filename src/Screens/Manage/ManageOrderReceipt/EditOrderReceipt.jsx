@@ -107,7 +107,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         const data = {
             "id": receiptId,
             "receivedby": formValues.receivedBy,
-            "amount": formValues.pendingAmount - formValues.amountReceived,
+            "amount": formValues.amountReceived,
             "tds": formValues.TDS ? Number(formValues.TDS): null,
             "recddate": formValues.receivedDate,
             "paymentmode": formValues.receiptMode,
