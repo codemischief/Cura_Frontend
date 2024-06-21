@@ -8,7 +8,7 @@ import Draggable from 'react-draggable'
 import useAuth from '../../../context/JwtContext'
 import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative'
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative'
-const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, showSuccess, showCancel }) => {
+const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, showSuccess, showCancel , state}) => {
     const {user} = useAuth()
     
     const initialValues = {
@@ -319,7 +319,10 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                                 <div className="text-[13px] text-[#787878]">
                                                     Client
                                                 </div>
-                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={selectedOption.label} onChange={handleChange} readOnly />
+                                                <Tooltip title={selectedOption.label} arrow>
+
+                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" value={selectedOption.label} onChange={handleChange} readOnly />
+                                                </Tooltip>
                                                 {/* <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
@@ -412,6 +415,9 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                                     Order <label className="text-red-500">*</label>
                                                 </div>
                                                 {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.ordername} readOnly /> */}
+                                                {state?.hyperlinked ? <Tooltip title={state.orderdescription} arrow>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="orderdescription" value={state.orderdescription} readOnly />
+                                                </Tooltip>  : 
                                                 <OrderCustomSelectNative
                                            data={Object.keys(orders)}
                                            value={orders?.[formValues.orderid] ? orders?.[formValues.orderid]:null}
@@ -441,7 +447,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                            }}
                                            
                                         
-                                        />
+                                        />}
                                                 {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="orderid"

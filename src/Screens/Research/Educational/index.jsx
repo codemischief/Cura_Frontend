@@ -167,8 +167,33 @@ const ResearchEducational = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadEmployerDataXls(obj));
+    dispatch(downloadDataXls(obj));
   };
+
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: ["type","name","city","suburb","emailid","phoneno","id"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/research/educational",
+      colmap: {
+        "type" : "Institute Type",
+        "name" : "Name",
+        "city" : "City",
+        "suburb" : "Locality",
+        "emailid" : "Email ID",
+        "phoneno" : "Phone Number",
+        "id" : "ID",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadDataXls(obj, 'pdf'))
+  }
 
   const handleFormOpen = () => {
     setOpenForm(true);
@@ -267,7 +292,7 @@ const ResearchEducational = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 13rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
@@ -275,6 +300,7 @@ const ResearchEducational = () => {
             downloadExcel={downloadExcel}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
+            downloadPdf={downloadPdf}
           />
         </div>
       </div>

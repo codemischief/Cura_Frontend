@@ -2,7 +2,7 @@ import { Backdrop, CircularProgress, Modal, Pagination } from "@mui/material";
 import FileSaver from 'file-saver';
 import React, { useEffect, useRef, useState } from 'react';
 import Draggable from 'react-draggable';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AddButton from '../../../Components/common/CustomButton';
@@ -48,7 +48,10 @@ const ManageProjectInfo = () => {
     ]
     const menuRef = useRef();
     const navigate = useNavigate()
-    const {state} = useLocation()
+    // const {state} = useLocation()
+    const {builderid} = useParams()
+
+    const [state,setState] = useState({})
     const canEdit = checkEditAccess();
     const [pageLoading, setPageLoading] = useState(false);
     const [existingProjectInfo, setExistingProjectInfo] = useState([]);
@@ -628,7 +631,7 @@ const ManageProjectInfo = () => {
     }
     const initialValues = {
         "project_info": {
-            "builderid": state?.hyperlinked ? state.builderid : null,
+            "builderid": builderid ? builderid : null,
             "projectname": null,
             "addressline1": null,
             "addressline2": null,
@@ -823,10 +826,10 @@ const ManageProjectInfo = () => {
             filterInput: ""
         },
         builderid : {
-            filterType: state ? "equalTo" : "",
-            filterValue: state?.builderid,
+            filterType: builderid ? "equalTo" : "",
+            filterValue: builderid,
             filterData: "Numeric",
-            filterInput: state?.builderid
+            filterInput: builderid
         }
 
     }
@@ -925,7 +928,26 @@ const ManageProjectInfo = () => {
 
 
     // end utility routes here
+    const fetchHyperLinkData = async () => {
+         if(builderid != null) {
+            const data = {
+                user_id : user.id,
+                table_name : "get_builder_view",
+                item_id : builderid
+            }
+            const response = await APIService.getItembyId(data)
+            const res = await response.json()
+            console.log(res.data)
+            setState(prev => ({
+                ...prev,
+                buildername : res.data.buildername,
+                hyperlinked : true,
+                builderid : builderid
+            }))
+         }
+    }
     useEffect(() => {
+        fetchHyperLinkData()
         getBuildersData()
         getProjectTypeData()
         getProjectLegalData()

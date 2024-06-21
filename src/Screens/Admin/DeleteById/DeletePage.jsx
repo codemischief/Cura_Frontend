@@ -64,23 +64,58 @@ const DeletePage = () => {
 
   }
   const handleDelete = async () => {
-    // we do the hard delete here
-    const data = {
-      "user_id": user.id,
-      "table_name": state.tablename,
-      "id": id
-    }
-    const response = await APIService.deleteFromTable(data)
-    const res = await response.json()
-    console.log(res)
-    if (res.result == 'success') {
-      setId("")
-      setOpenDialog(false)
-      openSuccess()
-    } else {
-      // do the failure case
+  
+    if(state.tablename == 'client') {
+         const data = {
+          user_id : user.id,
+          id : id
+         }
+         const response  = await APIService.deleteFromClient(data)
+         const res = await response.json()
+         if (res.result == 'success') {
+          setId("")
+          setOpenDialog(false)
+          openSuccess()
+        } else {
+          // do the failure case
+    
+        }
+    }else if(state.tablename == 'orders') {
+      const data = {
+        user_id : user.id,
+        id : id
+       }
+       const response  = await APIService.deleteFromOrders(data)
+       const res = await response.json()
+       if (res.result == 'success') {
+        setId("")
+        setOpenDialog(false)
+        openSuccess()
+      } else {
+        // do the failure case
+  
+      }
+    }else {
 
+      const data = {
+        "user_id": user.id,
+        "table_name": state.tablename,
+        "id": id
+      }
+      const response = await APIService.deleteFromTable(data)
+      const res = await response.json()
+      if (res.result == 'success') {
+        setId("")
+        setOpenDialog(false)
+        openSuccess()
+      } else {
+        // do the failure case
+  
+      }
     }
+    // we do the hard delete here
+    console.log(res)
+    
   }
   return (
     <div className='font-medium'>

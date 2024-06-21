@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link , useLocation , useNavigate} from "react-router-dom";
+import { Outlet, Link , useLocation , useNavigate, useParams} from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -43,13 +43,15 @@ import checkEditAccess from '../../../Components/common/checkRoleBase';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative';
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
+import {Tooltip} from '@mui/material';
 const ManagePmaArgreement = () => {
-    const {state, pathname} = useLocation();
+    const { pathname} = useLocation();
+    const [state,setState] = useState({})
+    const {clientPropertyId} = useParams()
     const {user} = useAuth()
     console.log(pathname)
     const navigate = useNavigate()
     const canEdit = checkEditAccess();
-    console.log(state)
     const dataRows = [
         "clientname",
         "propertydescription",
@@ -61,8 +63,7 @@ const ManagePmaArgreement = () => {
         "enddate",
         "poaenddate",
         "poaholder",
-        "id",
-        
+        "id",  
     ]
     const menuRef = useRef();
     // we have the module here
@@ -430,18 +431,38 @@ const ManagePmaArgreement = () => {
         status: false
     };
     const [formValues, setFormValues] = useState(initialValues);
-    const handleHyperLinkState = () => {
-        if(state != null) {
-
-            const v ={...selectedOption}
-             v.label = state.clientname 
-             v.value = state.clientid 
-             setSelectedOption(v)
-             const temp = {...formValues}
-             temp.client = state.clientid 
-             temp.clientProperty = state.clientPropertyId 
-             getOrdersByClientId(state.clientid)
-             setFormValues(temp)
+    const handleHyperLinkState = async () => {
+        if(clientPropertyId != null) {
+            const data = {
+                user_id : user.id,
+                table_name : "get_client_property_view",
+                item_id : clientPropertyId
+            }
+            const response = await APIService.getItembyId(data)
+            const res = await response.json()
+            console.log(res.data)
+            setState(prevState => ({
+                ...prevState,
+                clientPropertyId : clientPropertyId,
+                clientid : res.data.clientid,
+                clientname : res.data.client,
+                clientpropertydescription : res.data.description,
+                hyperlinked : true
+            }))
+            setFormValues(prev => ({
+                ...prev,
+                client : res.data.clientid,
+                clientProperty : clientPropertyId
+            }))
+            // const v ={...selectedOption}
+            //  v.label = state.clientname 
+            //  v.value = state.clientid 
+            //  setSelectedOption(v)
+            //  const temp = {...formValues}
+            //  temp.client = state.clientid 
+            //  temp.clientProperty = state.clientPropertyId 
+             getOrdersByClientId(res.data.clientid)
+            //  setFormValues(temp)
         }
     }
     useEffect(() => {
@@ -984,10 +1005,10 @@ const ManagePmaArgreement = () => {
             filterInput: ""
         },
         clientpropertyid : {
-            filterType: state ? "equalTo" : "",
-            filterValue: state?.clientPropertyId,
+            filterType: clientPropertyId ? "equalTo" : "",
+            filterValue: clientPropertyId,
             filterData: "Numeric",
-            filterInput: state?.clientPropertyId
+            filterInput: clientPropertyId
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
@@ -1144,7 +1165,7 @@ const ManagePmaArgreement = () => {
 
             </Backdrop>
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} showCancel={openCancelModal} state={state}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New PMA Agreement Created Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
@@ -1676,7 +1697,11 @@ const ManagePmaArgreement = () => {
                                                     Client <label className="text-red-500">*</label>
                                                 </div>
                                                 {state?.hyperlinked ?
-                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div> : 
+                                                 <Tooltip title={state.clientname}>
+
+
+                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientname}</div>  
+                                                 </Tooltip> :
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
                                                     value={selectedOption}
@@ -1849,6 +1874,12 @@ const ManagePmaArgreement = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
+                                                {state?.hyperlinked ?
+                                                <Tooltip title={state.clientpropertydescription} arrow>
+                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientpropertydescription}</div>
+                             
+                                                </Tooltip>
+                                                  : 
                                                 <ClientPropertySelectNative
                         data={Object.keys(clientPropertyData)}
                         value={clientPropertyData?.[formValues.clientProperty]?.propertyname ? clientPropertyData?.[formValues.clientProperty]?.propertyname:null}
@@ -1878,7 +1909,7 @@ const ManagePmaArgreement = () => {
                             temp.clientProperty = e.target.value 
                             setFormValues(temp)
                            }}
-                        />
+                        />}
                                                 {/* {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>  : 
                                                  <select
                                                  className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"

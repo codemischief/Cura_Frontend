@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal , CircularProgress, Backdrop ,MenuItem} from '@mui/material'
+import { Modal , CircularProgress, Backdrop ,MenuItem, Tooltip} from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async";
@@ -8,7 +8,7 @@ import Draggable from 'react-draggable'
 import useAuth from '../../../context/JwtContext';
 // import CustomSelectNative from '../../../Components/common/select/CustomSelectNative';
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
-const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel }) => {
+const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, state }) => {
     const {user} = useAuth()
 
     const initialValues = {
@@ -262,6 +262,9 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                         <div className="text-[13px] ">
                                             Client Name<label className="text-red-500">*</label>
                                         </div>
+                                        {state?.hyperlinked ? <Tooltip title={state.clientname} arrow>
+                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" >{state.clientname}</div>
+                                                </Tooltip> :
                                         <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
@@ -325,7 +328,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                                 }),
                                                 
                                             }}
-                                        />
+                                        />}
                                         <div className="text-[10px] text-[#CD0000] absolute">{formErrors.client}</div>
                                     </div>
                                     <div className="">
@@ -366,6 +369,11 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                                 </option>
                                             ))}
                                         </select> */}
+                                        {state?.hyperlinked ? 
+                                         
+                                         <Tooltip title={state.orderdescription} arrow>
+                                              <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.orderdescription}</div>
+                                         </Tooltip> :
                                          <OrderCustomSelectNative
                                            data={Object.keys(orders)}
                                            value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
@@ -392,9 +400,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                           onChange={(e) => {
                                             setFormValues({ ...formValues, order: e.target.value })
                                            }}
-                                           
-                                        
-                                        />
+                                        /> }
                                         {/* <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
                                         <div className="text-[10px] text-[#CD0000] absolute">{formErrors.order}</div>
                                     </div>

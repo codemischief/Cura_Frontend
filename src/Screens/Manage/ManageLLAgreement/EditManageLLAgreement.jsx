@@ -1,4 +1,4 @@
-import { useScrollTrigger } from '@mui/material'
+import { Tooltip, useScrollTrigger } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Modal , CircularProgress, MenuItem } from '@mui/material'
 import Cross from "../../../assets/cross.png"
@@ -9,7 +9,7 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import useAuth from '../../../context/JwtContext'
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative'
 import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative'
-const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCancel }) => {
+const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCancel ,state }) => {
     const {user} = useAuth()
     const initialValues = {
         client: "",
@@ -449,6 +449,12 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                                 <div className="text-[13px]">
                                                     Client <label className="text-red-500">*</label>
                                                 </div>
+                                                
+                                                {state?.hyperlinked ? 
+                                                <Tooltip title={state.clientname} arrow>
+                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientname}</div>
+                             
+                                                </Tooltip> : 
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
                                                     value={selectedOption}
@@ -512,7 +518,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                                         }),
                                                         
                                                     }}
-                                                />
+                                                />}
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
                                             </div>
                                             <div className="">
@@ -534,6 +540,11 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                                 </option>
                                             ))}
                                         </select> */}
+                                              {state?.hyperlinked ? 
+                                                <Tooltip title={state.clientpropertydescription} arrow>
+                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientpropertydescription}</div>
+                             
+                                                </Tooltip> :
                                                  <ClientPropertySelectNative
                                                data={Object.keys(clientPropertyData)}
                                                value={clientPropertyData?.[formValues.clientProperty]?.propertyname ? clientPropertyData?.[formValues.clientProperty]?.propertyname:null}
@@ -563,7 +574,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                                    temp.clientProperty = e.target.value 
                                                    setFormValues(temp)
                                                   }}
-                                               />
+                                               />}
                                                 
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
                                             </div>
