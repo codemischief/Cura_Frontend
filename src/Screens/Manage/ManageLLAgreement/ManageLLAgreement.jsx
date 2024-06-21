@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link , useLocation, useNavigate } from "react-router-dom";
+import { Outlet, Link , useLocation, useNavigate, useParams } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -42,10 +42,12 @@ import OrderCustomSelectNative from '../../../Components/common/select/OrderCust
 import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageLLAgreement = () => {
+    const {clientPropertyId} = useParams()
     const {user} = useAuth()
     const navigate = useNavigate();
     const canEdit = checkEditAccess();
-    const { state , pathname} =  useLocation();
+    const {pathname} =  useLocation();
+    const [state,setState] = useState({})
     console.log(pathname)
     console.log(state)
 
@@ -421,20 +423,41 @@ const ManageLLAgreement = () => {
         setExistingLLAgreement(result);
         setPageLoading(false);
     }
-    const setHyperlinkData = () => {
-        if(state != null) {
-            const v = {...selectedOption}
-            v.label = state.clientname 
-            v.value = state.clientid 
-            setSelectedOption(v)
-            if(state.clientid != null) {
-
-                getOrdersByClientId(state.clientid)
+    const setHyperlinkData = async () => {
+        if(clientPropertyId != null) {
+            const data = {
+                user_id : user.id,
+                table_name : "get_client_property_view",
+                item_id : clientPropertyId
             }
-            const temp = {...formValues}
-            temp.client = state.clientid 
-            temp.clientProperty = state.clientPropertyId
-            setFormValues(temp)
+            const response = await APIService.getItembyId(data)
+            const res = await response.json()
+
+            setState(prevState => ({
+                ...prevState,
+                clientPropertyId : clientPropertyId,
+                clientid : res.data.clientid,
+                clientname : res.data.client,
+                clientpropertydescription : res.data.description,
+                hyperlinked : true
+            }))
+            getOrdersByClientId(res.data.clientid)
+            setFormValues(prevForm => ({
+                ...prevForm,
+                client : res.data.clientid,
+                clientProperty : clientPropertyId
+            }))
+            // const v = {...selectedOption}
+            // v.label = state.clientname 
+            // v.value = state.clientid 
+            // setSelectedOption(v)
+            // if(state.clientid != null) {
+            //     getOrdersByClientId(state.clientid)
+            // }
+            // const temp = {...formValues}
+            // temp.client = state.clientid 
+            // temp.clientProperty = state.clientPropertyId
+            // setFormValues(temp)
         }
 
     }
@@ -1123,10 +1146,10 @@ const ManageLLAgreement = () => {
             filterInput: ""
         },
         clientpropertyid : {
-            filterType: state ? "equalTo" : "",
-            filterValue: state?.clientPropertyId,
+            filterType: clientPropertyId ? "equalTo" : "",
+            filterValue: clientPropertyId,
             filterData: "Numeric",
-            filterInput: state?.clientPropertyId
+            filterInput: clientPropertyId
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);

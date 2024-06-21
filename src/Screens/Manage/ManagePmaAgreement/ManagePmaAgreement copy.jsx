@@ -43,6 +43,7 @@ import checkEditAccess from '../../../Components/common/checkRoleBase';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative';
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
+import {Tooltip} from '@mui/material';
 const ManagePmaArgreement = () => {
     const { pathname} = useLocation();
     const [state,setState] = useState({})
@@ -1696,7 +1697,11 @@ const ManagePmaArgreement = () => {
                                                     Client <label className="text-red-500">*</label>
                                                 </div>
                                                 {state?.hyperlinked ?
-                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div> : 
+                                                 <Tooltip title={state.clientname}>
+
+
+                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div>  
+                                                 </Tooltip> :
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
                                                     value={selectedOption}
