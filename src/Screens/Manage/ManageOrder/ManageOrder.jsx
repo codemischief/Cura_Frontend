@@ -1341,25 +1341,25 @@ const ManageOrder = () => {
                                         </div>
                                         {/* state={{ orderid: item.id,clientid : item.clientid, clientname : item.clientname , orderdescription : item.briefdescription , hyperlinked : true }} */}
                                         {/* ={`/manage/managevendorpayment/${item.id}`}  */}
-                                        <Link to={`/manage/managevendorpayment/${item.id}`} state={{ orderid: item.id,clientid : item.clientid, clientname : item.clientname , orderdescription : item.briefdescription , hyperlinked : true }}>
+                                        <Link to={`/manage/managevendorpayment/${item.id}`}>
 
                                             <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                                 <p>Payments</p>
                                             </div>
 
                                         </Link>
-                                        <Link to={`/manage/manageorderreceipt/${item.id}`} state={{ orderid: item.id ,clientid : item.clientid, clientname : item.clientname , orderdescription : item.briefdescription , hyperlinked : true  }}>
+                                        <Link to={`/manage/manageorderreceipt/${item.id}`}>
                                             <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                                 <p>Receipts</p>
                                             </div>
                                         </Link>
-                                        <Link to={`/manage/manageclientinvoice/${item.id}`} state={{ orderid: item.id ,clientid : item.clientid, clientname : item.clientname , orderdescription : item.briefdescription , hyperlinked : true  }}>
+                                        <Link to={`/manage/manageclientinvoice/${item.id}`}>
 
                                             <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                                 <p>Invoices</p>
                                             </div>
                                         </Link>
-                                        <Link to={`/manage/manageclientinfo/orders/showall/${item.id}`} state={{orderid : item.id , orderdescription : item.briefdescription}}>
+                                        <Link to={`/manage/manageclientinfo/orders/showall/${item.id}`} >
 
                                         
                                         <div className='w-[100px] p-4 text-blue-500 cursor-pointer'>

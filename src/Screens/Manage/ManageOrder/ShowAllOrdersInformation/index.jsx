@@ -3,7 +3,7 @@ import Navbar from '../../../../Components/Navabar/Navbar'
 import { Stack, Typography } from '@mui/material'
 import { ArrowLeftOutlined ,CloseOutlined } from '@ant-design/icons'
 import { APIService } from '../../../../services/API'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import useAuth from '../../../../context/JwtContext'
 // import { useScroll } from 'framer-motion'
 const ShowAllOdersInformation = () => {
@@ -11,9 +11,9 @@ const ShowAllOdersInformation = () => {
     const [paymentsData,setPaymentsData] = useState([])
     const [receiptsData,setReceiptsData] = useState([])
     const [invoicesData,setInvoicesData] = useState([])
-    const {state} = useLocation()
+    const {orderid} = useParams()
     const navigate = useNavigate()
-    console.log(state)
+    // console.log(state)
   const fetchPaymentData = async () => {
       const data = {
           
@@ -28,7 +28,7 @@ const ShowAllOdersInformation = () => {
               "modeofpayment",
               'orderid'
         ],
-        "filters": [['orderid','equalTo',state?.orderid,'Numeric']],
+        "filters": [['orderid','equalTo',orderid,'Numeric']],
         "sort_by": [],
         "order": 'desc',
         "pg_no": 0,
@@ -55,7 +55,7 @@ const ShowAllOdersInformation = () => {
             "paymentmodename",
             "orderid"
         ],
-        "filters": [['orderid','equalTo',state?.orderid,'Numeric']],
+        "filters": [['orderid','equalTo',orderid,'Numeric']],
         "sort_by": [],
         "order": "desc",
         "pg_no": 0,
@@ -81,7 +81,7 @@ const ShowAllOdersInformation = () => {
             "id",
             'orderid'
         ],
-        "filters": [['orderid','equalTo',state?.orderid,'Numeric']],
+        "filters": [['orderid','equalTo',orderid,'Numeric']],
         "sort_by": [],
         "order":  "desc",
         "pg_no": 0,
@@ -91,7 +91,19 @@ const ShowAllOdersInformation = () => {
     const temp = await response.json();
     setInvoicesData((prev) => temp.data)
   }
+  const [orderDescription,setOrderDescription] = useState("")
+  const fetchOrderDescription = async () => {
+    const data = {
+        user_id : user.id,
+        table_name : "get_orders_view",
+        item_id : orderid 
+    }
+    const response = await APIService.getItembyId(data)
+    const res = await response.json()
+    setOrderDescription(res.data.briefdescription)
+  }
   useEffect(() => {
+    fetchOrderDescription()
     fetchPaymentData()
     fetchReceiptsData()
     fetchInvoicesData()
@@ -114,7 +126,7 @@ const ShowAllOdersInformation = () => {
                     padding : '10px',
                     borderRadius : '100px'
                 }}/>
-               <Typography className='text-4xl' fontSize={24} fontFamily={'Open Sans'} fontWeight={'600'}>Order Description : {state.orderdescription}</Typography>
+               <Typography className='text-4xl' fontSize={24} fontFamily={'Open Sans'} fontWeight={'600'}>Order Description : {orderDescription} </Typography>
             </Stack>
             
 

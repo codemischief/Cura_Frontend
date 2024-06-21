@@ -1,4 +1,4 @@
-import { LinearProgress, Modal, Pagination, CircularProgress, MenuItem } from "@mui/material";
+import { LinearProgress, Modal, Pagination, CircularProgress, MenuItem, Tooltip } from "@mui/material";
 import React, { useEffect, useRef, useState } from 'react';
 import AsyncSelect from "react-select/async";
 import Navbar from "../../../Components/Navabar/Navbar";
@@ -34,7 +34,7 @@ import Draggable from "react-draggable";
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import { formatDate } from "../../../utils/formatDate";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import AddButton from "../../../Components/common/CustomButton";
 import EditButton from "../../../Components/common/buttons/EditButton";
 import DeleteButton from "../../../Components/common/buttons/deleteButton";
@@ -45,9 +45,11 @@ import OrderCustomSelectNative from "../../../Components/common/select/OrderCust
 import ClientPropertySelectNative from "../../../Components/common/select/ClientPropertySelectNative";
 
 const ManageVendorPayment = () => {
+    const {orderid} = useParams()
     const {user} = useAuth()
     const menuRef = useRef();
-    const { state , pathname } = useLocation()
+    const { pathname } = useLocation()
+    const [state,setState] = useState({})
     console.log(pathname)
     const navigate = useNavigate();
     const canEdit = checkEditAccess();
@@ -485,18 +487,37 @@ const ManageVendorPayment = () => {
         officeid: null
     };
     const [formValues, setFormValues] = useState(initialValues);
-    const setHyperLinkData = () => {
-        if(state != null){
-            console.log(state)
-            const v = {...selectedOption}
-            v.label = state.clientname 
-            v.value = state.clientid
-            setSelectedOption(v)
-            const temp= {...formValues}
-            temp.client = state.clientid 
-            temp.orderid = state.orderid
-            getOrderData(state.orderid)
-            setFormValues(temp)
+    const setHyperLinkData = async () => {
+        if(orderid != null){
+            const data = {
+                user_id : user.id,
+                table_name : "get_orders_view",
+                item_id : orderid 
+            }
+            const response = await APIService.getItembyId(data)
+            const res = await response.json()
+            setState(prevState => ({
+                ...prevState,
+                hyperlinked: true,
+                clientname: res.data.clientname,
+                clientid: res.data.clientid,
+                orderid: orderid,
+                orderdescription : res.data.briefdescription
+              }));
+              setFormValues(prevFormValues => ({
+                ...prevFormValues,
+                client: res.data.clientid,
+                orderid: orderid
+            }));
+            // const v = {...selectedOption}
+            // v.label = state.clientname 
+            // v.value = state.clientid
+            // setSelectedOption(v)
+            // const temp= {...formValues}
+            // temp.client = state.clientid 
+            // temp.orderid = state.orderid
+            // getOrderData(state.orderid)
+            // setFormValues(temp)
         }
     }
     useEffect(() => {
@@ -977,8 +998,8 @@ const ManageVendorPayment = () => {
             filterInput: ""
         },
         orderid: {
-            filterType: state ? "equalTo" : "",
-            filterValue: state?.orderid,
+            filterType: orderid ? "equalTo" : "",
+            filterValue: orderid,
             filterData: "Numeric",
             filterInput: ""
         }
@@ -1147,7 +1168,7 @@ const ManageVendorPayment = () => {
                 <CircularProgress color="inherit" />
 
             </Backdrop>
-            {showEditModal && <EditVendorPayment handleClose={() => setShowEditModal(false)} currPayment={currInvoice} modesData={modesData} orders={orders} vendorData={vendorData} usersData={usersData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {showEditModal && <EditVendorPayment handleClose={() => setShowEditModal(false)} currPayment={currInvoice} modesData={modesData} orders={orders} vendorData={vendorData} usersData={usersData} showSuccess={openEditSuccess} showCancel={openCancelModal} state={state}/>}
             {/* {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Payment Created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Payment Deleted successfully" />}
@@ -1618,7 +1639,10 @@ const ManageVendorPayment = () => {
                                                     Client <label className="text-red-500">*</label>
                                                 </div>
                                                 {state?.hyperlinked ?
-                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div> : 
+                                                <Tooltip title={state.clientname} arrow>
+                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientname}</div> 
+                                                </Tooltip>
+                                                 : 
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
                                                     value={selectedOption}
@@ -1740,7 +1764,10 @@ const ManageVendorPayment = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
+                                                {state?.hyperlinked ?
+                                                <Tooltip title={state.orderdescription} arrow>
+                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.orderdescription}</div>   
+                                                </Tooltip> :
                                                 <OrderCustomSelectNative
                                            data={Object.keys(orders)}
                                            value={orders?.[formValues.orderid] ? orders?.[formValues.orderid]:null}
