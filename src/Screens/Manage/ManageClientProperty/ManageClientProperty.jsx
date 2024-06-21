@@ -409,7 +409,7 @@ const ManageClientProperty = () => {
         setPageLoading(false);
     }
     const setHyperLinkData = async () => {
-        if(clientid !== null) {
+        if(clientid != null) {
             const data = {
                 user_id : user.id,
                 table_name : 'get_client_info_view',
