@@ -439,7 +439,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/manage/managebuilder/manageproject/:id"
+                path="/manage/managebuilder/manageproject/:builderid"
                 element={
                   <Suspense fallback={<CircularProgress />}>
                     <ManageProjectInfo key="hyperlinked" />
@@ -735,7 +735,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/manage/managebuilder/contacts/:buildername"
+                path="/manage/managebuilder/contacts/:builderid"
                 element={
                   <Suspense fallback={<CircularProgress />}>
                     <ManageBuilderContact />

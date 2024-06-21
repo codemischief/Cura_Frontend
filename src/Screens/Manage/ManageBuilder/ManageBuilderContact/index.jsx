@@ -22,13 +22,15 @@ import AlertModal, {alertVariant} from "../../../../Components/modals/AlertModal
 import CustomDeleteModal from "../../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../../Components/common/ErrorHandler";
 import ContactForm from "./ContactForm"
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useAuth from "../../../../context/JwtContext";
 import AddButton from "../../../../Components/common/CustomButton";
 const ManageBuilderContact = () => {
   const {user} = useAuth()
   const dispatch = useDispatch();
-  const {state} = useLocation()
+  // const {state} = useLocation()
+  const {builderid} = useParams()
+  const [state,setState] = useState({})
   console.log(state)
   const {
     ContactData,
@@ -91,7 +93,7 @@ const ManageBuilderContact = () => {
   const fetchData = () => {
     let obj = {
       user_id: user.id,
-      builderid :state.builderid,
+      builderid : builderid,
       rows: [
         "contactname",
         "buildername",
@@ -209,7 +211,26 @@ const ManageBuilderContact = () => {
       }
     }
   };
-
+  const fetchHyperLinkData = async  () => {
+       if(builderid != null) {
+        const data = {
+          user_id : user.id,
+          table_name : "get_builder_view",
+          item_id : builderid
+        }
+        const response = await APIService.getItembyId(data)
+        const res = await response.json()
+        console.log(res.data)
+        setState(prev => ({
+          ...prev,
+          buildername : res.data.buildername,
+          builderid : builderid
+        }))
+       }
+  }
+  useEffect(() => {
+      fetchHyperLinkData()
+  },[])
   useEffect(() => {
     if (openSubmissionPrompt) {
       setTimeout(() => {
