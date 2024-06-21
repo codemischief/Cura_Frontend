@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Route, Routes, Outlet, useNavigate } from "react-router-dom";
-import {Backdrop, CircularProgress } from "@mui/material";
+import {Backdrop} from "@mui/material";
 import Login from "./Screens/Login/Login";
 import { setNavigate } from "./services/setNavigation.js";
 import { setAccessToken } from "./utils/axios.js";
@@ -15,7 +15,7 @@ const LoadingBackdrop = () => (
     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
     open={true}
   >
-    {/* <CircularProgress color="inherit" /> */}
+
   </Backdrop>
 );
 // Lazy-loaded components with Suspense
@@ -379,7 +379,7 @@ const App = () => {
             <Route
               path="/reset/:token"
               element={
-                <Suspense fallback={<CircularProgress />}>
+                <Suspense fallback={<LoadingBackdrop />}>
                   <ResetPassword />
                 </Suspense>
               }
@@ -396,7 +396,7 @@ const App = () => {
               <Route
                 path="/dashboard"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <Dashboard />
                   </Suspense>
                 }
@@ -404,7 +404,7 @@ const App = () => {
               <Route
                 path="/changepassword"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ChangePassword />
                   </Suspense>
                 }
@@ -412,7 +412,7 @@ const App = () => {
               <Route
                 path="/admin/manageuser"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageUser />
                   </Suspense>
                 }
@@ -420,7 +420,7 @@ const App = () => {
               <Route
                 path="/admin/updatecompanykey"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <UpdateCompanyKey />
                   </Suspense>
                 }
@@ -428,7 +428,7 @@ const App = () => {
               <Route
                 path="/admin/manageemployees"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageEmployees />
                   </Suspense>
                 }
@@ -436,7 +436,7 @@ const App = () => {
               <Route
                 path="/manage/managebuilder"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageBuilder />
                   </Suspense>
                 }
@@ -444,7 +444,7 @@ const App = () => {
               <Route
                 path="/manage/manageprojectinfo"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageProjectInfo />
                   </Suspense>
                 }
@@ -452,7 +452,7 @@ const App = () => {
               <Route
                 path="/manage/managebuilder/manageproject/:builderid"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageProjectInfo key="hyperlinked" />
                   </Suspense>
                 }
@@ -460,7 +460,7 @@ const App = () => {
               <Route
                 path="/admin/deleteById"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <DeleteById />
                   </Suspense>
                 }
@@ -468,7 +468,7 @@ const App = () => {
               <Route
                 path="/admin/deleteById/:pagename"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <DeletePage />
                   </Suspense>
                 }
@@ -476,7 +476,7 @@ const App = () => {
               <Route
                 path="/manage/manageOrder"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageOrder />
                   </Suspense>
                 }
@@ -484,7 +484,7 @@ const App = () => {
               <Route
                 path="/admin/manageuser"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageUser />
                   </Suspense>
                 }
@@ -492,7 +492,7 @@ const App = () => {
               <Route
                 path="/admin/country"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <Country />
                   </Suspense>
                 }
@@ -500,7 +500,7 @@ const App = () => {
               <Route
                 path="/admin/city"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <City />
                   </Suspense>
                 }
@@ -508,7 +508,7 @@ const App = () => {
               <Route
                 path="/admin/locality"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <Locality />
                   </Suspense>
                 }
@@ -516,7 +516,7 @@ const App = () => {
               <Route
                 path="/admin/LOB"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <LOB />
                   </Suspense>
                 }
@@ -524,7 +524,7 @@ const App = () => {
               <Route
                 path="/admin/service"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <Service />
                   </Suspense>
                 }
@@ -532,7 +532,7 @@ const App = () => {
               <Route
                 path="/admin/payments"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <Payments />
                   </Suspense>
                 }
@@ -540,7 +540,7 @@ const App = () => {
               <Route
                 path="/research/prospect"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PropectusPage />
                   </Suspense>
                 }
@@ -548,7 +548,7 @@ const App = () => {
               <Route
                 path="/research/employer"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchEmployer />
                   </Suspense>
                 }
@@ -556,7 +556,7 @@ const App = () => {
               <Route
                 path="/research/owner"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchOwner />
                   </Suspense>
                 }
@@ -564,7 +564,7 @@ const App = () => {
               <Route
                 path="/research/educational"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchEducational />
                   </Suspense>
                 }
@@ -572,7 +572,7 @@ const App = () => {
               <Route
                 path="/research/architect"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchArchitect />
                   </Suspense>
                 }
@@ -580,7 +580,7 @@ const App = () => {
               <Route
                 path="/research/mandals"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchMandals />
                   </Suspense>
                 }
@@ -588,7 +588,7 @@ const App = () => {
               <Route
                 path="/research/professionals"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchProfessionals />
                   </Suspense>
                 }
@@ -596,7 +596,7 @@ const App = () => {
               <Route
                 path="/research/businessgroup"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchBusinessGroup />
                   </Suspense>
                 }
@@ -604,7 +604,7 @@ const App = () => {
               <Route
                 path="/research/banks"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchBanks />
                   </Suspense>
                 }
@@ -612,7 +612,7 @@ const App = () => {
               <Route
                 path="/research/friends"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchFriends />
                   </Suspense>
                 }
@@ -620,7 +620,7 @@ const App = () => {
               <Route
                 path="/research/serviceapartment"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchServiceApartments />
                   </Suspense>
                 }
@@ -628,7 +628,7 @@ const App = () => {
               <Route
                 path="/research/agent"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchAgent />
                   </Suspense>
                 }
@@ -636,7 +636,7 @@ const App = () => {
               <Route
                 path="/research/governmentdepartment"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ResearchGovernmentDepartment />
                   </Suspense>
                 }
@@ -644,7 +644,7 @@ const App = () => {
               <Route
                 path="/manage/bankstatement"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageBankStatement />
                   </Suspense>
                 }
@@ -652,7 +652,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientinfo"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageClientInfo />
                   </Suspense>
                 }
@@ -660,7 +660,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientproperty"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageClientProperty />
                   </Suspense>
                 }
@@ -668,7 +668,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientreceipt"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageClientReceipt />
                   </Suspense>
                 }
@@ -676,7 +676,7 @@ const App = () => {
               <Route
                 path="/manage/managellagreement"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageLLAgreement />
                   </Suspense>
                 }
@@ -684,7 +684,7 @@ const App = () => {
               <Route
                 path="/manage/managepmaagreement"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManagePmaArgreement />
                   </Suspense>
                 }
@@ -692,7 +692,7 @@ const App = () => {
               <Route
                 path="/manage/manageorderreceipt"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageOrderReceipt />
                   </Suspense>
                 }
@@ -700,7 +700,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientinvoice"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageClientInvoice />
                   </Suspense>
                 }
@@ -708,7 +708,7 @@ const App = () => {
               <Route
                 path="/manage/managevendor"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageVendor />
                   </Suspense>
                 }
@@ -716,7 +716,7 @@ const App = () => {
               <Route
                 path="/manage/managevendorinvoice"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageVendorInvoice />
                   </Suspense>
                 }
@@ -724,7 +724,7 @@ const App = () => {
               <Route
                 path="/manage/managevendorpayment"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageVendorPayment />
                   </Suspense>
                 }
@@ -732,7 +732,7 @@ const App = () => {
               <Route
                 path="/manage/sendclientstatement"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <SendClientStatement />
                   </Suspense>
                 }
@@ -740,7 +740,7 @@ const App = () => {
               <Route
                 path="manage/managebuilder/projects/:buildername"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageBuilderProject />
                   </Suspense>
                 }
@@ -748,7 +748,7 @@ const App = () => {
               <Route
                 path="/manage/managebuilder/contacts/:builderid"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageBuilderContact />
                   </Suspense>
                 }
@@ -756,7 +756,7 @@ const App = () => {
               <Route
                 path="/manage/managevendorpayment/:orderid"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageVendorPayment key="hyperlinked" />
                   </Suspense>
                 }
@@ -764,7 +764,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientinvoice/:orderid"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageClientInvoice key="hyperlinked" />
                   </Suspense>
                 }
@@ -772,7 +772,7 @@ const App = () => {
               <Route
                 path="/manage/manageorderreceipt/:orderid"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageOrderReceipt key="hyperlinked" />
                   </Suspense>
                 }
@@ -780,7 +780,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientinfo/orders/showall/:orderid"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ShowAllOdersInformation />
                   </Suspense>
                 }
@@ -788,7 +788,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientinfo/properties/:clientid"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageClientProperty key="hyperlinked" />
                   </Suspense>
                 }
@@ -796,7 +796,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientinfo/orders/:clientid"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageOrder key="hyperlinked" />
                   </Suspense>
                 }
@@ -804,7 +804,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientproperty/pmaagreement/:clientPropertyId"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManagePmaArgreement key="hyperlinked" />
                   </Suspense>
                 }
@@ -812,7 +812,7 @@ const App = () => {
               <Route
                 path="/manage/manageclientproperty/llagreement/:clientPropertyId"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ManageLLAgreement key="hyperlinked" />
                   </Suspense>
                 }
@@ -820,7 +820,7 @@ const App = () => {
               <Route
                 path="/manage/pmaBilling"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PmaBilling />
                   </Suspense>
                 }
@@ -828,7 +828,7 @@ const App = () => {
               <Route
                 path="/reports/orderPaymentList"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderPaymentList />
                   </Suspense>
                 }
@@ -836,7 +836,7 @@ const App = () => {
               <Route
                 path="/reports/orderReceiptList"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderReceiptList />
                   </Suspense>
                 }
@@ -844,7 +844,7 @@ const App = () => {
               <Route
                 path="/reports/orderInvoiceList"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderInvoiceList />
                   </Suspense>
                 }
@@ -852,7 +852,7 @@ const App = () => {
               <Route
                 path="/reports/clientReceiptList"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientReceiptList />
                   </Suspense>
                 }
@@ -860,7 +860,7 @@ const App = () => {
               <Route
                 path="/reports/vendorPaymentsList"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <VendorInvoiceList />
                   </Suspense>
                 }
@@ -868,7 +868,7 @@ const App = () => {
               <Route
                 path="/admin/lobReceiptPayments"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <LobReceiptPayments />
                   </Suspense>
                 }
@@ -876,7 +876,7 @@ const App = () => {
               <Route
                 path="/admin/entityReceiptPayments"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <EntityReceiptPayments />
                   </Suspense>
                 }
@@ -884,7 +884,7 @@ const App = () => {
               <Route
                 path="/admin/lobReceiptPaymentsConsolidated"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <LobReceiptPaymentsConsolidated />
                   </Suspense>
                 }
@@ -892,7 +892,7 @@ const App = () => {
               <Route
                 path="/reports/pmaBillingTrendView"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PmaBillingTrendView />
                   </Suspense>
                 }
@@ -900,7 +900,7 @@ const App = () => {
               <Route
                 path="/reports/pmaClientReport"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PmaClientReport />
                   </Suspense>
                 }
@@ -908,7 +908,7 @@ const App = () => {
               <Route
                 path="/reports/pmaInvoiceList"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PmaInvoiceList />
                   </Suspense>
                 }
@@ -916,7 +916,7 @@ const App = () => {
               <Route
                 path="/reports/pmaClientReceivable"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PmaClientReceivable />
                   </Suspense>
                 }
@@ -924,7 +924,7 @@ const App = () => {
               <Route
                 path="/reports/activePmaAgreement"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ActivePmaAgreement />
                   </Suspense>
                 }
@@ -932,7 +932,7 @@ const App = () => {
               <Route
                 path="/reports/projectContact"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ProjectContact />
                   </Suspense>
                 }
@@ -940,7 +940,7 @@ const App = () => {
               <Route
                 path="/reports/advanceHoldingAmount"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <AdvanceHoldingAmount />
                   </Suspense>
                 }
@@ -948,7 +948,7 @@ const App = () => {
               <Route
                 path="/reports/pmaClientStatementAll"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PmaClientStatementAll />
                   </Suspense>
                 }
@@ -956,7 +956,7 @@ const App = () => {
               <Route
                 path="/reports/pmaClientStatement"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PmaClientStatement />
                   </Suspense>
                 }
@@ -964,7 +964,7 @@ const App = () => {
               <Route
                 path="/reports/nonPmaClientStatement"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <NonPmaClientStatement />
                   </Suspense>
                 }
@@ -972,7 +972,7 @@ const App = () => {
               <Route
                 path="/reports/nonPmaClientReceivables"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <NonPmaClientReceivables />
                   </Suspense>
                 }
@@ -980,7 +980,7 @@ const App = () => {
               <Route
                 path="/reports/clientStatementAll"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientStatementAll />
                   </Suspense>
                 }
@@ -988,7 +988,7 @@ const App = () => {
               <Route
                 path="/reports/duplicateClientReport"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <DuplicateClientReport />
                   </Suspense>
                 }
@@ -996,7 +996,7 @@ const App = () => {
               <Route
                 path="/reports/clientBankDetails"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientBankDetails />
                   </Suspense>
                 }
@@ -1004,7 +1004,7 @@ const App = () => {
               <Route
                 path="/reports/monthlyBankSummary"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <MonthlyBankSummary />
                   </Suspense>
                 }
@@ -1012,7 +1012,7 @@ const App = () => {
               <Route
                 path="/reports/bankTransferReconciliation"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <BankTransferReconciliation />
                   </Suspense>
                 }
@@ -1020,7 +1020,7 @@ const App = () => {
               <Route
                 path="/reports/clientOrderReceiptMismatchDetails"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientOrderReceiptMismatchDetails />
                   </Suspense>
                 }
@@ -1028,7 +1028,7 @@ const App = () => {
               <Route
                 path="/reports/bankReceiptReconciliation"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <BankReceiptReconciliation />
                   </Suspense>
                 }
@@ -1036,7 +1036,7 @@ const App = () => {
               <Route
                 path="/reports/bankPaymentsReconciliation"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <BankPaymentReconciliation />
                   </Suspense>
                 }
@@ -1044,7 +1044,7 @@ const App = () => {
               <Route
                 path="/reports/clientTraceReport"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientTraceReport />
                   </Suspense>
                 }
@@ -1052,7 +1052,7 @@ const App = () => {
               <Route
                 path="/reports/orderTraceReport"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderTraceReport />
                   </Suspense>
                 }
@@ -1060,7 +1060,7 @@ const App = () => {
               <Route
                 path="/reports/vendorTraceReport"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <VendorTraceReport />
                   </Suspense>
                 }
@@ -1068,7 +1068,7 @@ const App = () => {
               <Route
                 path="/reports/clientReceipt"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientReceiptView />
                   </Suspense>
                 }
@@ -1076,7 +1076,7 @@ const App = () => {
               <Route
                 path="/reports/orderpaymentDD"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderPaymentDDView />
                   </Suspense>
                 }
@@ -1084,7 +1084,7 @@ const App = () => {
               <Route
                 path="/reports/orderpaymentbanktocash"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderPaymentB2CView />
                   </Suspense>
                 }
@@ -1092,7 +1092,7 @@ const App = () => {
               <Route
                 path="reports/orderpaymentbanktobank"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderPaymentB2BView />
                   </Suspense>
                 }
@@ -1100,7 +1100,7 @@ const App = () => {
               <Route
                 path="reports/orderpaymentwithtds"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderPaymentWithTdsView />
                   </Suspense>
                 }
@@ -1108,7 +1108,7 @@ const App = () => {
               <Route
                 path="reports/orderpaymentwithouttds"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderPaymentWithoutTdsView />
                   </Suspense>
                 }
@@ -1116,7 +1116,7 @@ const App = () => {
               <Route
                 path="reports/orderreceipttoinvoiceTax"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderReceiptToInvoiceServiceTax />
                   </Suspense>
                 }
@@ -1124,7 +1124,7 @@ const App = () => {
               <Route
                 path="reports/tdspaidbyvendor"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <TdsPaidByVendorView />
                   </Suspense>
                 }
@@ -1132,7 +1132,7 @@ const App = () => {
               <Route
                 path="reports/vendorstatement"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <VendorStatementView />
                   </Suspense>
                 }
@@ -1140,7 +1140,7 @@ const App = () => {
               <Route
                 path="reports/tdsPaidToGovernment"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <TdsPaidToGovernement />
                   </Suspense>
                 }
@@ -1148,7 +1148,7 @@ const App = () => {
               <Route
                 path="reports/vendorpaymentsummary"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <VendorPaymentPeriodView />
                   </Suspense>
                 }
@@ -1156,7 +1156,7 @@ const App = () => {
               <Route
                 path="reports/clientStatistics"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientStatistics />
                   </Suspense>
                 }
@@ -1164,7 +1164,7 @@ const App = () => {
               <Route
                 path="reports/statisticsReport"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <StatisticsReport />
                   </Suspense>
                 }
@@ -1172,7 +1172,7 @@ const App = () => {
               <Route
                 path="reports/serviceTaxPaidByVendor"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ServiceTaxPaidByVendor />
                   </Suspense>
                 }
@@ -1180,7 +1180,7 @@ const App = () => {
               <Route
                 path="reports/tenantEmail"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <TenantEmail />
                   </Suspense>
                 }
@@ -1188,7 +1188,7 @@ const App = () => {
               <Route
                 path="reports/ownerMailId"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OwnerMailId />
                   </Suspense>
                 }
@@ -1196,7 +1196,7 @@ const App = () => {
               <Route
                 path="reports/clientContactDetails"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientContactDetails />
                   </Suspense>
                 }
@@ -1204,7 +1204,7 @@ const App = () => {
               <Route
                 path="/reports/orderStaticsView"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderStaticsView />
                   </Suspense>
                 }
@@ -1212,7 +1212,7 @@ const App = () => {
               <Route
                 path="/reports/activellagreement"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ActiveLLAgreementView />
                   </Suspense>
                 }
@@ -1220,7 +1220,7 @@ const App = () => {
               <Route
                 path="/reports/orderanalysis"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OrderAnalysis />
                   </Suspense>
                 }
@@ -1228,7 +1228,7 @@ const App = () => {
               <Route
                 path="/reports/Lllist"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <LLlistReport />
                   </Suspense>
                 }
@@ -1236,7 +1236,7 @@ const App = () => {
               <Route
                 path="/reports/clientstatics"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientStatistics />
                   </Suspense>
                 }
@@ -1244,7 +1244,7 @@ const App = () => {
               <Route
                 path="/reports/clientStatementByDate"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientStatementByDate />
                   </Suspense>
                 }
@@ -1252,7 +1252,7 @@ const App = () => {
               <Route
                 path="/reports/paymentUnderSuspenseOrder"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PaymentUnderSuspenseOrder />
                   </Suspense>
                 }
@@ -1260,7 +1260,7 @@ const App = () => {
               <Route
                 path="/reports/receiptsUnderSuspenseOrder"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ReceiptsUnderSuspenseOrder />
                   </Suspense>
                 }
@@ -1268,7 +1268,7 @@ const App = () => {
               <Route
                 path="/reports/clientsWithOrderButNoEmail"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientsWithOrderButNoEmail />
                   </Suspense>
                 }
@@ -1276,7 +1276,7 @@ const App = () => {
               <Route
                 path="/reports/employeeWithoutVendor"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <EmployeeWithoutVendor />
                   </Suspense>
                 }
@@ -1284,7 +1284,7 @@ const App = () => {
               <Route
                 path="/reports/bankTransactionsWithWrongUserName"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <BankTransactionsWithWrongUserName />
                   </Suspense>
                 }
@@ -1292,7 +1292,7 @@ const App = () => {
               <Route
                 path="/reports/entityBlankReport"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <EntityBlankReport />
                   </Suspense>
                 }
@@ -1300,7 +1300,7 @@ const App = () => {
               <Route
                 path="/reports/ownerwithnoproperty"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OwnerWithNoProperty />
                   </Suspense>
                 }
@@ -1308,7 +1308,7 @@ const App = () => {
               <Route
                 path="/reports/propertywithnoproject"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <PropertyWithNoProjectView />
                   </Suspense>
                 }
@@ -1316,7 +1316,7 @@ const App = () => {
               <Route
                 path="/reports/serviceTaxReport"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ServiceTaxReport />
                   </Suspense>
                 }
@@ -1324,7 +1324,7 @@ const App = () => {
               <Route
                 path="/reports/vendorSummary"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <VendorSummary />
                   </Suspense>
                 }
@@ -1332,7 +1332,7 @@ const App = () => {
               <Route
                 path="/reports/clientphoneno"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <ClientPhoneNo />
                   </Suspense>
                 }
@@ -1340,7 +1340,7 @@ const App = () => {
               <Route
                 path="/reports/ownerphoneno"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <OwnerPhoneNo />
                   </Suspense>
                 }
@@ -1348,7 +1348,7 @@ const App = () => {
               <Route
                 path="/reports/bankbalancereconciliation"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <BankBalanceReconcilation />
                   </Suspense>
                 }
@@ -1356,7 +1356,7 @@ const App = () => {
               <Route
                 path="/reports/agedOrders"
                 element={
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingBackdrop />}>
                     <AgedOrders />
                   </Suspense>
                 }
@@ -1365,7 +1365,7 @@ const App = () => {
             <Route
               path="/*"
               element={
-                <Suspense fallback={<CircularProgress />}>
+                <Suspense fallback={<LoadingBackdrop />}>
                   <NotFound />
                 </Suspense>
               }
@@ -1373,7 +1373,7 @@ const App = () => {
           </Route>
         </Routes>
       ) : (
-        <CircularProgress />
+        <LoadingBackdrop />
       )}
     </div>
   );
