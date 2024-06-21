@@ -25,8 +25,10 @@ import AlertModal, {
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
 import EmployerForm from "./EmployerForm"
+import useAuth from "../../../context/JwtContext";
 const ResearchArchitect = () => {
   const dispatch = useDispatch();
+  const {user} = useAuth();
   const isInitialMount = useRef(true);
   const {
     ArchitectData,
@@ -51,7 +53,7 @@ const ResearchArchitect = () => {
   const handleEdit = async (data) => {
     try {
       let dataItem = {
-        user_id: 1234,
+        user_id: user.id,
         table_name: "get_research_architect_view",
         item_id: data.id,
       };
@@ -84,7 +86,7 @@ const ResearchArchitect = () => {
 
   const fetchData = () => {
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
 
       rows: [
          "name",
@@ -161,7 +163,7 @@ const ResearchArchitect = () => {
     }, {});
 
     let obj = {
-      user_id: 1234,
+      user_id: user.id,
       rows: [
         "name",
          "city",
@@ -172,7 +174,7 @@ const ResearchArchitect = () => {
          "id"
       ],
       
-      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
+      // colmap: { state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
@@ -184,6 +186,31 @@ const ResearchArchitect = () => {
     dispatch(downloadArchitect(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "name",
+         "city",
+         "emailid",
+         "phoneno",
+         "project",
+         "societyname",
+         "id"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/research/architect",
+      // colmap: { state: "State", country: "Country", city: "City" },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadArchitect(obj, 'pdf'))
+  }
+
   const handleFormOpen = () => {
     setOpenForm(true);
     setEditData({});
@@ -191,7 +218,7 @@ const ResearchArchitect = () => {
 
   const deleteArchitectFnc = async () => {
     try {
-      const data = { user_id: 1234, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteResearchArchitect(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Architect Deleted Successfully");
@@ -279,7 +306,7 @@ const ResearchArchitect = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 13rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
@@ -287,6 +314,7 @@ const ResearchArchitect = () => {
             downloadExcel={downloadExcel}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
+            downloadPdf={downloadPdf}
           />
         </div>
       </div>
