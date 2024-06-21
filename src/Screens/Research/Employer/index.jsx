@@ -182,6 +182,45 @@ const ResearchEmployer = () => {
     dispatch(downloadEmployerDataXls(obj));
   };
 
+  const downloadPdf = () => {
+
+    const colMap = columns?.slice(1, -1)?.reduce((acc, column) => {
+      if (column.field) {
+        acc[column.field] = column.title;
+      }
+      return acc;
+    }, {});
+
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "employername",
+        "industry",
+        "suburb",
+        "website",
+        "onsiteopportunitytext",
+        "id",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/research/employer",
+      colmap : {
+        "employername" : "Employer Name",
+        "industry" : "Industry",
+        "suburb" : "Suburb",
+        "website" : "Website",
+        "onsiteopportunitytext" : "On-Site Oppurtunity",
+        "id" : "ID",
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadEmployerDataXls(obj, 'pdf'))
+  }
+
   const handleFormOpen = () => {
     setOpenForm(true);
     setEditData({});
@@ -277,12 +316,13 @@ const ResearchEmployer = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 13rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />
