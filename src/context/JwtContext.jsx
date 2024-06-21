@@ -26,6 +26,7 @@ const initialState = {
   isAuthenticated: false,
   isInitialized: false,
   user: null,
+  accessToken: null,
 };
 
 const JWTReducer = (state, action) => {
@@ -35,18 +36,21 @@ const JWTReducer = (state, action) => {
         isAuthenticated: action.payload.isAuthenticated,
         isInitialized: true,
         user: action.payload.user,
+        accessToken: action.payload.accessToken,
       };
     case Types.Login:
       return {
         ...state,
         isAuthenticated: true,
         user: action.payload.user,
+        accessToken: action.payload.accessToken,
       };
     case Types.Logout:
       return {
         ...state,
         isAuthenticated: false,
         user: null,
+        accessToken: null,
       };
     case Types.Register:
       return {
@@ -90,6 +94,7 @@ function AuthProvider({ children }) {
             payload: {
               isAuthenticated: true,
               user: JSON.parse(user),
+              accessToken: accessToken,
             },
           });
         } else {
@@ -98,6 +103,7 @@ function AuthProvider({ children }) {
             payload: {
               isAuthenticated: false,
               user: null,
+              accessToken: null,
             },
           });
         }
@@ -108,6 +114,7 @@ function AuthProvider({ children }) {
           payload: {
             isAuthenticated: false,
             user: null,
+            accessToken: null,
           },
         });
       }
@@ -121,8 +128,6 @@ function AuthProvider({ children }) {
       localStorage.setItem("idleTimeout", idleTimeout);
     }
   }, [idleTimeout]);
-  
- 
 
   const handleOnIdle = () => {
     if (state.isAuthenticated) {
@@ -174,13 +179,17 @@ function AuthProvider({ children }) {
 
   const login = async (username, password, company_key) => {
     try {
-      const response = await axios.post(`${env_URL_SERVER}validateCredentials`, {
-        username,
-        password,
-        company_key,
-      });
-     
-      const { token, user_id, role_id, access_rights, idleTimeOut } = response.data;
+      const response = await axios.post(
+        `${env_URL_SERVER}validateCredentials`,
+        {
+          username,
+          password,
+          company_key,
+        }
+      );
+
+      const { token, user_id, role_id, access_rights, idleTimeOut } =
+        response.data;
       if (token) {
         let userObj = {
           id: user_id,
@@ -205,11 +214,14 @@ function AuthProvider({ children }) {
           type: Types.Login,
           payload: {
             user: userObj,
+            accessToken: token,
           },
         });
       }
     } catch (error) {
-      throw new Error("Failed to login. Please check your credentials and try again.");
+      throw new Error(
+        "Failed to login. Please check your credentials and try again."
+      );
     }
   };
 
@@ -261,9 +273,9 @@ export { AuthContext, AuthProvider };
 
 const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("Auth context must be used inside AuthProvider");
+  if (!context)
+    throw new Error("Auth context must be used inside AuthProvider");
   return context;
 };
 
 export default useAuth;
-

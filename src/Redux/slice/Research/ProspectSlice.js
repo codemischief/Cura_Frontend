@@ -7,7 +7,6 @@ import { env_URL_SERVER, updatedResponsePmaData } from "../../helper";
 // import { moduleMethods } from "../../../utils/axios";
 import { v4 as uuidv4 } from "uuid";
 import { moduleMethods } from "@/utils/axios";
-console.log("moduleMethods", moduleMethods);
 const modulename = "ResearchProspect";
 
 const initialState = {
