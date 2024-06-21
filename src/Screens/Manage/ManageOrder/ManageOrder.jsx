@@ -2,7 +2,7 @@ import { Backdrop, CircularProgress, Modal, Pagination } from "@mui/material";
 import FileSaver from 'file-saver';
 import React, { useEffect, useRef, useState } from 'react';
 import Draggable from 'react-draggable';
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import CharacterFilter from "../../../Components/Filters/CharacterFilter";
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
@@ -53,7 +53,9 @@ const ManageOrder = () => {
     const menuRef = useRef();
     const navigate = useNavigate()
     const {user} = useAuth()
-    const { state , pathname} = useLocation()
+    const [state,setState] = useState({})
+    const {pathname} = useLocation()
+    const {clientid} = useParams()
     const canEdit = checkEditAccess();
     console.log(pathname)
     console.log(state)
@@ -166,14 +168,41 @@ const ManageOrder = () => {
         setExistingOrder(result);
         setPageLoading(false);
     }
-
+    const fetchHyperLinkData = async () => {
+       if(clientid != null) {
+        const data = {
+            user_id : user.id,
+            table_name : 'get_client_info_view',
+            item_id : clientid
+        }
+        const response = await APIService.getItembyId(data)
+        const res = await response.json()
+        console.log(res.data)
+        setState(prev => ({
+            clientid : clientid,
+            clientname : res.data.clientname,
+            hyperlinked : true
+        }))
+        setFormValues(prevFormValues => ({
+            ...prevFormValues,
+            order_info: {
+              ...prevFormValues.order_info,
+              clientname: res.data.clientname,
+              clientid: clientid,
+              
+            }
+          }))
+        // const temp = {...formValues}
+        // const ex = temp.order_info 
+        // ex.clientname = state?.clientname 
+        // ex.clientid = state?.clientid 
+        // temp.order_info = ex 
+        // setFormValues(temp)
+       }
+    }    
     useEffect(() => {
-        const temp = {...formValues}
-        const ex = temp.order_info 
-        ex.clientname = state?.clientname 
-        ex.clientid = state?.clientid 
-        temp.order_info = ex 
-        setFormValues(temp)
+        fetchHyperLinkData()
+        
         fetchData();
         fetchUsersData()
         fetchOrderStatusData()
@@ -636,10 +665,10 @@ const ManageOrder = () => {
             filterInput: ""
         },
         clientid: {
-            filterType: state ? "equalTo" : "",
-            filterValue: state?.clientid,
+            filterType: clientid ? "equalTo" : "",
+            filterValue: clientid,
             filterData: "Numeric",
-            filterInput: state?.clientid
+            filterInput: clientid
         }
 
     }

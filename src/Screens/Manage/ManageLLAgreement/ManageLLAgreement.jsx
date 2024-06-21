@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, duration , Backdrop , CircularProgress , MenuItem } from "@mui/material";
+import { Modal, Pagination, LinearProgress, duration , Backdrop , CircularProgress , MenuItem, Tooltip } from "@mui/material";
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
@@ -1326,7 +1326,7 @@ const ManageLLAgreement = () => {
                <CircularProgress color="inherit"/>
 
             </Backdrop>
-            {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess} showCancel={openCancelModal} state={state}/>}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New L&L Agreement Created Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="L&L Agreement Deleted Successfully" />}
@@ -1762,7 +1762,10 @@ const ManageLLAgreement = () => {
                                                     Client <label className="text-red-500">*</label>
                                                 </div>
                                                 {state?.hyperlinked ?
-                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div> : 
+                                                <Tooltip title={state.clientname}>
+                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div>
+                                                </Tooltip>
+                                                  : 
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
                                                     value={selectedOption}
@@ -1850,7 +1853,11 @@ const ManageLLAgreement = () => {
                                                     ))}
                                                 </select> */}
                                                 
-                                                {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>  : 
+                                                {state?.hyperlinked ?
+                                                <Tooltip title={state.clientpropertydescription} arrow>
+                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientpropertydescription}</div>
+                                                </Tooltip>
+                                                  : 
                                                
                                                <ClientPropertySelectNative
                                                data={Object.keys(clientPropertyData)}

@@ -315,7 +315,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
                                                 </div>
                                                 {state?.hyperlinked ?
                                                  <Tooltip title={state.clientname} arrow>
-                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div>
+                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientname}</div>
                                                  </Tooltip>
                                                   :
                                                 <AsyncSelect
@@ -492,7 +492,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
                                             </select> */}
                                             {state?.hyperlinked ?
                                                 <Tooltip title={state.clientpropertydescription} arrow>
-                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>
+                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientpropertydescription}</div>
                              
                                                 </Tooltip> :
                                             <ClientPropertySelectNative

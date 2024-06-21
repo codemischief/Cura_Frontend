@@ -2,7 +2,7 @@ import { Backdrop, CircularProgress, Modal, Pagination } from "@mui/material";
 import FileSaver from 'file-saver';
 import React, { useEffect, useRef, useState } from 'react';
 import Draggable from 'react-draggable';
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AddButton from '../../../Components/common/CustomButton';
@@ -44,7 +44,9 @@ const ManageClientProperty = () => {
     const { user } = useAuth()
     const menuRef = useRef();
     const canEdit = checkEditAccess();
-    const { state, pathname } = useLocation()
+    const {  pathname } = useLocation()
+    const [state,setState] = useState({})
+    const {clientid} = useParams()
     console.log(pathname)
     console.log(state)
     // we have the module here
@@ -138,10 +140,10 @@ const ManageClientProperty = () => {
             filterInput: ""
         },
         clientid: {
-            filterType: state ? "equalTo" : "",
-            filterValue: state?.clientid,
+            filterType: clientid ? "equalTo" : "",
+            filterValue: clientid,
             filterData: "Numeric",
-            filterInput: state?.clientid
+            filterInput: clientid
         }
     }
 
@@ -406,25 +408,49 @@ const ManageClientProperty = () => {
         setExistingClientProperty(result.client_info);
         setPageLoading(false);
     }
-    const setHyperLinkData = () => {
-        if(state !== null) {
-            console.log('here')
-            console.log(state)
+    const setHyperLinkData = async () => {
+        if(clientid !== null) {
+            const data = {
+                user_id : user.id,
+                table_name : 'get_client_info_view',
+                item_id : clientid
+            }
+
+            const response = await APIService.getItembyId(data)
+            const res = await response.json()
+            console.log(res.data)
+            setState(prev => ({
+                ...prev,
+                clientid : clientid,
+                clientname : res.data.clientname,
+                hyperlinked : true
+            }))
+
+            // console.log('here')
+            // console.log(state)
             setClientNameText(state.clientname)
-            const temp = {...formValues}
-            const ex = temp.client_property
-            ex.clientid = state.clientid
-            temp.client_property = ex 
-            setFormValues(temp);
+            setFormValues({
+                ...formValues,
+                client_property: {
+                    ...formValues.client_property,
+                    clientid: state.clientid
+                }
+            })
+            // setFormValues()
+            // const temp = {...formValues}
+            // const ex = temp.client_property
+            // ex.clientid = state.clientid
+            // temp.client_property = ex 
+            // setFormValues(temp);
             // console.log(formValues)
         }
     }
     useEffect(() => {
         
-        if(state != null) {
+        
 
             setHyperLinkData()
-        }
+        
         
         fetchData();
         fetchStateData(5);
@@ -457,7 +483,7 @@ const ManageClientProperty = () => {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-    }, [state,filterMapState]);
+    }, [filterMapState]);
 
     const handleOpenEdit = (oldItem) => {
         console.log('called');
@@ -1505,13 +1531,13 @@ const ManageClientProperty = () => {
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='px-1 text-[11px] text-blue-500'>
                                         {/* /manage/manageclientproperty/pmaagreement/:propertyid */}
-                                        <Link to={`/manage/manageclientproperty/pmaagreement/${item.id}`}>PMA Agreement </Link>
+                                        <Link to={`/manage/manageclientproperty/pmaagreement/${item.id}` }>PMA Agreement </Link>
                                             {/* <Link to={`pmaagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id , clientid : item.clientid , clientname : item.client , description : item.description, project : item.project}}>PMA Agreement</Link> */}
                                         </div>
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='pl-1 text-[11px] text-blue-500'>
-                                        <Link to={`/manage/manageclientproperty/llagreement/${item.id}`} state={{ clientPropertyId: item.id , clientid : item.clientid, clientname : item.client , clientpropertydescription : item.description , hyperlinked : true }}>L&L Agreement</Link>
+                                        <Link to={`/manage/manageclientproperty/llagreement/${item.id}` }>L&L Agreement</Link>
                                             {/* <Link to={`llagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>L&L Agreement</Link> */}
                                         </div>
                                     </div>

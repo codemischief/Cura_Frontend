@@ -301,11 +301,11 @@ const App = () => {
                 element={<ShowAllOdersInformation/>}
               />
               <Route
-                path="/manage/manageclientinfo/properties/:clientname"
+                path="/manage/manageclientinfo/properties/:clientid"
                 element={<ManageClientProperty key="hyperlinked"/>}
               />
               <Route
-                path="/manage/manageclientinfo/orders/:clientname"
+                path="/manage/manageclientinfo/orders/:clientid"
                 element={<ManageOrder key="hyperlinked" />}
               />
               <Route

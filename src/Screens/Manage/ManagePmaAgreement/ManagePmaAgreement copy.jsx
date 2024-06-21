@@ -1700,7 +1700,7 @@ const ManagePmaArgreement = () => {
                                                  <Tooltip title={state.clientname}>
 
 
-                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div>  
+                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientname}</div>  
                                                  </Tooltip> :
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
@@ -1876,7 +1876,7 @@ const ManagePmaArgreement = () => {
                                                 </select> */}
                                                 {state?.hyperlinked ?
                                                 <Tooltip title={state.clientpropertydescription} arrow>
-                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>
+                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.clientpropertydescription}</div>
                              
                                                 </Tooltip>
                                                   : 
