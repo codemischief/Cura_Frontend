@@ -28,9 +28,9 @@ import useAuth from "../../../context/JwtContext";
 import { useLocation } from "react-router-dom";
 
 const PropectusPage = () => {
-  const { user } = useAuth();
+  const { user, accessToken } = useAuth();
   const { pathname } = useLocation();
-
+  console.log("userAAAA", accessToken);
   const dispatch = useDispatch();
   const {
     PropectusData,
@@ -184,7 +184,7 @@ const PropectusPage = () => {
     }, {});
 
     let obj = {
-      user_id : user.id,
+      user_id: user.id,
       rows: [
         "personname",
         "suburb",
@@ -213,7 +213,7 @@ const PropectusPage = () => {
   const deleteProspects = async () => {
     try {
       setDeleteLoading(true);
-      const data = {user_id : user.id, id: isDeleteDialogue };
+      const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteProspect(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Prospect Deleted Successfully");
