@@ -45,7 +45,7 @@ axiosInstance.interceptors.request.use(
     // const accessToken = localStorage.getItem("accessToken");
     const accessToken = getToken();
 
-    if (accessToken) {
+    // if (accessToken) {
       headers["Authorization"] = `Bearer ${accessToken}`;
 
       if (config.appendLog) {
@@ -58,7 +58,7 @@ axiosInstance.interceptors.request.use(
           ...config.data,
         };
       }
-    }
+    // }
     return config;
   },
   (error) => {

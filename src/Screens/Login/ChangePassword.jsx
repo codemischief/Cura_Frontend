@@ -18,6 +18,7 @@ const passwordValidationSchema = Yup.object().shape({
 });
 
 const ChangePassword = () => {
+  console.log("login");
   const navigate = useNavigate();
   const [openEyeIconPass, setOpenEyeIcon] = useState(false);
   const [confirmPasswordEye, setConfirmPasswordEye] = useState(false);
@@ -51,25 +52,19 @@ const ChangePassword = () => {
     },
   });
 
-  useEffect(()=>{
-     if(backToLogin){
-      setTimeout(()=>{
-         setBackToLogin(false)
-         navigate("/login")
-      },1000)
-     }
-  },[backToLogin])
+  useEffect(() => {
+    if (backToLogin) {
+      setTimeout(() => {
+        setBackToLogin(false);
+        navigate("/login");
+      }, 1000);
+    }
+  }, [backToLogin]);
 
-  const {
-    handleChange,
-    values,
-    errors,
-    touched,
-    handleSubmit,
-    handleBlur,
-  } = formik;
+  const { handleChange, values, errors, touched, handleSubmit, handleBlur } =
+    formik;
   return (
-    <div className="h-full mt-20 bg-white rounded-lg flex flex-col items-center self-center justify-self-center mx-10"> 
+    <div className="h-full mt-20 bg-white rounded-lg flex flex-col items-center self-center justify-self-center mx-10">
       <div className="w-[400px] mt-[35px]">
         <div className="text-center text-[21px] mb-[50px]">
           Reset your password
@@ -240,4 +235,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ChangePassword;

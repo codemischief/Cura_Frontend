@@ -27,7 +27,6 @@ const App = () => {
 
   React.useEffect(() => {
     if (accessToken) setAccessToken(accessToken);
-    console.log("accessToken", accessToken);
   }, [accessToken]);
 
   const ROLES = {
@@ -771,129 +770,151 @@ const ResearchGovernmentDepartment = Loadable(
   React.lazy(() => import("./Screens/Research/Government Department/index.jsx"))
 );
 
-const ResearchOwner = Loadable(() =>
-  import("./Screens/Research/Owner/index.jsx")
+const ResearchOwner = Loadable(
+  React.lazy(() => import("./Screens/Research/Owner/index.jsx"))
 );
 const ResearchFriends = Loadable(() =>
-  import("./Screens/Research/Friends/index.jsx")
+  React.lazy(import("./Screens/Research/Friends/index.jsx"))
 );
 const ResearchBanks = Loadable(() =>
-  import("./Screens/Research/Banks/index.jsx")
+  React.lazy(import("./Screens/Research/Banks/index.jsx"))
 );
 const ResearchBusinessGroup = Loadable(() =>
-  import("./Screens/Research/COC/index.jsx")
+  React.lazy(import("./Screens/Research/COC/index.jsx"))
 );
 const ResearchProfessionals = Loadable(() =>
-  import("./Screens/Research/Professionals/index.jsx")
+  React.lazy(import("./Screens/Research/Professionals/index.jsx"))
 );
 const ResearchMandals = Loadable(() =>
-  import("./Screens/Research/Mandals/index.jsx")
+  React.lazy(import("./Screens/Research/Mandals/index.jsx"))
 );
 const ResearchArchitect = Loadable(() =>
-  import("./Screens/Research/Architect/index.jsx")
+  React.lazy(import("./Screens/Research/Architect/index.jsx"))
 );
 const ResearchEducational = Loadable(() =>
-  import("./Screens/Research/Educational/index.jsx")
+  React.lazy(import("./Screens/Research/Educational/index.jsx"))
 );
 const ResearchServiceApartments = Loadable(() =>
-  import("./Screens/Research/ServiceApartment/index.jsx")
+  React.lazy(import("./Screens/Research/ServiceApartment/index.jsx"))
 );
 
 const VendorStatementView = Loadable(() =>
-  import("./Screens/Reports/VendorReport/VendorStatement/index.jsx")
+  React.lazy(import("./Screens/Reports/VendorReport/VendorStatement/index.jsx"))
 );
 const TdsPaidToGovernement = Loadable(() =>
-  import("./Screens/Reports/VendorReport/TdsPaidToGovernment/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/VendorReport/TdsPaidToGovernment/index.jsx")
+  )
 );
 const TdsPaidByVendorView = Loadable(() =>
-  import("./Screens/Reports/VendorReport/TDSPaidByvendor/index.jsx")
+  React.lazy(import("./Screens/Reports/VendorReport/TDSPaidByvendor/index.jsx"))
 );
 const VendorPaymentPeriodView = Loadable(() =>
-  import("./Screens/Reports/VendorReport/VendorPaymentPeriod/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/VendorReport/VendorPaymentPeriod/index.jsx")
+  )
 );
 const StatisticsReport = Loadable(() =>
-  import("./Screens/Reports/Statistics/StatisticsReport/index.jsx")
+  React.lazy(import("./Screens/Reports/Statistics/StatisticsReport/index.jsx"))
 );
 const ServiceTaxPaidByVendor = Loadable(() =>
-  import("./Screens/Reports/Statistics/ServiceTaxPaidByVendor/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/Statistics/ServiceTaxPaidByVendor/index.jsx")
+  )
 );
 const TenantEmail = Loadable(() =>
-  import("./Screens/Reports/Contacts/TenantEmail/index.jsx")
+  React.lazy(import("./Screens/Reports/Contacts/TenantEmail/index.jsx"))
 );
 const ResetPassword = Loadable(() =>
-  import("./Screens/Login/ResetPassword.jsx")
+  React.lazy(import("./Screens/Login/ResetPassword.jsx"))
 );
 const RequestResetPassword = Loadable(() =>
-  import("./Screens/Login/RequestResetPassword.jsx")
+  React.lazy(import("./Screens/Login/RequestResetPassword.jsx"))
 );
 const OwnerMailId = Loadable(() =>
-  import("./Screens/Reports/Contacts/OwnerMailId/index.jsx")
+  React.lazy(import("./Screens/Reports/Contacts/OwnerMailId/index.jsx"))
 );
 const ClientContactDetails = Loadable(() =>
-  import("./Screens/Reports/Contacts/ClientContactsDetails/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/Contacts/ClientContactsDetails/index.jsx")
+  )
 );
 const OrderStaticsView = Loadable(() =>
-  import("./Screens/Reports/Statistics/OrderStatisticsReport/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/Statistics/OrderStatisticsReport/index.jsx")
+  )
 );
 const ActiveLLAgreementView = Loadable(() =>
-  import("./Screens/Reports/ActiveLlAgreement/index.jsx")
+  React.lazy(import("./Screens/Reports/ActiveLlAgreement/index.jsx"))
 );
 const OrderAnalysis = Loadable(() =>
-  import("./Screens/Reports/OrderAnalysis/index.jsx")
+  React.lazy(import("./Screens/Reports/OrderAnalysis/index.jsx"))
 );
 const LLlistReport = Loadable(() =>
-  import("./Screens/Reports/LLlist/index.jsx")
+  React.lazy(import("./Screens/Reports/LLlist/index.jsx"))
 );
 const ClientStatementByDate = Loadable(() =>
-  import("./Screens/Reports/ClientStatementByDate/index.jsx")
+  React.lazy(import("./Screens/Reports/ClientStatementByDate/index.jsx"))
 );
 const PaymentUnderSuspenseOrder = Loadable(() =>
-  import("./Screens/Reports/Group12/PaymentUnderSuspenseOrder/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/Group12/PaymentUnderSuspenseOrder/index.jsx")
+  )
 );
 const ReceiptsUnderSuspenseOrder = Loadable(() =>
-  import("./Screens/Reports/Group12/ReceiptsUnderSuspenseOrder/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/Group12/ReceiptsUnderSuspenseOrder/index.jsx")
+  )
 );
 const ClientsWithOrderButNoEmail = Loadable(() =>
-  import("./Screens/Reports/Group12/ClientsWithOrderButNoEmail/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/Group12/ClientsWithOrderButNoEmail/index.jsx")
+  )
 );
 const EmployeeWithoutVendor = Loadable(() =>
-  import("./Screens/Reports/Group12/EmployeeWithoutVendor/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/Group12/EmployeeWithoutVendor/index.jsx")
+  )
 );
 const BankTransactionsWithWrongUserName = Loadable(() =>
-  import(
-    "./Screens/Reports/Group12/BankTransactionsWithWrongUserName/index.jsx"
+  React.lazy(
+    import(
+      "./Screens/Reports/Group12/BankTransactionsWithWrongUserName/index.jsx"
+    )
   )
 );
 const EntityBlankReport = Loadable(() =>
-  import("./Screens/Reports/Group12/EntityBlankReport/index.jsx")
+  React.lazy(import("./Screens/Reports/Group12/EntityBlankReport/index.jsx"))
 );
 const OwnerWithNoProperty = Loadable(() =>
-  import("./Screens/Reports/Group12/OwnerWIthNoProperty/index.jsx")
+  React.lazy(import("./Screens/Reports/Group12/OwnerWIthNoProperty/index.jsx"))
 );
 const PropertyWithNoProjectView = Loadable(() =>
-  import("./Screens/Reports/Group12/PropertyWithNoProject/index.jsx")
+  React.lazy(
+    import("./Screens/Reports/Group12/PropertyWithNoProject/index.jsx")
+  )
 );
 const ServiceTaxReport = Loadable(() =>
-  import("./Screens/Reports/Group12/ServiceTaxReport/index.jsx")
+  React.lazy(import("./Screens/Reports/Group12/ServiceTaxReport/index.jsx"))
 );
 const VendorSummary = Loadable(() =>
-  import("./Screens/Reports/VendorReport/vendorSummary/index.jsx")
+  React.lazy(import("./Screens/Reports/VendorReport/vendorSummary/index.jsx"))
 );
 const ClientPhoneNo = Loadable(() =>
-  import("./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx")
+  React.lazy(import("./Screens/Reports/Group13/ClientWithPhoneNo/index.jsx"))
 );
 const OwnerPhoneNo = Loadable(() =>
-  import("./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx")
+  React.lazy(import("./Screens/Reports/Group13/OwnerWithPhoneNo/index.jsx"))
 );
 const BankBalanceReconcilation = Loadable(() =>
-  import("./Screens/Reports/BankBalanceReconcilation/index.jsx")
+  React.lazy(import("./Screens/Reports/BankBalanceReconcilation/index.jsx"))
 );
 const AgedOrders = Loadable(() =>
-  import("./Screens/Reports/AgedOrders/index.jsx")
+  React.lazy(import("./Screens/Reports/AgedOrders/index.jsx"))
 );
 const UpdateCompanyKey = Loadable(() =>
-  import("./Screens/Admin/UpdateCompanyKey/index.jsx")
+  React.lazy(import("./Screens/Admin/UpdateCompanyKey/index.jsx"))
 );
 const ChangePassword = Loadable(() =>
-  import("./Screens/Login/ChangePassword.jsx")
+  React.lazy(import("./Screens/Login/ChangePassword.jsx"))
 );
