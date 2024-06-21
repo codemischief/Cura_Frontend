@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link , useNavigate, useLocation} from "react-router-dom";
+import { Outlet, Link , useNavigate, useLocation, useParams} from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress , Backdrop, CircularProgress, MenuItem} from "@mui/material";
+import { Modal, Pagination, LinearProgress , Backdrop, CircularProgress, MenuItem, Tooltip} from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -44,6 +44,8 @@ import CustomSelectNative from '../../../Components/common/select/CustomSelectNa
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
 const ManageClientInvoice = () => {
     const {pathname} = useLocation()
+    const [state,setState] = useState({})
+    const {orderid} = useParams()
     const {user} = useAuth();
     const canEdit = checkEditAccess();
     console.log(pathname)
@@ -68,7 +70,7 @@ const ManageClientInvoice = () => {
     ]
     const menuRef = useRef();
     const navigate = useNavigate(-1)
-    const {state} = useLocation()
+    // const {state} = useLocation()
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingClientInvoice, setExistingClientInvoice] = useState([]);
@@ -307,18 +309,44 @@ const ManageClientInvoice = () => {
         setExistingClientInvoice(result);
         setPageLoading(false);
     }
-    const setHyperLinkData = () => {
-        if(state != null) {
-            const v = {...selectedOption}
-            v.label = state.clientname
-            v.value = state.clientid 
-            setSelectedOption(v)
-            const temp = {...formValues}
-            temp.client = state.clientid 
-            temp.order = state.orderid 
-            setFormValues(temp)
-
+    const setHyperLinkData = async () => {
+        if(orderid != null) {
+            const data = {
+                user_id : user.id,
+                table_name : "get_orders_view",
+                item_id : orderid 
+            }
+            const response = await APIService.getItembyId(data)
+            const res = await response.json()
+            setState(prevState => ({
+                ...prevState,
+                hyperlinked: true,
+                clientname: res.data.clientname,
+                clientid: res.data.clientid,
+                orderid: orderid,
+                orderdescription : res.data.briefdescription
+            }));
+            setFormValues(prevFormValues => ({
+                ...prevFormValues,
+                client: res.data.clientid,
+                order: orderid
+            }));
+            setSelectedOption(prev => ({
+                ...prev,
+                label : res.data.clientname,
+                value : res.data.clientid
+            }))
         }
+        // if(state != null) {
+        //     const v = {...selectedOption}
+        //     v.label = state.clientname
+        //     v.value = state.clientid 
+        //     setSelectedOption(v)
+        //     const temp = {...formValues}
+        //     temp.client = state.clientid 
+        //     temp.order = state.orderid 
+        //     setFormValues(temp)
+        // }
     }
     const [invoiceId, setInvoiceId] = useState(0);
     const handleEdit = (id) => {
@@ -727,10 +755,10 @@ const ManageClientInvoice = () => {
             filterInput: ""
         },
         orderid : {
-            filterType: state ? "equalTo" : "" ,
-            filterValue: state?.orderid,
+            filterType: orderid ? "equalTo" : "" ,
+            filterValue: orderid,
             filterData: "Numeric",
-            filterInput: state?.orderid
+            filterInput: orderid
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
@@ -884,7 +912,7 @@ const ManageClientInvoice = () => {
                                         return () => {
                                             document.removeEventListener("mousedown", handler);
                                         };
-                                    }, [state,filterMapState]);
+                                    }, [filterMapState]);
 
     const [orderText, setOrderText] = useState("Select Order")
     const handleOrderChange = (e) => {
@@ -901,7 +929,7 @@ const ManageClientInvoice = () => {
                <CircularProgress color="inherit"/>
 
             </Backdrop>
-            {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} showCancel={openCancelModal} state={state}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Invoice created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Invoice Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
@@ -1375,7 +1403,10 @@ const ManageClientInvoice = () => {
                                             Client Name<label className="text-red-500">*</label>
                                         </div>
                                         {state?.hyperlinked ?
-                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" >{state.clientname}</div> :
+                                                <Tooltip title={state.clientname} arrow>
+                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" >{state.clientname}</div>
+                                                </Tooltip>
+                                                  :
                                         <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
@@ -1469,7 +1500,13 @@ const ManageClientInvoice = () => {
                                         </div>
                                         
                                         
-                                         {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : <OrderCustomSelectNative
+                                         {state?.hyperlinked ? 
+                                         
+                                         <Tooltip title={state.orderdescription} arrow>
+                                              <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.orderdescription}</div>
+                                         </Tooltip>
+                                         
+                                           : <OrderCustomSelectNative
                                            data={Object.keys(orders)}
                                            value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
                                            placeholder="Select Orders"

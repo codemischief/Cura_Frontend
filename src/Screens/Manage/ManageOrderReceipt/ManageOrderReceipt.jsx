@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, duration, CircularProgress, Backdrop , MenuItem} from "@mui/material";
+import { Modal, Pagination, LinearProgress, duration, CircularProgress, Backdrop , MenuItem, Tooltip} from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -506,6 +506,11 @@ const ManageOrderReceipt = () => {
                     orderid: orderid,
                     orderdescription : res.data.briefdescription
                   }));
+                setFormValues(prevFormValues => ({
+                    ...prevFormValues,
+                    client: res.data.clientid,
+                    order: orderid
+                }));
         }
         // if(state != null) {
         //     const v = {...selectedOption}
@@ -515,8 +520,8 @@ const ManageOrderReceipt = () => {
         //     const temp = {...formValues}
         //     temp.client = state.clientid 
         //     temp.order = state.orderid 
-        //     getOrderData(state.orderid)
         //     setFormValues(temp)
+        //     getOrderData(state.orderid)
         // }
     }
     useEffect(() => {
@@ -1763,7 +1768,10 @@ const ManageOrderReceipt = () => {
                                             </div>
                                             {console.log(state)}
                                             {state?.hyperlinked ?
-                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" >{state.clientname}</div> :
+                                                <Tooltip title={state.clientname} arrow>
+                                                       <div className="w-56 h-5 border-[1px] px-3 border-[#C6C6C6] rounded-sm  text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" >{state.clientname}</div>
+                                                </Tooltip>
+                                                  :
                                             <AsyncSelect
                                                 onChange={handleClientNameChange}
                                                 value={selectedOption}
@@ -1903,7 +1911,9 @@ const ManageOrderReceipt = () => {
                                             ))}
                                         </select> */}
                                         
-                                           {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : <OrderCustomSelectNative
+                                           {state?.hyperlinked ?<Tooltip title={state.orderdescription}>
+                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.orderdescription}</div> 
+                                           </Tooltip>  : <OrderCustomSelectNative
                                            data={Object.keys(orders)}
                                            value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
                                            placeholder="Select Orders"

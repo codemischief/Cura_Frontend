@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal } from '@mui/material'
+import { Modal, Tooltip } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
@@ -305,7 +305,10 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                             <div className="text-[13px]">
                                                 Client <label className="text-red-500">*</label>
                                             </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.clientname} readOnly />
+                                            <Tooltip title={formValues.clientname} arrow>
+
+                                               <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 whitespace-nowrap overflow-hidden text-ellipsis bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.clientname} readOnly />
+                                            </Tooltip>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">
@@ -362,7 +365,10 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                             <div className="text-[13px]">
                                                 Order <label className="text-red-500">*</label>
                                             </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" value={formValues.ordername} readOnly />
+                                            
+                                            <Tooltip title={formValues.ordername} arrow>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" value={formValues.ordername} readOnly />
+                                           </Tooltip>
                                             {/* <select
                                                 className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="order"
