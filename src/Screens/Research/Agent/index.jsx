@@ -179,7 +179,6 @@ const ResearchAgent = () => {
         "registered" : "Registered",
         "id" : "ID",
       },
-      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
@@ -190,6 +189,44 @@ const ResearchAgent = () => {
     };
     dispatch(downloadAgentDataXls(obj));
   };
+
+  const downloadPdf = () => {
+
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "nameofagent",
+        "agencyname",
+        "emailid",
+        "phoneno",
+        "phoneno2",
+        "localitiesdealing",
+        "nameofpartners",
+        "registered",
+        "id",
+      ],
+      colmap : {
+        "nameofagent" : "Name Of Agent",
+       "agencyname" : "Agency Name",
+       "emailid" : "Email ID",
+       "phoneno" : "Phone Number",
+       "phoneno2" : "Whatsapp Number",
+       "localitiesdealing" : "Localities Dealing",
+       "nameofpartners" : "Name Of Partners",
+       "registered" : "Registered",
+       "id" : "ID",
+     },
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/research/agent",
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadAgentDataXls(obj, 'pdf'))
+  }
 
   const handleFormOpen = () => {
     setOpenForm(true);
@@ -286,12 +323,13 @@ const ResearchAgent = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 13rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />

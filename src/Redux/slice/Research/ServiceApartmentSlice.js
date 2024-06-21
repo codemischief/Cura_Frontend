@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "@/utils/axios";
 import { env_URL_SERVER, updatedServiceApartmentData } from "../../helper";
 import FileSaver from "file-saver";
+import { v4 as uuidv4 } from "uuid";
+import { moduleMethods } from "@/utils/axios";
+const modulename = "ResearchApartments";
 const initialState = {
   ServiceApartmentData: [],
   formSubmissionStatus: "",
@@ -95,7 +98,12 @@ export const addServiceApartment = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}addResearchApartments`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.add + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     return response;
@@ -111,7 +119,12 @@ export const editServiceApartments = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}editResearchApartments`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.edit + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     // return response;
@@ -125,14 +138,19 @@ export const deleteServiceApartment = (payload) => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}deleteResearchApartments`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.delete + modulename,
+      },
     );
     return response;
   } catch (error) {
     throw error;
   }
 };
-export const downloadServiceApartmentData = (payloadObj) => async (dispatch) => {
+export const downloadServiceApartmentData = (payloadObj ,type) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
@@ -141,7 +159,7 @@ export const downloadServiceApartmentData = (payloadObj) => async (dispatch) => 
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -152,7 +170,7 @@ export const downloadServiceApartmentData = (payloadObj) => async (dispatch) => 
     dispatch(setStatus("error"));
   }
 };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId , type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -167,7 +185,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "ServiceApartmentData.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "ServiceApartmentData.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "ServiceApartmentData.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }

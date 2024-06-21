@@ -7,7 +7,6 @@ import { env_URL_SERVER, updatedResponsePmaData } from "../../helper";
 // import { moduleMethods } from "../../../utils/axios";
 import { v4 as uuidv4 } from "uuid";
 import { moduleMethods } from "@/utils/axios";
-console.log("moduleMethods", moduleMethods);
 const modulename = "ResearchProspect";
 
 const initialState = {
@@ -142,13 +141,13 @@ export const editProspectData = (payload) => async (dispatch) => {
   }
 };
 
-export const downloadProspectusDataXls = (payloadObj) => async (dispatch) => {
+export const downloadProspectusDataXls = (payloadObj ,type) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(`${env_URL_SERVER}getResearchProspect`, payloadObj);
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -159,7 +158,7 @@ export const downloadProspectusDataXls = (payloadObj) => async (dispatch) => {
     dispatch(setStatus("error"));
   }
 };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -174,7 +173,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "ProspectData.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "ProspectData.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "ProspectData.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }
