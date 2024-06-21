@@ -509,21 +509,7 @@ const OwnerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                             />
                           </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Property Details
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="propertydetails"
-                              value={formik.values.propertydetails}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
+                         
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
                             <label className="inputFieldLabel">

@@ -15,8 +15,8 @@ const EditPhotos = ({formValues,setFormValues}) => {
     const handleAdd = () =>{
         setFormValues({...formValues,project_photos : [
             ...formValues.project_photos, {
-                "photo_link":null,
-                "description":null,
+                "photolink":null,
+                "description": "",
                 "date_taken":null
           }
           ]})

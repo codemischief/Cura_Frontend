@@ -256,7 +256,7 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
                     <ModalHeader
                       onClose={handleClose}
-                      title={editData.id ? "Edit Friends" : "New Friends"}
+                      title={editData.id ? "Edit Friends/Relatives" : "New Friends/Relatives"}
                     />
                     </div>
                     <div className="h-auto w-full mt-[5px] ">

@@ -106,7 +106,7 @@ export const addData = (payload) => async (dispatch) => {
   }
 };
 
-export const editData = (payload) => async (dispatch) => {
+export const editEducational = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(

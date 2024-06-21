@@ -2094,7 +2094,18 @@ const changeCompanyKey = async (data) => {
   });
   return handleResponse(response);
 };
-
+const getCollegeTypesAdmin = async (data) => {
+  const accessToken = await  localStorage.getItem("accessToken");
+  const response = await fetch(`${env_URL_SERVER}getCollegeTypesAdmin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+}
 export const APIService = {
   getCountries,
   getNewBuilderInfo,
@@ -2245,4 +2256,5 @@ export const APIService = {
   getGroupsAdmin,
   getCompanyKey,
   changeCompanyKey,
+  getCollegeTypesAdmin
 };

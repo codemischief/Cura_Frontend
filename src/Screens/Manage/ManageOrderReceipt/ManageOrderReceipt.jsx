@@ -1918,7 +1918,7 @@ const ManageOrderReceipt = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amountReceived" value={formValues.amountReceived} onChange={handleChange}/>
                                             <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.amountReceived}</div>
                                         </div>
                                         <div className="">

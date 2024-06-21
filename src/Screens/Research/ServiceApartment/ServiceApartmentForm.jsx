@@ -230,7 +230,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
 
                     <ModalHeader
                       onClose={handleClose}
-                      title={editData.id ? "Edit Service Apartment" : "New Service Apartment"}
+                      title={editData.id ? "Edit Service Apartment and Guest Houses" : "New Service Apartment and Guest Houses"}
                     />
                     </div>
                     <div className="h-auto w-full mt-[5px] ">

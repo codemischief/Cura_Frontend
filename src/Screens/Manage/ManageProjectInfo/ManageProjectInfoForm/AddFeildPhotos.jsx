@@ -13,7 +13,7 @@ const AddFeildPhotos = ({index,formValues,setFormValues}) => {
         {index + 1}
       </div>
       <div className="w-[31%] h-full p-1 text-[11px]" >
-        <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" placeholder=' Paste the hyperlink here' value={formValues.project_photos[index].photo_link} name="photo_link" onChange={handleChange}/>
+        <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" placeholder=' Paste the hyperlink here' value={formValues.project_photos[index].photolink} name="photolink" onChange={handleChange}/>
       </div>
       <div className="w-[31%] h-full p-1 text-[11px]" >
         <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text"  value={formValues.project_photos[index].description} name='description' onChange={handleChange}/>

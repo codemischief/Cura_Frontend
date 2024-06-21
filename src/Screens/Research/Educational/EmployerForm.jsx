@@ -11,7 +11,7 @@ import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import CustomSelectNative from "../../../Components/common/select/CustomSelectNative";
 import {
   addData,
-  editData
+  editEducational
 } from "../../../Redux/slice/Research/EducationalInstitute"
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
@@ -32,26 +32,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const [openConfirmation, setOpenConfimation] = useState(false);
   const { formSubmissionStatus } = useSelector((state) => state.employer);
   const [typeData,setTypeData] = useState([
-    {
-      id : 1,
-      name : 'College'
-    },
-    {
-      id : 2,
-      name : 'Pre-Primary School'
-    },
-    {
-      id : 3,
-      name : 'Day Care'
-    },
-    {
-      id : 4,
-      name : 'High School'
-    },
-    {
-      id : 5,
-      name : 'Primary School'
-    },
+    
   ])
   const fetchCountryData = async () => {
     setLoading(true);
@@ -87,8 +68,15 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     }, {});
     setCityData(resultConverted);
   };
-
+  const fetchCollegeTypes = async () => {
+    const data = {user_id : user.id}
+    const response = await APIService.getCollegeTypesAdmin(data)
+    const res = await response.json()
+    setTypeData(res.data)
+    console.log(res.data)
+  } 
   useEffect(() => {
+    fetchCollegeTypes()
     fetchCountryData();
     if(editData?.id) {
       // then its update wala case
@@ -125,7 +113,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
       email1 : editData?.email1 ? editData.email1 : null,
       email2 : editData.email2 ? editData.email2 : null,
       contactname1 : editData?.contactname1 ? editData.contactname1 :  null,
-      contactname2 : editData?.contactname2 ? editData.contactnam2 : null,
+      contactname2 : editData?.contactname2 ? editData.contactname2 : null,
       phoneno1 : editData?.phoneno1 ? editData.phoneno1 : null,
       phoneno2 : editData?.phoneno2 ? editData.phoneno2 : null,
       excludefrommailinglist : editData?.excludefrommailinglist ? editData.excludefrommailinglist : false
@@ -162,7 +150,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
       if (editData?.id) {
         data.id = editData.id
-        await dispatch(editData(data));
+        await dispatch(editEducational(data));
         openSucess();
       } else {
         await dispatch(addData(data));
@@ -265,7 +253,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               {typeData?.map((editData) => {
                                   return (
                                     <option
-                                      value={editData.name}
+                                      value={editData.id}
                                       key={editData.id}
                                     >
                                       {editData.name}
@@ -353,8 +341,8 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="zip"
-                              value={formik.values.zip}
+                              name="contactname1"
+                              value={formik.values.contactname1}
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />

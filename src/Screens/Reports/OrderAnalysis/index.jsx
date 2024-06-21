@@ -327,6 +327,9 @@ const OrderAnalysis = () => {
   };
   
   const handleClient = (value)=>{
+    // setQuery(value.value)
+    setQuery(value.value)
+    console.log(value)
     setIntialValue({...intialValue,client:value})
   }
   console.log(intialValue,"valuekjfn");
@@ -429,15 +432,21 @@ const OrderAnalysis = () => {
                 </select>
               </div>
               <div className="flex flex-col h-16 w-[200px]">
+                {console.log(query)}
                 <div className="text-[13px]">Client Name </div>
                 <AsyncSelect
                   onChange={handleClient}
-                  value={intialValue.client}
+                  // value={intialValue.client}
                   name={"client"}
+                  inputValue={query}
+                  // defaultInputValue={'zammer'}
                   loadOptions={loadOptions}
                   cacheOptions
                   defaultOptions
-                  onInputChange={(value) => setQuery(value)}
+                  onInputChange={(value) => {
+                    console.log(value)
+                    setQuery(value)
+                  } }
                   styles={{
                     control: (provided, state) => ({
                       ...provided,
