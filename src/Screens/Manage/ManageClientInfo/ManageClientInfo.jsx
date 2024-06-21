@@ -1588,14 +1588,14 @@ const ManageClientInfo = () => {
                                     <div className='w-[7%]  flex'>
                                         <div className='p-3 text-[11px] text-blue-500 font-semibold'>
                                             {/* /manage/manageclientinfo/properties/:clientname */}
-                                            <Link to={`/manage/manageclientinfo/properties/${item.clientname}`} state={{ clientid: item.id, clientname: item.clientname, hyperlinked: true }}><p>Properties</p></Link>
+                                            <Link to={`/manage/manageclientinfo/properties/${item.id}`}><p>Properties</p></Link>
                                             {/* <Link to={`properties/${item.clientname.split(` `).join(`-`).toLowerCase()}`} state={{ clientid: item.id , clientname : item.clientname}}><p>Properties</p></Link> */}
                                         </div>
                                     </div>
                                     <div className='w-[6%]  flex'>
                                         <div className='p-3 text-[11px] text-blue-500 font-semibold'>
                                             {/* /manage/manageclientinfo/orders/:clientname */}
-                                            <Link to={`/manage/manageclientinfo/orders/${item.clientname}`} state={{ clientid: item.id, clientname: item.clientname, hyperlinked: true }}>Orders</Link>
+                                            <Link to={`/manage/manageclientinfo/orders/${item.id}`}>Orders</Link>
                                         </div>
                                     </div>
                                 </div>

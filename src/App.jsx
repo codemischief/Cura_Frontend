@@ -775,7 +775,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/manage/manageclientinfo/properties/:clientname"
+                path="/manage/manageclientinfo/properties/:clientid"
                 element={
                   <Suspense fallback={<CircularProgress />}>
                     <ManageClientProperty key="hyperlinked" />
@@ -783,7 +783,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/manage/manageclientinfo/orders/:clientname"
+                path="/manage/manageclientinfo/orders/:clientid"
                 element={
                   <Suspense fallback={<CircularProgress />}>
                     <ManageOrder key="hyperlinked" />
@@ -791,7 +791,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/manage/manageclientproperty/pmaagreement/:clientname"
+                path="/manage/manageclientproperty/pmaagreement/:clientPropertyId"
                 element={
                   <Suspense fallback={<CircularProgress />}>
                     <ManagePmaArgreement key="hyperlinked" />
@@ -799,7 +799,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/manage/manageclientproperty/llagreement/:clientname"
+                path="/manage/manageclientproperty/llagreement/:clientPropertyId"
                 element={
                   <Suspense fallback={<CircularProgress />}>
                     <ManageLLAgreement key="hyperlinked" />

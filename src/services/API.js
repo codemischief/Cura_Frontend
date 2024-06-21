@@ -2112,6 +2112,30 @@ const getCollegeTypesAdmin = async (data) => {
   });
   return handleResponse(response);
 }
+const deleteFromClient = async (data) => {
+  const accessToken = await  localStorage.getItem("accessToken");
+  const response = await fetch(`${env_URL_SERVER}deleteFromClient`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+}
+const deleteFromOrders = async (data) => {
+  const accessToken = await  localStorage.getItem("accessToken");
+  const response = await fetch(`${env_URL_SERVER}deleteFromOrders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+}
 export const APIService = {
   getCountries,
   getNewBuilderInfo,
@@ -2262,5 +2286,7 @@ export const APIService = {
   getGroupsAdmin,
   getCompanyKey,
   changeCompanyKey,
-  getCollegeTypesAdmin
+  getCollegeTypesAdmin,
+  deleteFromClient,
+  deleteFromOrders
 };
