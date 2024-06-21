@@ -176,6 +176,38 @@ const ResearchGovernmentDepartment = () => {
     dispatch(downloadGovernmentDepartmentDataXls(obj));
   };
 
+  const downloadPdf = () => {
+
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "agencyname",
+        "departmenttype",
+        "city",
+        "suburb",
+        "details",
+        "id"
+      ],
+      colmap : {
+        "agencyname" : "Department Name",
+        "departmenttype" : "Department Type",
+        "city" : "City",
+        "suburb" : "Suburb",
+        "details" : "Details",
+        "id" : "ID"
+     },
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/research/governmentdepartment",
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadGovernmentDepartmentDataXls(obj, 'pdf'))
+  }
+
   const handleFormOpen = () => {
     setOpenForm(true);
     setEditData({});
@@ -271,12 +303,13 @@ const ResearchGovernmentDepartment = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 13rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />

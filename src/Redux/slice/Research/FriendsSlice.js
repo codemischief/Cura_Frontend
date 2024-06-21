@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "@/utils/axios";
 import { env_URL_SERVER, updatedFriendsData } from "../../helper";
 import FileSaver from "file-saver";
+import { v4 as uuidv4 } from "uuid";
+import { moduleMethods } from "@/utils/axios";
+const modulename = "ResearchFriends";
 const initialState = {
   FriendsData: [],
   formSubmissionStatus: "",
@@ -95,7 +98,12 @@ export const addFriends = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}addResearchFriends`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.add + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     return response;
@@ -111,7 +119,12 @@ export const editFriends = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}editResearchFriends`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.edit + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     // return response;
@@ -120,7 +133,7 @@ export const editFriends = (payload) => async (dispatch) => {
     // throw error;
   }
 };
-export const downloadFriendsDataXls = (payloadObj) => async (dispatch) => {
+export const downloadFriendsDataXls = (payloadObj ,type) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
@@ -129,7 +142,7 @@ export const downloadFriendsDataXls = (payloadObj) => async (dispatch) => {
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -138,7 +151,7 @@ export const downloadFriendsDataXls = (payloadObj) => async (dispatch) => {
     dispatch(setStatus("error"));
   }
 };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -153,7 +166,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "FriendsData.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "FriendsData.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "FriendsData.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }
@@ -164,7 +181,12 @@ export const deleteFriends = (payload) => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}deleteResearchFriends`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.delete + modulename,
+      },
     );
     return response;
   } catch (error) {

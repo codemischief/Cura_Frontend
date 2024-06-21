@@ -204,6 +204,38 @@ const PropectusPage = () => {
     dispatch(downloadProspectusDataXls(obj));
   };
 
+  const downloadPdf = () => {
+
+    const colMap = columns?.slice(1, -1)?.reduce((acc, column) => {
+      if (column.field) {
+        acc[column.field] = column.title;
+      }
+      return acc;
+    }, {});
+
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "personname",
+        "suburb",
+        "city",
+        "propertylocation",
+        "possibleservices",
+        "id",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/research/prospect",
+      colmap: { ...colMap, city: "City" },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadProspectusDataXls(obj, 'pdf'))
+  }
+
   const handleFormOpen = () => {
     setOpenForm(true);
     setEditData({});
@@ -303,12 +335,13 @@ const PropectusPage = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 13rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />

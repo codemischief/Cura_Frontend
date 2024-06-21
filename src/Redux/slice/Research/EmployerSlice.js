@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "@/utils/axios";
 import { env_URL_SERVER, updatedEmployerData } from "../../helper";
 import FileSaver from "file-saver";
+import { v4 as uuidv4 } from "uuid";
+import { moduleMethods } from "@/utils/axios";
+const modulename = "ResearchEmployer";
 const initialState = {
   EmployerData: [],
   formSubmissionStatus: "",
@@ -95,7 +98,12 @@ export const addEmployerData = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}addResearchEmployer`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.add + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     return response;
@@ -111,7 +119,12 @@ export const editEmployerData = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}editResearchEmployer`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.edit + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     // return response;
@@ -120,7 +133,7 @@ export const editEmployerData = (payload) => async (dispatch) => {
     // throw error;
   }
 };
-export const downloadEmployerDataXls = (payloadObj) => async (dispatch) => {
+export const downloadEmployerDataXls = (payloadObj ,type) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
@@ -129,7 +142,7 @@ export const downloadEmployerDataXls = (payloadObj) => async (dispatch) => {
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -140,7 +153,7 @@ export const downloadEmployerDataXls = (payloadObj) => async (dispatch) => {
     dispatch(setStatus("error"));
   }
 };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -155,7 +168,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "EmployerData.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "EmployerData.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "EmployerData.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }
@@ -164,7 +181,12 @@ export const deleteEmployer = (payload) => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}deleteResearchEmployer`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.delete + modulename,
+      },
     );
     return response;
   } catch (error) {

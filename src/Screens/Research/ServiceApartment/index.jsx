@@ -182,6 +182,42 @@ const ResearchServiceApartments = () => {
     dispatch(downloadServiceApartmentData(obj));
   };
 
+  const downloadPdf = () => {
+
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "name",
+        "apartments_guesthouse",
+        "city",
+        "suburb",
+        "emailid",
+        "phoneno",
+        "website",
+        "id"
+      ],
+      colmap : {
+        "name" : "Name",
+        "apartments_guesthouse" : "Apartments/Guest House",
+        "city" : "City",
+        "suburb" : "Locality",
+        "emailid" : "Email ID",
+        "phoneno" : "Phone Number",
+        "website" : "Website",
+        "id" : "ID" 
+      },
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/research/serviceapartment",
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(downloadServiceApartmentData(obj, 'pdf'))
+  }
+
   const handleFormOpen = () => {
     setOpenForm(true);
     setEditData({});
@@ -277,12 +313,13 @@ const ResearchServiceApartments = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 13rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />

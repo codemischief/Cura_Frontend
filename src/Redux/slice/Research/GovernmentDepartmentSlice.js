@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "@/utils/axios";
 import { env_URL_SERVER, updatedGovernmentDepartmentData } from "../../helper";
 import FileSaver from "file-saver";
+import { v4 as uuidv4 } from "uuid";
+import { moduleMethods } from "@/utils/axios";
+const modulename = "ResearchGovtAgencies";
 const initialState = {
   GovernmentDepartmentData: [],
   formSubmissionStatus: "",
@@ -95,7 +98,12 @@ export const addGovernmentDepartment = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}addResearchGovtAgencies`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.add + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     return response;
@@ -111,7 +119,12 @@ export const editGovernmentDepartment = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}editResearchGovtAgencies`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.edit + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     // return response;
@@ -120,7 +133,7 @@ export const editGovernmentDepartment = (payload) => async (dispatch) => {
     // throw error;
   }
 };
-export const downloadGovernmentDepartmentDataXls = (payloadObj) => async (dispatch) => {
+export const downloadGovernmentDepartmentDataXls = (payloadObj ,type) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
@@ -129,7 +142,7 @@ export const downloadGovernmentDepartmentDataXls = (payloadObj) => async (dispat
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -140,7 +153,7 @@ export const downloadGovernmentDepartmentDataXls = (payloadObj) => async (dispat
     dispatch(setStatus("error"));
   }
 };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
@@ -155,7 +168,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "GovernmentDepartmentData.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "GovernmentDepartmentData.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "GovernmentDepartmentData.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }
@@ -166,7 +183,12 @@ export const deleteGovernmentDepartment = (payload) => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}deleteResearchGovtAgencies`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.delete + modulename,
+      },
     );
     return response;
   } catch (error) {
