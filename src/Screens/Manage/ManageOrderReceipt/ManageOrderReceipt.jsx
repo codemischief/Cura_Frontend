@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -45,8 +45,10 @@ import checkEditAccess from '../../../Components/common/checkRoleBase';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageOrderReceipt = () => {
     const {user} = useAuth()
+    const {orderid} = useParams()
     const menuRef = useRef();
-    const { state , pathname} = useLocation();
+    const {pathname} = useLocation();
+    const [state,setState] = useState({})
     const canEdit = checkEditAccess();
     console.log(pathname)
     const navigate = useNavigate();
@@ -483,20 +485,42 @@ const ManageOrderReceipt = () => {
         amountReceived: null
     };
     const [formValues, setFormValues] = useState(initialValues);
-    const setHyperlinkData = () => {
-        if(state != null) {
-            const v = {...selectedOption}
-            v.label = state.clientname 
-            v.value = state.clientid 
-            setSelectedOption(v)
-            const temp = {...formValues}
-            temp.client = state.clientid 
-            temp.order = state.orderid 
-            getOrderData(state.orderid)
-            setFormValues(temp)
+    const setHyperlinkData = async () => {
+        if(orderid != null) {
+                const data = {
+                    user_id : user.id,
+                    table_name : "get_orders_view",
+                    item_id : orderid 
+                }
+                const response = await APIService.getItembyId(data)
+                const res = await response.json()
+                const v = {...selectedOption}
+                v.label = res.data.clientname 
+                v.value = res.data.clientid
+                setSelectedOption(v)
+                setState(prevState => ({
+                    ...prevState,
+                    hyperlinked: true,
+                    clientname: res.data.clientname,
+                    clientid: res.data.clientid,
+                    orderid: orderid,
+                    orderdescription : res.data.briefdescription
+                  }));
         }
+        // if(state != null) {
+        //     const v = {...selectedOption}
+        //     v.label = state.clientname 
+        //     v.value = state.clientid 
+        //     setSelectedOption(v)
+        //     const temp = {...formValues}
+        //     temp.client = state.clientid 
+        //     temp.order = state.orderid 
+        //     getOrderData(state.orderid)
+        //     setFormValues(temp)
+        // }
     }
     useEffect(() => {
+        
         setHyperlinkData()
         fetchData();
         fetchEntitiesData();
@@ -1012,10 +1036,10 @@ const ManageOrderReceipt = () => {
             filterInput: ""
         },
         orderid: {
-            filterType: state ? "equalTo" : "",
-            filterValue: state?.orderid,
+            filterType: orderid ? "equalTo" : "",
+            filterValue: orderid,
             filterData: "Numeric",
-            filterInput: state?.orderid
+            filterInput: orderid
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
@@ -1737,6 +1761,7 @@ const ManageOrderReceipt = () => {
                                             <div className="text-[13px] mb-0.5">
                                                 Client <label className="text-red-500">*</label>
                                             </div>
+                                            {console.log(state)}
                                             {state?.hyperlinked ?
                                                  <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" >{state.clientname}</div> :
                                             <AsyncSelect
