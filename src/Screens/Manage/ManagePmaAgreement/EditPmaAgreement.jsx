@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Cross from "../../../assets/cross.png"
-import { CircularProgress, Modal , MenuItem} from '@mui/material'
+import { CircularProgress, Modal , MenuItem, Tooltip} from '@mui/material'
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
@@ -8,7 +8,7 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative'
 import useAuth from '../../../context/JwtContext'
 import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative'
-const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => {
+const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state }) => {
     const {user} = useAuth();
     console.log(currPma)
     const handleChange = (e) => {
@@ -313,6 +313,11 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                 <div className="text-[13px]">
                                                     Client <label className="text-red-500">*</label>
                                                 </div>
+                                                {state?.hyperlinked ?
+                                                 <Tooltip title={state.clientname} arrow>
+                                                     <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div>
+                                                 </Tooltip>
+                                                  :
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
                                                     value={selectedOption}
@@ -376,7 +381,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                         }),
                                                         
                                                     }}
-                                                />
+                                                />}
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                             </div>
                                             <div className="">
@@ -485,6 +490,11 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                     </option>
                                                 ))}
                                             </select> */}
+                                            {state?.hyperlinked ?
+                                                <Tooltip title={state.clientpropertydescription} arrow>
+                                                    <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>
+                             
+                                                </Tooltip> :
                                             <ClientPropertySelectNative
                                                 data={Object.keys(clientPropertyData)}
                                                 value={clientPropertyData?.[formValues.clientProperty]?.propertyname ? clientPropertyData?.[formValues.clientProperty]?.propertyname:null}
@@ -514,7 +524,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
                                                     temp.clientProperty = e.target.value 
                                                     setFormValues(temp)
                                                 }}
-                                                />
+                                                />}
                                                 {/* <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div> */}
                                             </div>

@@ -309,11 +309,11 @@ const App = () => {
                 element={<ManageOrder key="hyperlinked" />}
               />
               <Route
-                path="/manage/manageclientproperty/pmaagreement/:clientname"
+                path="/manage/manageclientproperty/pmaagreement/:clientPropertyId"
                 element={<ManagePmaArgreement key="hyperlinked"/>}
               />
               <Route
-                path="/manage/manageclientproperty/llagreement/:clientname"
+                path="/manage/manageclientproperty/llagreement/:clientPropertyId"
                 element={<ManageLLAgreement key="hyperlinked"/>}
                
               />
