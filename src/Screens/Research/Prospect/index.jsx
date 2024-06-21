@@ -28,9 +28,8 @@ import useAuth from "../../../context/JwtContext";
 import { useLocation } from "react-router-dom";
 
 const PropectusPage = () => {
-  const { user, accessToken } = useAuth();
+  const { user } = useAuth();
   const { pathname } = useLocation();
-  console.log("userAAAA", accessToken);
   const dispatch = useDispatch();
   const {
     PropectusData,

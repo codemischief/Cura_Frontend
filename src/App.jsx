@@ -151,11 +151,11 @@ const App = () => {
           <Route path="/" element={<Outlet />}>
             <Route path="" element={<Login />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/unauthorized" element={<Suspense fallback={<CircularProgress />}><UnAuthorized /></Suspense>} />
-            <Route path="/reset/:token" element={<Suspense fallback={<CircularProgress />}><ResetPassword /></Suspense>} />
-            <Route path="/reset" element={<Suspense fallback={<CircularProgress />}><RequestResetPassword /></Suspense>} />
+            <Route path="/unauthorized" element={<UnAuthorized/>} />
+            <Route path="/reset/:token" element={<ResetPassword />} />
+            <Route path="/reset" element={<RequestResetPassword />} />
 
-            <Route element={<AuthGuard><Suspense fallback={<CircularProgress />}><PrivateLayout /></Suspense></AuthGuard>}>
+            <Route element={<AuthGuard><PrivateLayout /></AuthGuard>}>
               <Route path="/dashboard" element={<Suspense fallback={<CircularProgress />}><Dashboard /></Suspense>} />
               <Route path="/changepassword" element={<Suspense fallback={<CircularProgress />}><ChangePassword /></Suspense>} />
               <Route path="/admin/manageuser" element={<Suspense fallback={<CircularProgress />}><ManageUser /></Suspense>} />
