@@ -37,6 +37,7 @@ import EditButton from "../../../Components/common/buttons/EditButton";
 import useAuth from "../../../context/JwtContext";
 import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
+import checkDeleteAccess from "../../../Components/common/checkDeleteAccess";
 import ClientPropertySelectNative from "../../../Components/common/select/ClientPropertySelectNative";
 const ManageBankStatement = () => {
     // we have the module here
@@ -54,6 +55,7 @@ const ManageBankStatement = () => {
     ]
     const menuRef = useRef();
     const canEdit = checkEditAccess();
+    const canDelete = checkDeleteAccess()
     const [existingStatement, setExistingStatement] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
@@ -1498,6 +1500,7 @@ const ManageBankStatement = () => {
                         {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} showCancel={openCancelModal} />}
                     </div>
+                       {canDelete && 
                         <div className="h-[2rem] w-full bg-[#F0F6FF] flex">
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4 border-[1px] border-gray-300'>
@@ -1534,7 +1537,7 @@ const ManageBankStatement = () => {
                                     
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                 </div>
             </div>
             
@@ -1606,6 +1609,7 @@ const ManageBankStatement = () => {
                 </div>
             </div>
             <div className="px-6">
+               {canDelete && 
                <div className="bg-[#F5F5F5] w-full h-[120px] flex justify-around mt-6">
                    {/* <div className="h-[3rem] w-full bg-green-400 flex justify-between"> */}
                             {
@@ -1617,7 +1621,7 @@ const ManageBankStatement = () => {
                                 })
                             }
                         {/* </div> */}
-               </div>
+               </div>}
             </div>
              
 
