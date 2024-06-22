@@ -223,6 +223,7 @@ const ManageVendorPayment = () => {
             }
 
         }
+        console.log(tempArray)
         setModesData(tempArray)
         // setModesData(res.data && res.data.map((item) => {
         //     // console.log()

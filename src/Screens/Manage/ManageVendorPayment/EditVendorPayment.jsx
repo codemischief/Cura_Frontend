@@ -42,7 +42,18 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         const response = await APIService.getModesAdmin(data)
         const res = await response.json()
 
-        setModesData(res.data)
+        const tempArray = []
+        const len = res.data.length
+        for (var i = 0; i < len; i++) {
+            if (res.data[i][1][0] == 'Z') {
+
+            } else {
+                tempArray.push(res.data[i])
+            }
+
+        }
+        console.log(tempArray)
+        setModesData(tempArray)
         console.log(modesData)
         console.log(res)
     }
@@ -369,24 +380,27 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                                     onChange={handleChange}
                                                 >
                                                     {modesData.map((item) => {
-                                                        if (item[0] == formValues.mode && item[1][0] == 'Z') {
-                                                            return <option key={item[0]} value={item[0]} selected hidden>
-                                                                {item[1]}
-                                                            </option>
-                                                        } else if (item[0] == formValues.mode) {
-                                                            <option key={item[0]} value={item[0]} selected >
-                                                                {item[1]}
-                                                            </option>
-                                                        } else if (item[1][0] == 'Z') {
-                                                            return <option key={item[0]} value={item[0]} hidden>
-                                                                {item[1]}
-                                                            </option>
-                                                        }
-                                                        else {
-                                                            return <option key={item[0]} value={item[0]} >
-                                                                {item[1]}
-                                                            </option>
-                                                        }
+                                                        return <option key={item[0]} value={item[0]}>
+                                                                  {item[1]}
+                                                        </option>
+                                                        // if (item[0] == formValues.mode && item[1][0] == 'Z') {
+                                                        //     return <option key={item[0]} value={item[0]} selected hidden>
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // } else if (item[0] == formValues.mode) {
+                                                        //     <option key={item[0]} value={item[0]} selected >
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // } else if (item[1][0] == 'Z') {
+                                                        //     return <option key={item[0]} value={item[0]} hidden>
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // }
+                                                        // else {
+                                                        //     return <option key={item[0]} value={item[0]} >
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // }
                                                     })}
                                                 </select>
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.mode}</div>
