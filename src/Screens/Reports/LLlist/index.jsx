@@ -137,7 +137,7 @@ const LLlistReport = () => {
     if (intialValue.clientId && intialValue.status && intialValue.type && intialValue.clientProperty) {
       let obj = {
        user_id:user.id,
-        rows: ["clienttypename", "startdate", "actualenddate", "startdatemonthyear",
+        rows: ["clientname", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
           "registrationtype", "noticeperiodindays", "type", "id"],
@@ -182,7 +182,7 @@ const LLlistReport = () => {
       let obj = {
         user_id: user.id,
         rows: [
-          "clienttypename", "startdate", "actualenddate", "startdatemonthyear",
+          "clientname", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
           "registrationtype", "noticeperiodindays", "type", "id"
@@ -237,7 +237,7 @@ const LLlistReport = () => {
     let obj = {
       user_id: user.id,
       rows: [
-        "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clienttypename", 
+        "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clientname", 
          "propertydescription","property_status","status","registrationtype","paymentcycle",
          "noticeperiodindays",
       ],
@@ -254,7 +254,7 @@ const LLlistReport = () => {
         depositamount: "Deposit",
         entityname: "Entity",
         clientid: "Client ID",
-        clienttypename: "Client Name",
+        clientname: "Client Name",
         propertydescription: "Property Description",
         property_status: "Property Status",
         status: "Status",

@@ -36,7 +36,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Type",
       field: "type",
       sorting: false,
-      filterDisabled: true,
+      filterDisabled: false,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
