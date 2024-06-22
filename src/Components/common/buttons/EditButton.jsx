@@ -16,9 +16,11 @@ const EditButton = ({ handleEdit, sx, rowData }) => {
     }
 
     // Check for dynamic route access
+    // let url = pathname;
+    let newUrl = pathname?.replace(/\/\d+$/, "") + '/';
     return Object.keys(user.allowedModules).some(
       (allowedPath) =>
-        path.startsWith(allowedPath) && user.allowedModules[allowedPath].edit
+        path.startsWith(allowedPath) && user?.allowedModules[newUrl]?.edit
     );
   };
   if(!hasAccess(pathname)) {

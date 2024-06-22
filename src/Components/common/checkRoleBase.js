@@ -12,9 +12,10 @@ const checkEditAccess = () => {
     }
 
     // Check for dynamic route access
+    let newUrl = pathname?.replace(/\/\d+$/, "") + '/';
     return Object.keys(user.allowedModules).some(
       (allowedPath) =>
-        path.startsWith(allowedPath) && user.allowedModules[allowedPath].edit
+        path.startsWith(allowedPath) && user?.allowedModules[newUrl]?.edit
     );
   };
 

@@ -17,9 +17,12 @@ const AddButton = ({ onClick = () => {}, title = "Add new", sx, icon }) => {
     }
 
     // Check for dynamic route access
+    
+    let newUrl = pathname?.replace(/\/\d+$/, "") + '/';
+    
     return Object.keys(user.allowedModules).some(
       (allowedPath) =>
-        path.startsWith(allowedPath) && user.allowedModules[allowedPath].add
+        path.startsWith(allowedPath) && user?.allowedModules[newUrl]?.add
     );
   };
   if(!hasAccess(pathname)) {

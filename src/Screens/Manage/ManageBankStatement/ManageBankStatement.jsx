@@ -781,7 +781,7 @@ const ManageBankStatement = () => {
             filterData: "Numeric",
             filterInput: ""
         },
-        creditdebit: {
+        crdr: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -1305,12 +1305,12 @@ const ManageBankStatement = () => {
                                     onKeyDown={(event) => handleEnterToFilter(event,typeFilterInput,
                                         setTypeFilterInput,
                                         'contains',
-                                        'creditdebit')}
+                                        'crdr')}
                                     />
-                                    {filterMapState.creditdebit.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.crdr.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                     {/* <button className='px-1 py-2 w-[30%]' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='creditdebit' menuRef={menuRef} filterType={filterMapState.creditdebit.filterType} />}
+                                {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='crdr' menuRef={menuRef} filterType={filterMapState.crdr.filterType} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>

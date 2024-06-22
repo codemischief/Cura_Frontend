@@ -264,7 +264,7 @@ function MenuDesktopItem({
                               <div className="px-2">
                                 {isResourceAccessible(accessModules, item?.path)
                                   ? item?.title
-                                  : `${item.title} (disabled)`}
+                                  : ``}
                               </div>
                             </>
                           </ListItemStyle>
