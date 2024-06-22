@@ -22,9 +22,11 @@ const AuthGuard = ({ children }) => {
     }
 
     // Check for dynamic route access
+    let newUrl = path?.replace(/\/\d+$/, "") + '/';
     return Object.keys(user.allowedModules).some(
-      (allowedPath) =>
-        path.startsWith(allowedPath) && user.allowedModules[allowedPath].get
+      (allowedPath) => {
+        return path.startsWith(allowedPath) && user?.allowedModules[newUrl]?.get
+      }
     );
   };
 

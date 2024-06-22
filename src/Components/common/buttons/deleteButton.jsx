@@ -18,9 +18,10 @@ const DeleteButton = ({ handleDelete, sx, rowData }) => {
     }
 
     // Check for dynamic route access
+    let newUrl = pathname?.replace(/\/\d+$/, "") + '/';
     return Object.keys(user.allowedModules).some(
       (allowedPath) =>
-        path.startsWith(allowedPath) && user.allowedModules[allowedPath].delete
+        path.startsWith(allowedPath) && user?.allowedModules[newUrl]?.delete
     );
   };
   if(!hasAccess(pathname)) {
