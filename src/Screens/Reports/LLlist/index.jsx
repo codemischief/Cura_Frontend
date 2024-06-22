@@ -140,7 +140,7 @@ const LLlistReport = () => {
         rows: ["clientname", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
-          "registrationtype", "noticeperiodindays", "type", "id"],
+          "registrationtype", "noticeperiodindays", "type", "id","clienttypename"],
         statusName: intialValue.status,
         clientName: intialValue.clientId.label,
         typeName: intialValue.type,
@@ -185,7 +185,7 @@ const LLlistReport = () => {
           "clientname", "startdate", "actualenddate", "startdatemonthyear",
           "enddatemonthyear", "paymentcycle", "rentamount", "depositamount", "entityname",
           "clientid", "propertydescription", "property_status", "status",
-          "registrationtype", "noticeperiodindays", "type", "id"
+          "registrationtype", "noticeperiodindays", "type", "id","clienttypename"
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -239,7 +239,7 @@ const LLlistReport = () => {
       rows: [
         "type", "id", "startdate", "actualenddate", "startdatemonthyear","enddatemonthyear","rentamount","depositamount","entityname","clientid","clientname", 
          "propertydescription","property_status","status","registrationtype","paymentcycle",
-         "noticeperiodindays",
+         "noticeperiodindays","clienttypename"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
@@ -260,8 +260,8 @@ const LLlistReport = () => {
         status: "Status",
         registrationtype: "Registration Type",
         paymentcycle: "Payment Cycle",
-        noticeperiodindays: "Notice Period In Days"
-
+        noticeperiodindays: "Notice Period In Days",
+        clienttypename : "Client Type"
       },
       statusName: intialValue.status,
       clientName: intialValue.clientId.label,

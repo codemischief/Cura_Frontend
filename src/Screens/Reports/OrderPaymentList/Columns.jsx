@@ -32,11 +32,11 @@ export default function connectionDataColumn(onQuery) {
       },
     },
     {
-      filterComponent: TextFilterField,
+      // filterComponent: TextFilterField,
       title: "Type",
       field: "type",
       sorting: false,
-      filterDisabled: false,
+      filterDisabled: true,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
