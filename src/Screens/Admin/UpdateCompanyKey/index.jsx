@@ -100,13 +100,13 @@ const UpdateCompanyKey = () => {
 
             <div className='flex-col'>
               <h1 className='text-[18px]'>Enter New Company Key</h1>
-              <p className='text-[14px]'>Admin &gt; Update Company Key</p>
+              <p className='text-[14px]'>Admin &gt; New Company Key</p>
             </div>
           </div>
 
         </div>
 
-        <h1 className="mb-5 text-[22px] font-semibold">Enter Updated Company Key</h1>
+        <h1 className="mb-5 text-[22px] font-semibold">Enter New Company Key</h1>
         <div className="w-full h-40 bg-[#F5F5F5] rounded-lg p-10 flex items-center ">
           <div className="flex space-x-4 items-center">
             <div className="flex flex-col justify-center text-[#505050]">

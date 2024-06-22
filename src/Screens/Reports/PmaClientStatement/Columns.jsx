@@ -49,7 +49,7 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Details",
-      field: "orderdetails",
+      field: "details",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "19%" },

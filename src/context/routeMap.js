@@ -120,4 +120,7 @@ const allowSpecialRoutes = (routes) => {
         routes[PATH_DASHBOARD.admin.deleteId];
     });
   }
+  if (routes[PATH_DASHBOARD.admin.deleteId]) {
+    routes["/admin/deleteById/"] = routes[PATH_DASHBOARD.admin.deleteId];
+  }
 };

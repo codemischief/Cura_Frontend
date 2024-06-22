@@ -103,7 +103,7 @@ export default function connectionDataColumn() {
     },
     {
       title: "Client Name",
-      field: "clienttypename",
+      field: "clientname",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "8rem",maxWidth: "9rem" },
