@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "@/utils/axios";
 import { env_URL_SERVER, updatedBanksAndBranchesData } from "../../helper";
 import FileSaver from "file-saver";
+import { v4 as uuidv4 } from "uuid";
+import { moduleMethods } from "@/utils/axios";
+const modulename = "ResearchBanksAndBranches";
 const initialState = {
   BankAndBranchesData: [],
   formSubmissionStatus: "",
@@ -95,7 +98,12 @@ export const addBanksAndBranches = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}addResearchBanksAndBranches`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.add + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     return response;
@@ -111,7 +119,12 @@ export const editBanksAndBranches = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}editResearchBanksAndBranches`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.edit + modulename,
+      },
     );
     dispatch(setFormSubmissionStatus("success"));
     // return response;
@@ -120,7 +133,7 @@ export const editBanksAndBranches = (payload) => async (dispatch) => {
     // throw error;
   }
 };
-export const downloadBanksAndBranchesDataXls = (payloadObj) => async (dispatch) => {
+export const downloadBanksAndBranchesDataXls = (payloadObj ,type) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
@@ -129,7 +142,7 @@ export const downloadBanksAndBranchesDataXls = (payloadObj) => async (dispatch) 
     );
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -137,8 +150,8 @@ export const downloadBanksAndBranchesDataXls = (payloadObj) => async (dispatch) 
     dispatch(setStatus("error"));
   }
 };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
-  try {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
+  try { 
     const response = await axios.post(
       `${env_URL_SERVER}download/${filename}`,
       {
@@ -152,7 +165,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "BanksAndBranchesData.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "BanksAndBranchesData.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "BanksAndBranchesData.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }
@@ -161,7 +178,12 @@ export const deleteBanksAndBranches = (payload) => async (dispatch) => {
   try {
     const response = await axios.post(
       `${env_URL_SERVER}deleteResearchBanksAndBranches`,
-      payload
+      {
+        ...payload,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.delete + modulename,
+      },
     );
     return response;
   } catch (error) {
