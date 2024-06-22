@@ -6,6 +6,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { APIService } from "../../services/API";
 import useAuth from "../../context/JwtContext";
 import { Modal } from "@mui/material";
+import { setAccessToken } from "../../utils/axios";
 
 const passwordValidationSchema = Yup.object().shape({
   oldPassword: Yup.string().required("Password is required"),
@@ -41,7 +42,7 @@ const ChangePassword = () => {
           password: values.oldPassword,
           newpass: values.newPassword,
         });
-
+            
         setBackToLogin(true);
         setApiError(null);
       } catch (error) {
@@ -52,11 +53,17 @@ const ChangePassword = () => {
     },
   });
 
+  const handleNavigate = async()=>{
+    const res = await APIService.logOut()
+    setBackToLogin(false);
+    navigate("/login");
+    setAccessToken(null)
+  }
+
   useEffect(() => {
     if (backToLogin) {
       setTimeout(() => {
-        setBackToLogin(false);
-        navigate("/login");
+        handleNavigate()
       }, 1000);
     }
   }, [backToLogin]);

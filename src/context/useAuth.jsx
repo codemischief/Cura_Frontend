@@ -6,9 +6,6 @@ import React from "react";
 import axios from "axios";
 import { authService } from "../services/authServices";
 
-import { useContext } from "react";
-import { AuthContext } from "./JwtContext";
-
 const UserContext = createContext({});
 
 export const UserProvider = ({ children }) => {
@@ -54,8 +51,8 @@ export const UserProvider = ({ children }) => {
         if (res) {
           localStorage.setItem("Role", res.data.role_id);
           localStorage.setItem("User_id", res.data.user_id);
-          localStorage.setItem("token", res.data.token);
           localStorage.setItem("token", res?.data.token);
+  
           const userObj = {
             userName: res?.data.userName,
             email: res?.data.email,

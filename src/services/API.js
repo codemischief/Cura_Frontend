@@ -1,4 +1,4 @@
-import { getToken } from "../utils/axios";
+import { getToken, setAccessToken } from "../utils/axios";
 import { redirectToLogin } from "./setNavigation";
 import { toast } from "react-toastify";
 let toastShown = false;
@@ -1847,6 +1847,23 @@ const download = async (data, filename) => {
   return handleResponse(response);
 };
 
+const logOut = async () => {
+  const refreshToken = localStorage.getItem("refreshToken")
+  const userId = JSON.parse(localStorage.getItem("user"))?.id;
+
+  const response = await fetch(`${env_URL_SERVER}logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "RefreshToken": refreshToken,
+    },
+    body: JSON.stringify({ "user_id": userId })
+
+  });
+  return response
+
+}
+
 const responseInterceptor = async (response) => {
   console.log(response)
   if (!response.ok) {
@@ -1875,9 +1892,12 @@ const responseInterceptor = async (response) => {
         toastShown = true;
         setTimeout(() => (toastShown = false), 1000); // Reset after 1 second
         toast.error("Unauthorized");
+        setAccessToken(null)
         localStorage.clear();
         redirectToLogin(); // Redirect to login page
         return;
+
+
       }
     } else if (statusCode === 403) {
       if (!toastShown) {
@@ -1920,57 +1940,57 @@ const resetPassword = async (data) => {
 };
 
 const changePassword = async (data, token) => {
-  try {
-    const response = await fetch(`${env_URL_SERVER}changePassword`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
 
-    const responseData = await response.json(); // Parse the response body as JSON
+  const response = await fetch(`${env_URL_SERVER}changePassword`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  })
+  const responseData = await response.json();
 
-    if (response.status === 200) {
-      return responseData; // Return the parsed data
-    } else if (response.status === 401) {
-      throw new Error(responseData.detail);
-    } else if (response.status === 498) {
-      localStorage.clear();
-      redirectToLogin(); // Redirect to login page
-      return;
-    } else {
-      throw new Error(responseData.detail || "An error occurred");
-    }
-  } catch (er) {
-    throw er;
+  if (response.status === 200) {
+    return responseData; // Return the parsed data
+  } else if (response.status === 401) {
+    throw new Error(responseData.detail);
+  } else if (response.status === 498) {
+    setAccessToken(null)
+    localStorage.clear();
+    redirectToLogin();
+    return;
+
+
+  } else {
+    throw new Error(responseData.detail || "An error occurred");
   }
+
 };
 
 const resetOldPassword = async (data, token) => {
-  try {
-    const response = await fetch(
-      `${env_URL_SERVER}reset`,
-      METHOD_POST_WITH_TOKEN(data, token)
-    );
 
-    const responseData = await response.json(); // Parse the response body as JSON
+  const response = await fetch(
+    `${env_URL_SERVER}reset`,
+    METHOD_POST_WITH_TOKEN(data, token)
+  );
 
-    if (response.status === 200) {
-      return responseData; // Return the parsed data
-    } else if (response.status === 401) {
-      throw new Error(responseData.detail);
-    } else if (response.status === 498) {
-      localStorage.clear();
-      redirectToLogin(); // Redirect to login page
-      return;
-    } else {
-      throw new Error(responseData.detail || "An error occurred");
-    }
-  } catch (er) {
-    throw er;
+  const responseData = await response.json(); // Parse the response body as JSON
+
+  if (response.status === 200) {
+    return responseData; // Return the parsed data
+  } else if (response.status === 401) {
+    throw new Error(responseData.detail);
+  } else if (response.status === 498) {
+    setAccessToken(null)
+    localStorage.clear();
+    redirectToLogin();
+    return;
+
+  } else {
+    throw new Error(responseData.detail || "An error occurred");
   }
+
 };
 
 const getProfessionalTypesAdmin = async (data) => {
@@ -2010,11 +2030,12 @@ export const handleResponse = async (response) => {
     showToast(errorMessages[statusCode]);
 
     if (statusCode === 498) {
+      setAccessToken(null)
       localStorage.clear();
-      redirectToLogin(); // Redirect to login page
+      redirectToLogin();
       return;
-    }
 
+    }
     throw new Error(errorMessages[statusCode]);
   } else {
     const message = await response.json()
@@ -2101,7 +2122,7 @@ const changeCompanyKey = async (data) => {
   return handleResponse(response);
 };
 const getCollegeTypesAdmin = async (data) => {
-  const accessToken = await  localStorage.getItem("accessToken");
+  const accessToken = getToken();
   const response = await fetch(`${env_URL_SERVER}getCollegeTypesAdmin`, {
     method: "POST",
     headers: {
@@ -2113,7 +2134,8 @@ const getCollegeTypesAdmin = async (data) => {
   return handleResponse(response);
 }
 const deleteFromClient = async (data) => {
-  const accessToken = await  localStorage.getItem("accessToken");
+  const accessToken = getToken();
+
   const response = await fetch(`${env_URL_SERVER}deleteFromClient`, {
     method: "POST",
     headers: {
@@ -2125,7 +2147,8 @@ const deleteFromClient = async (data) => {
   return handleResponse(response);
 }
 const deleteFromOrders = async (data) => {
-  const accessToken = await  localStorage.getItem("accessToken");
+  const accessToken = getToken();
+
   const response = await fetch(`${env_URL_SERVER}deleteFromOrders`, {
     method: "POST",
     headers: {
@@ -2288,5 +2311,6 @@ export const APIService = {
   changeCompanyKey,
   getCollegeTypesAdmin,
   deleteFromClient,
-  deleteFromOrders
+  deleteFromOrders,
+  logOut
 };

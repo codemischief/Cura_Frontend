@@ -14,6 +14,7 @@ import { env_URL_SERVER } from "../Redux/helper";
 import { replaceKeys } from "./routeMap";
 import SessionTimeoutModal from "../Components/modals/SessionAlert";
 import { setAccessToken } from "../utils/axios";
+import { APIService } from "../services/API";
 
 // Initial Types and States
 const Types = {
@@ -87,10 +88,9 @@ function AuthProvider({ children }) {
       try {
         const accessToken = localStorage.getItem("accessToken");
         const user = localStorage.getItem("user");
-        console.log("kjnsdfsdfsdfsdfsdf",accessToken);
         if (accessToken && isValidToken(accessToken)) {
           setSession(JSON.parse(user), accessToken);
-          console.log("kjn",accessToken);
+          
           dispatch({
             type: Types.Initial,
             payload: {
@@ -189,13 +189,13 @@ function AuthProvider({ children }) {
           company_key,
         }
       );
-
-      const { token, user_id, role_id, access_rights, idleTimeOut } =
+      const { token, user_id, role_id, access_rights, idleTimeOut,refresh_token } =
         response.data;
       if (token) {
         let userObj = {
           id: user_id,
           role_id: role_id,
+          
           allowedModules: {
             ...replaceKeys(access_rights),
             "/dashboard": {
@@ -211,7 +211,7 @@ function AuthProvider({ children }) {
           localStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
           setIdleTimeout(idleTimeoutInMs); // Set idleTimeout state
         }
-        setSession(userObj, token);
+        setSession(userObj, token,refresh_token);
         dispatch({
           type: Types.Login,
           payload: {
@@ -228,6 +228,7 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    const response = await APIService.logOut()
     setIsModalOpen(false);
     clearInterval(countdownRef.current);
     setSession(null);
@@ -236,7 +237,7 @@ function AuthProvider({ children }) {
     toast.success("Logged out successfully");
     navigate("/login");
     setAccessToken(null);
-
+    
   };
 
   const handleContinueSession = () => {
