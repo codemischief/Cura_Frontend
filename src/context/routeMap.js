@@ -92,4 +92,7 @@ const allowSpecialRoutes = (routes) => {
     routes["/manage/manageclientinvoice/"] = routes[PATH_DASHBOARD.manage.clientInvoice];
     routes["/manage/manageclientinfo/orders/showall/"] = routes[PATH_DASHBOARD.manage.manageOrder];
   }
+  if (routes[PATH_DASHBOARD.admin.deleteId]) {
+    routes["/admin/deleteById/"] = routes[PATH_DASHBOARD.admin.deleteId];
+  }
 };

@@ -79,7 +79,7 @@ const LobReceiptPayments = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: user.id,
-      rows: ["clientname", "date", "amount", "type", "orderdetails"],
+      rows: ["clientname", "date", "amount", "type", "details"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -117,7 +117,7 @@ const LobReceiptPayments = () => {
 
       let obj = {
         user_id: user.id,
-        rows: ["clientname", "date", "amount", "type", "orderdetails"],
+        rows: ["clientname", "date", "amount", "type", "details"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
@@ -147,7 +147,7 @@ const LobReceiptPayments = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: user.id,
-      rows: ["clientname", "date", "type", "orderdetails", "amount"],
+      rows: ["clientname", "date", "type", "details", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
@@ -155,7 +155,7 @@ const LobReceiptPayments = () => {
         "clientname": "Client Name",
         "date": "Date",
         "type": "Type",
-        "orderdetails": "Details",
+        "details": "Details",
         "amount": "Amount"
       },
       search_key: search,
@@ -169,7 +169,7 @@ const LobReceiptPayments = () => {
   const downloadPdf = () => {
     let obj = {
       user_id: user.id,
-      rows: ["clientname", "date", "type", "orderdetails", "amount"],
+      rows: ["clientname", "date", "type", "details", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",
       routename: "/reports/pmaClientStatement",
@@ -177,7 +177,7 @@ const LobReceiptPayments = () => {
        "clientname": "Client Name",
         "date": "Date",
         "type": "Type",
-        "orderdetails": "Details",
+        "details": "Details",
         "amount": "Amount"
       },
       filters: formatedFilterData(filter),
