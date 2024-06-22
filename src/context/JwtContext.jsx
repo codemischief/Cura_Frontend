@@ -13,6 +13,7 @@ import { isValidToken, setSession } from "../utils/jwt";
 import { env_URL_SERVER } from "../Redux/helper";
 import { replaceKeys } from "./routeMap";
 import SessionTimeoutModal from "../Components/modals/SessionAlert";
+import { setAccessToken } from "../utils/axios";
 
 // Initial Types and States
 const Types = {
@@ -86,9 +87,10 @@ function AuthProvider({ children }) {
       try {
         const accessToken = localStorage.getItem("accessToken");
         const user = localStorage.getItem("user");
-
+        console.log("kjnsdfsdfsdfsdfsdf",accessToken);
         if (accessToken && isValidToken(accessToken)) {
           setSession(JSON.parse(user), accessToken);
+          console.log("kjn",accessToken);
           dispatch({
             type: Types.Initial,
             payload: {
@@ -233,6 +235,8 @@ function AuthProvider({ children }) {
     dispatch({ type: Types.Logout });
     toast.success("Logged out successfully");
     navigate("/login");
+    setAccessToken(null);
+
   };
 
   const handleContinueSession = () => {
@@ -255,6 +259,7 @@ function AuthProvider({ children }) {
         updateProfile,
       }}
     >
+   
       {children}
       {state.isAuthenticated && (
         <SessionTimeoutModal
