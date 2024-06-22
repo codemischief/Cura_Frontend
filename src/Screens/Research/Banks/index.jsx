@@ -27,7 +27,7 @@ import BankAndBranchesForm from "./BankAndBranchesForm";
 import useAuth from "../../../context/JwtContext";
 const ResearchBanks = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     BankAndBranchesData,
     status,
@@ -145,12 +145,6 @@ const ResearchBanks = () => {
   };
 
   const downloadExcel = async () => {
-    const colMap = columns?.slice(1, -1)?.reduce((acc, column) => {
-      if (column.field) {
-        acc[column.field] = column.title;
-      }
-      return acc;
-    }, {});
 
     let obj = {
       user_id: user.id,
@@ -162,13 +156,13 @@ const ResearchBanks = () => {
         "contactperson",
         "id",
       ],
-      colmap : {
-         "name" : "Name",
-        "emailid" : "Email ID",
-        "phoneno" : "Phone Number",
-        "website" : "Website",
-        "contactperson" : "Contact",
-        "id" : "ID",
+      colmap: {
+        "name": "Name",
+        "emailid": "Email ID",
+        "phoneno": "Phone Number",
+        "website": "Website",
+        "contactperson": "Contact",
+        "id": "ID",
       },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
@@ -180,6 +174,38 @@ const ResearchBanks = () => {
     };
     dispatch(downloadBanksAndBranchesDataXls(obj));
   };
+
+  const downloadPdf = () => {
+
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "name",
+        "emailid",
+        "phoneno",
+        "website",
+        "contactperson",
+        "id",
+      ],
+      colmap: {
+        "name": "Name",
+        "emailid": "Email ID",
+        "phoneno": "Phone Number",
+        "website": "Website",
+        "contactperson": "Contact",
+        "id": "ID",
+      },
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/research/banks",
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadBanksAndBranchesDataXls(obj, 'pdf'))
+  }
 
   const handleFormOpen = () => {
     setOpenForm(true);
@@ -220,7 +246,7 @@ const ResearchBanks = () => {
     setPromptType(alertVariant.success);
     setOpenForm(false);
     fetchData()
-    
+
   };
 
   const openCancel = () => {
@@ -276,12 +302,13 @@ const ResearchBanks = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 13rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />

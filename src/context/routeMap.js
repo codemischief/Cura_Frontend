@@ -70,6 +70,19 @@ export const replaceKeys = (access_rights) => {
 };
 let defaultpermission = { add: true, delete: true, edit: true, get: true };
 
+const deleteByIdEndpoints = [
+  "deleteclient",
+  "deleteorder",
+  "deleteclientinvoice",
+  "deleteordereceipt",
+  "deleteorderpayment",
+  "deleteclientreceipt",
+  "deletevendorinvoice",
+  "deletevendor",
+  "deleteuser",
+  "deleteemployee",
+  "deletebankstatement",
+];
 const allowSpecialRoutes = (routes) => {
   routes["/dashboard"] = defaultpermission;
   routes["/changepassword"] = defaultpermission;
@@ -79,17 +92,32 @@ const allowSpecialRoutes = (routes) => {
     // routes["/manage/manageBuilder/contacts/"] = defaultpermission;
   }
   if (routes[PATH_DASHBOARD.manage.clientInfo]) {
-    routes["/manage/manageclientinfo/properties/"] = defaultpermission;
-    routes["/manage/manageclientinfo/orders/"] = defaultpermission;
+    routes["/manage/manageclientinfo/properties/"] =
+      routes[PATH_DASHBOARD.manage.clientProperty];
+    routes["/manage/manageclientinfo/orders/"] =
+      routes[PATH_DASHBOARD.manage.manageOrder];
   }
   if (routes[PATH_DASHBOARD.manage.clientProperty]) {
-    routes["/manage/manageclientproperty/pmaagreement/"] = defaultpermission;
-    routes["/manage/manageclientproperty/llagreement/"] = defaultpermission;
+    routes["/manage/manageclientproperty/pmaagreement/"] =
+      routes[PATH_DASHBOARD.manage.pmaAgreement];
+    routes["/manage/manageclientproperty/llagreement/"] =
+      routes[PATH_DASHBOARD.manage.llAgreement];
   }
   if (routes[PATH_DASHBOARD.manage.manageOrder]) {
-    routes["/manage/managevendorpayment/"] = defaultpermission;
-    routes["/manage/manageorderreceipt/"] = defaultpermission;
-    routes["/manage/manageclientinvoice/"] = defaultpermission;
-    routes["/manage/manageclientinfo/orders/showall/"] = defaultpermission;
+    routes["/manage/managevendorpayment/"] =
+      routes[PATH_DASHBOARD.manage.vendorPayment];
+    routes["/manage/manageorderreceipt/"] =
+      routes[PATH_DASHBOARD.manage.orderReceipt];
+    routes["/manage/manageclientinvoice/"] =
+      routes[PATH_DASHBOARD.manage.clientInvoice];
+    routes["/manage/manageclientinfo/orders/showall/"] =
+      routes[PATH_DASHBOARD.manage.manageOrder];
+  }
+
+  if (routes[PATH_DASHBOARD.admin.deleteId]) {
+    deleteByIdEndpoints.forEach((endpoint) => {
+      routes[`${PATH_DASHBOARD.admin.deleteId}/${endpoint}`] =
+        routes[PATH_DASHBOARD.admin.deleteId];
+    });
   }
 };

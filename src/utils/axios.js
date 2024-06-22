@@ -1,16 +1,21 @@
 import axios from "axios";
 import { redirectToLogin } from "../services/setNavigation";
 import { toast } from "react-toastify";
-// import useAuth from "../context/JwtContext";
+import { APIService } from "../services/API";
 let apiToken = null;
 
+
 export const setAccessToken = (apiTokenParam) => {
+  apiToken = null
   apiToken = apiTokenParam;
 };
 
 export const getToken = () => {
   if (apiToken) {
     return apiToken;
+  }
+  else {
+    return localStorage.getItem("accessToken")
   }
 };
 
@@ -35,34 +40,28 @@ const axiosInstance = axios.create({
   },
 });
 
-// const logPayload = {
-//   token: `Bearer ${accessToken}`,
-// };
 
 axiosInstance.interceptors.request.use(
   (config) => {
     const { headers } = config;
-    // const accessToken = localStorage.getItem("accessToken");
     const accessToken = getToken();
+    headers["Authorization"] = `Bearer ${accessToken}`;
 
-    // if (accessToken) {
-      headers["Authorization"] = `Bearer ${accessToken}`;
+    if (config.appendLog) {
+      config.data = {
+        // ...logPayload,
+        ...config.data,
+      };
+    } else {
+      config.data = {
+        ...config.data,
+      };
+    }
 
-      if (config.appendLog) {
-        config.data = {
-          // ...logPayload,
-          ...config.data,
-        };
-      } else {
-        config.data = {
-          ...config.data,
-        };
-      }
-    // }
     return config;
   },
   (error) => {
-    // Handle the error
+
     return Promise.reject(error);
   }
 );
@@ -70,12 +69,13 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+(error) => {
     if (error.response.status === 498) {
       if (!toastShown) {
         toastShown = true;
-        setTimeout(() => (toastShown = false), 1000); // Reset after 1 second
+        setTimeout(() => (toastShown = false), 1000); 
         localStorage.clear();
+        setAccessToken(null)
         redirectToLogin();
         toast.error("Unauthorized!");
       }
@@ -89,7 +89,7 @@ axiosInstance.interceptors.response.use(
         setTimeout(() => (toastShown = false), 1000);
         toast.error("Bad Request: The request was invalid.");
       }
-    } else if (statusCode === 404) {
+    } else if ( error.response.status === 404) {
       if (!toastShown) {
         toastShown = true;
         setTimeout(() => (toastShown = false), 1000);

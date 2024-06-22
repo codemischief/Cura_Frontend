@@ -30,10 +30,12 @@ const handleTokenExpired = (exp) => {
   }, timeLeft);
 };
 
-const setSession = (user, accessToken, idleTimeOut) => {
+const setSession = (user, accessToken,refreshToken) => {
   if (accessToken) {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("refreshToken", refreshToken);
+
     // localStorage.setItem("idleTimeOut", idleTimeOut);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     // This function below will handle when token is expired

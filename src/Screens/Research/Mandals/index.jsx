@@ -151,20 +151,28 @@ const ResearchMandals = () => {
   };
 
   const downloadExcel = async () => {
-    
-
+  
     let obj = {
       user_id: user.id,
       rows: [
-        "id",
-        "name",
         "typename",
+        "name",
         "city",
         "suburb",
         "emailid",
-        "phoneno"
+        "phoneno",
+        "id",
       ],
-      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
+      colmap: { 
+        typename : "Mandal Type",
+        name : "Name",
+        city : "City",
+        suburb : "Locality",
+        emailid : "Email Id",
+        phoneno : "Phone Number",
+        id : "ID"
+
+       },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
@@ -175,6 +183,40 @@ const ResearchMandals = () => {
     };
     dispatch(donwloadMandalsData(obj));
   };
+
+  const downloadPdf = () => {
+
+    let obj = {
+      user_id: user.id,
+      rows: [
+        "typename",
+        "name",
+        "city",
+        "suburb",
+        "emailid",
+        "phoneno",
+        "id",
+      ],
+      colmap : {
+        typename : "Mandal Type",
+        name : "Name",
+        city : "City",
+        suburb : "Locality",
+        emailid : "Email Id",
+        phoneno : "Phone Number",
+        id : "ID"
+     },
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/research/mandals",
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    }; 
+    dispatch(donwloadMandalsData(obj, 'pdf'))
+  }
 
   const handleFormOpen = () => {
     setOpenForm(true);
@@ -271,12 +313,13 @@ const ResearchMandals = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 15rem)"
+            height="calc(100vh - 13rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />

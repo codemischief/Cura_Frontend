@@ -359,7 +359,9 @@ const App = () => {
   }, [navigate]);
 
   React.useEffect(() => {
-    if (accessToken) setAccessToken(accessToken);
+    if (accessToken) {  
+      setAccessToken(accessToken);
+    }
   }, [accessToken]);
 
   const ROLES = {

@@ -37,6 +37,7 @@ import EditButton from "../../../Components/common/buttons/EditButton";
 import useAuth from "../../../context/JwtContext";
 import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
+import checkDeleteAccess from "../../../Components/common/checkDeleteAccess";
 import ClientPropertySelectNative from "../../../Components/common/select/ClientPropertySelectNative";
 const ManageBankStatement = () => {
     // we have the module here
@@ -54,6 +55,7 @@ const ManageBankStatement = () => {
     ]
     const menuRef = useRef();
     const canEdit = checkEditAccess();
+    const canDelete = checkDeleteAccess()
     const [existingStatement, setExistingStatement] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
@@ -781,7 +783,7 @@ const ManageBankStatement = () => {
             filterData: "Numeric",
             filterInput: ""
         },
-        creditdebit: {
+        crdr: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -1305,12 +1307,12 @@ const ManageBankStatement = () => {
                                     onKeyDown={(event) => handleEnterToFilter(event,typeFilterInput,
                                         setTypeFilterInput,
                                         'contains',
-                                        'creditdebit')}
+                                        'crdr')}
                                     />
-                                    {filterMapState.creditdebit.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.crdr.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                     {/* <button className='px-1 py-2 w-[30%]' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='creditdebit' menuRef={menuRef} filterType={filterMapState.creditdebit.filterType} />}
+                                {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='crdr' menuRef={menuRef} filterType={filterMapState.crdr.filterType} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
@@ -1498,6 +1500,7 @@ const ManageBankStatement = () => {
                         {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} showCancel={openCancelModal} />}
                     </div>
+                       {canDelete && 
                         <div className="h-[2rem] w-full bg-[#F0F6FF] flex">
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4 border-[1px] border-gray-300'>
@@ -1534,7 +1537,7 @@ const ManageBankStatement = () => {
                                     
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                 </div>
             </div>
             
@@ -1606,6 +1609,7 @@ const ManageBankStatement = () => {
                 </div>
             </div>
             <div className="px-6">
+               {canDelete && 
                <div className="bg-[#F5F5F5] w-full h-[120px] flex justify-around mt-6">
                    {/* <div className="h-[3rem] w-full bg-green-400 flex justify-between"> */}
                             {
@@ -1617,7 +1621,7 @@ const ManageBankStatement = () => {
                                 })
                             }
                         {/* </div> */}
-               </div>
+               </div>}
             </div>
              
 
