@@ -11,7 +11,7 @@ import useAuth from '../../../context/JwtContext';
 import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative';
 const EditManageEmployee = (props) => {
     const {user} = useAuth()
-    console.log(props.item);
+    
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
@@ -32,25 +32,25 @@ const EditManageEmployee = (props) => {
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
-        // console.log(id);
-        console.log(id);
+        // 
+        
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         setAllState(result)
     }
     const fetchCityData = async (name) => {
-        // console.log("Maharashtra");
-        // console.log("hy")
+        // 
+        // 
         if (name == null) return
-        console.log(name);
+        
         const data = { "user_id": user.id, "state_name": name };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
-        // console.log(result);
+        
+        // 
         setAllCity(result);
     }
     function convertToIdNameObject(items) {
@@ -76,7 +76,7 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": user.id, };
         const response = await APIService.getRoles(data)
         const result = (await response.json()).data;
-        console.log(result);
+        
 
         if (Array.isArray(result)) {
             setAllRoles(result);
@@ -88,7 +88,7 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": user.id, };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json()).data;
-        console.log(result);
+        
 
         if (Array.isArray(result)) {
             setAllEntites(result);
@@ -107,7 +107,7 @@ const EditManageEmployee = (props) => {
         };
         const response = await APIService.getLob(data);
         const result = (await response.json()).data;
-        // console.log(result);
+        // 
 
         if (Array.isArray(result)) {
             setAllLOB(result);
@@ -120,16 +120,16 @@ const EditManageEmployee = (props) => {
             "table_name": "employee",
             "item_id": props.item.id
         }
-        console.log(data);
+        
         const response = await APIService.getItembyId(data);
         const result = await response.json();
         
         setFormValues(result.data);
         
-        console.log(result.data)
-        // console.log(formValues.state);
+        
+        // 
         await fetchCountryData();
-        // console.log(result.data.dateofjoining.split('T')[0]);
+        // [0]);
         setFormValues((existing) => {
             return { ...existing, dateofjoining: result.data.dateofjoining ? result.data.dateofjoining.split('T')[0] : null }
         })
@@ -157,7 +157,7 @@ const EditManageEmployee = (props) => {
         await fetchCityData(result.data.state);
         setEditPageLoading(false);
         props.setPageLoading(false)
-        console.log(result);
+        
     }
     useEffect(() => {
         fetchEmployeeData();
@@ -197,20 +197,20 @@ const EditManageEmployee = (props) => {
             "lastdateofworking": formValues.lastdateofworking,
             "designation": formValues.designation
         }
-        console.log(data);
+        
         if (!validate()) {
             return;
         }
-        console.log('here');
-        console.log(data);
+        
+        
         const response = await APIService.editEmployee(data);
         const result = await response.json();
         props.showSuccess();
-        console.log(result);
+        
         // props.fetchData();
         // props.handleClose();
     }
-    console.log(props.item);
+    
 
     
     const initialValues = {
@@ -392,7 +392,7 @@ const EditManageEmployee = (props) => {
             })
             res = false;
         } else {
-            console.log('issue is in empname')
+            
             setFormErrors((existing) => {
                 return { ...existing, suburb: "" }
             })
@@ -403,7 +403,7 @@ const EditManageEmployee = (props) => {
             })
             res = false;
         } else {
-            console.log('issue is in empname')
+            
             setFormErrors((existing) => {
                 return { ...existing, username: "" }
             })
@@ -528,7 +528,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">LOB </div>
-                                            {console.log(formValues.lob)}
+                                            {}
                                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="lob"
                                                 value={formValues.lob}
@@ -635,7 +635,7 @@ const EditManageEmployee = (props) => {
                                                     })
                                                 }}
                                             >
-                                                {console.log(formValues.state)}
+                                                {}
                                                 <option value={null} hidden> Select A State</option>
                                                 {allState && allState.map((item) => {
                                                     // if(item[0])
@@ -715,7 +715,7 @@ const EditManageEmployee = (props) => {
                                 checked={formValues.status}
                                 className='mr-3 h-4 w-4'
                                 onClick={(e) => {
-                                    // console.log(e.target.checked)
+                                    // 
                                     const existing = { ...formValues };
                                     existing.status = !existing.status;
                                     setFormValues(existing)

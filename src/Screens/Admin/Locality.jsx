@@ -130,7 +130,7 @@ const Locality = () => {
         const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        // console.log(result.data);
+        // 
 
         setAllCountry(result)
         // if (Array.isArray(result.data)) {
@@ -138,12 +138,12 @@ const Locality = () => {
         // }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -152,7 +152,7 @@ const Locality = () => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
         }
@@ -188,7 +188,7 @@ const Locality = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
-        console.log(tempArray)
+        
         setCurrentPage(pageNumber);
         const data = {
             "user_id": user.id,
@@ -218,7 +218,7 @@ const Locality = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
-        console.log(tempArray)
+        
         const data = {
             "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
@@ -232,7 +232,7 @@ const Locality = () => {
         const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
-        if (number == 25) console.log(result);
+        if (number == 25) 
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLocalities(result);
@@ -242,7 +242,7 @@ const Locality = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 if (filterMapState[key].filterData == 'Numeric') {
@@ -265,8 +265,8 @@ const Locality = () => {
         })
         setFilterState(tempArray)
 
-        console.log('here is the call')
-        console.log(tempArray)
+        
+        
         const data = {
             "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
@@ -277,14 +277,14 @@ const Locality = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchQuery : ""
         };
-        console.log(data);
+        
         const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        console.log(t);
-        console.log(result);
+        
+        
         setExistingLocalities(result);
         setPageLoading(false);
     }
@@ -297,7 +297,7 @@ const Locality = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
-        console.log(tempArray)
+        
         setSortField(field);
         const data = {
             "user_id": user.id,
@@ -314,7 +314,7 @@ const Locality = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        console.log(result);
+        
         setExistingLocalities(result);
         setPageLoading(false);
         setFlag((prev) => {
@@ -336,7 +336,7 @@ const Locality = () => {
             "cityid": formValues.city,
             "locality": formValues.locality
         }
-        console.log(data);
+        
         const response = await APIService.addLocality(data);
         const res = await response.json();
         setAddConfirmation(false)
@@ -435,7 +435,7 @@ const Locality = () => {
         const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
@@ -454,7 +454,7 @@ const Locality = () => {
                         FileSaver.saveAs(result, 'localityData.pdf');
                     }
 
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -473,7 +473,7 @@ const Locality = () => {
     }
     const handleChange = (e) => {
         const { value } = e.target;
-        console.log(value);
+        
         setLobName(value);
     }
     const [flag, setFlag] = useState(false);
@@ -497,7 +497,7 @@ const Locality = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        console.log(t);
+        
         setExistingLocalities(result);
         setPageLoading(false);
     }
@@ -507,7 +507,7 @@ const Locality = () => {
         setLobFilter((prev) => !prev)
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -538,7 +538,7 @@ const Locality = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        console.log(t);
+        
         setExistingLocalities(result);
         setPageLoading(false);
     }
@@ -609,9 +609,9 @@ const Locality = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
         var existing = filterMapState;
         existing = {
@@ -642,8 +642,8 @@ const Locality = () => {
         setLocalityFilter(false)
         setIdFilter(false)
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterData == 'Numeric') {
                 tempArray.push([
@@ -663,8 +663,8 @@ const Locality = () => {
         })
         setFilterMapState((prev) => mapState)
         setFilterState(tempArray)
-        console.log('this is getting called')
-        console.log(tempArray)
+        
+        
         setCurrentPage(1);
         const data = {
             "user_id": user.id,
@@ -977,7 +977,7 @@ const Locality = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
                                 fetchQuantityData(e.target.value)
                             }}
 
@@ -1100,7 +1100,7 @@ const Locality = () => {
                                                             const existing = { ...formValues }
                                                             existing.state = e.target.value
                                                             existing.city = null
-                                                            console.log(existing)
+                                                            
                                                             setFormValues(existing)
                                                         }}
                                                     >
@@ -1122,7 +1122,7 @@ const Locality = () => {
                                                         defaultValue="Select City"
                                                         onChange={e => {
                                                             // fetchCityData(e.target.value);
-                                                            console.log(e.target.value);
+                                                            
                                                             setFormValues((existing) => {
                                                                 const newData = { ...existing, city: e.target.value }
                                                                 return newData;

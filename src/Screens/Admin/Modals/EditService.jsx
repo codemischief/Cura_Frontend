@@ -28,7 +28,7 @@ const EditService = ({
   // const [tallyLedgerData,setTallyLedgerData] = useState([])
   // const [allCity,setAllCity] = useState([])
   const fetchInitialData = async () => {
-    console.log(currService);
+    
     const data = {
       user_id: user.id,
       item_id: currService,
@@ -36,7 +36,7 @@ const EditService = ({
     };
     const response = await APIService.getItembyId(data);
     const res = await response.json();
-    console.log(res);
+    
     const existing = { ...formValues };
     existing.lob = res.data.lobid;
     existing.serviceName = res.data.service;
@@ -135,7 +135,7 @@ const EditService = ({
                         defaultValue="Select lob"
                         onChange={e => {
                           // fetchCityData(e.target.value);
-                          console.log(e.target.value);
+                          
                           setFormValues((existing) => {
                             const newData = { ...existing, lob: e.target.value }
                             return newData;

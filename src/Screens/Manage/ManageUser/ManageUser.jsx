@@ -104,7 +104,7 @@ const ManageUser = () => {
         };
         const response = await APIService.getLob(data);
         const result = (await response.json());
-        console.log(result.data);
+        
 
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
@@ -142,8 +142,8 @@ const ManageUser = () => {
     const [query, setQuery] = useState('')
 
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -157,34 +157,34 @@ const ManageUser = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
 
     const [orders, setOrders] = useState([]);
     const getOrdersByClientId = async (id) => {
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders(res.data)
 
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
         //    existing.order = res.data[0].id
-        //    console.log(res.data[0].id)
+        //    
         //    setFormValues(existing)
 
         // } 
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,
@@ -213,7 +213,7 @@ const ManageUser = () => {
         }
         const response = await APIService.getVendorCategoryAdmin(data);
         const res = await response.json()
-        console.log(res.data);
+        
         setAllCategory(res.data)
     }
 
@@ -223,7 +223,7 @@ const ManageUser = () => {
         const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
-        console.log(result.data);
+        
 
         if (Array.isArray(result.data)) {
             setAllRoles(result.data);
@@ -237,8 +237,8 @@ const ManageUser = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -268,7 +268,7 @@ const ManageUser = () => {
         const response = await APIService.getUser(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingUser(result);
@@ -299,7 +299,7 @@ const ManageUser = () => {
         const response = await APIService.getUser(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingUser(result);
@@ -308,7 +308,7 @@ const ManageUser = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         setCurrentPage((prev) => 1)
-        console.log(searchInput);
+        
         const data = {
             "user_id": user.id,
             "rows": [
@@ -328,7 +328,7 @@ const ManageUser = () => {
         const response = await APIService.getUser(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingUser(result);
@@ -363,7 +363,7 @@ const ManageUser = () => {
         setIsEditDialogue(true)
     }
     const handleOpenEdit = (oldItem) => {
-        console.log('called');
+        
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -382,9 +382,9 @@ const ManageUser = () => {
         setFormErrors({});
     }
     const handleAddUser = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         setIsUserDialogue(false);
@@ -436,7 +436,7 @@ const ManageUser = () => {
         const result = (await response.json())
 
         setOpenAddConfirmation(false);
-        console.log(result)
+        
         if (result.result == "success") {
             setFormValues(initialValues);
             openAddSuccess();
@@ -445,8 +445,8 @@ const ManageUser = () => {
             setErrorMessage(result.message)
         }
 
-        console.log(data);
-        console.log(result);
+        
+        
     }
 
     const initialValues = {
@@ -556,20 +556,20 @@ const ManageUser = () => {
             })
         }
         if (!formValues.confirmPassword) {
-            console.log("whyyyy")
+            
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "Enter Confirm Password" }
             })
             res = false;
         } else if (formValues.password && formValues.confirmPassword && formValues.password !== formValues.confirmPassword) {
-            console.log("ayoo")
+            
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "Password does not match" }
             })
             res = false;
         }
         else {
-            console.log("good");
+            
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "" }
             })
@@ -644,7 +644,7 @@ const ManageUser = () => {
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -690,7 +690,7 @@ const ManageUser = () => {
         const response = await APIService.getUser(data)
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if (temp.result == "success") {
             const d = {
               filename: temp.filename,
@@ -710,7 +710,7 @@ const ManageUser = () => {
                 } else if (type == "pdf") {
                   FileSaver.saveAs(result, "UserData.pdf");
                 }
-                console.log("Success:", result);
+                
               })
               .catch((error) => {
                 console.error("Error:", error);
@@ -723,7 +723,7 @@ const ManageUser = () => {
           }
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
@@ -746,7 +746,7 @@ const ManageUser = () => {
         const response = await APIService.getUser(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingUser(result);
@@ -776,7 +776,7 @@ const ManageUser = () => {
         const response = await APIService.getUser(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingUser(result);
@@ -875,8 +875,8 @@ const ManageUser = () => {
         setStatusFilter(false)
         setIdFilter(false)
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -905,7 +905,7 @@ const ManageUser = () => {
         const response = await APIService.getUser(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingUser(result);
@@ -913,11 +913,11 @@ const ManageUser = () => {
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
 
-        console.log(columnName)
-        console.log(inputVariable)
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
+        
+        
         
         
             var existing = filterMapState;
@@ -964,7 +964,7 @@ const ManageUser = () => {
         const response = await APIService.getUser(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingUser(result);
@@ -978,7 +978,7 @@ const ManageUser = () => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -996,7 +996,7 @@ const ManageUser = () => {
         }
         const response = await APIService.getTallyLedgerAdmin(data);
         const res = await response.json()
-        console.log(res);
+        
         setTallyLedgerData(res.data)
     }
 
@@ -1009,14 +1009,14 @@ const ManageUser = () => {
         setInputVariable,
         type,
         columnName) => {
-        console.log(inputVariable)
+        
         if (event.keyCode === 13) {
             // if its empty then we remove that 
             // const temp = {...filterMapState};
             // temp[columnName].type = "".
             // setFilterMapState(temp)
             if (inputVariable == "") {
-                console.log('here')
+                
                 const temp = { ...filterMapState }
                 temp[columnName].filterType = ""
                 // temp[key].filterValue
@@ -1345,7 +1345,7 @@ const ManageUser = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -1464,7 +1464,7 @@ const ManageUser = () => {
                                                     defaultValue="Select lob"
                                                     onChange={e => {
                                                         // fetchCityData(e.target.value);
-                                                        console.log(e.target.value);
+                                                        
                                                         setFormValues((existing) => {
                                                             const newData = { ...existing, lob: e.target.value }
                                                             return newData;
@@ -1541,7 +1541,7 @@ const ManageUser = () => {
                                                     defaultValue="Select Role"
                                                     onChange={e => {
                                                         // fetchCityData(e.target.value);
-                                                        console.log(e.target.value);
+                                                        
                                                         setFormValues((existing) => {
                                                             const newData = { ...existing, role: e.target.value }
                                                             return newData;
@@ -1609,7 +1609,7 @@ const ManageUser = () => {
                                     checked={formValues.status}
                                     className='mr-3 h-4 w-4'
                                     onClick={(e) => {
-                                        // console.log(e.target.checked)
+                                        // 
                                         const existing = { ...formValues };
                                         existing.status = !existing.status;
                                         setFormValues(existing)

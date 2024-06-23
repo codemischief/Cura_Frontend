@@ -147,7 +147,7 @@ const LOB = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        console.log(t);
+        
         setExistingLOB(result);
         setPageLoading(false);
     }
@@ -202,7 +202,7 @@ const LOB = () => {
         }
         const response = await APIService.addLob({...data,user_id : user.id});
         const res = await response.json()
-        console.log(res);
+        
         setOpenAddConfirmation(false);
         if (res.result == "success") {
             setLobName("");
@@ -224,10 +224,10 @@ const LOB = () => {
         // setPageLoading(false);
         const res = await response.json()
         
-        console.log(res.result)
+        
         if (res.result == 'success') {
             openDeleteSuccess();
-            // console.log('hi')
+            // 
         }
         fetchData();
     }
@@ -268,7 +268,7 @@ const LOB = () => {
         const response = await APIService.getLob({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
@@ -286,7 +286,7 @@ const LOB = () => {
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'LobData.pdf');
                     }
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -304,7 +304,7 @@ const LOB = () => {
     }
     const handleChange = (e) => {
         const { value } = e.target;
-        console.log(value);
+        
         setLobName(value);
     }
     const [flag, setFlag] = useState(false);
@@ -326,7 +326,7 @@ const LOB = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        console.log(t);
+        
         setExistingLOB(result);
         setPageLoading(false);
     }
@@ -336,7 +336,7 @@ const LOB = () => {
         setLobFilter((prev) => !prev)
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -395,7 +395,7 @@ const LOB = () => {
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const openDeleteSuccess = () => {
         // setIsLobDialogue(false);
-        console.log('hey')
+        
         setShowDeleteSuccess(true);
         setTimeout(function () {
             setShowDeleteSuccess(false);
@@ -420,7 +420,7 @@ const LOB = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        console.log(t);
+        
         setExistingLOB(result);
         setPageLoading(false);
     }
@@ -475,8 +475,8 @@ const LOB = () => {
         // we need to query thru the object
         setLobFilter(false);
         setIdFilter(false);
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach((key) => {
             if (mapState[key].filterType != "") {
                 if (mapState[key].filterData == 'Numeric') {
@@ -498,8 +498,8 @@ const LOB = () => {
             }
         });
         setFilterState(tempArray)
-        console.log('this is getting called')
-        console.log(tempArray)
+        
+        
         setCurrentPage(1);
         const data = {
 
@@ -516,7 +516,7 @@ const LOB = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        console.log(t);
+        
         setExistingLOB(result);
         setPageLoading(false);
     }
@@ -640,7 +640,7 @@ const LOB = () => {
                                         'contains',
                                         'name')}
                                 />
-                                {console.log(filterMapState.name.filterType)}
+                                {}
                                 {filterMapState.name.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} filterType={filterMapState.name.filterType} />}
@@ -757,7 +757,7 @@ const LOB = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
                                 fetchQuantityData(e.target.value)
                             }}
 

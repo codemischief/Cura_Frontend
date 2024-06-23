@@ -17,7 +17,7 @@ import useAuth from "../../../context/JwtContext"
 const DeletePage = () => {
   const { user } = useAuth()
   let { state } = useLocation();
-  console.log(state)
+  
   const navigate = useNavigate(-1)
   const [pageLoading, setPageLoading] = useState(false)
   const [id, setId] = useState("")
@@ -114,7 +114,7 @@ const DeletePage = () => {
       }
     }
     // we do the hard delete here
-    console.log(res)
+    
     
   }
   return (
