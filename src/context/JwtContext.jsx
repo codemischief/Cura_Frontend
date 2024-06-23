@@ -87,9 +87,11 @@ function AuthProvider({ children }) {
     const initialize = async () => {
       try {
         const accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+
         const user = localStorage.getItem("user");
         if (accessToken && isValidToken(accessToken)) {
-          setSession(JSON.parse(user), accessToken);
+          setSession(JSON.parse(user), accessToken,refreshToken);
           
           dispatch({
             type: Types.Initial,
