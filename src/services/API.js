@@ -3,7 +3,8 @@ import { redirectToLogin } from "./setNavigation";
 import { toast } from "react-toastify";
 let toastShown = false;
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
-
+import { v4 as uuidv4 } from "uuid";
+import { moduleMethods } from "@/utils/axios";
 const API = {
   LOGIN: "$env_URL_SERVERvalidateCredentials",
 };
@@ -106,26 +107,39 @@ const getCities = async (data) => {
 
 const addCountries = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Country'
   const response = await fetch(`${env_URL_SERVER}addCountry`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : 'Country',
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editCountry = async (data) => {
+
   const accessToken = getToken();
+  const modulename = 'Country'
   const response = await fetch(`${env_URL_SERVER}editCountry`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -184,13 +198,19 @@ const deleteBuilderInfo = async (data) => {
 
 const deleteCountries = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Country';
   const response = await fetch(`${env_URL_SERVER}deleteCountry`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
