@@ -125,7 +125,7 @@ const Payments = () => {
     const data = { user_id: user.id };
     const response = await APIService.getEntityAdmin(data);
     const result = await response.json();
-    // console.log(result.data);
+    // 
     setFormValues((existing) => {
       return { ...existing, entity: result.data[0][0] };
     });
@@ -142,7 +142,7 @@ const Payments = () => {
     };
     const response = await APIService.getModesAdmin(data);
     const result = await response.json();
-    // console.log(result.data);
+    // 
     setPaymentMode(result.data);
     // setFormValues((existing) => {
     //     return { ...existing, paymentmode: result.data[0][0] }
@@ -155,11 +155,11 @@ const Payments = () => {
     const response = await APIService.getPaymentFor(data);
     const result = await response.json();
     setPaymentFor(result.data);
-    // console.log(result.data);
+    // 
     // setFormValues((existing) => {
     //     return { ...existing, paymentfor: result.data[0].id }
     // })
-    // console.log(result);
+    // 
   };
   useEffect(() => {
     fetchData();
@@ -214,7 +214,7 @@ const Payments = () => {
       }
     });
     setFilterState(tempArray);
-    console.log(tempArray);
+    
     const data = {
       user_id: user.id,
       rows: dataRows,
@@ -230,7 +230,7 @@ const Payments = () => {
     setExistingPayments(result.data);
     setTotalItems(result.total_count);
     setPageLoading(false);
-    // console.log(result);
+    // 
   };
   const fetchQuantityData = async (quantity) => {
     const tempArray = [];
@@ -245,7 +245,7 @@ const Payments = () => {
         ]);
       }
     });
-    console.log(tempArray);
+    
     setCurrentPages(quantity);
     setCurrentPage((prev) => 1);
     setPageLoading(true);
@@ -278,7 +278,7 @@ const Payments = () => {
         ]);
       }
     });
-    console.log(tempArray);
+    
     setCurrentPage(pageNumber);
     setPageLoading(true);
     const data = {
@@ -319,13 +319,13 @@ const Payments = () => {
     if (!validate()) {
       return;
     }
-    console.log(formValues);
+    
     setName1(allUsername[formValues.paymentto].name)
     setName2(allUsername[formValues.paymentby].name)
     
 
-    console.log(name1);
-    console.log(name2);
+    
+    
 
    
     // setPageLoading(true);
@@ -350,7 +350,7 @@ const Payments = () => {
       month: formValues.month,
       deduction: Number(formValues.deduction),
     };
-    // console.log(data);
+    // 
     const response = await APIService.addPayment(data);
     const result = await response.json();
     setOpenAddConfirmation(false);
@@ -365,7 +365,7 @@ const Payments = () => {
     }
 
     fetchData();
-    // console.log(result);
+    // 
   };
   const [currPaymentId, setCurrPaymentId] = useState(-1);
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
@@ -374,14 +374,14 @@ const Payments = () => {
     setDeleteConfirmationModal(true);
   };
   const deletePayments = async (id) => {
-    console.log(id);
+    
     const data = {
       user_id: user.id,
       id: Number(id),
     };
     const response = await APIService.deletePayment(data);
     const res = await response.json();
-    console.log(response);
+    
     setDeleteConfirmationModal(false);
     if (res.result == "success") {
       openDeleteSuccess();
@@ -450,7 +450,7 @@ const Payments = () => {
   const [formErrors, setFormErrors] = useState({});
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(value);
+    
     setFormValues({ ...formValues, [name]: value });
   };
 
@@ -482,7 +482,7 @@ const Payments = () => {
         return { ...existing, paymentby: "" };
       });
     }
-    // console.log(formValues.amount);
+    // 
     // const temp = Number(formValues.amount);
 
     if (formValues.amount === null || formValues.amount === "") {
@@ -727,7 +727,7 @@ const Payments = () => {
     const response = await APIService.getPayment(data);
     const temp = await response.json();
     const result = temp.data;
-    console.log(temp);
+    
     if (temp.result == "success") {
       const d = {
         filename: temp.filename,
@@ -747,7 +747,7 @@ const Payments = () => {
           } else if (type == "pdf") {
             FileSaver.saveAs(result, "PaymentData.pdf");
           }
-          console.log("Success:", result);
+          
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -851,8 +851,8 @@ const Payments = () => {
     setFilterMapState((prev) => mapState);
     const tempArray = [];
     // we need to query thru the object
-    // console.log(filterMapState);
-    console.log(filterMapState);
+    // 
+    
     Object.keys(mapState).forEach((key) => {
       if (mapState[key].filterType != "") {
         if (mapState[key].filterData == "Numeric") {
@@ -872,10 +872,10 @@ const Payments = () => {
         }
       }
     });
-    console.log("this is getting called");
+    
     setCurrentPage((prev) => 1);
     setFilterState(tempArray);
-    console.log(tempArray);
+    
     const data = {
       user_id: user.id,
       rows: dataRows,
@@ -924,7 +924,7 @@ const Payments = () => {
     const tempArray = [];
     // we need to query thru the object
     setSortField(field);
-    console.log(filterMapState);
+    
     Object.keys(filterMapState).forEach((key) => {
       if (filterMapState[key].filterType != "") {
         tempArray.push([
@@ -948,7 +948,7 @@ const Payments = () => {
     };
     const response = await APIService.getPayment(data);
     const result = await response.json();
-    console.log(result);
+    
     setExistingPayments(result.data);
     setTotalItems(result.total_count);
     setPageLoading(false);
@@ -1658,7 +1658,7 @@ const Payments = () => {
               //  defaultValue="Select State"
               onChange={(e) => {
                 setCurrentPages(e.target.value);
-                // console.log(e.target.value);
+                // 
                 fetchQuantityData(e.target.value);
               }}
             >

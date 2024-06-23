@@ -6,7 +6,7 @@ import Draggable from 'react-draggable';
 import useAuth from '../../../context/JwtContext';
 const EditCountryModal = (props) => {
     const {user} = useAuth()
-    console.log(props.currentCountry);
+    
     const [showLoading, setShowLoading] = useState(false);
     const [countryName, setCountryName] = useState(props.currentCountry);
     const [errorMessage, setErrorMessage] = useState("");

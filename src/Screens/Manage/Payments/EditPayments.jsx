@@ -12,7 +12,7 @@ import ClientPropertySelectNative from '../../../Components/common/select/Client
 // import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
 const EditPayments = (props) => {
     const { user } = useAuth()
-    console.log(props.item.item);
+    
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
@@ -50,12 +50,12 @@ const EditPayments = (props) => {
         }
         const response1 = await APIService.getModesAdmin(data);
         const result1 = (await response1.json()).data;
-        // console.log(result.data);
+        // 
         setPaymentMode(result1);
         const response2 = await APIService.getPaymentFor(data);
         const result2 = (await response2.json()).data
         setPaymentFor(result2);
-        // console.log(result.data);
+        // 
         const response3 = await APIService.getEntityAdmin(data)
         const result3 = (await response3.json()).data;
         setEntity(result3)
@@ -65,7 +65,7 @@ const EditPayments = (props) => {
         const data = { "user_id": user.id, };
         const response = await APIService.getUsers(data)
         const result = (await response.json());
-        console.log(result);
+        
         setAllUsername(convertToIdNameObject(result));
     }
 
@@ -75,7 +75,7 @@ const EditPayments = (props) => {
         const data = { "user_id": user.id, };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json()).data;
-        console.log(result);
+        
 
         if (Array.isArray(result)) {
             setAllEntites(result);
@@ -94,7 +94,7 @@ const EditPayments = (props) => {
         };
         const response = await APIService.getLob(data);
         const result = (await response.json()).data;
-        console.log(result.data);
+        
 
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
@@ -113,7 +113,7 @@ const EditPayments = (props) => {
             setPageLoading(false)
         // }, 1000)
         //  setPageLoading(false);
-        console.log(result)
+        
     }
     useEffect(() => {
         fetchPaymentData();
@@ -125,7 +125,7 @@ const EditPayments = (props) => {
 
     const handleEdit = async () => {
         if (!validate()) {
-            console.log('here')
+            
             return;
         }
         const data = {
@@ -147,7 +147,7 @@ const EditPayments = (props) => {
         }
         const response = await APIService.editPayment(data);
         const result = await response.json();
-        console.log(result);
+        
         props.openPrompt();
         // props.handleClose();
         // props.fetchData();
@@ -179,7 +179,7 @@ const EditPayments = (props) => {
     };
 
     const validate = () => {
-        console.log(formValues)
+        
         var res = true;
         if (formValues.paymentto === null || formValues.paymentto === "") {
             setFormErrors((existing) => {
@@ -201,7 +201,7 @@ const EditPayments = (props) => {
                 return { ...existing, paymentby: "" }
             })
         }
-        // console.log(formValues.amount);
+        // 
         // const temp = Number(formValues.amount);
 
         if (formValues.amount === "" || formValues.amount === null) {

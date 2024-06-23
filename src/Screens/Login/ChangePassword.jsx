@@ -19,7 +19,7 @@ const passwordValidationSchema = Yup.object().shape({
 });
 
 const ChangePassword = () => {
-  console.log("login");
+  
   const navigate = useNavigate();
   const [openEyeIconPass, setOpenEyeIcon] = useState(false);
   const [confirmPasswordEye, setConfirmPasswordEye] = useState(false);

@@ -18,7 +18,7 @@ import { toast } from "react-toastify"
 const UpdateCompanyKey = () => {
   const { user } = useAuth()
 //   let { state } = useLocation();
-//   console.log(state)
+//   
   const navigate = useNavigate(-1)
   const [pageLoading, setPageLoading] = useState(false)
   const [id, setId] = useState("")
@@ -68,7 +68,7 @@ const UpdateCompanyKey = () => {
      const d = {"user_id" : user.id}
      const response = await APIService.getCompanyKey(d)
      const res = await response.json()
-     console.log(res)
+     
      setOpenDialog(false)
      setId(res.data.companykey)
   } 

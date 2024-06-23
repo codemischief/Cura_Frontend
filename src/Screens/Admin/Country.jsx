@@ -80,7 +80,7 @@ const Country = () => {
   }
   const openSuccessEditModal = () => {
     setShowEdit(false);
-    console.log("edit model called");
+    
     setShowEditSuccess(true);
     setTimeout(function () {
       setShowEditSuccess(false);
@@ -100,7 +100,7 @@ const Country = () => {
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const openDeleteSuccess = () => {
     // setIsLobDialogue(false);
-    console.log('hey')
+    
     setShowDeleteSuccess(true);
     setTimeout(function () {
       setShowDeleteSuccess(false);
@@ -121,7 +121,7 @@ const Country = () => {
     setShowEdit(false);
     setShowCancelEdit(true);
     setTimeout(function () {
-      console.log("hello")
+      
       setShowCancelEdit(false)
     }, 1000);
   }
@@ -181,8 +181,8 @@ const Country = () => {
     // const user_id = await authService.getUserID();
     const tempArray = [];
     // we need to query thru the object
-    // console.log(filterMapState);
-    // console.log(filterMapState);
+    // 
+    // 
     Object.keys(filterMapState).forEach((key) => {
       if (filterMapState[key].filterType != "") {
         if (filterMapState[key].filterData == 'Numeric') {
@@ -228,7 +228,7 @@ const Country = () => {
     const data = { "country_name": formValues.countryName };
     const response = await APIService.addCountries({...data,user_id : user.id});
     const res = await response.json();
-    console.log(res)
+    
     // {
     //   "result": "error",
     //   "message": "Already Exists",
@@ -258,7 +258,7 @@ const Country = () => {
     setCurrentCountry(item.name);
     setShowEdit(true);
 
-    // console.log(currentCountry);
+    // 
 
   }
   // /edit country modal
@@ -347,7 +347,7 @@ const Country = () => {
   }
 
   const handleSort = async (field) => {
-    console.log('called')
+    
     setPageLoading(true);
     setSortField(field);
     setFlag((prev) => {
@@ -376,7 +376,7 @@ const Country = () => {
     setPageLoading(true);
     setIsSearchOn(true);
     setCurrentPage(1);
-    console.log('hey')
+    
     const data = {
 
       "rows": ["id", "name"],
@@ -459,7 +459,7 @@ const Country = () => {
     const response = await APIService.getCountries({...data,user_id : user.id})
     const temp = await response.json();
     const result = temp.data;
-    console.log(temp)
+    
     if (temp.result == 'success') {
       const d = {
         "filename": temp.filename,
@@ -477,7 +477,7 @@ const Country = () => {
           } else if (type == "pdf") {
             FileSaver.saveAs(result, 'CountryData.pdf');
           }
-          console.log('Success:', result);
+          
         })
         .catch(error => {
           console.error('Error:', error);
@@ -490,10 +490,10 @@ const Country = () => {
     }
   }
   const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-    console.log(columnName)
-    console.log('hey')
-    console.log(filterMapState);
-    // console.log(inputVariable)
+    
+    
+    
+    // 
     var existing = { ...filterMapState };
     existing = {
       ...existing, [columnName]: {
@@ -509,8 +509,8 @@ const Country = () => {
     }
 
     if (type == 'noFilter' || type == 'isNull' || type == "isNotNull") setInputVariable("");
-    console.log('existing')
-    console.log(existing)
+    
+    
     fetchFiltered(existing);
   }
 
@@ -532,17 +532,17 @@ const Country = () => {
 
   const fetchFiltered = async (mapState) => {
 
-    console.log('this is a test')
+    
     // setCountryValues([])
     setFilterMapState(mapState)
-    // console.log('hi')
+    // 
     const tempArray = [];
     // // we need to query thru the object
     setCountryFilter(false)
     setIdFilter(false)
-    // // console.log(filterMapState);
-    // // console.log(mapState)
-    // console.log(filterMapState)
+    // // 
+    // // 
+    // 
     Object.keys(mapState).forEach(key => {
       if (mapState[key].filterType != "") {
         if (mapState[key].filterData == 'Numeric') {
@@ -578,7 +578,7 @@ const Country = () => {
     };
     const response = await APIService.getCountries({...data,user_id : user.id})
     const res = await response.json()
-    console.log(res)
+    
     setTotalItems(res.total_count);
     // setCountryValues([])
 
@@ -798,7 +798,7 @@ const Country = () => {
               //  defaultValue="Select State"
               onChange={e => {
                 // setCurrentPages(e.target.value);
-                console.log(e.target.value);
+                
                 fetchQuantityData(e.target.value);
                 // fetchPageCountryData(e.target.value)
               }}

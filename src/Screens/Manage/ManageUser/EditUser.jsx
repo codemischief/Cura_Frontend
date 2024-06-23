@@ -41,7 +41,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
     // const [tallyLedgerData,setTallyLedgerData] = useState([])
     // const [allCity,setAllCity] = useState([])
     const fetchInitialData = async () => {
-        console.log(currUser)
+        
         const data = {
             "user_id": user.id,
             "item_id": currUser,
@@ -49,7 +49,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         }
         const response = await APIService.getItembyId(data)
         const res = await response.json()
-        console.log(res)
+        
         const existing = { ...formValues }
         existing.nameOfTheUser = res.data.fullname
         existing.userName = res.data.username
@@ -69,7 +69,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         existing.zipCode = res.data.zip
         existing.status = res.data.status
         setFormValues(existing)
-        console.log(pass)
+        
     }
     useEffect(() => {
         fetchInitialData()
@@ -190,7 +190,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             })
         }
         if(formValues.password && formValues.confirmPassword && formValues.password!==formValues.confirmPassword){
-            console.log("ayoo")
+            
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "Password does not match" }
             })
@@ -353,7 +353,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                                 defaultValue="Select lob"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, lob: e.target.value }
                                                         return newData;
@@ -430,7 +430,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                                 defaultValue="Select Role"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, role: e.target.value }
                                                         return newData;
@@ -498,7 +498,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                 checked={formValues.status}
                                 className='mr-3 h-4 w-4'
                                 onClick={(e) => {
-                                    // console.log(e.target.checked)
+                                    // 
                                     const existing = { ...formValues };
                                     existing.status = !existing.status;
                                     setFormValues(existing)
