@@ -39,8 +39,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 2,
       filterComponent: TextFilterField,
-      title: "Employer Name",
-      field: "employername",
+      title: "Name",
+      field: "name",
       sorting: true,
     //   width : '1000px',
       align: "left",
@@ -54,8 +54,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 3,
       filterComponent: TextFilterField,
-      title: "Industry",
-      field: "industry",
+      title: "City",
+      field: "city",
       align: "left",
     //   width : '18%',
       filterDisabled: false,
@@ -70,8 +70,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 3,
       filterComponent: TextFilterField,
-      title: "Suburb",
-      field: "suburb",
+      title: "Email ID",
+      field: "emailid",
       align: "left",
     //   width : '18%',
       filterDisabled: false,
@@ -87,8 +87,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       id: 4,
       filterComponent: TextFilterField,
 
-      title: "Website",
-      field: "website",
+      title: "Phone Number",
+      field: "phoneno",
       align: "left",
       filterDisabled: false,
       sorting: true,
@@ -101,8 +101,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     },
     {
       id: 5,
-      title: "Onsite Oppurtunity",
-      field: "onsiteopportunitytext",
+      title: "Project",
+      field: "project",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
@@ -116,6 +116,21 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     },
     {
       id: 6,
+      title: "Society Name",
+      field: "project",
+      sorting: true,
+      align: "left",
+      filterComponent: TextFilterField,
+
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '15%'
+      },
+    },
+    {
+      id: 7,
       title: "ID",
       field: "id",
       sorting: true,
