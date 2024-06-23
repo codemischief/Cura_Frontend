@@ -230,39 +230,57 @@ const getLob = async (data) => {
 
 const addLob = async (data) => {
   const accessToken = getToken();
+  const modulename = 'LOB'
   const response = await fetch(`${env_URL_SERVER}addLob`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteLob = async (data) => {
   const accessToken = getToken();
+  const modulename = 'LOB'
   const response = await fetch(`${env_URL_SERVER}deleteLob`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editLob = async (data) => {
   const accessToken = getToken();
+  const modulename = 'LOB'
   const response = await fetch(`${env_URL_SERVER}editLob`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -347,13 +365,19 @@ const getEmployees = async (data) => {
 
 const addEmployee = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Employee'
   const response = await fetch(`${env_URL_SERVER}addEmployee`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -386,13 +410,19 @@ const getClientAdmin = async (data) => {
 
 const deleteLocality = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Locality'
   const response = await fetch(`${env_URL_SERVER}deleteLocality`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -425,13 +455,19 @@ const getModesAdmin = async (data) => {
 
 const addLocality = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Locality'
   const response = await fetch(`${env_URL_SERVER}addLocality`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -490,13 +526,19 @@ const getProjectInfo = async (data) => {
 
 const editLocality = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Locality'
   const response = await fetch(`${env_URL_SERVER}editLocality`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -529,52 +571,76 @@ const getRoles = async (data) => {
 
 const deleteEmployee = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Employee'
   const response = await fetch(`${env_URL_SERVER}deleteEmployee`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const addPayment = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Payment';
   const response = await fetch(`${env_URL_SERVER}addPayment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deletePayment = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Payment';
   const response = await fetch(`${env_URL_SERVER}deletePayment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editPayment = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Payment';
   const response = await fetch(`${env_URL_SERVER}editPayment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -659,13 +725,19 @@ const deleteProspects = async (data) => {
 
 const editEmployee = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Employee'
   const response = await fetch(`${env_URL_SERVER}editEmployee`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1635,39 +1707,57 @@ const addLLTenant = async (data) => {
 
 const addCities = async (data) => {
   const accessToken = getToken();
+  const modulename = 'City'
   const response = await fetch(`${env_URL_SERVER}addCities`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteCities = async (data) => {
   const accessToken = getToken();
+  const modulename = 'City'
   const response = await fetch(`${env_URL_SERVER}deleteCities`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editCities = async (data) => {
   const accessToken = getToken();
+  const modulename = 'City'
   const response = await fetch(`${env_URL_SERVER}editCities`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1713,39 +1803,57 @@ const getUser = async (data) => {
 
 const addUser = async (data) => {
   const accessToken = getToken();
+  const modulename = 'User'
   const response = await fetch(`${env_URL_SERVER}addUser`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editUser = async (data) => {
   const accessToken = getToken();
+  const modulename = 'User'
   const response = await fetch(`${env_URL_SERVER}editUser`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteUser = async (data) => {
   const accessToken = getToken();
+  const modulename = 'User'
   const response = await fetch(`${env_URL_SERVER}deleteUser`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1765,39 +1873,57 @@ const getService = async (data) => {
 
 const addService = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Service'
   const response = await fetch(`${env_URL_SERVER}addService`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editService = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Service'
   const response = await fetch(`${env_URL_SERVER}editService`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteService = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Service'
   const response = await fetch(`${env_URL_SERVER}deleteService`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1885,7 +2011,7 @@ const logOut = async () => {
 }
 
 const responseInterceptor = async (response) => {
-  console.log(response)
+  
   if (!response.ok) {
     // Handle HTTP errors
     const statusCode = response.status;
