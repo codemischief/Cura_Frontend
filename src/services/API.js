@@ -159,39 +159,57 @@ const getNewBuilderInfo = async (data) => {
 
 const addNewBuilder = async (data) => {
   const accessToken = getToken();
+  const modulename = 'BuilderInfo';
   const response = await fetch(`${env_URL_SERVER}addBuilderInfo`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editBuilderInfo = async (data) => {
   const accessToken = getToken();
+  const modulename = 'BuilderInfo';
   const response = await fetch(`${env_URL_SERVER}editBuilder`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteBuilderInfo = async (data) => {
   const accessToken = getToken();
+  const modulename = 'BuilderInfo';
   const response = await fetch(`${env_URL_SERVER}deleteBuilder`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -300,39 +318,57 @@ const getBankStatement = async (data) => {
 
 const addBankStatement = async (data) => {
   const accessToken = getToken();
+  const modulename = 'BankStatement'
   const response = await fetch(`${env_URL_SERVER}addBankSt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editBankStatement = async (data) => {
   const accessToken = getToken();
+  const modulename = 'BankStatement'
   const response = await fetch(`${env_URL_SERVER}editBankSt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteBankStatement = async (data) => {
   const accessToken = getToken();
+  const modulename = 'BankStatement'
   const response = await fetch(`${env_URL_SERVER}deleteBankSt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -487,13 +523,19 @@ const getHowReceivedAdmin = async (data) => {
 
 const addClientReceipt = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientReceipt'
   const response = await fetch(`${env_URL_SERVER}addClientReceipt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -848,26 +890,38 @@ const getRelationAdmin = async (data) => {
 
 const addClientInfo = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientInfo'
   const response = await fetch(`${env_URL_SERVER}addClientInfo`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteClientInfo = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientInfo'
   const response = await fetch(`${env_URL_SERVER}deleteClientInfo`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -887,13 +941,19 @@ const getClientInfoByClientId = async (data) => {
 
 const editCLientInfo = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientInfo'
   const response = await fetch(`${env_URL_SERVER}editClientInfo`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -952,13 +1012,19 @@ const getPropertyType = async (data) => {
 
 const addClientProperty = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientProperty'
   const response = await fetch(`${env_URL_SERVER}addClientProperty`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -991,26 +1057,38 @@ const getClientPropertyById = async (data) => {
 
 const editClientProperty = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientProperty'
   const response = await fetch(`${env_URL_SERVER}editClientProperty`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteClientProperty = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientProperty'
   const response = await fetch(`${env_URL_SERVER}deleteClientProperty`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1043,52 +1121,76 @@ const getPmaAgreement = async (data) => {
 
 const deleteClientReceipt = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientReceipt'
   const response = await fetch(`${env_URL_SERVER}deleteClientReceipt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editClientReceipt = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientReceipt'
   const response = await fetch(`${env_URL_SERVER}editClientReceipt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deletePmaAgreement = async (data) => {
   const accessToken = getToken();
+  const modulename = 'PMAAgreement'
   const response = await fetch(`${env_URL_SERVER}deleteClientPMAAgreement`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const addPmaAgreement = async (data) => {
   const accessToken = getToken();
+  const modulename = 'PMAAgreement'
   const response = await fetch(`${env_URL_SERVER}addClientPMAAgreement`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1108,26 +1210,38 @@ const getLLAgreement = async (data) => {
 
 const addLLAgreement = async (data) => {
   const accessToken = getToken();
+  const modulename = 'LLAgreement'
   const response = await fetch(`${env_URL_SERVER}addClientLLAgreement`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteLLAgreement = async (data) => {
   const accessToken = getToken();
+  const modulename = 'LLAgreement'
   const response = await fetch(`${env_URL_SERVER}deleteClientLLAgreement`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1160,52 +1274,76 @@ const getOrdersByClientId = async (data) => {
 
 const editClientPMAAgreement = async (data) => {
   const accessToken = getToken();
+  const modulename = 'PMAAgreement'
   const response = await fetch(`${env_URL_SERVER}editClientPMAAgreement`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editClientLLAgreement = async (data) => {
   const accessToken = getToken();
+  const modulename = 'LLAgreement'
   const response = await fetch(`${env_URL_SERVER}editClientLLAgreement`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const addProject = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ProjectInfo'
   const response = await fetch(`${env_URL_SERVER}addProject`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteProject = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ProjectInfo'
   const response = await fetch(`${env_URL_SERVER}deleteProject`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1225,13 +1363,19 @@ const getOrder = async (data) => {
 
 const addOrder = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Order'
   const response = await fetch(`${env_URL_SERVER}addOrders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1290,13 +1434,19 @@ const getTallyLedgerAdmin = async (data) => {
 
 const deleteOrders = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Order'
   const response = await fetch(`${env_URL_SERVER}deleteOrders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1329,26 +1479,38 @@ const getOrderReceipt = async (data) => {
 
 const addOrderReceipt = async (data) => {
   const accessToken = getToken();
+  const modulename = 'OrderReceipt'
   const response = await fetch(`${env_URL_SERVER}addOrderReceipt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteOrderReceipt = async (data) => {
   const accessToken = getToken();
+  const modulename = 'OrderReceipt'
   const response = await fetch(`${env_URL_SERVER}deleteOrdersReceipt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1368,26 +1530,38 @@ const getClientInvoice = async (data) => {
 
 const addClientInvoice = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientInvoice'
   const response = await fetch(`${env_URL_SERVER}addOrdersInvoice`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteClientInvoice = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientInvoice'
   const response = await fetch(`${env_URL_SERVER}deleteOrdersInvoice`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1407,39 +1581,57 @@ const getOrderStatusHistory = async (data) => {
 
 const editOrder = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Order'
   const response = await fetch(`${env_URL_SERVER}editOrders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editOrdersReceipt = async (data) => {
   const accessToken = getToken();
+  const modulename = 'OrderReceipt'
   const response = await fetch(`${env_URL_SERVER}editOrdersReceipt`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editOrdersInvoice = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ClientInvoice'
   const response = await fetch(`${env_URL_SERVER}editOrdersInvoice`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1473,26 +1665,38 @@ const getVendors = async (data) => {
 
 const addVendors = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Vendor'
   const response = await fetch(`${env_URL_SERVER}addVendors`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteVendors = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Vendor'
   const response = await fetch(`${env_URL_SERVER}deleteVendors`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1564,52 +1768,76 @@ const getVendorsInvoice = async (data) => {
 
 const addVendorsInvoice = async (data) => {
   const accessToken = getToken();
+  const modulename = 'VendorInvoice'
   const response = await fetch(`${env_URL_SERVER}addVendorInvoice`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editProject = async (data) => {
   const accessToken = getToken();
+  const modulename = 'ProjectInfo'
   const response = await fetch(`${env_URL_SERVER}editProject`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteVendorsInvoice = async (data) => {
   const accessToken = getToken();
+  const modulename = 'VendorInvoice'
   const response = await fetch(`${env_URL_SERVER}deleteVendorInvoice`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editVendorInvoice = async (data) => {
   const accessToken = getToken();
+  const modulename = 'VendorInvoice'
   const response = await fetch(`${env_URL_SERVER}editVendorInvoice`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
@@ -1642,52 +1870,76 @@ const getVendorPayment = async (data) => {
 
 const addVendorPayment = async (data) => {
   const accessToken = getToken();
+  const modulename = 'VendorPayment'
   const response = await fetch(`${env_URL_SERVER}addVendorPayment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.add + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editVendorPayment = async (data) => {
   const accessToken = getToken();
+  const modulename = 'VendorPayment'
   const response = await fetch(`${env_URL_SERVER}editVendorPayment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const deleteVendorPayment = async (data) => {
   const accessToken = getToken();
+  const modulename = 'VendorPayment'
   const response = await fetch(`${env_URL_SERVER}deleteVendorPayment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.delete + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
 
 const editVendors = async (data) => {
   const accessToken = getToken();
+  const modulename = 'Vendor'
   const response = await fetch(`${env_URL_SERVER}editVendors`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
