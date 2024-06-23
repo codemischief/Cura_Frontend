@@ -1,10 +1,5 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-// import { verify, sign } from "jsonwebtoken";
-//
-// import axios from "./axios";
-
-// ----------------------------------------------------------------------
 
 const isValidToken = (accessToken) => {
   if (!accessToken) {
@@ -24,8 +19,8 @@ const handleTokenExpired = (exp) => {
   const currentTime = Date.now();
   const timeLeft = exp * 1000 - currentTime;
   expiredTimer = window.setTimeout(() => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
+    // localStorage.removeItem("accessToken");
+    // localStorage.removeItem("user");
     // localStorage.removeItem("idleTimeOut");
   }, timeLeft);
 };
@@ -42,8 +37,8 @@ const setSession = (user, accessToken,refreshToken) => {
     const { exp } = jwtDecode(accessToken);
     handleTokenExpired(exp);
   } else {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
+    // localStorage.removeItem("accessToken");
+    // localStorage.removeItem("user");
     // localStorage.removeItem("idleTimeOut");
     delete axios.defaults.headers.common.Authorization;
   }

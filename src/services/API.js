@@ -4,11 +4,6 @@ import { toast } from "react-toastify";
 let toastShown = false;
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 
-const API = {
-  LOGIN: "$env_URL_SERVERvalidateCredentials",
-};
-
-const userId = 1234;
 
 const METHOD_POST = (data) => {
   const accessToken = getToken();
@@ -1216,7 +1211,9 @@ const addPmaAgreement = async (data) => {
       Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(data),
-  });
+  });    // localStorage.removeItem("accessToken");
+  // localStorage.removeItem("user");
+  // localStorage.removeItem("idleTimeOut");
   return handleResponse(response, { url:`${env_URL_SERVER}addClientPMAAgreement`, method: "POST", headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,
@@ -2388,8 +2385,8 @@ const changePassword = async (data, token) => {
 const refreshToken = async () => {
   const token = getToken();
   const refresh_token = localStorage.getItem("refreshToken");
-  console.log(refreshToken, "refreshToken");
   const userId = JSON.parse(localStorage.getItem("user"))?.id;
+
 
   const response = await fetch(`${env_URL_SERVER}refreshToken`, {
     method: "POST",
@@ -2411,9 +2408,9 @@ const refreshToken = async () => {
   } else {
     setTimeout(() => (toastShown = false), 1000); // Reset after 1 second
       toast.error("Unauthorized")
-    setAccessToken(null);
-    localStorage.clear();
-    redirectToLogin();
+      setAccessToken(null);
+      localStorage.clear();
+      redirectToLogin();
     
     throw new Error("Failed to refresh token");
   }
