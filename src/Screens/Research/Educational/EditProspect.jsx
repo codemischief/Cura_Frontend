@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
 const EditProspect = (props) => {
-    console.log(props.item);
+    
     const [editModalInput,setEditModalInput] = useState(props.item.personname);
     const [errorMessage,setErrorMessage] = useState("");
     const [allCountry, setAllCountry] = useState([]);
@@ -20,7 +20,7 @@ const EditProspect = (props) => {
         const response = await APIService.getItemByAttr(data);
         const result = await response.json();
         setCityId(result.data.id);
-        // console.log(result);
+        // 
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
@@ -28,7 +28,7 @@ const EditProspect = (props) => {
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        
         // await fetchCityId(props.item.city);
         await fetchStateData(props.item.countryid);
         // setPageLoading(false);
@@ -37,12 +37,12 @@ const EditProspect = (props) => {
         }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "user_id": 1234, "country_id": id };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         await fetchCityData(props.item.state);
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -51,7 +51,7 @@ const EditProspect = (props) => {
         const data = { "user_id": 1234, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         
         if (Array.isArray(result)) {
             setAllCity(result)
@@ -59,7 +59,7 @@ const EditProspect = (props) => {
         setPageLoading(false);
     }
     const handleEdit = async () => {
-        console.log('called');
+        
         if(!validate()) {
             return ;
         }
@@ -78,7 +78,7 @@ const EditProspect = (props) => {
             "createdby": 1234,
             "isdeleted": false
         }
-        console.log('called')
+        
         const response = await APIService.editProspects(data);
         // props.handleClose();
         props.openPrompt();
@@ -174,7 +174,7 @@ const EditProspect = (props) => {
                                                 onChange={e => {
                                                     // setselectedCountry(e.target.value);
                                                     // fetchStateData(e);
-                                                    // console.log(e.target.value);
+                                                    // 
                                                     setCurrCountry(e.target.value);
                                                     fetchStateData(e.target.value);
                                                     setFormValues((existing) => {
@@ -231,7 +231,7 @@ const EditProspect = (props) => {
                                                 defaultValue="Select State"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, city: e.target.value }
                                                         return newData;

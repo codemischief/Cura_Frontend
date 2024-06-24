@@ -55,7 +55,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     }, {});
 
     setCountryData(resultConverted);
-    console.log(countryData)
+    
   };
 
   const fetchCityData = async (id) => {
@@ -73,7 +73,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const response = await APIService.getCollegeTypesAdmin(data)
     const res = await response.json()
     setTypeData(res.data)
-    console.log(res.data)
+    
   } 
   useEffect(() => {
     fetchCollegeTypes()
@@ -98,7 +98,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
 
   
-  console.log(editData)
+  
   const formik = useFormik({
     initialValues: {
       name : editData?.name ? editData.name : null,
@@ -182,11 +182,11 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    // console.log(e.target)
+    // 
     // setFieldValue(e.target.name, e.target.value);
     const { type, name, value, checked } = e.target;
     // const fieldValue = type === 'checkbox' ? checked : value;
-    console.log(name, checked);
+    
     if(type == 'checkbox') {
       setFieldValue(name,checked)
     }else {
@@ -195,7 +195,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     }
   };
   const handleCountrySelect = (e) => {
-    // console.log(country)
+    // 
     setFieldValue("countryId", e.target.value);
     setFieldValue("city", null);
     setFieldValue("state", null);
@@ -423,8 +423,8 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">Country</label>
                               <span className="requiredError">*</span>
                             </div>
-                            {console.log(countryData)}
-                            {console.log(countryData[formik.values.countryId])}
+                            {}
+                            {}
                             <CustomSelectNative
                               data={Object.keys(countryData)}
                               value={countryData[formik.values.countryId] ? countryData[formik.values.countryId] : ""}
@@ -473,7 +473,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">City</label>
                               <span className="requiredError">*</span>
                             </div>
-                            {console.log(cityData)}
+                            {}
                             <CustomSelectNative
                               name="city"
                               data={Object.keys(cityData)}

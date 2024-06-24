@@ -22,7 +22,7 @@ const Owner = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingOwner(data)
-                console.log(data);
+                
             })
     }, []);
     //Validation of the form

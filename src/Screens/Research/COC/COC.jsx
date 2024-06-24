@@ -22,7 +22,7 @@ const COC = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingCOC(data)
-                console.log(data);
+                
             })
     }, []);
     //Validation of the form

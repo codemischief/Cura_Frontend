@@ -55,20 +55,20 @@ const Prospect = () => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
-    console.log(result.data);
+    
 
     if (Array.isArray(result.data)) {
       setAllCountry(result.data);
     }
-    console.log(result.data);
+    
   };
   const fetchStateData = async (id) => {
-    console.log(id);
+    
     const data = { user_id: 1234, country_id: id };
     // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
     const response = await APIService.getState(data);
     const result = (await response.json()).data;
-    console.log(result);
+    
     if (Array.isArray(result)) {
       setAllState(result);
     }
@@ -77,7 +77,7 @@ const Prospect = () => {
     const data = { user_id: 1234, state_name: id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
-    console.log(result);
+    
     if (Array.isArray(result)) {
       setAllCity(result);
       // if (result.length > 0) {
@@ -135,7 +135,7 @@ const Prospect = () => {
     const result = temp.data;
     const t = temp.total_count;
     setTotalItems(t);
-    console.log(result);
+    
     setExistingProspect(result);
     setPageLoading(false);
   };
@@ -159,7 +159,7 @@ const Prospect = () => {
       isdeleted: false,
     };
     const response = await APIService.addProspects(data);
-    console.log(response);
+    
     setIsProspectDialogue(false);
     // setPageLoading(false);
     setFormValues(initialValues);
@@ -171,7 +171,7 @@ const Prospect = () => {
     setIsDeleteDialogue(true);
   };
   const deleteProspects = async (id) => {
-    // console.log(id);
+    // 
     // setIsDeleteDialogue(false);
     const data = {
       user_id: 1234,
@@ -179,7 +179,7 @@ const Prospect = () => {
     };
     const response = await APIService.deleteProspects(data);
 
-    // console.log(response);
+    // 
     openDeleteSuccess();
   };
   //Validation of the form
@@ -315,7 +315,7 @@ const Prospect = () => {
     const result = temp.data;
     const t = temp.total_count;
     setTotalItems(t);
-    console.log(result);
+    
     setExistingProspect(result);
     setPageLoading(false);
   };
@@ -346,7 +346,7 @@ const Prospect = () => {
     const result = temp.data;
     const t = temp.total_count;
     setTotalItems(t);
-    console.log(result);
+    
     setExistingProspect(result);
     setPageLoading(false);
   };
@@ -1041,7 +1041,7 @@ const Prospect = () => {
                                             onChange={e => {
                                                 // setselectedCountry(e.target.value);
                                                 // fetchStateData(e);
-                                                // console.log(e.target.value);
+                                                // 
                                                 setCurrCountry(e.target.value);
                                                 fetchStateData(e.target.value);
                                                 setAllCity([]);
@@ -1096,7 +1096,7 @@ const Prospect = () => {
                                             defaultValue="Select State"
                                             onChange={e => {
 
-                                                console.log(e.target.value);
+                                                
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, city: e.target.value }
                                                     return newData;

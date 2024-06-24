@@ -30,8 +30,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   const {user} = useAuth();
   const { countryData } = useSelector((state) => state.commonApi);
-  console.log(countryData)
-  console.log('hey')
+  
+  
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -209,7 +209,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            {console.log(Object.keys(countryData))}
                             <CustomSelectNative
                               data={Object.keys(countryData)}
                               renderData={(item) => {

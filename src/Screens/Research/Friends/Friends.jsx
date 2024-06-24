@@ -22,7 +22,7 @@ const Friends = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingFriends(data)
-                console.log(data);
+                
             })
     }, []);
     //Validation of the form

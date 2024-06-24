@@ -57,7 +57,7 @@ const ArchitectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     // }, {});
 
     // setCountryData({ arr: result, obj: resultConverted });
-    console.log(countryData)
+    
   };
 
   const fetchCityData = async (id) => {
@@ -94,7 +94,7 @@ const ArchitectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = await response.json();
     setCityData(result.data);
   };
-  console.log(editData)
+  
   const formik = useFormik({
     initialValues: {
       name : editData?.name ? editData.name : null,
@@ -189,11 +189,11 @@ const ArchitectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    // console.log(e.target)
+    // 
     // setFieldValue(e.target.name, e.target.value);
     const { type, name, value, checked } = e.target;
     // const fieldValue = type === 'checkbox' ? checked : value;
-    console.log(name, checked);
+    
     if(type == 'checkbox') {
       setFieldValue(name,checked)
     }else {
@@ -202,7 +202,7 @@ const ArchitectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     }
   };
   const handleCountrySelect = (e) => {
-    // console.log(country)
+    // 
     setFieldValue("countryId", e.target.value);
     setFieldValue("city", null);
     setFieldValue("state", null);
@@ -355,7 +355,7 @@ const ArchitectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            {console.log(countryData)}
+                            {}
                             <select
                               // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="selectBoxField inputFieldValue"

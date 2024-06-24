@@ -68,7 +68,7 @@ const PropectusPage = () => {
       setOpenForm(true);
     } catch (error) {
       setLoading(false);
-      console.log("error", error);
+      
       errorHandler(error, "Failed to fetch Please try again later");
     } finally {
       setLoading("");

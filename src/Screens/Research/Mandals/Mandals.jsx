@@ -22,7 +22,7 @@ const Mandals = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingArchitect(data)
-                console.log(data);
+                
             })
     }, []);
     //Validation of the form

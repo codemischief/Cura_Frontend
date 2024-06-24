@@ -22,7 +22,7 @@ const Professionals = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingProfessionals(data)
-                console.log(data);
+                
             })
     }, []);
     //Validation of the form
