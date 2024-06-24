@@ -28,8 +28,6 @@ export const pmaSlice = createSlice({
     setData: (state, { payload }) => {
       const { data, year, month } = payload;
       state.data = TenantEmail(data.data, year, month);
-      console.log(payload.data)
-      console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
     },
     setStatus: (state, { payload }) => {
@@ -78,7 +76,6 @@ export const {
 
 export const getData =
   (payloadObj, year, month) => async (dispatch) => {
-    console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(

@@ -350,7 +350,7 @@ const PmaBillingTrendView = () => {
                   placeholderText="Select Year"
                   // selectedDates={sea}
                   onChange={(e) => {
-                    console.log(e)
+                    
                     setStartDate(e)
                   }}
                   selected={startDate}

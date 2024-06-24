@@ -254,7 +254,7 @@ const LobReceiptPayments = () => {
                   defaultValue="Lob Name"
                   onChange={e => {
                     // fetchCityData(e.target.value);
-                    console.log(e.target.value);
+                    
                     setLob(e.target.value);
                   }}
                 >

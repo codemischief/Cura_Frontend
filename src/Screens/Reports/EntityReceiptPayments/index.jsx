@@ -53,7 +53,7 @@ const LobReceiptPayments = () => {
     const data = { "user_id": user.id };
     const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
     const result = (await response.json());
-    console.log(result.data);
+    
 
     if (Array.isArray(result.data)) {
       setAllEntites(result.data);
@@ -274,7 +274,7 @@ const LobReceiptPayments = () => {
                   value={entity}
                   defaultValue="Select entity"
                   onChange={e => {
-                    console.log(e.target.value);
+                    
                     setEntity(e.target.value)
                   }}
                 >

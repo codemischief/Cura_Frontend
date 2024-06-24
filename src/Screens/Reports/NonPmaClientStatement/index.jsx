@@ -33,7 +33,7 @@ const LobReceiptPayments = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.nonPmaClientStAndRec);
-  console.log(totalAmount)
+  
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [showTable, setShowTable] = useState(false);

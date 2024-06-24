@@ -190,11 +190,11 @@ const VendorTraceReport = () => {
   });
   const [query, setQuery] = useState('')
   const handleVendorIDChange = (e) => {
-    console.log(e)
+    
     setSelectedOption(e)
   }
   const loadOptions = async (e) => {
-    console.log(e)
+    
     if (e.length < 2) return;
     const data = {
       user_id: user.id,

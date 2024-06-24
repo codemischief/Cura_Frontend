@@ -226,7 +226,7 @@ const LLlistReport = () => {
     const data = { user_id: user.id, "client_id": value.value, };
     const response = await APIService.getClientPropertyByClientId({ ...data, user_id: user.id });
     const res = await response.json();
-    console.log(res, "resresresresres");
+    
     setData((prev) => ({ ...prev, ClientPropertyData: [...res.data] }));
     setIntialValue({ ...intialValue, clientId: value })
 

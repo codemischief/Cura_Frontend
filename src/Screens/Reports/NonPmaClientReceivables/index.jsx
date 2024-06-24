@@ -34,7 +34,7 @@ const LobReceiptPayments = () => {
     filter,
   } = useSelector((state) => state.nonPmaClientStAndRec);
   const isInitialMount = useRef(true);
-  console.log(totalAmount)
+  
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [toast, setToast] = useState(false);

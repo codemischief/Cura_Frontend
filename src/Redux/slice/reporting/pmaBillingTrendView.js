@@ -29,8 +29,6 @@ export const pmaSlice = createSlice({
     setPmaBillingTrendView: (state, { payload }) => {
       const { data, year, month } = payload;
       state.pmaBillingTrendView = pmaBillingTrendView(data.data, year, month);
-      console.log(payload.data)
-      console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -84,14 +82,12 @@ export const {
 
 export const getPmaBillingTrendViewData =
   (payloadObj, year, month) => async (dispatch) => {
-    console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
         `${env_URL_SERVER}reportPMABillingTrendView`,
         payloadObj
       );
-      console.log(response)  
       dispatch(setPmaBillingTrendView({ data: response.data, year, month }));
       dispatch(setStatus("success"));
     } catch (err) {

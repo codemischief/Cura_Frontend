@@ -82,7 +82,6 @@ export const {
 
 export const getOrderReceiptData =
   (payloadObj, year, month) => async (dispatch) => {
-    console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(

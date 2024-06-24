@@ -29,8 +29,6 @@ export const pmaSlice = createSlice({
     setPmaInvoiceList: (state, { payload }) => {
       const { data, year, month } = payload;
       state.pmaInvoiceList = pmaInvoiceList(data.data, year, month);
-      console.log(payload.data)
-      console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -80,7 +78,6 @@ export const {
 
 export const getPmaInvoiceList =
   (payloadObj, year, month) => async (dispatch) => {
-    console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(

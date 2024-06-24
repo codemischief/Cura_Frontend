@@ -126,7 +126,7 @@ const OrderAnalysis = () => {
     };
     const response = await APIService.getOrderStatusAdmin({...data , user_id:user.id});
     const result = await response.json();
-    console.log(result.data, "Status");
+    
     setData((prev) => ({ ...prev, Status: [...result.data] }));
   };
 
@@ -329,7 +329,7 @@ const OrderAnalysis = () => {
   const handleClient = (value)=>{
     // setQuery(value.value)
     setQuery(value.value)
-    console.log(value)
+    
     setIntialValue({...intialValue,client:value})
   }
 
@@ -431,7 +431,6 @@ const OrderAnalysis = () => {
                 </select>
               </div>
               <div className="flex flex-col h-16 w-[200px]">
-                {console.log(query)}
                 <div className="text-[13px]">Client Name <span className="text-red-500">*</span></div>
                 <AsyncSelect
                   onChange={handleClient}
@@ -443,7 +442,7 @@ const OrderAnalysis = () => {
                   cacheOptions
                   defaultOptions
                   onInputChange={(value) => {
-                    console.log(value)
+                    
                     setQuery(value)
                   } }
                   styles={{

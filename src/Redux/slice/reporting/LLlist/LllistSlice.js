@@ -28,7 +28,6 @@ export const LLlist = createSlice({
     setLLlist: (state, { payload }) => {
       const { data } = payload;
       state.LLlist = LLlistFormat(data.data)
-      console.log(LLlist)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },

@@ -29,8 +29,8 @@ export const pmaSlice = createSlice({
     setActivePmaAgreement: (state, { payload }) => {
       const { data, year, month } = payload;
       state.activePmaAgreement = activePmaAgreement(data.data, year, month);
-      console.log(payload.data)
-      console.log(payload.data.total)
+      
+      
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -81,7 +81,7 @@ export const {
 
 export const getActivePmaAgreement =
   (payloadObj, year, month) => async (dispatch) => {
-    console.log("called");
+    
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(

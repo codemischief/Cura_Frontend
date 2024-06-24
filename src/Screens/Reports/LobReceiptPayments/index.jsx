@@ -40,8 +40,8 @@ const LobReceiptPayments = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.lobReceiptPayments);
-  console.log(totalAmount)
-  console.log(lobReceiptPaymentsData)
+  
+  
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -288,7 +288,7 @@ const LobReceiptPayments = () => {
                   defaultValue="Lob Name"
                   onChange={e => {
                     // fetchCityData(e.target.value);
-                    console.log(e.target.value);
+                    
                     setLob(e.target.value);
                   }}
                 >

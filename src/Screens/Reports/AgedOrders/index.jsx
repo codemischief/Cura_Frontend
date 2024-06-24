@@ -88,7 +88,7 @@ const AgedOrders = () => {
     };
     const response = await APIService.getOrderStatusAdmin({ ...data, user_id: user.id });
     const result = await response.json();
-    console.log(result.data, "Status");
+    
     setData((prev) => ({ ...prev, Status: [...result.data] }));
   };
 

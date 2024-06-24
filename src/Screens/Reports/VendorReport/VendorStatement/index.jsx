@@ -72,7 +72,7 @@ const VendorStatementView = () => {
       user_id: user.id,
     };
     const vendor = await APIService.getVendorAdmin({ ...data, user_id: user.id });
-    console.log(vendor, "vendor");
+    
     setVendor((await vendor.json()).data);
   };
 

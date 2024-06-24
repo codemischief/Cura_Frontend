@@ -190,11 +190,11 @@ const OrderTraceReport = () => {
   });
   const [query, setQuery] = useState('')
   const handleOrderIDChange = (e) => {
-    console.log(e)
+    
     setSelectedOption(e)
   }
   const loadOptions = async (e) => {
-    console.log(e)
+    
     if (e.length < 2) return;
     const data = {
       "user_id": user.id,
