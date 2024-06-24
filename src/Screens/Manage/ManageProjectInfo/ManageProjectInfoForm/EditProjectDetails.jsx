@@ -65,7 +65,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.swimmingpool}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.swimmingpool = !temp.swimmingpool
@@ -82,7 +82,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.liftbatterybackup}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.liftbatterybackup = !temp.liftbatterybackup
@@ -99,7 +99,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.gym}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.gym = !temp.gym
@@ -115,7 +115,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.pipedgas}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.pipedgas = !temp.pipedgas
@@ -133,7 +133,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.lift}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.lift = !temp.lift
@@ -149,7 +149,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.clubhouse}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.clubhouse = !temp.clubhouse
@@ -165,7 +165,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.childrensplayarea}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.childrensplayarea = !temp.childrensplayarea
@@ -181,7 +181,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.cctvcameras}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.cctvcameras = !temp.cctvcameras
@@ -202,7 +202,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.studio}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.studio = !temp.studio
@@ -218,7 +218,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities["1BHK"]}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp["1BHK"] = !temp["1BHK"]
@@ -234,7 +234,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities["2BHK"]}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp["2BHK"] = !temp["2BHK"]
@@ -251,7 +251,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities["4BHK"]}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp["4BHK"] = !temp["4BHK"]
@@ -268,7 +268,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.duplex}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.duplex= !temp.duplex
@@ -288,7 +288,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.RK}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.RK = !temp.RK
@@ -305,7 +305,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities["3BHK"]}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp["3BHK"] = !temp["3BHK"]
@@ -320,7 +320,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.penthouse}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.penthouse = !temp.penthouse
@@ -339,7 +339,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                             checked={formValues.project_amenities.other}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_amenities};
                                 temp.other = !temp.other

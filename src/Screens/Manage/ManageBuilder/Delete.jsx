@@ -12,10 +12,10 @@ const Delete = (props) => {
     const [showLoading, setShowLoading] = useState(false);
     const deleteCountry = async (item) => {
         // props.setShowDelete(true);
-        // console.log(props.currentBuilder);
+        // 
         setShowLoading(true);
         const data = { "user_id": user.id, "builder_id": props.currentBuilder };
-        console.log(data);
+        
         const response = await APIService.deleteBuilderInfo(data);
         await props.fetchData();
         setShowLoading(false);

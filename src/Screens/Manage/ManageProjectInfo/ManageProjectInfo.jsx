@@ -34,7 +34,7 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageProjectInfo = () => {
     const {pathname} = useLocation()
     const {user} = useAuth()
-    console.log(pathname)
+    
     const dataRows = [
         "projectname", 
         "buildername", 
@@ -84,7 +84,7 @@ const ManageProjectInfo = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 if(filterMapState[key].filterData == 'Numeric') {
@@ -114,13 +114,13 @@ const ManageProjectInfo = () => {
         };
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
-        console.log(temp);
+        
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingProjectInfo(result);
-        console.log(result);
+        
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
@@ -139,7 +139,7 @@ const ManageProjectInfo = () => {
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingProjectInfo(result);
@@ -147,7 +147,7 @@ const ManageProjectInfo = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        console.log(searchInput);
+        
         setCurrentPages((prev) => quantity)
         setCurrentPage((prev) => 1)
         const data = {
@@ -163,17 +163,17 @@ const ManageProjectInfo = () => {
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingProjectInfo(result);
         setPageLoading(false);
     }
     useEffect(() => {
-        console.log('called')
+        
         fetchData();
         const handler = (e) => {
-            console.log(menuRef)
+            
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 setProjectNameFilter(false)
                 setBuilderNameFilter(false)
@@ -200,8 +200,8 @@ const ManageProjectInfo = () => {
     const [deleteProjectName,setDeleteProjectName] = useState("")
     const handleDelete = (item) => {
 
-        // console.log(id)
-        console.log(item)
+        // 
+        
         setDeleteProjectName(item.projectname)
 
         setCurrProject((prev) => item.id)
@@ -282,7 +282,7 @@ const ManageProjectInfo = () => {
         }
         if (formValues.project_info.addressline1 == null || formValues.project_info.addressline1 == "") {
             // we need to set the formErrors
-            console.log('hey')
+            
             setFormErrors((existing) => {
                 return { ...existing, addressline1: "Enter Adress Line1" }
             })
@@ -355,11 +355,11 @@ const ManageProjectInfo = () => {
         return res
     }
     const handleAddProjectInfo = () => {
-        console.log(formValues)
+        
         let temp = validate()
         if (!temp.status) {
-            console.log(formErrors)
-            console.log(temp.page)
+            
+            
             setSelectedDialogue(temp.page)
             return;
         }
@@ -472,7 +472,7 @@ const ManageProjectInfo = () => {
         setFormErrors({});
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -516,7 +516,7 @@ const ManageProjectInfo = () => {
         const response = await APIService.getProjectInfo(data)
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
@@ -542,7 +542,7 @@ const ManageProjectInfo = () => {
                         FileSaver.saveAs(result, 'ProjectData.pdf');
                     }
 
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -574,7 +574,7 @@ const ManageProjectInfo = () => {
         setPageLoading(false)
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setIsSearchOn(true);
         setCurrentPage((prev) => 1)
@@ -709,7 +709,7 @@ const ManageProjectInfo = () => {
         }
         const response = await APIService.getBuildersAdmin(data);
         const res = await response.json();
-        console.log(res)
+        
         setBuilderNameData(res.data)
     }
     const getProjectTypeData = async () => {
@@ -718,7 +718,7 @@ const ManageProjectInfo = () => {
         }
         const response = await APIService.getProjectTypeAdmin(data)
         const res = await response.json();
-        console.log(res.data)
+        
         setProjectTypeData(res.data)
     }
     const getProjectLegalData = async () => {
@@ -727,7 +727,7 @@ const ManageProjectInfo = () => {
         }
         const response = await APIService.getProjectLegalStatusAdmin(data)
         const res = await response.json();
-        console.log(res.data)
+        
         setProjectLegalData(res.data)
     }
     
@@ -836,9 +836,9 @@ const ManageProjectInfo = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
         var existing = filterMapState;
         existing = {
@@ -874,10 +874,10 @@ const ManageProjectInfo = () => {
                 setTenantFilter(false)
                 setIdFilter(false)
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
-            console.log(key)
+            
             if(mapState[key].filterData == 'Numeric') {
                 tempArray.push([
                     key,
@@ -895,13 +895,13 @@ const ManageProjectInfo = () => {
                         mapState[key].filterData,
                     ]);
                 }else {
-                    console.log(key)
+                    
                    tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
                 }
                
             }
         })
-        console.log(tempArray)
+        
 
         setStateArray(tempArray)
         setCurrentPage((prev) => 1)
@@ -922,7 +922,7 @@ const ManageProjectInfo = () => {
         const t = temp.total_count;
         setTotalItems(t);
         setExistingProjectInfo(result);
-        console.log(result);
+        
         setPageLoading(false);
     }
 
@@ -937,7 +937,7 @@ const ManageProjectInfo = () => {
             }
             const response = await APIService.getItembyId(data)
             const res = await response.json()
-            console.log(res.data)
+            
             setState(prev => ({
                 ...prev,
                 buildername : res.data.buildername,
@@ -957,7 +957,7 @@ const ManageProjectInfo = () => {
     }
     const [currProject, setCurrProject] = useState(0);
     const handleEdit = (id) => {
-        console.log(id)
+        
         setCurrProject((prev) => id)
         setIsEditDialogue(true)
     }
@@ -996,7 +996,7 @@ const ManageProjectInfo = () => {
                     // const temp = {...filterMapState};
                     // temp[columnName].type = "".
                     // setFilterMapState(temp)
-                    console.log(inputVariable)
+                    
                     if(inputVariable == "") {
                         const temp = {...filterMapState}
                         temp[columnName].filterType = ""
@@ -1394,7 +1394,7 @@ const ManageProjectInfo = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}

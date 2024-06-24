@@ -50,11 +50,11 @@ const ManageVendorPayment = () => {
     const menuRef = useRef();
     const { pathname } = useLocation()
     const [state,setState] = useState({})
-    console.log(pathname)
+    
     const navigate = useNavigate();
     const canEdit = checkEditAccess();
-    console.log(state)
-    // console.log(state?.orderid)
+    
+    // 
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -122,18 +122,18 @@ const ManageVendorPayment = () => {
         const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -142,7 +142,7 @@ const ManageVendorPayment = () => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -160,7 +160,7 @@ const ManageVendorPayment = () => {
         const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, role: result.data[0].id }
         })
@@ -175,7 +175,7 @@ const ManageVendorPayment = () => {
         const data = { "user_id": user.id };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, entity: result.data[0][0] }
         })
@@ -197,7 +197,7 @@ const ManageVendorPayment = () => {
         };
         const response = await APIService.getLob(data);
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, lob: result.data[0].id }
         })
@@ -223,7 +223,7 @@ const ManageVendorPayment = () => {
             }
 
         }
-        console.log(tempArray)
+        
         setModesData(tempArray)
         // setModesData(res.data && res.data.map((item) => {
         //     // console.log()
@@ -233,8 +233,8 @@ const ManageVendorPayment = () => {
         //     return item
         //    }
         // }))
-        console.log(modesData)
-        console.log(res)
+        
+        
     }
 
     const [usersData, setUsersData] = useState([]);
@@ -256,7 +256,7 @@ const ManageVendorPayment = () => {
         const res = await response.json()
         // const existing = { ...formValues }
         // existing.receivedBy = res.data[0].id,
-        //     console.log(existing.receivedBy)
+        //     
         // setFormValues(existing)
         setUsersData(helperUser(res.data))
     }
@@ -266,7 +266,7 @@ const ManageVendorPayment = () => {
         const data = { "user_id": user.id }
         const response = await APIService.getVendorAdmin(data)
         const res = await response.json()
-        console.log(res)
+        
         setVendorData(res.data)
     }
 
@@ -278,7 +278,7 @@ const ManageVendorPayment = () => {
 
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
+        // 
         Object.keys(filterMapState).forEach((key) => {
             if (filterMapState[key].filterType != "") {
                 if (filterMapState[key].filterData == 'Numeric') {
@@ -315,7 +315,7 @@ const ManageVendorPayment = () => {
         const response = await APIService.getVendorPayment(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorPayment(result);
@@ -323,7 +323,7 @@ const ManageVendorPayment = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
-        console.log(pageNumber)
+        
         setCurrentPage(() => pageNumber)
         const data = {
             "user_id": user.id,
@@ -338,7 +338,7 @@ const ManageVendorPayment = () => {
         const response = await APIService.getVendorPayment(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorPayment(result);
@@ -346,7 +346,7 @@ const ManageVendorPayment = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        console.log(searchInput);
+        
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": user.id,
@@ -362,7 +362,7 @@ const ManageVendorPayment = () => {
         const response = await APIService.getVendorPayment(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorPayment(result);
@@ -377,21 +377,21 @@ const ManageVendorPayment = () => {
 
         const response = await APIService.getClientPropertyByClientId(data)
         const res = await response.json()
-        console.log(res)
+        
         setClientPropertyData(res.data)
     }
     const [orders, setOrders] = useState([]);
     
     const getOrdersByClientId = async (id) => {
         if(id == null) return
-        console.log('hello')
+        
         const data = {
             "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders((prev) => {
             const temp = {}
              res.data.forEach((item) => {
@@ -428,7 +428,7 @@ const ManageVendorPayment = () => {
         // "officeid": 1
         const response = await APIService.addVendorPayment(data)
         const res = await response.json()
-        console.log(res)
+        
 
         setOpenAddConfirmation(false);
         SetIsVendorPaymentDialogue(false);
@@ -467,10 +467,10 @@ const ManageVendorPayment = () => {
     const [currInvoice, setCurrInvoice] = useState(0);
     const handleEdit = (id) => {
         // we need to open the edit modal
-        console.log(id)
+        
         setCurrInvoice((prev) => id)
         // setCurrOrderReceipt((prev) => id)
-        // console.log(currOrderReceipt)
+        // 
         setShowEditModal(true);
     }
     const initialValues = {
@@ -585,9 +585,9 @@ const ManageVendorPayment = () => {
     const [orderText, setOrderText] = useState("Select Order")
 
     const handleAddVendorPayment = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         SetIsVendorPaymentDialogue(false);
@@ -606,7 +606,7 @@ const ManageVendorPayment = () => {
 
     // validate form and to throw Error message
     const validate = () => {
-        console.log(formValues)
+        
         var res = true;
 
         if (!formValues.client) {
@@ -683,7 +683,7 @@ const ManageVendorPayment = () => {
         return res;
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -759,7 +759,7 @@ const ManageVendorPayment = () => {
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'VendorPaymentData.pdf');
                     }
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -770,7 +770,7 @@ const ManageVendorPayment = () => {
         }
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         // setCurrentPages(15);
@@ -788,7 +788,7 @@ const ManageVendorPayment = () => {
         const response = await APIService.getVendorPayment(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorPayment(result);
@@ -812,7 +812,7 @@ const ManageVendorPayment = () => {
         const response = await APIService.getVendorPayment(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorPayment(result);
@@ -894,8 +894,8 @@ const ManageVendorPayment = () => {
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -910,12 +910,12 @@ const ManageVendorPayment = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,
@@ -1008,9 +1008,9 @@ const ManageVendorPayment = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
         var existing = filterMapState;
         existing = {
@@ -1046,8 +1046,8 @@ const ManageVendorPayment = () => {
         setFilterMapState(mapState)
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -1069,7 +1069,7 @@ const ManageVendorPayment = () => {
         const response = await APIService.getVendorPayment(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorPayment(result);
@@ -1083,7 +1083,7 @@ const ManageVendorPayment = () => {
         const tempArray = [];
         // we need to query thru the object
         setSortField(field)
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -1104,7 +1104,7 @@ const ManageVendorPayment = () => {
         const response = await APIService.getVendorPayment(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorPayment(result);
@@ -1558,7 +1558,7 @@ const ManageVendorPayment = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}

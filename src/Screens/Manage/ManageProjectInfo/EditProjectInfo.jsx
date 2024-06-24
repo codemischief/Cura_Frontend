@@ -89,7 +89,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
         }
         const response = await APIService.getBuildersAdmin(data);
         const res = await response.json();
-        console.log(res)
+        
         setBuilderNameData(res.data)
      }
      const getProjectTypeData = async () => {
@@ -98,7 +98,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
          }
          const response = await APIService.getProjectTypeAdmin(data)
          const res = await response.json();
-         console.log(res.data)
+         
          setProjectTypeData(res.data)
      } 
      const getProjectLegalData = async () => {
@@ -107,7 +107,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
          }
          const response = await APIService.getProjectLegalStatusAdmin(data)
          const res = await response.json();
-         console.log(res.data)
+         
          setProjectLegalData(res.data)
      }
 
@@ -139,10 +139,10 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
             "user_id" : user.id,
             "id" : currProject
         }
-        console.log(data)
+        
         const response = await APIService.getProjectById(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setFormValues(res.data)
         setPageLoading(false)
     }
@@ -153,10 +153,10 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
             "user_id" : user.id,
             "id" : currProject
         }
-        console.log(data)
+        
         const response = await APIService.getProjectById(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setHelperData(res.data)
         // setFormValues(res.data)
         setPageLoading(false)
@@ -170,7 +170,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
     },[])
     const validate = () => {
         // var res = true
-        console.log(formValues)
+        
         let res = {
             status : true,
             page : 1
@@ -215,7 +215,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
         }
         if(formValues.project_info.addressline1 == null || formValues.project_info.addressline1 == "") {
             // we need to set the formErrors
-            console.log('hey')
+            
             setFormErrors((existing) => {
                 return { ...existing, addressline1: "Enter Adress Line1" }
             })

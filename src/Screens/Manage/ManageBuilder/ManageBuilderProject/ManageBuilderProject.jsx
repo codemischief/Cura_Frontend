@@ -33,9 +33,9 @@ const ManageBuilderProject = () => {
     const { user} = useAuth()
     const params = useParams()
     let { state } = useLocation();
-    console.log(state)
-    console.log(params.builderid)
-    // console.log(params)
+    
+    
+    // 
     const [existingProjects, setExistingProjects] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSuccess, setShowSucess] = useState(false);
@@ -131,10 +131,10 @@ const ManageBuilderProject = () => {
           };
         const response = await APIService.getProjectsByBuilderId(data)
         const res = await response.json()
-        console.log(res)
+        
         const result = res.data;
         setPageLoading(false);
-        // console.log(result);
+        // 
         setExistingProjects(result);
     }
     const fetchCountryData = async () => {
@@ -142,7 +142,7 @@ const ManageBuilderProject = () => {
         const data = { "user_id": user.id };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result);
+        
         if(Array.isArray(result)) {
             setAllCountry(result);
         }
@@ -153,7 +153,7 @@ const ManageBuilderProject = () => {
         const data = { "user_id": userId || user.id, "country_id": 5 };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        // console.log(result)
+        // 
         if(Array.isArray(result)){
             setAllState(result)
         }
@@ -383,7 +383,7 @@ const ManageBuilderProject = () => {
         }
         if (formValues.project_info.addressline1 == null || formValues.project_info.addressline1 == "") {
             // we need to set the formErrors
-            console.log('hey')
+            
             setFormErrors((existing) => {
                 return { ...existing, addressline1: "Enter Adress Line1" }
             })
@@ -436,10 +436,10 @@ const ManageBuilderProject = () => {
         return res
     }
     const addProjectInfo = async () => {
-        console.log(formValues)
+        
         let temp = validate()
         if (!temp.status) {
-            console.log(formErrors)
+            
             setSelectedDialogue(temp.page)
             return;
         }
@@ -545,7 +545,7 @@ const ManageBuilderProject = () => {
         }
         const response = await APIService.getProjectTypeAdmin(data)
         const res = await response.json();
-        console.log(res.data)
+        
         setProjectTypeData(res.data)
     }
     const getProjectLegalData = async () => {
@@ -554,7 +554,7 @@ const ManageBuilderProject = () => {
         }
         const response = await APIService.getProjectLegalStatusAdmin(data)
         const res = await response.json();
-        console.log(res.data)
+        
         setProjectLegalData(res.data)
     }
     

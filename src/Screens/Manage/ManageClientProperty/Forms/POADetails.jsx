@@ -4,7 +4,7 @@ import { APIService } from '../../../../services/API';
 import useAuth from '../../../../context/JwtContext';
 const POADetails = ({initialCountries,initialStates,initialCities,formValues,setFormValues}) => {
   const {user} = useAuth()
-  {console.log(initialCountries)}
+  {}
   const [country, setCountry] = useState(initialCountries);
   const [city, setCity] = useState(initialCities);
   const [state, setState] = useState(initialStates);
@@ -17,13 +17,13 @@ const POADetails = ({initialCountries,initialStates,initialCities,formValues,set
      }})
    }
    const fetchStateData = async (id) => {
-    console.log(id);
+    
     const data = { "user_id": user.id, "country_id": id };
     // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
     const response = await APIService.getState(data);
     const result = (await response.json())
-    console.log(result)
-    console.log(result)
+    
+    
     if (Array.isArray(result.data)) {
         setState(result.data)
     }
@@ -32,7 +32,7 @@ const fetchCityData = async (id) => {
   const data = { "user_id": user.id, "state_name": id };
   const response = await APIService.getCities(data);
   const result = (await response.json()).data;
-  console.log(result);
+  
   if (Array.isArray(result)) {
       setCity(result)
       
@@ -60,7 +60,7 @@ const fetchCityData = async (id) => {
                 fetchStateData(e.target.value)
                 setCity([]);
             }} > 
-            {console.log(country)}
+            {}
               <option value="" hidden>Select country</option>
               {country && country.map(item => (
                 <option key={item.id} value={item.id}>

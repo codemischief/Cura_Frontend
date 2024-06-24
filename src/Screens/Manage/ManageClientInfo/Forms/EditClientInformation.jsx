@@ -10,8 +10,8 @@ import useAuth from '../../../../context/JwtContext';
 import ClientPropertySelectNative from '../../../../Components/common/select/ClientPropertySelectNative';
 const EditClientInformation = ({formErrors, formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities,tenantofname, orderText , setOrderText, setTenantOfName}) => {
     const { user } = useAuth()
-    console.log(orderText)
-    // console.log(formErrors)
+    
+    // 
     const [Salutation, setSalutation] = useState([
         {
             id: 1,
@@ -48,7 +48,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
     // const [clientType, setClientType] = useState([]);
     const [tenetOf, setTenetOf] = useState([]);
     // const [state, setState] = useState([]);
-    // console.log(initialStates)
+    // 
     const [allState, setAllState] = useState([]);
     const [source, setSource] = useState([]);
     const [employeeName, setEmployeeName] = useState([]);
@@ -62,16 +62,16 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
         })
     };
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
             if(result.length >= 1) {
-                console.log('hey')
+                
                 fetchCityData(result[0][0])
             }
         }
@@ -80,7 +80,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
         }
@@ -104,13 +104,13 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
     
         const response = await APIService.getClientPropertyByClientId(data)
         const res = await response.json()
-        console.log(res)
+        
         setTenantOfProperty(convertToIdNameObject(res.data))
         // setTenantOfProperty(res.data)
      }
     useEffect(() => {
         // we need to fetch the client property
-        console.log(tenantofname.value);
+        
         // getClientPropertyByClientId(tenantofname.value)
         getClientPropertyByClientId(formValues.client_info.tenantof)
         setAllState(initialStates);
@@ -121,12 +121,12 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
 
   const [options,setOptions] = useState([]);
  
-   console.log(tenantofname)
+   
    const [selectedOption,setSelectedOption] = useState(tenantofname);
    const [query,setQuery] = useState('')
    const handleClientNameChange = (e) => {
-       console.log('hey')
-       console.log(e)
+       
+       
       //  setFormValues({...formValues,client_property : {
       //   ...formValues.client_property,
       //   clientid : e.value
@@ -144,11 +144,11 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
        existing.client_info = temp;
        getClientPropertyByClientId(e.value)
        setFormValues(existing)
-       console.log(formValues)
+       
        setSelectedOption(e)
    }
    const loadOptions = async (e) => {
-      console.log(e)
+      
       if(e.length < 3) return ;
       const data = {
         "user_id" : user.id,
@@ -510,7 +510,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                     </div>
                     
                     <div className="">
-                        {console.log(formValues.client_info.tenantofproperty)}
+                        {}
                         <div className="text-[13px]">Tenant Of Property</div>
                         {/* <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.tenantofproperty} name="city" onChange={(e) => {
                             setFormValues({

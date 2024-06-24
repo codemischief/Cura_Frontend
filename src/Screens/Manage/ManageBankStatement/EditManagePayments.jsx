@@ -78,7 +78,7 @@ const EditManageStatement = (props) => {
         props.setOpenDialog(false);
         props.showCancel();
     };
-    console.log(props)
+    
     const initialValues = {
         modeofpayment: null ,
         particulars: null,
@@ -117,7 +117,7 @@ const EditManageStatement = (props) => {
          }
          const response = await APIService.getItembyId(data)
          const res = await response.json()
-         console.log(res.data)
+         
          const temp = {...formValues}
          temp.amount = res.data.amount
          temp.crdr = res.data.crdr

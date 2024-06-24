@@ -32,7 +32,7 @@ const AddFeildBanks = ({index,formValues,setFormValues}) => {
     setFormValues({...formValues,client_bank_info : arrayClone})
   }
   const handleBankMicr = (e) => {
-    console.log('hey')
+    
     const arrayClone = [...formValues.client_bank_info];
     arrayClone[index].bankmicrcode = e.target.value;
     setFormValues({...formValues,client_bank_info : arrayClone})

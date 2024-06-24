@@ -7,7 +7,7 @@ import Cross from "../../../../assets/cross.png"
 import Draggable from "react-draggable";
 // import { APIService } from "../../../services/API";
 const DeleteClientInfo = (props) => {
-    console.log(props)
+    
     const [showLoading, setShowLoading] = useState(false);
     const [buttonLoading, setButtonLoading] = useState(false);
     const handleDeleteClick = () => {

@@ -47,7 +47,7 @@ const ManageVendorInvoice = () => {
     const { user } = useAuth()
     const {pathname} = useLocation()
     const canEdit = checkEditAccess();
-    console.log(pathname)
+    
     const dataRows = [
         "vendorname",
         "clientname",
@@ -118,18 +118,18 @@ const ManageVendorInvoice = () => {
         const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -138,7 +138,7 @@ const ManageVendorInvoice = () => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
         }
@@ -150,7 +150,7 @@ const ManageVendorInvoice = () => {
         const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, role: result.data[0].id }
         })
@@ -165,7 +165,7 @@ const ManageVendorInvoice = () => {
         const data = { "user_id": user.id };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, entity: result.data[0][0] }
         })
@@ -187,7 +187,7 @@ const ManageVendorInvoice = () => {
         };
         const response = await APIService.getLob(data);
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, lob: result.data[0].id }
         })
@@ -204,7 +204,7 @@ const ManageVendorInvoice = () => {
         const response = await APIService.getModesAdmin(data)
         const res = await response.json()
         setModesData(res.data)
-        console.log(res)
+        
     }
 
     const [usersData, setUsersData] = useState([]);
@@ -216,7 +216,7 @@ const ManageVendorInvoice = () => {
         const res = await response.json()
         const existing = { ...formValues }
         existing.receivedBy = res.data[0].id,
-            console.log(existing.receivedBy)
+            
         setFormValues(existing)
         setUsersData(res.data)
     }
@@ -226,7 +226,7 @@ const ManageVendorInvoice = () => {
         const data = { "user_id": user.id }
         const response = await APIService.getVendorAdmin(data)
         const res = await response.json()
-        console.log(res)
+        
         setVendorData(res.data)
     }
 
@@ -271,7 +271,7 @@ const ManageVendorInvoice = () => {
         const response = await APIService.getVendorsInvoice(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorInvoice(result);
@@ -279,7 +279,7 @@ const ManageVendorInvoice = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
-        console.log(pageNumber)
+        
         setCurrentPage(() => pageNumber)
         const data = {
             "user_id": user.id,
@@ -294,7 +294,7 @@ const ManageVendorInvoice = () => {
         const response = await APIService.getVendorsInvoice(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorInvoice(result);
@@ -302,7 +302,7 @@ const ManageVendorInvoice = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        console.log(searchInput);
+        
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": user.id,
@@ -317,7 +317,7 @@ const ManageVendorInvoice = () => {
         const response = await APIService.getVendorsInvoice(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorInvoice(result);
@@ -332,7 +332,7 @@ const ManageVendorInvoice = () => {
 
         const response = await APIService.getClientPropertyByClientId(data)
         const res = await response.json()
-        console.log(res)
+        
         setClientPropertyData(res.data)
     }
     const [orders, setOrders] = useState([]);
@@ -351,7 +351,7 @@ const ManageVendorInvoice = () => {
         }
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders(convertToIdNameObject(res.data))
     }
     const addVendorInvoice = async () => {
@@ -375,7 +375,7 @@ const ManageVendorInvoice = () => {
         }
         const response = await APIService.addVendorsInvoice(data)
         const res = await response.json()
-        console.log(res)
+        
 
         setOpenAddConfirmation(false);
         SetIsVendorInvoiceDialogue(false);
@@ -402,10 +402,10 @@ const ManageVendorInvoice = () => {
     const [currInvoice, setCurrInvoice] = useState(0);
     const handleEdit = (id) => {
         // we need to open the edit modal
-        console.log(id)
+        
         setCurrInvoice((prev) => id)
         // setCurrOrderReceipt((prev) => id)
-        // console.log(currOrderReceipt)
+        // 
         setShowEditModal(true);
     }
     const initialValues = {
@@ -477,9 +477,9 @@ const ManageVendorInvoice = () => {
 
 
     const handleAddVendorInvoice = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         SetIsVendorInvoiceDialogue(false);
@@ -524,7 +524,7 @@ const ManageVendorInvoice = () => {
         return res;
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -601,7 +601,7 @@ const ManageVendorInvoice = () => {
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'VendorInvoiceData.pdf');
                     }
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -612,7 +612,7 @@ const ManageVendorInvoice = () => {
         }
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         // setCurrentPages(15);
@@ -630,7 +630,7 @@ const ManageVendorInvoice = () => {
         const response = await APIService.getVendorsInvoice(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorInvoice(result);
@@ -654,7 +654,7 @@ const ManageVendorInvoice = () => {
         const response = await APIService.getVendorsInvoice(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorInvoice(result);
@@ -736,8 +736,8 @@ const ManageVendorInvoice = () => {
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -752,12 +752,12 @@ const ManageVendorInvoice = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,
@@ -844,9 +844,9 @@ const ManageVendorInvoice = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
         var existing = filterMapState;
         existing = {
@@ -882,8 +882,8 @@ const ManageVendorInvoice = () => {
         setEstimateDateFilter(false);
         setIdFilter(false);
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 if (mapState[key].filterData == 'Numeric') {
@@ -920,7 +920,7 @@ const ManageVendorInvoice = () => {
         const response = await APIService.getVendorsInvoice(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorInvoice(result);
@@ -948,7 +948,7 @@ const ManageVendorInvoice = () => {
         const response = await APIService.getVendorsInvoice(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendorInvoice(result);
@@ -1399,7 +1399,7 @@ const ManageVendorInvoice = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}

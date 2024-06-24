@@ -268,7 +268,7 @@ const ManageBuilder = () => {
         setShowDelete(true);
         setCurrentBuilderId(item.id);
         setCurrentBuilder(item.buildername)
-        console.log(currentBuilder)
+        
         setDeleted(true);
     }
     const [errorMessage, setErrorMessage] = useState("");
@@ -828,7 +828,7 @@ const ManageBuilder = () => {
                                         'buildername')}
 
                                 />
-                                {console.log(filterMapState)}
+                                {}
                                 {filterMapState.buildername.filterType == "" ? <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {builderFilter && <CharacterFilter inputVariable={builderFilterInput} setInputVariable={setBuilderFilterInput} handleFilter={newHandleFilter} filterColumn='buildername' menuRef={menuRef} filterType={filterMapState.buildername.filterType} />}

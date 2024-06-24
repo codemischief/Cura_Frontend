@@ -31,7 +31,7 @@ const ManageBuilderContact = () => {
   // const {state} = useLocation()
   const {builderid} = useParams()
   const [state,setState] = useState({})
-  console.log(state)
+  
   const {
     ContactData,
     status,
@@ -220,7 +220,7 @@ const ManageBuilderContact = () => {
         }
         const response = await APIService.getItembyId(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setState(prev => ({
           ...prev,
           buildername : res.data.buildername,

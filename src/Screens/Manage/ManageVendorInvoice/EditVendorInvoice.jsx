@@ -45,10 +45,10 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
             "table_name": "get_vendor_invoice_view"
         }
         // {"user_id":user.id,"table_name":"employee","item_id":98}
-        console.log('called')
+        
         const response = await APIService.getItembyId(data)
         const res = await response.json()
-        console.log(res)
+        
         const existing = { ...formValues }
         existing.client = res.data.clientid
         getOrdersByClientId(res.data.clientid)
@@ -128,7 +128,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
         }
         const response = await APIService.editVendorInvoice(data)
         const res = await response.json()
-        console.log(res)
+        
         if (res.result == 'success') {
             showSuccess()
         }
@@ -145,14 +145,14 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
 
     const getOrdersByClientId = async (id) => {
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders(convertToIdNameObject(res.data))
     }
 
@@ -166,8 +166,8 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -184,12 +184,12 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,

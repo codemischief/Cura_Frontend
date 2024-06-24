@@ -47,8 +47,8 @@ const ManageClientProperty = () => {
     const {  pathname } = useLocation()
     const [state,setState] = useState({})
     const {clientid} = useParams()
-    console.log(pathname)
-    console.log(state)
+    
+    
     // we have the module here
     const navigate = useNavigate()
     const [pageLoading, setPageLoading] = useState(false);
@@ -163,7 +163,7 @@ const ManageClientProperty = () => {
         const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
-        console.log(result);
+        
         setAllCountry(result);
     }
     const fetchClientTypeData = async () => {
@@ -172,17 +172,17 @@ const ManageClientProperty = () => {
         }
         const response = await APIService.getClientTypeAdmin({...data,user_id : user.id});
         const res = await response.json()
-        console.log(res)
+        
         setClientTypeData(res.data)
 
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = {  "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -191,7 +191,7 @@ const ManageClientProperty = () => {
         const data = {  "state_name": id };
         const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -209,8 +209,8 @@ const ManageClientProperty = () => {
         const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
 
-        console.log(result.data);
-        console.log('hey')
+        
+        
         // setFormValues((existing) => {
         //     return { ...existing, userName: result.data[0].id }
         // })
@@ -225,7 +225,7 @@ const ManageClientProperty = () => {
         const data = {  };
         const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
-        console.log(result.data);
+        
         // setFormValues((existing) => {
         //     return { ...existing, role: result.data[0].id }
         // })
@@ -240,7 +240,7 @@ const ManageClientProperty = () => {
         const data = {  };
         const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
-        console.log(result.data);
+        
         // setFormValues((existing) => {
         //     return { ...existing, entity: result.data[0][0] }
         // })
@@ -262,7 +262,7 @@ const ManageClientProperty = () => {
         };
         const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
-        console.log(result.data);
+        
         // setFormValues((existing) => {
         //     return { ...existing, lob: result.data[0].id }
         // })
@@ -285,7 +285,7 @@ const ManageClientProperty = () => {
         const data = {  };
         const response = await APIService.getBuildersAndProjectsList({...data,user_id : user.id});
         const res = await response.json();
-        console.log(res.data);
+        
         setExistingSociety(
             propertyHelper(res.data)
         );
@@ -295,7 +295,7 @@ const ManageClientProperty = () => {
         const data = { };
         const response = await APIService.getPropertyStatusAdmin({...data,user_id : user.id});
         const res = await response.json();
-        console.log(res);
+        
         setPropertyStatus(res);
     }
     const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
@@ -303,7 +303,7 @@ const ManageClientProperty = () => {
         const data = {  }
         const response = await APIService.getLevelOfFurnishingAdmin({...data,user_id : user.id});
         const res = await response.json()
-        console.log(res);
+        
         setLevelOfFurnishing(res);
     }
     const [propertyType, setPropertyType] = useState([]);
@@ -311,16 +311,16 @@ const ManageClientProperty = () => {
         const data = {  }
         const response = await APIService.getPropertyType({...data,user_id : user.id})
         const res = await response.json();
-        console.log(res);
+        
         setPropertyType(res);
     }
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        // console.log('ugm')
+        // 
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 if(filterMapState[key].filterData == 'Numeric') {
@@ -352,8 +352,8 @@ const ManageClientProperty = () => {
         const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result)
-        console.log(result);
+        
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientProperty(result.client_info);
@@ -375,8 +375,8 @@ const ManageClientProperty = () => {
         const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result)
-        console.log(result);
+        
+        
         const t = temp.total_count;
         setTotalItems(t);
         // setExistingClientProperty([1,2,3,4]);
@@ -401,8 +401,8 @@ const ManageClientProperty = () => {
         const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result)
-        console.log(result);
+        
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientProperty(result.client_info);
@@ -418,7 +418,7 @@ const ManageClientProperty = () => {
 
             const response = await APIService.getItembyId(data)
             const res = await response.json()
-            console.log(res.data)
+            
             setState(prev => ({
                 ...prev,
                 clientid : clientid,
@@ -426,8 +426,8 @@ const ManageClientProperty = () => {
                 hyperlinked : true
             }))
 
-            // console.log('here')
-            // console.log(state)
+            // 
+            // 
             setClientNameText(state.clientname)
             setFormValues({
                 ...formValues,
@@ -442,7 +442,7 @@ const ManageClientProperty = () => {
             // ex.clientid = state.clientid
             // temp.client_property = ex 
             // setFormValues(temp);
-            // console.log(formValues)
+            // 
         }
     }
     useEffect(() => {
@@ -486,8 +486,8 @@ const ManageClientProperty = () => {
     }, [filterMapState]);
 
     const handleOpenEdit = (oldItem) => {
-        console.log('called');
-        console.log(oldItem)
+        
+        
         setCurrItem(oldItem)
         setIsEditDialogue(true);
 
@@ -530,7 +530,7 @@ const ManageClientProperty = () => {
     }
     const [clientData, setClientData] = useState([]);
     
-    // console.log(state.clientid)
+    // 
     const initialValues = {
         "client_property": {
             "clientid": state?.clientid,
@@ -628,7 +628,7 @@ const ManageClientProperty = () => {
 
     // validate form and to throw Error message
     const validate = () => {
-        console.log(formValues)
+        
         var res = true;
         if (formValues.client_property.clientid == null || formValues.client_property.clientid == "") {
             setFormErrors((existing) => {
@@ -660,18 +660,18 @@ const ManageClientProperty = () => {
                 return { ...existing, propertydescription: "" }
             })
         }
-        console.log(formValues.client_property.projectid)
+        
         if (!formValues.client_property.projectid) {
             setFormErrors((existing) => {
                 return { ...existing, projectid: "Enter Project Name" }
             })
             res = false;
-            // console.log('here')
+            // 
         } else {
             setFormErrors((existing) => {
                 return { ...existing, projectid: "" }
             })
-            console.log('here')
+            
         }
         if (!formValues.client_property.status) {
             setFormErrors((existing) => {
@@ -729,7 +729,7 @@ const ManageClientProperty = () => {
 
 
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -780,7 +780,7 @@ const ManageClientProperty = () => {
         const response = await APIService.getClientProperty({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
@@ -799,7 +799,7 @@ const ManageClientProperty = () => {
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'ClientPropertyData.pdf');
                 }
-                console.log('Success:', result);
+                
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -813,7 +813,7 @@ const ManageClientProperty = () => {
     }
    
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         const data = {
@@ -828,8 +828,8 @@ const ManageClientProperty = () => {
         const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result)
-        console.log(result);
+        
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientProperty(result.client_info);
@@ -851,8 +851,8 @@ const ManageClientProperty = () => {
         const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result)
-        console.log(result);
+        
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientProperty(result.client_info);
@@ -885,11 +885,11 @@ const ManageClientProperty = () => {
     }
     const [currClientName, setCurrClientName] = useState("")
     const handleAddClientProperty = () => {
-        console.log(formValues);
+        
         // setIsClientInfoDialogue(false);
         if (!validate()) {
             setSelectedDialogue(1)
-            console.log('here')
+            
             return;
         }
         setIsClientPropertyDialogue(false);
@@ -986,12 +986,12 @@ const ManageClientProperty = () => {
             }
         }
 
-        console.log({...data,user_id : user.id});
+        
 
-        console.log('hey')
+        
         const response = await APIService.addClientProperty({...data,user_id : user.id})
         const res = await (response.json())
-        console.log(res);
+        
         if (res.result == "success") {
             // we need to open the succcess modal
             showAddConfirmation(false);
@@ -1010,7 +1010,7 @@ const ManageClientProperty = () => {
         }
         const response = await APIService.deleteClientProperty({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res);
+        
         if (res.result == 'success') {
             setShowDeleteModal(false)
             openDeleteSuccess();
@@ -1059,7 +1059,7 @@ const ManageClientProperty = () => {
                 filterValue: type == 'noFilter' ? "" : inputVariable
             }
         }
-        console.log(type)
+        
         if (type === 'noFilter') setInputVariable("");
 
         fetchFiltered(existing);
@@ -1077,17 +1077,17 @@ const ManageClientProperty = () => {
                 setIdFilter(false);
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
+        // 
         setFilterMapState(mapState)
-        console.log(filterMapState)
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
         setFilterState((prev) => tempArray)
-        console.log('this is getting called')
-        console.log(tempArray)
+        
+        
         setCurrentPage((prev) => 1)
         const data = {
             "rows": datarows,
@@ -1101,7 +1101,7 @@ const ManageClientProperty = () => {
         const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result)
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientProperty(result.client_info);
@@ -1113,7 +1113,7 @@ const ManageClientProperty = () => {
         const tempArray = [];
         // we need to query thru the object
         setSortField(field)
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -1133,7 +1133,7 @@ const ManageClientProperty = () => {
         const response = await APIService.getClientProperty({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result)
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientProperty(result.client_info);
@@ -1156,7 +1156,7 @@ const ManageClientProperty = () => {
                     // const temp = {...filterMapState};
                     // temp[columnName].type = "".
                     // setFilterMapState(temp)
-                    console.log(inputVariable)
+                    
                     if(inputVariable == "") {
                         const temp = {...filterMapState}
                         temp[columnName].filterType = ""
@@ -1590,7 +1590,7 @@ const ManageClientProperty = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -1677,7 +1677,7 @@ const ManageClientProperty = () => {
 
                             {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={clientNameText} setClientNameText={setClientNameText} clientid={state?.clientid} hyperlinkState={state}/>}
                             {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
-                            {console.log(allCountry)}
+                            {}
                             {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
 

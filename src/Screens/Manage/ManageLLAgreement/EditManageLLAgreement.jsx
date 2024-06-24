@@ -186,8 +186,8 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
         }
         const response = await APIService.getItembyId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
-        console.log('temp')
+        
+        
         const existing = { ...formValues }
         existing.depositeAmount = res.data.depositamount
         existing.client = res.data.clientid
@@ -292,7 +292,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
         return res;
     }
     const handleEdit = async () => {
-        console.log(formValues)
+        
         if (!validate()) {
             return;
         }
@@ -316,7 +316,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
         if (res.result == 'success') {
             openEditSuccess()
         }
-        console.log(res.data)
+        
     }
     useEffect(() => {
         fetchInitialData(currItem.id)
@@ -338,19 +338,19 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
 
         const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
+        
         setClientPropertyData(convertToIdNameObject(res.data))
     }
 
     const getOrdersByClientId = async (id) => {
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders((prev) => {
             const temp = {}
              res.data.forEach((item) => {
@@ -367,8 +367,8 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
     const [query, setQuery] = useState('')
 
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -387,12 +387,12 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "pg_no": 0,
@@ -710,7 +710,7 @@ const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCan
                                 checked={formValues.status}
                                 className='mr-3 h-4 w-4'
                                 onClick={(e) => {
-                                    // console.log(e.target.checked)
+                                    // 
                                     const existing = { ...formValues };
                                     existing.status = !existing.status;
                                     setFormValues(existing)

@@ -17,7 +17,7 @@ import Draggable from 'react-draggable';
 import useAuth from '../../../../context/JwtContext';
 const EditClientInfoModal = (props) => {
     const {user} = useAuth()
-    console.log(user)
+    
     const initalValues = {
         "client_info": {
             "firstname": "ABC",
@@ -166,7 +166,7 @@ const EditClientInfoModal = (props) => {
     }
     function helper2(updateArrayBank, insertArrayBank, deleteArrayBank) {
         var size = formValues.client_bank_info.length
-        //   console.log(initialClientData.client_bank_info)
+        //   
         for (var i = 0; i < size; i++) {
             const tempObj = formValues.client_bank_info[i]
             if (tempObj.hasOwnProperty('id')) {
@@ -190,7 +190,7 @@ const EditClientInfoModal = (props) => {
     const [formErrorsClientInfo, setFormErrorsClientInfo] = useState({});
     const validate = () => {
         var res = true
-        console.log(formValues)
+        
         if (formValues.client_info.salutation === 'Select Salutation' || formValues.client_info.salutation === '') {
             res = false
             setFormErrorsClientInfo((existing) => ({
@@ -366,7 +366,7 @@ const EditClientInfoModal = (props) => {
     }
     const handleEditClient = async () => {
         if (!validate()) {
-            console.log(formErrors)
+            
             setSelectedDialogue(1)
             return;
         }
@@ -396,10 +396,10 @@ const EditClientInfoModal = (props) => {
             client_legal_info: formValues.client_legal_info,
             client_poa: formValues.client_poa
         }
-        console.log(data);
+        
         const response = await APIService.editCLientInfo(data);
         const res = await response.json();
-        console.log(res);
+        
         if (res.result == 'success') {
             // then we need to close the modal
             props.openEditSuccess();
@@ -419,7 +419,7 @@ const EditClientInfoModal = (props) => {
         }
         const response = await APIService.getItembyId(data)
         const res = await (response.json());
-        console.log(res);
+        
         if (id != null) {
             const existing = { ...tenantofName };
             var name = res.data.firstname + " " + res.data.middlename + " " + res.data.lastname
@@ -436,7 +436,7 @@ const EditClientInfoModal = (props) => {
         const data = { "user_id": user.id, "id": props.currClient };
         const response = await APIService.getClientInfoByClientId(data)
         const res = await response.json();
-        console.log(res.data)
+        
         if (res.data.client_info.tenantof != null) {
             await fetchTenantOfData(res.data.client_info.tenantof)
         }
@@ -452,7 +452,7 @@ const EditClientInfoModal = (props) => {
         const data = { "user_id": user.id, "id": props.currClient };
         const response = await APIService.getClientInfoByClientId(data)
         const res = await response.json();
-        console.log(res.data);
+        
         fetchStateData(res.data.client_info.country)
         fetchCityData(res.data.client_info.state);
         setFormValues(res.data);
@@ -467,11 +467,11 @@ const EditClientInfoModal = (props) => {
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "user_id": user.id, "country_id": id };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllStates(result)
         }
@@ -482,7 +482,7 @@ const EditClientInfoModal = (props) => {
         }
         const response = await APIService.getRelationAdmin(data)
         const res = await response.json()
-        console.log(res)
+        
         setRelationData(res.data)
     }
     const fetchClientTypeData = async () => {
@@ -491,7 +491,7 @@ const EditClientInfoModal = (props) => {
         }
         const response = await APIService.getClientTypeAdmin(data);
         const res = await response.json()
-        console.log(res)
+        
         setClientTypeData(res.data)
     }
     const selectFirst = () => {
@@ -510,7 +510,7 @@ const EditClientInfoModal = (props) => {
         setSelectedDialogue(5);
     }
     const handleAddClientInfo = () => {
-        console.log(formValues);
+        
     }
     const handleClose = () => {
         props.handleClose();
@@ -519,7 +519,7 @@ const EditClientInfoModal = (props) => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCities(result)
         }
@@ -531,7 +531,7 @@ const EditClientInfoModal = (props) => {
 
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
-        console.log(result)
+        
         if (Array.isArray(result.data)) {
             setAllEntities(result.data);
         }
@@ -543,7 +543,7 @@ const EditClientInfoModal = (props) => {
         }
         const response = await APIService.getTenantOfPropertyAdmin(data)
         const res = await response.json()
-        console.log(res)
+        
         setTenentOfData(res.data)
     }
     useEffect(() => {

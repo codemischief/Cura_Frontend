@@ -94,7 +94,7 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = await response.json();
     setStateData(result.data);
   };
-  console.log(editData);
+  
   const formik = useFormik({
     initialValues: {
       contactname: editData?.contactname ? editData.contactname : null,
@@ -377,8 +377,8 @@ const ContactForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">Country</label>
                               <span className="requiredError">*</span>
                             </div>
-                            {console.log(countryData)}
-                            {console.log(countryData[formik.values.countryId])}
+                            {}
+                            {}
                             <CustomSelectNative
                               data={Object.keys(countryData)}
                               renderData={(item) => {

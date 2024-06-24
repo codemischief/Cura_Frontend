@@ -52,10 +52,10 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
             }
 
         }
-        console.log(tempArray)
+        
         setModesData(tempArray)
-        console.log(modesData)
-        console.log(res)
+        
+        
     }
 
     // const [modesData,setModesData] = useState([])
@@ -72,7 +72,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         }
         const response = await APIService.getItembyId(data)
         const res = await response.json()
-        console.log(res.data)
+        
         const existing = { ...formValues }
         existing.client = res.data.clientid
         getOrdersByClientId(res.data.clientid)
@@ -102,14 +102,14 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
     }
     const getOrdersByClientId = async (id) => {
         if(id != null) return 
-        // console.log('hello')
+        // 
         const data = {
             "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders((prev) => {
             const temp = {}
              res.data.forEach((item) => {
@@ -127,7 +127,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         existing.orderdate = res.data.orderdate
         existing.orderstatus = res.data.orderstatus
         setTempFormValues(existing)
-        console.log(res.data)
+        
     }
     useEffect(() => {
         fetchModesData()
@@ -142,8 +142,8 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -158,12 +158,12 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,
@@ -186,10 +186,10 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
     }
     const handleEdit = async () => {
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
-        console.log(formValues)
+        
         const data = {
             "user_id": user.id,
             "id": currPayment,

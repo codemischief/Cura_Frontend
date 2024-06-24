@@ -43,7 +43,7 @@ const EditVendor = ({ handleClose, currVendor, allCity, tallyLedgerData, allCate
     // const [tallyLedgerData,setTallyLedgerData] = useState([])
     // const [allCity,setAllCity] = useState([])
     const fetchInitialData = async () => {
-        console.log(currVendor)
+        
         const data = {
             "user_id": user.id,
             "item_id": currVendor,
@@ -51,7 +51,7 @@ const EditVendor = ({ handleClose, currVendor, allCity, tallyLedgerData, allCate
         }
         const response = await APIService.getItembyId(data)
         const res = await response.json()
-        console.log(res)
+        
         const existing = { ...formValues }
         existing.vendorName = res.data.vendorname
         existing.addressLine1 = res.data.addressline1

@@ -10,7 +10,7 @@ import useAuth from '../../../context/JwtContext'
 import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative'
 const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state }) => {
     const {user} = useAuth();
-    console.log(currPma)
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -42,7 +42,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
         }
         const response = await APIService.getItembyId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
+        
         const existing = { ...formValues }
         getClientPropertyByClientId(res.data.clientid)
         getOrdersByClientId(res.data.clientid)
@@ -145,7 +145,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
 
     const handleEdit = async () => {
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
 
@@ -170,7 +170,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
         }
         const response = await APIService.editClientPMAAgreement({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res);
+        
         handleClose();
         showSuccess();
     }
@@ -193,7 +193,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
 
         const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
+        
         setClientPropertyData(clientHelper(res.data))
     }
     const [orders, setOrders] = useState([]);
@@ -208,13 +208,13 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
     const getOrdersByClientId = async (id) => {
         
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders(orderHelper(res.data))
         // setOrders(res.data)
     }
@@ -225,8 +225,8 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -245,11 +245,11 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "pg_no": 0,
@@ -466,7 +466,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
                                                 checked={formValues.gst1}
                                                 className='mr-3 h-4 w-4'
                                                 onClick={(e) => {
-                                                    // console.log(e.target.checked)
+                                                    // 
                                                     const existing = { ...formValues };
                                                     existing.gst1 = !existing.gst1;
                                                     setFormValues(existing)
@@ -559,7 +559,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
                                                 checked={formValues.gst2}
                                                 className='mr-3 h-4 w-4'
                                                 onClick={(e) => {
-                                                    // console.log(e.target.checked)
+                                                    // 
                                                     const existing = { ...formValues };
                                                     existing.gst2 = !existing.gst2;
                                                     setFormValues(existing)
@@ -574,7 +574,7 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel,state 
                                 checked={formValues.status}
                                 className='mr-3 h-4 w-4'
                                 onClick={(e) => {
-                                    // console.log(e.target.checked)
+                                    // 
                                     const existing = { ...formValues };
                                     existing.status = !existing.status;
                                     setFormValues(existing)

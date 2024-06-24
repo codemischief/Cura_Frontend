@@ -37,7 +37,7 @@ const ManageClientInfo = () => {
 
     const { user } = useAuth()
     const canEdit = checkEditAccess();
-    console.log(user)
+    
     const { pathname } = useLocation()
     const dataRows = [
         "clientname",
@@ -160,12 +160,12 @@ const ManageClientInfo = () => {
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState({ ...data, user_id: user.id });
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -174,7 +174,7 @@ const ManageClientInfo = () => {
         const data = { "state_name": id };
         const response = await APIService.getCities({ ...data, user_id: user.id });
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             if (result.length > 0) {
@@ -195,7 +195,7 @@ const ManageClientInfo = () => {
         const data = {};
         const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, entity: result.data[0][0] }
         })
@@ -209,12 +209,12 @@ const ManageClientInfo = () => {
         }
         const response = await APIService.getRelationAdmin({ ...data, user_id: user.id })
         const res = await response.json()
-        console.log(res)
+        
         setRelationData(res.data)
     }
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        // console.log('ugm')
+        // 
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
@@ -223,8 +223,8 @@ const ManageClientInfo = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
-        console.log(filterMapState);
-        console.log(tempArray);
+        
+        
         setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         const data = {
@@ -240,7 +240,7 @@ const ManageClientInfo = () => {
         const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInfo(result.client_info);
@@ -263,7 +263,7 @@ const ManageClientInfo = () => {
         const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInfo(result.client_info);
@@ -272,7 +272,7 @@ const ManageClientInfo = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
 
-        // console.log(searchInput);
+        // 
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
@@ -288,7 +288,7 @@ const ManageClientInfo = () => {
         const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInfo(result.client_info);
@@ -304,7 +304,7 @@ const ManageClientInfo = () => {
         fetchEntitiesData();
         fetchRelation();
         const handler = (e) => {
-            console.log(menuRef)
+            
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 // setOverAllFilter(false);
                 setTenantOfPropertyFilter(false);
@@ -330,7 +330,7 @@ const ManageClientInfo = () => {
     }, [filterMapState]);
 
     const handleOpenEdit = (oldItem) => {
-        console.log('called');
+        
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -346,7 +346,7 @@ const ManageClientInfo = () => {
         openAddCancelModal();
     }
     const initials = () => {
-        console.log('called')
+        
         setFormValues(initialValues);
         setFormErrorsClientInfo({})
         setFormErrors({});
@@ -358,7 +358,7 @@ const ManageClientInfo = () => {
         }
         const response = await APIService.getClientTypeAdmin({ ...data, user_id: user.id });
         const res = await response.json()
-        console.log(res)
+        
         setClientTypeData(res.data)
 
     }
@@ -368,7 +368,7 @@ const ManageClientInfo = () => {
         }
         const response = await APIService.getTenantOfPropertyAdmin({ ...data, user_id: user.id })
         const res = await response.json()
-        console.log(res)
+        
         setTenentOfData(res.data)
     }
     const [selectedDialog, setSelectedDialogue] = useState(1);
@@ -477,7 +477,7 @@ const ManageClientInfo = () => {
         setFormValues({ ...formValues, [name]: value });
     };
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -530,7 +530,7 @@ const ManageClientInfo = () => {
         const response = await APIService.getClientInfo({ ...data, user_id: user.id })
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
@@ -555,7 +555,7 @@ const ManageClientInfo = () => {
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'ClientInfoData.pdf');
                     }
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -594,7 +594,7 @@ const ManageClientInfo = () => {
 
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setCurrentPage(1)
 
@@ -612,7 +612,7 @@ const ManageClientInfo = () => {
         const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInfo(result.client_info);
@@ -635,7 +635,7 @@ const ManageClientInfo = () => {
         const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInfo(result.client_info);
@@ -837,10 +837,10 @@ const ManageClientInfo = () => {
     }
     const [showAddConfirmation, setShowAddConfirmation] = useState(false);
     const handleAddClientInfo = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log(formErrors)
-            console.log(formErrorsClientInfo)
+            
+            
             setSelectedDialogue(1);
             return
         }
@@ -859,18 +859,18 @@ const ManageClientInfo = () => {
     ]
     const arrayHelper = (arr) => {
         const temp = []
-        console.log(arr)
+        
         for(var i=0;i <arr.length ; i++) {
             
             let flag = false;
             Object.keys(arr[i]).forEach((key) => {
-                // console.log(key)
-                // console.log(arr[i][key])
+                // 
+                // 
                if(arr[i][key] != null && arr[i][key] != "" && arr[i][key] != '') {
                 flag = true
                }
             })
-            console.log(flag)
+            
             if(flag) temp.push(arr[i])
         }
         return temp
@@ -953,7 +953,7 @@ const ManageClientInfo = () => {
                 "scancopy": formValues.client_poa.scancopy
             }
         };
-        console.log({ ...data, user_id: user.id });
+        
         const response = await APIService.addClientInfo({ ...data, user_id: user.id })
         const res = await response.json();
         setShowAddConfirmation(false)
@@ -978,7 +978,7 @@ const ManageClientInfo = () => {
         }
         const response = await APIService.deleteClientInfo({ ...data, user_id: user.id })
         const res = await response.json()
-        console.log(res)
+        
         setShowDelete(false);
         if (res.result == 'success') {
             openDeleteSuccess()
@@ -1076,7 +1076,7 @@ const ManageClientInfo = () => {
         const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInfo(result.client_info);
@@ -1120,9 +1120,9 @@ const ManageClientInfo = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
+        // 
         setFilterMapState(mapState)
-        console.log(filterMapState)
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -1142,7 +1142,7 @@ const ManageClientInfo = () => {
         const response = await APIService.getClientInfo({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInfo(result.client_info);
@@ -1653,7 +1653,7 @@ const ManageClientInfo = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}

@@ -44,7 +44,7 @@ const ManageVendor = () => {
     const {user} = useAuth()
     const {pathname} = useLocation()
     const canEdit = checkEditAccess();
-    console.log(pathname)
+    
     const dataRows = [
         "vendorname",
         "tdssection",
@@ -155,8 +155,8 @@ const ManageVendor = () => {
     const [query, setQuery] = useState('')
 
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -170,34 +170,34 @@ const ManageVendor = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
 
     const [orders, setOrders] = useState([]);
     const getOrdersByClientId = async (id) => {
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             "user_id": user.id,
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders(res.data)
 
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
         //    existing.order = res.data[0].id
-        //    console.log(res.data[0].id)
+        //    
         //    setFormValues(existing)
 
         // } 
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,
@@ -226,7 +226,7 @@ const ManageVendor = () => {
         }
         const response = await APIService.getVendorCategoryAdmin(data);
         const res = await response.json()
-        console.log(res.data);
+        
         setAllCategory(res.data)
     }
 
@@ -268,7 +268,7 @@ const ManageVendor = () => {
         const response = await APIService.getVendors(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendors(result);
@@ -290,7 +290,7 @@ const ManageVendor = () => {
         const response = await APIService.getVendors(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendors(result);
@@ -299,7 +299,7 @@ const ManageVendor = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         setCurrentPage((prev) => 1)
-        console.log(searchInput);
+        
         const data = {
             "user_id": user.id,
             "rows": dataRows,
@@ -313,7 +313,7 @@ const ManageVendor = () => {
         const response = await APIService.getVendors(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendors(result);
@@ -346,7 +346,7 @@ const ManageVendor = () => {
         setIsEditDialogue(true)
     }
     const handleOpenEdit = (oldItem) => {
-        console.log('called');
+        
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -365,9 +365,9 @@ const ManageVendor = () => {
         setFormErrors({});
     }
     const handleAddVendor = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         setIsVendorDialogue(false);
@@ -407,7 +407,7 @@ const ManageVendor = () => {
         const response = await APIService.addVendors(data);
         const result = (await response.json())
         setOpenAddConfirmation(false);
-        console.log(result)
+        
         setIsVendorDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
@@ -418,8 +418,8 @@ const ManageVendor = () => {
             setErrorMessage(result.message)
         }
 
-        console.log(data);
-        console.log(result);
+        
+        
     }
 
     const initialValues = {
@@ -525,7 +525,7 @@ const ManageVendor = () => {
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -594,7 +594,7 @@ const ManageVendor = () => {
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'VendorData.pdf');
                     }
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -605,7 +605,7 @@ const ManageVendor = () => {
         }
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
@@ -622,7 +622,7 @@ const ManageVendor = () => {
         const response = await APIService.getVendors(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendors(result);
@@ -646,7 +646,7 @@ const ManageVendor = () => {
         const response = await APIService.getVendors(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendors(result);
@@ -752,7 +752,7 @@ const ManageVendor = () => {
         setCityFilter(false)
         setIdFilter(false)
         // we need to query thru the object
-        // console.log(filterMapState);
+        // 
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 if (mapState[key].filterData == 'Numeric') {
@@ -789,16 +789,16 @@ const ManageVendor = () => {
         const response = await APIService.getVendors(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendors(result);
         setPageLoading(false);
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
         var existing = filterMapState;
         existing = {
@@ -838,7 +838,7 @@ const ManageVendor = () => {
         const response = await APIService.getVendors(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendors(result);
@@ -852,7 +852,7 @@ const ManageVendor = () => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -870,7 +870,7 @@ const ManageVendor = () => {
         }
         const response = await APIService.getTallyLedgerAdmin(data);
         const res = await response.json()
-        console.log(res);
+        
         setTallyLedgerData(res.data)
     }
 
@@ -1213,7 +1213,7 @@ const ManageVendor = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}

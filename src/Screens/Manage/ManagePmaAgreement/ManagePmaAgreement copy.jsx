@@ -49,7 +49,7 @@ const ManagePmaArgreement = () => {
     const [state,setState] = useState({})
     const {clientPropertyId} = useParams()
     const {user} = useAuth()
-    console.log(pathname)
+    
     const navigate = useNavigate()
     const canEdit = checkEditAccess();
     const dataRows = [
@@ -125,18 +125,18 @@ const ManagePmaArgreement = () => {
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
-        console.log(result.data);
+        
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = {  "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -145,7 +145,7 @@ const ManagePmaArgreement = () => {
         const data = {  "state_name": id };
         const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -163,8 +163,8 @@ const ManagePmaArgreement = () => {
         const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
 
-        console.log(result.data);
-        console.log('hey')
+        
+        
         setFormValues((existing) => {
             return { ...existing, userName: result.data[0].id }
         })
@@ -179,7 +179,7 @@ const ManagePmaArgreement = () => {
         const data = {  };
         const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, role: result.data[0].id }
         })
@@ -194,7 +194,7 @@ const ManagePmaArgreement = () => {
         const data = {  };
         const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, entity: result.data[0][0] }
         })
@@ -216,7 +216,7 @@ const ManagePmaArgreement = () => {
         };
         const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, lob: result.data[0].id }
         })
@@ -228,12 +228,12 @@ const ManagePmaArgreement = () => {
     const [flag, setFlag] = useState(false)
     const [existingPmaAgreement, setExistingPmaAgreement] = useState([]);
     const fetchData = async () => {
-        console.log('ugm')
+        
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -255,7 +255,7 @@ const ManagePmaArgreement = () => {
         const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingPmaAgreement(result);
@@ -277,7 +277,7 @@ const ManagePmaArgreement = () => {
         const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingPmaAgreement(result);
@@ -285,7 +285,7 @@ const ManagePmaArgreement = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        console.log(searchInput);
+        
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
@@ -302,7 +302,7 @@ const ManagePmaArgreement = () => {
         const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingPmaAgreement(result);
@@ -327,12 +327,12 @@ const ManagePmaArgreement = () => {
 
         const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
+        
         setClientPropertyData(clientHelper(res.data))
         //    if(res.data.length >= 1) {
         //     const existing = {...formValues}
         //     existing.clientProperty = res.data[0].id
-        //     console.log(res.data[0].id)
+        //     
         //     setFormValues(existing)
         //  } 
     }
@@ -346,26 +346,26 @@ const ManagePmaArgreement = () => {
     }
     const getOrdersByClientId = async (id) => {
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders(orderHelper(res.data))
 
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
         //    existing.order = res.data[0].id
-        //    console.log(res.data[0].id)
+        //    
         //    setFormValues(existing)
 
         // } 
     }
     const addPmaAgreement = async () => {
-        console.log(formValues.order)
+        
         const data = {
             
             "clientpropertyid": Number(formValues.clientProperty),
@@ -387,7 +387,7 @@ const ManagePmaArgreement = () => {
         }
         const response = await APIService.addPmaAgreement({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
+        
 
         setOpenAddConfirmation(false);
         setIsPmaAgreementDialogue(false);
@@ -440,7 +440,7 @@ const ManagePmaArgreement = () => {
             }
             const response = await APIService.getItembyId(data)
             const res = await response.json()
-            console.log(res.data)
+            
             setState(prevState => ({
                 ...prevState,
                 clientPropertyId : clientPropertyId,
@@ -502,7 +502,7 @@ const ManagePmaArgreement = () => {
     }, []);
 
     const handleOpenEdit = (oldItem) => {
-        console.log('called');
+        
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -540,9 +540,9 @@ const ManagePmaArgreement = () => {
 
 
     const handleAddPmaAgreement = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         setIsPmaAgreementDialogue(false);
@@ -638,7 +638,7 @@ const ManagePmaArgreement = () => {
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -709,13 +709,13 @@ const ManagePmaArgreement = () => {
         const response = await APIService.getPmaAgreement({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
                 "user_id" : user.id
             }
-            console.log(`${env_URL_SERVER}download/${temp.filename}`)
+            
             APIService.download(d,temp.filename).then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
@@ -728,7 +728,7 @@ const ManagePmaArgreement = () => {
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'PmaAgreementData.pdf');
                 }
-                console.log('Success:', result);
+                
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -761,7 +761,7 @@ const ManagePmaArgreement = () => {
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         // setCurrentPages(15);
@@ -779,7 +779,7 @@ const ManagePmaArgreement = () => {
         const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingPmaAgreement(result);
@@ -803,7 +803,7 @@ const ManagePmaArgreement = () => {
         const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingPmaAgreement(result);
@@ -884,8 +884,8 @@ const ManagePmaArgreement = () => {
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -904,12 +904,12 @@ const ManagePmaArgreement = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             
@@ -1014,9 +1014,9 @@ const ManagePmaArgreement = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
         
 
@@ -1059,8 +1059,8 @@ const ManagePmaArgreement = () => {
                 setIdFilter(false);
                 setDownloadModal(false)
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -1082,7 +1082,7 @@ const ManagePmaArgreement = () => {
         const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingPmaAgreement(result);
@@ -1112,7 +1112,7 @@ const ManagePmaArgreement = () => {
         const response = await APIService.getPmaAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingPmaAgreement(result);
@@ -1621,7 +1621,7 @@ const ManagePmaArgreement = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -1850,7 +1850,7 @@ const ManagePmaArgreement = () => {
                                                 checked={formValues.gst1}
                                                 className='mr-3 h-4 w-4'
                                                 onClick={(e) => {
-                                                    // console.log(e.target.checked)
+                                                    // 
                                                     const existing = { ...formValues };
                                                     existing.gst1 = !existing.gst1;
                                                     setFormValues(existing)
@@ -1962,7 +1962,7 @@ const ManagePmaArgreement = () => {
                                                 checked={formValues.gst2}
                                                 className='mr-3 h-4 w-4'
                                                 onClick={(e) => {
-                                                    // console.log(e.target.checked)
+                                                    // 
                                                     const existing = { ...formValues };
                                                     existing.gst2 = !existing.gst2;
                                                     setFormValues(existing)
@@ -1976,7 +1976,7 @@ const ManagePmaArgreement = () => {
                                     checked={formValues.status}
                                     className='mr-3 h-4 w-4'
                                     onClick={(e) => {
-                                        // console.log(e.target.checked)
+                                        // 
                                         const existing = { ...formValues };
                                         existing.status = !existing.status;
                                         setFormValues(existing)

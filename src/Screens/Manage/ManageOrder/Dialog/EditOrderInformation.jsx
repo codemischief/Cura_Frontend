@@ -121,15 +121,15 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
     // client name field
     const [options, setOptions] = useState([]);
     
-    console.log(clientName)
+    
     const [selectedOption, setSelectedOption] = useState({
         label: clientName,
         value: formValues.order_info.clientid
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         const existing = { ...formValues }
         const temp = { ...existing.order_info }
         temp.clientid = e.value
@@ -139,11 +139,11 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
         existing.order_info = temp;
         setFormValues(existing)
         getClientPropertyByClientId(e.value)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "pg_no": 0,
@@ -165,7 +165,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
     }
     useEffect(() => {
         // getClientPropertyByClientId(formValues.order_info.clientid)
-        console.log(formValues)
+        
     },[])
 
     return (
@@ -242,7 +242,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                             <div className="text-[10px] text-[#CD0000] ">{formErrors.status}</div>
                         </div>
                         <div className="">
-                            {/* {console.log(clientPropertyData)} */}
+                            {/* {} */}
                             <div className="text-[13px]">Client Property</div>
                              
                             <ClientPropertySelectNative
@@ -282,7 +282,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
 
                             {/* <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="clientpropertyid" value={formValues.order_info.clientpropertyid} onChange={handleChange} >
                                 <option value={null} hidden> Select Client Propery</option>
-                                {console.log(propertyData)}
+                                {}
                                 {propertyData.map(item => (
                                     <option key={item.id} value={item.id}>
                                         {item.propertyname}
