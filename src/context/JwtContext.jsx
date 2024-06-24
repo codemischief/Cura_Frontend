@@ -88,7 +88,7 @@ function AuthProvider({ children }) {
       try {
         const accessToken = localStorage.getItem("accessToken");
         const user = localStorage.getItem("user");
-        const refreshToken = localStorage.getItem("refreshToken")
+        const refreshToken = localStorage.getItem("refreshToken");
         if (accessToken && isValidToken(accessToken)) {
           setSession(JSON.parse(user), accessToken, refreshToken);
           dispatch({
@@ -171,8 +171,10 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
+        localStorage.setItem("lastActiveTab", "hidden");
         pauseIdleTimer();
       } else {
+        localStorage.setItem("lastActiveTab", "visible");
         resetIdleTimer();
       }
     };
@@ -182,6 +184,11 @@ function AuthProvider({ children }) {
         window.addEventListener(event, resetIdleTimer);
       });
       document.addEventListener("visibilitychange", handleVisibilityChange);
+      window.addEventListener("storage", (event) => {
+        if (event.key === "lastActiveTab" && event.newValue === "hidden") {
+          pauseIdleTimer();
+        }
+      });
       resetIdleTimer();
     }
 
