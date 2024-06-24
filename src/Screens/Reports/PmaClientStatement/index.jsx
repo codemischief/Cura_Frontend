@@ -40,7 +40,7 @@ const LobReceiptPayments = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.pmaClientStatement);
-  console.log(totalAmount)
+  
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);

@@ -40,7 +40,7 @@ const ClientStatementByDate = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.clientStatementByDate);
-  console.log(totalAmount)
+  
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);

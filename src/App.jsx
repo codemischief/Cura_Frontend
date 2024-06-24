@@ -386,7 +386,9 @@ const App = () => {
                 </Suspense>
               }
             />
-            <Route path="/reset" element={<RequestResetPassword />} />
+            <Route path="/reset" element={<Suspense fallback={<LoadingBackdrop />}> 
+             <RequestResetPassword />
+            </Suspense>} />
 
             <Route
               element={

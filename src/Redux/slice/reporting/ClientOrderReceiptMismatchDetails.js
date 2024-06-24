@@ -85,7 +85,6 @@ export const getClientOrderReceiptMismatchDetails =
         `${env_URL_SERVER}reportClientOrderReceiptMismatchDetails`,
         payloadObj
       );
-      console.log("hit")
       dispatch(
         setClientOrderReceiptMismatchDetails({
           data: response.data,

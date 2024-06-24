@@ -209,9 +209,6 @@ const LobReceiptPayments = () => {
   };
   return (
     <Container>
-
-      <Stack gap="1rem">
-
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
@@ -257,7 +254,7 @@ const LobReceiptPayments = () => {
                   defaultValue="Lob Name"
                   onChange={e => {
                     // fetchCityData(e.target.value);
-                    console.log(e.target.value);
+                    
                     setLob(e.target.value);
                   }}
                 >
@@ -324,7 +321,6 @@ const LobReceiptPayments = () => {
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
             height="calc(100vh - 15rem)"
-
           />
         </div>
         {toast && (
@@ -333,7 +329,6 @@ const LobReceiptPayments = () => {
             message="New Receipt Added Successfully"
           />
         )}
-      </Stack>
     </Container>
   );
 };
