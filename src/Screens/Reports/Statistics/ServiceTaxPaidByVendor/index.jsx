@@ -227,8 +227,8 @@ const ServiceTaxPaidByVendor = () => {
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
-              heading={"Service Tax Paid By Vendor"}
-              path={["Reports", "Service Tax Reports", "Service Tax Paid By Vendor"]}
+              heading={"GST/Service Tax Paid By Vendor"}
+              path={["Reports", "Service Tax Reports", "GST/Service Tax Paid By Vendor"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
 

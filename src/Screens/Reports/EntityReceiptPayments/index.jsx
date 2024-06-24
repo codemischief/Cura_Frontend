@@ -90,7 +90,7 @@ const LobReceiptPayments = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
-        rows: ["entityname", "orderreceiptamount", "paymentamount", "diff"],
+        rows: ["lobname", "orderreceiptamount", "paymentamount", "diff"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
@@ -132,7 +132,7 @@ const LobReceiptPayments = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
-        rows: ["entityname", "orderreceiptamount", "paymentamount", "diff"],
+        rows: ["lobname", "orderreceiptamount", "paymentamount", "diff"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
 
         filters: formatedFilterData(filter),
@@ -172,12 +172,12 @@ const LobReceiptPayments = () => {
       entityName: entity,
       downloadType: "excel",
       colmap: {
-        "entityname": "Entity",
+        "lobname": "LOB Name",
         "orderreceiptamount": "Receipt Amount",
         "paymentamount": "Payment Amount",
         "diff": "Difference"
       },
-      rows: ["entityname", "orderreceiptamount", "paymentamount", "diff"],
+      rows: ["lobname", "orderreceiptamount", "paymentamount", "diff"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -191,13 +191,13 @@ const LobReceiptPayments = () => {
   const downloadPdf = () => {
     let obj = {
       user_id: user.id,
-      rows: ["entityname", "orderreceiptamount", "paymentamount", "diff"],
+      rows: ["lobname", "orderreceiptamount", "paymentamount", "diff"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "pdf",
       routename: "/reports/entityReceiptPayments",
       entityName: entity,
       colmap: {
-       "entityname": "Entity",
+       "lobname": "Entity",
         "orderreceiptamount": "Receipt Amount",
         "paymentamount": "Payment Amount",
         "diff": "Difference"

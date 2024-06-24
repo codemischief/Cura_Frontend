@@ -257,16 +257,18 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[13px]">Other Electricity Details </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-              type="text"
-              name="otherelectricitydetails"
-              value={formValues.client_property.otherelectricitydetails}
-              onChange={handleChange}
-            />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-          </div>
+              <div className="text-[13px]">
+                Number Of Parkings
+              </div>
+              <input
+                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+                type="number"
+                name="numberofparkings"
+                value={formValues.client_property.numberofparkings}
+                onChange={handleChange}
+              />
+              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            </div>
           <div className="">
             <div className="text-[13px]">Property Tax Number </div>
             <input
@@ -361,30 +363,15 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
             <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
           </div>
           <div className="space-y-2">
-            <div className="">
-              <div className="text-[13px]">Gas Connection Details </div>
-              <input
-                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-                type="text"
-                name="gasconnectiondetails"
-                value={formValues.client_property.gasconnectiondetails}
-                onChange={handleChange}
-              />
-              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-            </div>
-            <div className="">
-              <div className="text-[13px]">
-                Number Of Parkings
-              </div>
-              <input
-                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-                type="number"
-                name="numberofparkings"
-                value={formValues.client_property.numberofparkings}
-                onChange={handleChange}
-              />
-              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-            </div>
+          <div className="">
+            <div className="text-[13px]">Electricity Consumer Number </div>
+            <input
+              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+              type="text"
+              name="electricityconsumernumber"
+              value={formValues.client_property.electricityconsumernumber}
+              onChange={handleChange}
+            />
             <div className="">
               <div className="text-[13px]">Electricity Billing Unit </div>
               <input
@@ -396,6 +383,20 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
               />
               {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
             </div>
+            <div className="">
+            <div className="text-[13px]">Other Electricity Details </div>
+            <input
+              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+              type="text"
+              name="otherelectricitydetails"
+              value={formValues.client_property.otherelectricitydetails}
+              onChange={handleChange}
+            />
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+          </div>
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+          </div>
+            
 
           </div>
 
@@ -451,16 +452,17 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
             <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
           </div>
           <div className="">
-            <div className="text-[13px]">Electricity Consumer Number </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-              type="text"
-              name="electricityconsumernumber"
-              value={formValues.client_property.electricityconsumernumber}
-              onChange={handleChange}
-            />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-          </div>
+              <div className="text-[13px]">Gas Connection Details </div>
+              <input
+                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+                type="text"
+                name="gasconnectiondetails"
+                value={formValues.client_property.gasconnectiondetails}
+                onChange={handleChange}
+              />
+              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            </div>
+         
 
           <div className="">
             <div className="text-[13px]">Layout Details (Sch A)</div>
@@ -537,8 +539,8 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
 
           <div className="">
             <div className="text-[13px]">Detailed Address</div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+            <textarea
+              className="text-[12px] pl-2 w-[230px] min-h-[50px] max-h-[50px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="textforposting"
               value={formValues.client_property.textforposting}

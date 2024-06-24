@@ -174,8 +174,8 @@ const LobReceiptPayments = () => {
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
-              heading={"CURA Non Pma Client Receivables"}
-              path={["Reports", "Clients", "CURA Non Pma Client Receivables"]}
+              heading={"Cura Non PMA Client Receivables"}
+              path={["Reports", "Client", "Cura Non PMA Client Receivables"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
 

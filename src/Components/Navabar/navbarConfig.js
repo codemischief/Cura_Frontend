@@ -58,18 +58,18 @@ export const navMenuConfig = [
           items: [
             {
               title: "All Owner Email Ids",
-              path: PATH_DASHBOARD.report.contact.ownerMailId,
+              path: PATH_DASHBOARD.admin.contact.ownerMailId,
             },
             {
               title: "All Tenants Email Ids",
-              path: PATH_DASHBOARD.report.contact.tenantEmail,
+              path: PATH_DASHBOARD.admin.contact.tenantEmail,
             },
             {
               title: "Client Contacts",
-              path: PATH_DASHBOARD.report.contact.clientContactDetails,
+              path: PATH_DASHBOARD.admin.contact.clientContactDetails,
             },
-            { title: "Owners Phone No's", path: PATH_DASHBOARD.report.contact.ownerphoneno },
-            { title: "Clients Phone No's", path: PATH_DASHBOARD.report.contact.clientphoneno },
+            { title: "Owners Phone No's", path: PATH_DASHBOARD.admin.contact.ownerphoneno },
+            { title: "Clients Phone No's", path: PATH_DASHBOARD.admin.contact.clientphoneno },
           ],
         },
       ],
@@ -290,6 +290,10 @@ export const navMenuConfig = [
               title: "Client Statement by LOB & Ent (CI,OR)",
               path: PATH_DASHBOARD.report.monthlyMargin.clientStatementAll,
             },
+            {
+              title: "All Project Contacts",
+              path: PATH_DASHBOARD.report.pma.projectContacts,
+            },
           ],
         },
         {
@@ -299,14 +303,8 @@ export const navMenuConfig = [
               title: "Active PMA Agreement",
               path: PATH_DASHBOARD?.report?.pma.activePmaAgreement,
             },
-            {
-              title: "All Project Contacts",
-              path: PATH_DASHBOARD.report.pma.projectContacts,
-            },
-            {
-              title: "Details For Advance Holding Amount",
-              path: PATH_DASHBOARD.report.pma.advanceHoldingAmont,
-            },
+            
+            
             {
               title: "PMA Client Statement-CI,CR & OR (All Ent.)",
               path: PATH_DASHBOARD.report.pma.pmaClientStatementAll,
@@ -394,30 +392,35 @@ export const navMenuConfig = [
               title: "Receipt Under Suspense Order",
               path: PATH_DASHBOARD.report.exceptions.receiptUnderSuspenseOrder,
             },
+
+            // {
+            //   title: "Clients With Orders But No Email IDs",
+            //   path: PATH_DASHBOARD.report.exceptions.clientsWithOrderButNoEmail,
+            // },
+            // {
+            //   title: "Employee Without Vendor",
+            //   path: PATH_DASHBOARD.report.exceptions.employeeWithoutVendor,
+            // },
+            // {
+            //   title: "Bank Transaction With Wrong User Names",
+            //   path: PATH_DASHBOARD.report.exceptions
+            //     .bankTransactionsWithWrongUserName,
+            // },
             {
-              title: "Clients With Orders But No Email IDs",
-              path: PATH_DASHBOARD.report.exceptions.clientsWithOrderButNoEmail,
-            },
-            {
-              title: "Employee Without Vendor",
-              path: PATH_DASHBOARD.report.exceptions.employeeWithoutVendor,
-            },
-            {
-              title: "Bank Transaction With Wrong User Names",
-              path: PATH_DASHBOARD.report.exceptions
-                .bankTransactionsWithWrongUserName,
-            },
-            {
-              title: "Entity blank for Transactions (CR,OR,OI,VI,OP)",
+              title: "Non Cura Entity in Transactions",
               path: PATH_DASHBOARD.report.exceptions.entityBlankReport,
             },
+            // {
+            //   title: "Owners with no Properties",
+            //   path: PATH_DASHBOARD.report.exceptions.ownerwithnoproperty,
+            // },
             {
-              title: "Owners with no Properties",
-              path: PATH_DASHBOARD.report.exceptions.ownerwithnoproperty,
+              title: "PMA Properties with no Projects",
+              path: PATH_DASHBOARD.report.exceptions.propertywithnoproject,
             },
             {
-              title: "Properties with no Projects",
-              path: PATH_DASHBOARD.report.exceptions.propertywithnoproject,
+              title: "Details For Advance Holding Amount",
+              path: PATH_DASHBOARD.report.pma.advanceHoldingAmont,
             },
           ],
         },
@@ -435,14 +438,14 @@ export const navMenuConfig = [
           ],
         },
         {
-          subheader: "Service Tax Reports",
+          subheader: "GST / Service Tax",
           items: [
             {
               title: "Agency Repair Service Receipts",
               path: PATH_DASHBOARD.report.serviceTaxReport.serviceTaxReport,
             },
             {
-              title: "Service Tax Paid by Vendor",
+              title: "GST/Service Tax Paid by Vendor",
               path: PATH_DASHBOARD.report.serviceTaxReport
                 .serviceTaxPaidByVendor,
             },
