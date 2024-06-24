@@ -92,7 +92,7 @@ export const getPmaClientStatementAll =
   };
 
 export const downloadPmaClientStatementAll =
-  (payloadObj, year, month ,type) => async (dispatch) => {
+  (payloadObj,type) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(

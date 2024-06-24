@@ -193,6 +193,31 @@ const LobReceiptPayments = () => {
     dispatch(downloadLobReceiptPaymentConsolidatedDataXls(obj))
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      lobName: lob,
+      rows:  ["lobname", "total_orderreceiptamount", "total_paymentamount", "total_diff",],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/reports/lobReceiptPaymentsConsolidated",
+      colmap: {
+        "lobname": "LOB Name",
+        "total_orderreceiptamount": "Receipt Amount",
+        "total_paymentamount": "Payment Amount",
+        "total_diff": "Difference"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadLobReceiptPaymentConsolidatedDataXls(obj, 'pdf'))
+  }
+
   const handleShow = () => {
     if (startDate && endDate) {
 
@@ -320,6 +345,7 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             height="calc(100vh - 15rem)"
           />
         </div>
