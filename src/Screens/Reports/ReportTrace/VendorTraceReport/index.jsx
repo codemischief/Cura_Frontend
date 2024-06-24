@@ -259,7 +259,7 @@ const VendorTraceReport = () => {
               gap={"24px"}
             >
               <div className="">
-                <div className="text-[13px]">Vendor ID </div>
+                <div className="text-[13px]">Vendor ID <span className="text-red-500">*</span></div>
                 <AsyncSelect
                   onChange={handleVendorIDChange}
                   value={selectedOption}

@@ -338,7 +338,6 @@ const LobReceiptPayments = () => {
               </Button>
             </Stack>
           </Stack>
-
           <SimpleTableWithFooter
             pageName={'lobreceiptpayments'}
             columns={columns}

@@ -299,7 +299,7 @@ const VendorStatementView = () => {
             >
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                  Vendor
+                  Vendor <span className="text-red-500">*</span>
                 </label>
 
                 <select

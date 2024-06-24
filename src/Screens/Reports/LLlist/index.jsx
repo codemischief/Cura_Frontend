@@ -367,7 +367,7 @@ const LLlistReport = () => {
 
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                  Select status
+                  Select status <span className="text-red-500">*</span>
                 </label>
 
                 <select
@@ -385,7 +385,7 @@ const LLlistReport = () => {
               </div>
 
               <div className="flex flex-col h-16 w-[200px]">
-                <div className="text-[13px]">Client Name </div>
+                <div className="text-[13px]">Client Name <span className="text-red-500">*</span> </div>
                 <AsyncSelect
                   onChange={handleClient}
                   value={intialValue.clientId}
@@ -432,7 +432,7 @@ const LLlistReport = () => {
               </div>
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                  Client Property
+                  Client Property <span className="text-red-500">*</span>
                 </label>
 
                 <select
@@ -452,7 +452,7 @@ const LLlistReport = () => {
               </div>
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                  Type
+                  Type <span className="text-red-500">*</span>
                 </label>
 
                 <select

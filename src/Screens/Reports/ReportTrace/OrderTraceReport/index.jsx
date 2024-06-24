@@ -259,7 +259,7 @@ const OrderTraceReport = () => {
               gap={"24px"}
             >
               <div className="">
-                <div className="text-[13px]">Order ID </div>
+                <div className="text-[13px]">Order ID <span className="text-red-500">*</span></div>
                 <AsyncSelect
                   onChange={handleOrderIDChange}
                   value={selectedOption}

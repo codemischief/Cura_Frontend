@@ -259,7 +259,7 @@ const LobReceiptPayments = () => {
             gap={"24px"}
           >
             <div className="">
-              <div className="text-[13px]">Client ID </div>
+              <div className="text-[13px]">Client ID <span className="text-red-500">*</span></div>
               <AsyncSelect
                 onChange={handleClientNameChange}
                 value={selectedOption}

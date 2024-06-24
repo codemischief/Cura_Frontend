@@ -170,7 +170,7 @@ const SimpleTableWithFooter = ({
       handlePageCountChange={handlePageCountChange}
       handleRefresh={handleRefresh}
       downloadExcel={downloadExcel}
-      downloadPdf={downloadPdf}
+      downloadPDF={downloadPdf}
     />,
   ];
 };

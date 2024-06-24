@@ -101,6 +101,8 @@ export const getLobReceiptPaymentsData =
 
 export const downloadLobReceiptPaymentsDataXls =
   (payloadObj, year, month , type) => async (dispatch) => {
+    console.log("abhi" ,type)
+
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(

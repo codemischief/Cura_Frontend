@@ -343,7 +343,7 @@ const PmaBillingTrendView = () => {
               <Stack
                 direction={"column"}
               >
-                <Typography>Select Year</Typography>
+                <Typography>Select Year <span className="text-red-500">*</span></Typography>
                 <DatePicker
                   className="border-[#F5F5F5] border-[0.8px] rounded-md shadow-md bg-[#F5F5F5] p-2 text-[12px]"
                   value={startDate}
@@ -391,7 +391,6 @@ const PmaBillingTrendView = () => {
               </Button>
             </Stack>
           </Stack>
-          {console.log(pmaBillingTrendView)}
           <SimpleTableWithFooter
             pageName={'pmaBillingTrendView'}
             columns={columns}

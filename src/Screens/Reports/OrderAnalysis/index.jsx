@@ -332,7 +332,6 @@ const OrderAnalysis = () => {
     console.log(value)
     setIntialValue({...intialValue,client:value})
   }
-  console.log(intialValue,"valuekjfn");
 
   return (
     <Container>
@@ -376,7 +375,7 @@ const OrderAnalysis = () => {
             >
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                  LOB Name
+                  LOB Name <span className="text-red-500">*</span>
                 </label>
 
                 <select
@@ -397,7 +396,7 @@ const OrderAnalysis = () => {
               </div>
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                  Select status
+                  Select status <span className="text-red-500">*</span>
                 </label>
 
                 <select
@@ -415,7 +414,7 @@ const OrderAnalysis = () => {
               </div>
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                  Select Service
+                  Select Service <span className="text-red-500">*</span>
                 </label>
 
                 <select
@@ -433,7 +432,7 @@ const OrderAnalysis = () => {
               </div>
               <div className="flex flex-col h-16 w-[200px]">
                 {console.log(query)}
-                <div className="text-[13px]">Client Name </div>
+                <div className="text-[13px]">Client Name <span className="text-red-500">*</span></div>
                 <AsyncSelect
                   onChange={handleClient}
                   // value={intialValue.client}

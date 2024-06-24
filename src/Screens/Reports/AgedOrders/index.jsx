@@ -292,7 +292,7 @@ const AgedOrders = () => {
             >
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                  LOB Name
+                  LOB Name <span className="text-red-500">*</span>
                 </label>
 
                 <select
@@ -313,7 +313,7 @@ const AgedOrders = () => {
               </div>
               <div className="flex flex-col h-16 w-[200px]">
                 <label className="font-sans text-sm font-normal leading-5">
-                  Select status
+                  Select status <span className="text-red-500">*</span>
                 </label>
 
                 <select
