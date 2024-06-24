@@ -30,8 +30,8 @@ const BusinessForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const { user } = useAuth()
   const dispatch = useDispatch();
   const { countryData } = useSelector((state) => state.commonApi);
-  console.log(countryData)
-  console.log('hey')
+  
+  
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [groupsData,setGroupsData] = useState([])
@@ -236,7 +236,6 @@ const BusinessForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            {console.log(Object.keys(countryData))}
                             <CustomSelectNative
                               data={Object.keys(countryData)}
                               renderData={(item) => {

@@ -87,7 +87,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
     const result = await response.json();
     setCityData(result.data);
   };
-  console.log(editData)
+  
   const formik = useFormik({
     initialValues: {
       departmentname : editData?.agencyname ? editData.agencyname : null,
@@ -166,11 +166,11 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
   } = formik;
 
   const handleChange = (e) => {
-    // console.log(e.target)
+    // 
     // setFieldValue(e.target.name, e.target.value);
     const { type, name, value, checked } = e.target;
     // const fieldValue = type === 'checkbox' ? checked : value;
-    console.log(name, checked);
+    
     if(type == 'checkbox') {
       setFieldValue(name,checked)
     }else {
@@ -179,7 +179,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
     }
   };
   const handleCountrySelect = (e) => {
-    // console.log(country)
+    // 
     setFieldValue("countryId", e.target.value);
     setFieldValue("city", null);
     setFieldValue("state", null);
@@ -196,7 +196,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
      const response = await APIService.getDepartmentTypeAdmin(data)
      const res = await response.json()
      setDepartmentTypeData(res.data)
-     console.log(res.data)
+     
   }
   return (
     <>

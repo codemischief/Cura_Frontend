@@ -112,7 +112,6 @@ export const addProspectData = (payload) => async (dispatch) => {
     dispatch(setFormSubmissionStatus("success"));
     return response;
   } catch (error) {
-    console.log(error);
     dispatch(setFormSubmissionStatus("error"));
     throw error;
   }

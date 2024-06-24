@@ -24,7 +24,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   const {user} = useAuth();
   const { countryData } = useSelector((state) => state.commonApi);
-  console.log(countryData)
+  
 
   // const [countryData,setCountryData] = useState([])
   const [stateData, setStateData] = useState([]);
@@ -68,7 +68,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     // }, {});
 
     // setCountryData({ arr: result, obj: resultConverted });
-    console.log(countryData)
+    
   };
   const [typeData,setTypeData] = useState([])
   const fetchTypeData = async () => {
@@ -76,7 +76,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const response = await APIService.getMandalAdmin(d)
     const res = await response.json()
     setTypeData(res.data)
-    console.log('hey')
+    
   }
   useEffect(() => {
     fetchTypeData()

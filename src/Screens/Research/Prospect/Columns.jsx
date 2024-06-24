@@ -17,7 +17,7 @@ export default function getColumns(
 ) {
   const { cellStyleCommon } = styleConst;
   // const {}
-  console.log("showAction", showAction.add || showAction.edit);
+  
 
   const columns = [
     {

@@ -187,11 +187,11 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
   } = formik;
 
   const handleChange = (e) => {
-    // console.log(e.target)
+    // 
     // setFieldValue(e.target.name, e.target.value);
     const { type, name, value, checked } = e.target;
     // const fieldValue = type === 'checkbox' ? checked : value;
-    console.log(name, checked);
+    
     if(type == 'checkbox') {
       setFieldValue(name,checked)
     }else {
