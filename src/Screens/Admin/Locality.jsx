@@ -232,7 +232,6 @@ const Locality = () => {
         const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
-        if (number == 25) 
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLocalities(result);
