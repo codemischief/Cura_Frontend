@@ -305,7 +305,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                             <div className="text-[13px]">Client Name<label className="text-red-500">*</label></div>
                             {console.log(hyperlinkstate)}
                             {hyperlinkstate?.hyperlinked ?
-                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{formValues.order_info.clientname}</div> : 
+                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{hyperlinkstate.clientname}</div> : 
                             <AsyncSelect
                                 onChange={handleClientNameChange}
                                 value={selectedOption}

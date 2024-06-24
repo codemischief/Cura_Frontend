@@ -323,6 +323,7 @@ const LobReceiptPayments = () => {
             handleRefresh={handleRefresh}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            height="calc(100vh - 15rem)"
 
           />
         </div>

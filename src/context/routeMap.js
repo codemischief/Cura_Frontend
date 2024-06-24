@@ -20,6 +20,13 @@ export const routeMapObj = Object.freeze({
   getLobEntityPayments: PATH_DASHBOARD.admin.lobReceiptPayments,
   EntityReceiptPayments: PATH_DASHBOARD.admin.entityReceiptPayment,
   LOBReceiptPayments: PATH_DASHBOARD.admin.lobReceiptPaymentsConsolidated,
+    
+  reportClientContacts : PATH_DASHBOARD.admin.contact.clientContactDetails,
+  reportOwnerAllMailIDs: PATH_DASHBOARD.admin.contact.ownerMailId,
+  reportOwnerPhoneNos: PATH_DASHBOARD.admin.contact.ownerphoneno,
+  reportAllTenantsMailIDs: PATH_DASHBOARD.admin.contact.tenantEmail,
+  reportClientPhoneNos: PATH_DASHBOARD.admin.contact.clientphoneno,
+
 
   // research - routes
   ResearchProspect: PATH_DASHBOARD.research.prospect,

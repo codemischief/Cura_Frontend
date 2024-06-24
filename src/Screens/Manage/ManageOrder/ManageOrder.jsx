@@ -168,6 +168,25 @@ const ManageOrder = () => {
         setExistingOrder(result);
         setPageLoading(false);
     }
+    function propertyHelper(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+          idNameObject[item.id] = {
+            buildername : item.buildername,
+            propertyname : item.propertyname
+          }
+        });
+        return idNameObject;
+    }
+    const getClientPropertyByClientId = async (id) => {
+        const data = {
+            "client_id": id
+        }
+        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
+        const res = await response.json()
+        console.log(res.data)
+        setClientPropertyData(propertyHelper(res.data))
+    }
     const fetchHyperLinkData = async () => {
        if(clientid != null) {
         const data = {
@@ -192,6 +211,7 @@ const ManageOrder = () => {
               
             }
           }))
+          getClientPropertyByClientId(clientid)
         // const temp = {...formValues}
         // const ex = temp.order_info 
         // ex.clientname = state?.clientname 
@@ -813,7 +833,10 @@ const ManageOrder = () => {
     const initials = () => {
         setOrderText('Select Client Property')
         setFormValues(initialValues);
-        setClientPropertyData([])
+        if(!clientid ) {
+
+            setClientPropertyData([])
+        }
         setFormErrors({});
     }
     const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);

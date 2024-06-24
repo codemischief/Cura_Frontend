@@ -241,7 +241,7 @@ const PmaInvoiceList = () => {
           <div className="flex justify-between">
             <HeaderBreadcrum
               heading={"Project Contacts"}
-              path={["Reports", "PMA", "Project Contacts"]}
+              path={["Reports", "Client", "Project Contacts"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
 
