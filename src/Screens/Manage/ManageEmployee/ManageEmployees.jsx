@@ -1744,7 +1744,7 @@ const ManageEmployees = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="phNo" value={formValues.phNo} onChange={handleChange} />
                                             <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.phNo}</div>
                                         </div>
                                         <div className="">

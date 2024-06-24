@@ -576,7 +576,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Phone Number <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phoneno" value={formValues.phoneno} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="phoneno" value={formValues.phoneno} onChange={handleChange} />
                                             <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.phoneno}</div>
                                         </div>
                                         <div className="">
