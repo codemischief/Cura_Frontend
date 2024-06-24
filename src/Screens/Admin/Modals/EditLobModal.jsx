@@ -22,7 +22,7 @@ const EditLobModal = (props) => {
             "new_name": editModalInput,
         }
         const response = await APIService.editLob(data);
-        console.log(response);
+        
         props.showSuccess();
     }
 

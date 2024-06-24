@@ -27,7 +27,6 @@ export const orderAnalysis = createSlice({
   reducers: {
     setOrderAnalysis: (state, { payload }) => {
       const { data } = payload;
-      console.log(data,"datadatadatadatadata");
       state.orderAnalysis = orderAnalysisFromat(data.data)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;

@@ -31,7 +31,14 @@ export const PATH_DASHBOARD = {
       ROOTS.admin,
       "/lobReceiptPaymentsConsolidated"
     ),
-    updateCompanyKey : path(ROOTS.admin, "/updatecompanykey")
+    updateCompanyKey : path(ROOTS.admin, "/updatecompanykey"),
+    contact: {
+      ownerMailId: path(ROOTS.admin, "/ownerMailId"),
+      tenantEmail: path(ROOTS.admin, "/tenantEmail"),
+      clientContactDetails: path(ROOTS.admin, "/clientContactDetails"),
+      clientphoneno: path(ROOTS.admin , "/clientphoneno"),
+      ownerphoneno: path(ROOTS.admin , "/ownerphoneno"),
+    },
   },
   research: {
     prospect: path(ROOTS.research, "/prospect"),
@@ -161,13 +168,7 @@ export const PATH_DASHBOARD = {
       serviceTaxPaidByVendor: path(ROOTS.report, "/serviceTaxPaidByVendor"),
       serviceTaxReport: path(ROOTS.report , "/serviceTaxReport"),
     },
-    contact: {
-      ownerMailId: path(ROOTS.report, "/ownerMailId"),
-      tenantEmail: path(ROOTS.report, "/tenantEmail"),
-      clientContactDetails: path(ROOTS.report, "/clientContactDetails"),
-      clientphoneno: path(ROOTS.report , "/clientphoneno"),
-      ownerphoneno: path(ROOTS.report , "/ownerphoneno"),
-    },
+
     exceptions: {
       paymentUnderSuspenseOrder: path(ROOTS.report,"/paymentUnderSuspenseOrder"),
       receiptUnderSuspenseOrder: path(ROOTS.report,"/receiptsUnderSuspenseOrder"),

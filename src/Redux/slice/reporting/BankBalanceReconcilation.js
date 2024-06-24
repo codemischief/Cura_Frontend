@@ -62,7 +62,6 @@ export const getBankBalanceReconcilation =
 
         } catch (err) {
             dispatch(setLoading(false))
-            console.log(err);
         }
     };
 
@@ -83,8 +82,6 @@ export const downloadbankBalanceReconcillation =
 
         } catch (err) {
             dispatch(setLoading(false))
-            console.log(err);
-
         }
     };
 export const downloadXlsEndpoint = (filename, userId, type = 'excel') => async (dispatch) => {

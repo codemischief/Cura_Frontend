@@ -1966,7 +1966,7 @@ const ManageOrderReceipt = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-sm text-[#787878]">Order Status </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" value={orderData.orderdate} readOnly />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" value={orderData.orderstatus} readOnly />
                                         </div>
                                     </div>
                                 </div>

@@ -222,7 +222,7 @@ const OwnerPhoneNo = () => {
           >
             <div className="flex flex-col h-16 w-[281px]">
               <label className="font-sans text-sm font-normal leading-5">
-                Phone Number Type
+                Phone Number Type <span className="text-red-500">*</span>
               </label>
 
               <select

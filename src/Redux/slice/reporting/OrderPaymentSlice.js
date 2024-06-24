@@ -110,7 +110,6 @@ export const downloadPaymentDataXls =
       }
       dispatch(setStatus("success"));
     } catch (err) {
-      console.log("err", err);
       dispatch(setStatus("error"));
     }
   };

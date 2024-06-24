@@ -119,12 +119,12 @@ const ManageEmployees = () => {
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -133,7 +133,7 @@ const ManageEmployees = () => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -172,7 +172,7 @@ const ManageEmployees = () => {
         const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
-        console.log(result.data);
+        
 
         if (Array.isArray(result.data)) {
             setAllRoles(result.data);
@@ -185,7 +185,7 @@ const ManageEmployees = () => {
         const data = { "user_id": user.id };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
-        console.log(result.data);
+        
 
         if (Array.isArray(result.data)) {
             setAllEntites(result.data);
@@ -205,7 +205,7 @@ const ManageEmployees = () => {
         };
         const response = await APIService.getLob(data);
         const result = (await response.json());
-        console.log(result.data);
+        
 
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
@@ -214,10 +214,10 @@ const ManageEmployees = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        // console.log('ugm')
+        // 
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 if (filterMapState[key].filterData == 'Numeric') {
@@ -248,7 +248,7 @@ const ManageEmployees = () => {
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingEmployees(result);
@@ -258,7 +258,7 @@ const ManageEmployees = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -277,7 +277,7 @@ const ManageEmployees = () => {
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingEmployees(result);
@@ -287,14 +287,14 @@ const ManageEmployees = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         setCurrentPage((prev) => 1)
-        console.log(searchInput);
+        
         const data = {
             "user_id": user.id,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "statusmap", "role"],
@@ -308,7 +308,7 @@ const ManageEmployees = () => {
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingEmployees(result);
@@ -348,7 +348,7 @@ const ManageEmployees = () => {
 
     const handleOpenEdit = (oldItem) => {
         // setPageLoading(true)
-        console.log('called');
+        
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -367,9 +367,9 @@ const ManageEmployees = () => {
         setFormErrors({});
     }
     const handleAddEmployee = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         setIsEmployeeDialogue(false);
@@ -377,10 +377,10 @@ const ManageEmployees = () => {
 
     }
     const addEmployee = async () => {
-        // console.log('clicked')
-        console.log(formValues)
+        // 
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         // setPageLoading(true);
@@ -416,7 +416,7 @@ const ManageEmployees = () => {
         const result = (await response.json())
 
         setOpenAddConfirmation(false);
-        console.log(result)
+        
         setIsEmployeeDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
@@ -426,8 +426,8 @@ const ManageEmployees = () => {
             setErrorMessage(result.message)
         }
 
-        console.log(data);
-        console.log(result);
+        
+        
     }
 
     const initialValues = {
@@ -471,14 +471,14 @@ const ManageEmployees = () => {
             })
             res = false;
         } else {
-            console.log('issue is in empname')
+            
             setFormErrors((existing) => {
                 return { ...existing, employeeName: "" }
             })
         }
-        console.log('employee ok')
+        
         if (!formValues.panNo) {
-            console.log('issue is in panno')
+            
             setFormErrors((existing) => {
                 return { ...existing, panNo: "Enter Pan Number" }
             })
@@ -488,9 +488,9 @@ const ManageEmployees = () => {
                 return { ...existing, panNo: "" }
             })
         }
-        console.log('panno ok')
+        
         if (!formValues.doj) {
-            console.log('issue is in doj')
+            
             setFormErrors((existing) => {
                 return { ...existing, doj: "Enter Date Of Joining" }
             })
@@ -500,9 +500,9 @@ const ManageEmployees = () => {
                 return { ...existing, doj: "" }
             })
         }
-        console.log('date of joining okay')
+        
         if (!formValues.designation) {
-            console.log('issue is in designation')
+            
             setFormErrors((existing) => {
                 return { ...existing, designation: "Enter Designation" }
             })
@@ -512,9 +512,9 @@ const ManageEmployees = () => {
                 return { ...existing, designation: "" }
             })
         }
-        console.log('designation ok')
+        
         if (!formValues.email) {
-            console.log('issue is in email')
+            
             setFormErrors((existing) => {
                 return { ...existing, email: "Enter Email Address" }
             })
@@ -524,9 +524,9 @@ const ManageEmployees = () => {
                 return { ...existing, email: "" }
             })
         }
-        console.log('email ok')
+        
         if (!formValues.employeeId) {
-            console.log('issue is in empid')
+            
             setFormErrors((existing) => {
                 return { ...existing, employeeId: "Enter Employee Id" }
             })
@@ -536,10 +536,10 @@ const ManageEmployees = () => {
                 return { ...existing, employeeId: "" }
             })
         }
-        console.log('employeeId ok')
-        console.log('lob ok')
+        
+        
         if (!formValues.dob) {
-            console.log('issue is in dob')
+            
             setFormErrors((existing) => {
                 return { ...existing, dob: "Enter Date Of Birth" }
             })
@@ -549,9 +549,9 @@ const ManageEmployees = () => {
                 return { ...existing, dob: "" }
             })
         }
-        console.log('dob ok')
+        
         // if (!formValues.role) {
-        //     console.log('issue is in role')
+        //     
         //     setFormErrors((existing) => {
         //         return { ...existing, role: "Select Role" }
         //     })
@@ -561,9 +561,9 @@ const ManageEmployees = () => {
         //         return { ...existing, role: "" }
         //     })
         // }
-        console.log('role ok')
+        
         if (!formValues.phNo) {
-            console.log('issue is in phoneno')
+            
             setFormErrors((existing) => {
                 return { ...existing, phNo: "Enter Phone Number" }
             })
@@ -573,9 +573,9 @@ const ManageEmployees = () => {
                 return { ...existing, phNo: "" }
             })
         }
-        console.log('phoneno ok')
+        
         if (!formValues.country) {
-            console.log('issue is in country')
+            
             setFormErrors((existing) => {
                 return { ...existing, country: "Select Country" }
             })
@@ -585,9 +585,9 @@ const ManageEmployees = () => {
                 return { ...existing, country: "" }
             })
         }
-        console.log('country ok')
+        
         if (formValues.state == "") {
-            console.log('issue is in state')
+            
             setFormErrors((existing) => {
                 return { ...existing, state: "Select State" }
             })
@@ -597,9 +597,9 @@ const ManageEmployees = () => {
                 return { ...existing, state: "" }
             })
         }
-        console.log('state ok')
+        
         if (!formValues.city) {
-            console.log('issue is in city')
+            
             setFormErrors((existing) => {
                 return { ...existing, city: "Select City" }
             })
@@ -611,7 +611,7 @@ const ManageEmployees = () => {
         }
 
         if (!formValues.entity) {
-            console.log('issue is in entity')
+            
             setFormErrors((existing) => {
                 return { ...existing, entity: "Select Entity" }
             })
@@ -627,7 +627,7 @@ const ManageEmployees = () => {
             })
             res = false;
         } else {
-            console.log('issue is in empname')
+            
             setFormErrors((existing) => {
                 return { ...existing, suburb: "" }
             })
@@ -638,7 +638,7 @@ const ManageEmployees = () => {
             })
             res = false;
         } else {
-            console.log('issue is in empname')
+            
             setFormErrors((existing) => {
                 return { ...existing, userName: "" }
             })
@@ -665,7 +665,7 @@ const ManageEmployees = () => {
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -710,7 +710,7 @@ const ManageEmployees = () => {
         const response = await APIService.getEmployees(data)
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
@@ -730,7 +730,7 @@ const ManageEmployees = () => {
                         FileSaver.saveAs(result, 'EmployeeData.pdf');
                     }
 
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -743,11 +743,11 @@ const ManageEmployees = () => {
         }
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -779,7 +779,7 @@ const ManageEmployees = () => {
         setSearchInput(() => "");
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -927,7 +927,7 @@ const ManageEmployees = () => {
     const [filterState, setFilterState] = useState([]);
 
     const fetchFiltered = async (mapState) => {
-        console.log(mapState)
+        
         const tempArray = [];
         setEmployeeNameFilter(false)
         setEmployeeIdFilter(false)
@@ -941,8 +941,8 @@ const ManageEmployees = () => {
         setIdFilter(false);
         setCurrentPage((prev) => 1)
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 if (mapState[key].filterData == 'Numeric') {
@@ -975,16 +975,16 @@ const ManageEmployees = () => {
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingEmployees(result);
         setPageLoading(false);
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
         //     if (inputVariable.toLowerCase() == 'active') {
         //         existing = {
@@ -1054,7 +1054,7 @@ const ManageEmployees = () => {
         const tempArray = [];
         // we need to query thru the object
         setSortField(field)
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -1074,7 +1074,7 @@ const ManageEmployees = () => {
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingEmployees(result);
@@ -1094,7 +1094,7 @@ const ManageEmployees = () => {
             // const temp = {...filterMapState};
             // temp[columnName].type = "".
             // setFilterMapState(temp)
-            console.log(inputVariable)
+            
             if (inputVariable == "") {
                 const temp = { ...filterMapState }
                 temp[columnName].filterType = ""
@@ -1512,7 +1512,7 @@ const ManageEmployees = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -1603,7 +1603,7 @@ const ManageEmployees = () => {
                                             defaultValue="Select Username"
                                             onChange={e => {
                                                 // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
+                                                
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, userName: e.target.value }
                                                     return newData;
@@ -1687,7 +1687,7 @@ const ManageEmployees = () => {
                                                 defaultValue="Select lob"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, lob: e.target.value }
                                                         return newData;
@@ -1721,7 +1721,7 @@ const ManageEmployees = () => {
                                                 defaultValue="Select Role"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, role: e.target.value }
                                                         return newData;
@@ -1801,7 +1801,7 @@ const ManageEmployees = () => {
                                                     const existing = { ...formValues }
                                                     existing.state = e.target.value
                                                     existing.city = null
-                                                    console.log(existing)
+                                                    
                                                     setFormValues(existing)
                                                 }}
                                             >
@@ -1826,7 +1826,7 @@ const ManageEmployees = () => {
                                                 defaultValue="Select City"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, city: e.target.value }
                                                         return newData;
@@ -1857,7 +1857,7 @@ const ManageEmployees = () => {
                                                 value={formValues.entity}
                                                 defaultValue="Select entity"
                                                 onChange={e => {
-                                                    console.log(e.target.value);
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, entity: e.target.value }
                                                         return newData;
@@ -1879,7 +1879,7 @@ const ManageEmployees = () => {
                                 checked={formValues.status}
                                 className='mr-3 h-4 w-4'
                                 onClick={(e) => {
-                                    // console.log(e.target.checked)
+                                    // 
                                     const existing = { ...formValues };
                                     existing.status = !existing.status;
                                     setFormValues(existing)

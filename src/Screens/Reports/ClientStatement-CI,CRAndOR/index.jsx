@@ -39,7 +39,7 @@ const LobReceiptPayments = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.clientStatementAllEntities);
-  console.log(totalAmount)
+  
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -73,7 +73,7 @@ const LobReceiptPayments = () => {
     const data = { "user_id": user.id };
     const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
     const result = (await response.json());
-    console.log(result.data);
+    
 
     if (Array.isArray(result.data)) {
       setAllEntites(result.data);
@@ -276,7 +276,7 @@ const LobReceiptPayments = () => {
           <div className="flex justify-between">
             <HeaderBreadcrum
               heading={"Client Statement by LOB & Ent (CI,OR)"}
-              path={["Reports", "Lists", "Client Statement by LOB & Ent (CI,OR)"]}
+              path={["Reports", "Client", "Client Statement by LOB & Ent (CI,OR)"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
               {/* <h1>hey</h1> */}
@@ -317,7 +317,7 @@ const LobReceiptPayments = () => {
                   defaultValue="Lob Name"
                   onChange={e => {
                     // fetchCityData(e.target.value);
-                    console.log(e.target.value);
+                    
                     setLob(e.target.value);
                   }}
                 >
@@ -337,7 +337,7 @@ const LobReceiptPayments = () => {
                   value={entity}
                   defaultValue="Select entity"
                   onChange={e => {
-                    console.log(e.target.value);
+                    
                     setEntity(e.target.value)
                   }}
                 >

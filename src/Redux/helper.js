@@ -27,7 +27,7 @@ export const updatedResponsePmaData = (data, year, month) => {
   }));
 };
 export const updatedOrderPaymentData = (data, year, month) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     data: billing.data ? billing.date : "",
@@ -44,7 +44,7 @@ export const updatedOrderReceiptData = (data, year, month) => {
   }));
 };
 export const updatedOrderInvoiceData = (data, year, month) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     invoicedate: billing.invoicedate ? formatDate(billing.invoicedate) : "",
@@ -71,7 +71,7 @@ export const updatedVendorInvoiceData = (data, year, month) => {
   }));
 };
 export const updatedLobReceiptPaymentsData = (data, year, month) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     orderreceiptamount: billing.orderreceiptamount
@@ -84,7 +84,7 @@ export const updatedLobReceiptPaymentsData = (data, year, month) => {
   }));
 };
 export const updatedEntityReceiptPaymentsData = (data, year, month) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     orderreceiptamount: billing.orderreceiptamount
@@ -97,7 +97,7 @@ export const updatedEntityReceiptPaymentsData = (data, year, month) => {
   }));
 };
 export const updatedLobReceiptPaymentConsolidatedData = (data, year, month) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     total_orderreceiptamount: billing.total_orderreceiptamount
@@ -110,19 +110,19 @@ export const updatedLobReceiptPaymentConsolidatedData = (data, year, month) => {
   }));
 };
 export const pmaBillingTrendView = (data, year, month) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
   }));
 };
 export const pmaClientReport = (data, year, month) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
   }));
 };
 export const pmaInvoiceList = (data, year, month) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     invoicedate: billing.invoicedate ? formatDate(billing.invoicedate) : "",
@@ -134,14 +134,14 @@ export const pmaInvoiceList = (data, year, month) => {
   }));
 };
 export const pmaClientReceivable = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     amount: billing.amount ? floorDecimal(billing.amount) : "0.00",
   }));
 };
 export const activePmaAgreement = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     startdate: billing.startdate ? formatDate(billing.startdate) : "",
@@ -153,7 +153,7 @@ export const activePmaAgreement = (data) => {
   }));
 };
 export const projectContacts = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     tenureenddate: billing.tenureenddate
@@ -165,7 +165,7 @@ export const projectContacts = (data) => {
   }));
 };
 export const advanceHoldingAmount = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     payments: billing.payments ? floorDecimal(billing.payments) : "0.00",
@@ -173,7 +173,7 @@ export const advanceHoldingAmount = (data) => {
   }));
 };
 export const pmaClientStatementAll = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     date: billing.date ? formatDate(billing.date) : "",
@@ -181,7 +181,7 @@ export const pmaClientStatementAll = (data) => {
   }));
 };
 export const pmaClientStatement = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     date: billing.date ? formatDate(billing.date) : "",
@@ -189,7 +189,7 @@ export const pmaClientStatement = (data) => {
   }));
 };
 export const nonPmaClientStAndRec = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     date: billing.date ? formatDate(billing.date) : "",
@@ -198,7 +198,7 @@ export const nonPmaClientStAndRec = (data) => {
 };
 
 export const clientStatementAllEntities = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     date: billing.date ? formatDate(billing.date) : "",
@@ -206,13 +206,13 @@ export const clientStatementAllEntities = (data) => {
   }));
 };
 export const duplicateClientsReport = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
   }));
 };
 export const reportMonthlyBankSummary = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     payments: billing.payments ? floorDecimal(billing.payments) : "0.00",
@@ -226,7 +226,7 @@ export const reportMonthlyBankSummary = (data) => {
   }));
 };
 export const bankTransferReconsiliation = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     amount: billing.amount ? floorDecimal(billing.amount) : "0.00",
@@ -254,7 +254,7 @@ export const bankReceiptReconciliation = (data) => {
   }));
 };
 export const bankPaymentsReconciliation = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     bankst_dr: billing.bankst_dr ? floorDecimal(billing.bankst_dr) : "0.00",
@@ -271,20 +271,20 @@ export const bankPaymentsReconciliation = (data) => {
   }));
 };
 export const clientTraceReport = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
   }));
 };
 export const orderTraceReport = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
   }));
 };
 
 export const StatisticsReport = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
     amount: billing.amount
@@ -335,13 +335,13 @@ export const clientReceiptFormatData = (data) => {
   }));
 };
 export const updatedEmployerData = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
   }));
 };
 export const updatedGovernmentDepartmentData = (data) => {
-  console.log(data);
+  
   return data.map((billing, index) => ({
     ...billing,
   }));
@@ -353,13 +353,13 @@ export const updatedAgentData = (data) => {
 };
 
 export const updatedOwnerData = (data) => {
-  console.log(data)
+  
   return data.map((billing, index) => ({
     ...billing,
   }));
 }
 export const updatedServiceApartmentData = (data) => {
-  console.log(data)
+  
   return data.map((billing, index) => ({
     ...billing,
   }));

@@ -89,7 +89,7 @@ const Service = () => {
         };
         const response = await APIService.getLob(data);
         const result = (await response.json());
-        console.log(result.data);
+        
 
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
@@ -126,7 +126,7 @@ const Service = () => {
         }
         const response = await APIService.getVendorCategoryAdmin(data);
         const res = await response.json()
-        console.log(res.data);
+        
         setAllCategory(res.data)
     }
 
@@ -136,7 +136,7 @@ const Service = () => {
         const data = { "user_id": user.id };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
-        console.log(result.data);
+        
 
         if (Array.isArray(result.data)) {
             setAllRoles(result.data);
@@ -146,7 +146,7 @@ const Service = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        console.log('ugm')
+        
         // we need to query thru the object
         const tempArray = [];
         // we need to query thru the object
@@ -180,7 +180,7 @@ const Service = () => {
         const response = await APIService.getService(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingService(result);
@@ -204,7 +204,7 @@ const Service = () => {
         const response = await APIService.getService(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingService(result);
@@ -213,7 +213,7 @@ const Service = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         setCurrentPage((prev) => 1)
-        console.log(searchInput);
+        
         const data = {
             "user_id": user.id,
             "rows": ["*"],
@@ -227,7 +227,7 @@ const Service = () => {
         const response = await APIService.getService(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingService(result);
@@ -259,7 +259,7 @@ const Service = () => {
         setIsEditDialogue(true)
     }
     const handleOpenEdit = (oldItem) => {
-        console.log('called');
+        
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -278,9 +278,9 @@ const Service = () => {
         setFormErrors({});
     }
     const handleAddService = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         setIsServiceDialogue(false);
@@ -302,7 +302,7 @@ const Service = () => {
         const result = (await response.json())
 
         setOpenAddConfirmation(false);
-        console.log(result)
+        
         setIsServiceDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
@@ -312,8 +312,8 @@ const Service = () => {
             setErrorMessage(result.message)
         }
 
-        console.log(data);
-        console.log(result);
+        
+        
     }
 
     const initialValues = {
@@ -374,7 +374,7 @@ const Service = () => {
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -416,7 +416,7 @@ const Service = () => {
         const response = await APIService.getService(data)
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
@@ -434,7 +434,7 @@ const Service = () => {
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'ServiceData.pdf');
                     }
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -447,7 +447,7 @@ const Service = () => {
         }
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
@@ -468,7 +468,7 @@ const Service = () => {
         const response = await APIService.getService(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingService(result);
@@ -494,7 +494,7 @@ const Service = () => {
         const response = await APIService.getService(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingService(result);
@@ -579,8 +579,8 @@ const Service = () => {
         setServiceFilter(false)
         setIdFilter(false)
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -605,16 +605,16 @@ const Service = () => {
         const response = await APIService.getService(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingService(result);
         setPageLoading(false);
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
 
 
@@ -658,7 +658,7 @@ const Service = () => {
         const response = await APIService.getService(data);
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingService(result);
@@ -672,7 +672,7 @@ const Service = () => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -690,7 +690,7 @@ const Service = () => {
         }
         const response = await APIService.getTallyLedgerAdmin(data);
         const res = await response.json()
-        console.log(res);
+        
         setTallyLedgerData(res.data)
     }
 
@@ -961,7 +961,7 @@ const Service = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -1043,7 +1043,7 @@ const Service = () => {
                                                     defaultValue="Select lob"
                                                     onChange={e => {
                                                         // fetchCityData(e.target.value);
-                                                        console.log(e.target.value);
+                                                        
                                                         setFormValues((existing) => {
                                                             const newData = { ...existing, lob: e.target.value }
                                                             return newData;

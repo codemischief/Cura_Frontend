@@ -103,7 +103,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Amount",
       field: "amount",
       type: "numeric",
-      sorting: false,
+      sorting: true,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",

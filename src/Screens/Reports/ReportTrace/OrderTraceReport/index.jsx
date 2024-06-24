@@ -190,11 +190,11 @@ const OrderTraceReport = () => {
   });
   const [query, setQuery] = useState('')
   const handleOrderIDChange = (e) => {
-    console.log(e)
+    
     setSelectedOption(e)
   }
   const loadOptions = async (e) => {
-    console.log(e)
+    
     if (e.length < 2) return;
     const data = {
       "user_id": user.id,
@@ -259,7 +259,7 @@ const OrderTraceReport = () => {
               gap={"24px"}
             >
               <div className="">
-                <div className="text-[13px]">Order ID </div>
+                <div className="text-[13px]">Order ID <span className="text-red-500">*</span></div>
                 <AsyncSelect
                   onChange={handleOrderIDChange}
                   value={selectedOption}

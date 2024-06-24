@@ -26,8 +26,8 @@ export default function connectionDataColumn(onQuery) {
       },
     },
     {
-      title: "Entity",
-      field: "entityname",
+      title: "Lob Name",
+      field: "lobname",
       sorting: true,
       cellStyle: { minWidth: "20px", maxWidth: "34px" },
       filterComponent: TextFilterField,

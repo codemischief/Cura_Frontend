@@ -386,7 +386,9 @@ const App = () => {
                 </Suspense>
               }
             />
-            <Route path="/reset" element={<RequestResetPassword />} />
+            <Route path="/reset" element={<Suspense fallback={<LoadingBackdrop />}> 
+             <RequestResetPassword />
+            </Suspense>} />
 
             <Route
               element={
@@ -1180,7 +1182,7 @@ const App = () => {
                 }
               />
               <Route
-                path="reports/tenantEmail"
+                path="admin/tenantEmail"
                 element={
                   <Suspense fallback={<LoadingBackdrop />}>
                     <TenantEmail />
@@ -1188,7 +1190,7 @@ const App = () => {
                 }
               />
               <Route
-                path="reports/ownerMailId"
+                path="admin/ownerMailId"
                 element={
                   <Suspense fallback={<LoadingBackdrop />}>
                     <OwnerMailId />
@@ -1196,7 +1198,7 @@ const App = () => {
                 }
               />
               <Route
-                path="reports/clientContactDetails"
+                path="admin/clientContactDetails"
                 element={
                   <Suspense fallback={<LoadingBackdrop />}>
                     <ClientContactDetails />
@@ -1332,7 +1334,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/reports/clientphoneno"
+                path="/admin/clientphoneno"
                 element={
                   <Suspense fallback={<LoadingBackdrop />}>
                     <ClientPhoneNo />
@@ -1340,7 +1342,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/reports/ownerphoneno"
+                path="/admin/ownerphoneno"
                 element={
                   <Suspense fallback={<LoadingBackdrop />}>
                     <OwnerPhoneNo />

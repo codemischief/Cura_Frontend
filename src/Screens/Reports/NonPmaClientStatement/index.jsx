@@ -33,7 +33,7 @@ const LobReceiptPayments = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.nonPmaClientStAndRec);
-  console.log(totalAmount)
+  
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [showTable, setShowTable] = useState(false);
@@ -179,8 +179,8 @@ const LobReceiptPayments = () => {
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
-              heading={"CURA Non Pma Client Statement"}
-              path={["Reports", "Clients", "CURA Non Pma Client Statement"]}
+              heading={"Cura Non PMA Client Statement"}
+              path={["Reports", "Client", "Cura Non PMA Client Statement"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
 

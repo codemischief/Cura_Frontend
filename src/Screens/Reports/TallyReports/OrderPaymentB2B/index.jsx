@@ -349,7 +349,7 @@ const OrderPaymentB2BView = () => {
           >
             <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
-                Mode
+                Mode <span className="text-red-500">*</span>
               </label>
 
               <select
@@ -367,7 +367,7 @@ const OrderPaymentB2BView = () => {
             </div>
             <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
-                Entity
+                Entity <span className="text-red-500">*</span>
               </label>
               <select
                 className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"

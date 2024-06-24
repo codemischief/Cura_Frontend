@@ -194,8 +194,8 @@ const EntityBlankReport = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Entity blank for Transactions (CR,OR,OI,VI,OP)"}
-            path={["Reports", "Exceptions", "Entity blank for Transactions (CR,OR,OI,VI,OP)"]}
+            heading={"Non Cura Entity in Transactions"}
+            path={["Reports", "Exceptions", "Non Cura Entity in Transactions"]}
             />
           <div className="flex justify-between gap-7 h-[36px]">
             <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">

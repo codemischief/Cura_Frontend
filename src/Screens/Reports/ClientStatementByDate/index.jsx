@@ -40,7 +40,7 @@ const ClientStatementByDate = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.clientStatementByDate);
-  console.log(totalAmount)
+  
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -278,7 +278,7 @@ const ClientStatementByDate = () => {
         <div className="flex justify-between">
           <HeaderBreadcrum
             heading={"Client Statement By Date (CI,CR,OR)"}
-            path={["Reports", "Lists", "Client Statement By Date (CI,CR,OR)"]}
+            path={["Reports", "Client", "Client Statement By Date (CI,CR,OR)"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {/* <h1>hey</h1> */}

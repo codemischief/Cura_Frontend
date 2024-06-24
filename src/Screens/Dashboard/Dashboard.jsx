@@ -19,7 +19,7 @@ const Dashboard = () => {
     const data = { user_id: user.id };
     const response = await APIService.dashboardData(data);
     const res = await response.json();
-    console.log(res);
+    
     setmyorder(res.data);
     setPageLoading(false);
   };
@@ -28,7 +28,7 @@ const Dashboard = () => {
     const data = { user_id: user.id, search_key: searchText };
     const response = await APIService.dashboardData(data);
     const res = await response.json();
-    console.log(res);
+    
     setmyorder(res.data);
     setPageLoading(false);
   };

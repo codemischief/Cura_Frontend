@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Link , useNavigate, useLocation} from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import backLink from "../../assets/back.png";
 import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
@@ -39,7 +39,7 @@ const City = () => {
     const menuRef = useRef();
     const { user } = useAuth();
     const navigate = useNavigate();
-    const {pathname} = useLocation();
+    const { pathname } = useLocation();
     const canEdit = checkEditAccess();
     // we have the module here
 
@@ -79,11 +79,11 @@ const City = () => {
     };
     const fetchCountryData = async () => {
         setPageLoading(true);
-        
-        const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries({...data,user_id : user.id})
+
+        const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const response = await APIService.getCountries({ ...data, user_id: user.id })
         const result = (await response.json()).data;
-        // console.log(result.data);
+        // 
 
         setAllCountry(result)
         // if (Array.isArray(result.data)) {
@@ -91,11 +91,11 @@ const City = () => {
         // }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
-        const data = {  "country_id": id };
-        const response = await APIService.getState({...data,user_id : user.id});
+
+        const data = { "country_id": id };
+        const response = await APIService.getState({ ...data, user_id: user.id });
         const result = (await response.json()).data;
-        console.log(result)
+
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -103,8 +103,8 @@ const City = () => {
     const fetchCityData = async () => {
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        // console.log(filterMapState);
+        // 
+        // 
         Object.keys(filterMapState).forEach((key) => {
             if (filterMapState[key].filterType != "") {
                 if (filterMapState[key].filterData == 'Numeric') {
@@ -128,11 +128,11 @@ const City = () => {
         setFilterState((prev) => tempArray)
         setPageLoading(true);
         // const user_id = await authService.getUserID();
-        // console.log(user_id)
+        // 
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => 15)
         const data = {
-            
+
             rows: ["id", "city", "state", "countryid", "country"],
             filters: tempArray,
             sort_by: [sortField],
@@ -140,7 +140,7 @@ const City = () => {
             pg_no: 1,
             pg_size: 15
         };
-        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
+        const response = await APIService.getCitiesAdmin({ ...data, user_id: user.id });
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -152,11 +152,11 @@ const City = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         // const user_id = await authService.getUserID();
-        // console.log(user_id)
+        // 
         setCurrentPages(quantity);
         setCurrentPage((prev) => 1)
         const data = {
-            
+
             rows: ["id", "city", "state", "countryid", "country"],
             filters: filterState,
             sort_by: [sortField],
@@ -165,7 +165,7 @@ const City = () => {
             pg_size: Number(quantity),
             search_key: searchInput
         };
-        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
+        const response = await APIService.getCitiesAdmin({ ...data, user_id: user.id });
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -228,7 +228,7 @@ const City = () => {
         setPageLoading(true);
         setCurrentPage((prev) => page)
         const data = {
-            
+
             rows: ["id", "city", "state", "countryid", "country"],
             filters: filterState,
             sort_by: [sortField],
@@ -237,7 +237,7 @@ const City = () => {
             pg_size: Number(currentPages),
             search_key: searchInput
         };
-        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
+        const response = await APIService.getCitiesAdmin({ ...data, user_id: user.id });
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -247,24 +247,24 @@ const City = () => {
     };
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
-        console.log("hey");
+
         fetchPageData(value);
     };
     const enterSearch = (e) => {
         e.preventDefault();
 
-        console.log('hey')
+
         handleSearch()
     }
     const handleSearch = async () => {
         // e.preventDefault();
-        // console.log("clicked");
+        // 
         setPageLoading(true);
         // setIsSearchOn(true);
         setCurrentPage((prev) => 1)
 
         const data = {
-            
+
             rows: ["id", "city", "state", "country"],
             filters: filterState,
             sort_by: [sortField],
@@ -273,7 +273,7 @@ const City = () => {
             pg_size: Number(currentPages),
             search_key: searchInput,
         };
-        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
+        const response = await APIService.getCitiesAdmin({ ...data, user_id: user.id });
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -288,7 +288,7 @@ const City = () => {
         setSearchInput("");
         setCurrentPage((prev) => 1)
         const data = {
-            
+
             rows: ["id", "city", "state", "countryid", "country"],
             filters: filterState,
             sort_by: [sortField],
@@ -297,7 +297,7 @@ const City = () => {
             pg_size: Number(currentPages),
             search_key: "",
         };
-        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
+        const response = await APIService.getCitiesAdmin({ ...data, user_id: user.id });
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -317,7 +317,7 @@ const City = () => {
         setBackDropLoading(true)
         setPageLoading(true)
         const data = {
-            
+
             rows: ["country", "state", "city", "id"],
             filters: filterState,
             sort_by: [sortField],
@@ -326,7 +326,7 @@ const City = () => {
             pg_size: 0,
             search_key: searchInput,
             downloadType: type,
-            routename : pathname,
+            routename: pathname,
             colmap: {
                 "country": "Country",
                 "state": "State",
@@ -334,28 +334,28 @@ const City = () => {
                 "id": "ID"
             }
         };
-        const response = await APIService.getCitiesAdmin({...data,user_id : user.id})
+        const response = await APIService.getCitiesAdmin({ ...data, user_id: user.id })
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
-                "user_id" : user.id
+                "user_id": user.id
             }
             APIService.download(d, temp.filename).then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
-                })
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
+            })
                 .then(result => {
                     if (type == "excel") {
                         FileSaver.saveAs(result, 'CityData.xlsx');
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'CityData.pdf');
                     }
-                    console.log('Success:', result);
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -412,8 +412,8 @@ const City = () => {
         setCityFilter(false);
         setIdFilter(false);
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState);
+        // 
+
         Object.keys(mapState).forEach((key) => {
             if (mapState[key].filterType != "") {
                 if (mapState[key].filterData == 'Numeric') {
@@ -439,7 +439,7 @@ const City = () => {
         setCurrentPage((prev) => 1)
 
         const data = {
-            
+
             rows: ["id", "city", "state", "countryid", "country"],
             filters: tempArray,
             sort_by: [sortField],
@@ -448,7 +448,7 @@ const City = () => {
             pg_size: Number(currentPages),
             search_key: searchInput,
         };
-        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
+        const response = await APIService.getCitiesAdmin({ ...data, user_id: user.id });
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -490,7 +490,7 @@ const City = () => {
         setSortField(field);
         setFlag((prev) => !prev);
         const data = {
-            
+
             rows: ["id", "city", "state", "countryid", "country"],
             filters: filterState,
             sort_by: [field],
@@ -500,7 +500,7 @@ const City = () => {
             search_key: searchInput,
         };
 
-        const response = await APIService.getCitiesAdmin({...data,user_id : user.id});
+        const response = await APIService.getCitiesAdmin({ ...data, user_id: user.id });
         const res = await response.json();
         const result = res.data;
         const t = res.total_count;
@@ -563,12 +563,12 @@ const City = () => {
     }
     const addCity = async () => {
         const data = {
-            
+
             "city": formValues.cityName,
             "state": formValues.state,
             "countryid": formValues.country
         }
-        const response = await APIService.addCities({...data,user_id : user.id})
+        const response = await APIService.addCities({ ...data, user_id: user.id })
         const res = await response.json()
         if (res.result == 'success') {
             setShowAddConfirmation(false)
@@ -591,7 +591,7 @@ const City = () => {
         const data = {
             "id": id
         }
-        const response = await APIService.deleteCities({...data,user_id : user.id})
+        const response = await APIService.deleteCities({ ...data, user_id: user.id })
         const res = await response.json()
         if (res.result === 'success') {
             // delete success
@@ -757,7 +757,7 @@ const City = () => {
                                 </div>
                             </button> */}
                             <AddButton title="Add New City" onClick={handleOpen} />
-                            
+
                         </div>
                     </div>
                 </div>
@@ -908,7 +908,7 @@ const City = () => {
                                 </p>
                             </div>
                             <div className="w-1/2 p-4">
-                                <p>{canEdit? "Edit" : ""}</p>
+                                <p>{canEdit ? "Edit" : ""}</p>
                             </div>
                         </div>
                     </div>
@@ -941,15 +941,15 @@ const City = () => {
                                                 <p>{item.id}</p>
                                             </div>
                                             <div className="w-1/2 0 p-4 flex justify-between items-center ml-1">
-                                            <EditButton
-                                             rowData={item}
-                                             handleEdit={handleEdit}
-                                            />
-                                            <DeleteButton
-                                              
-                                              handleDelete={handleDeleteCity}
-                                              rowData={item}
-                                            />
+                                                <EditButton
+                                                    rowData={item}
+                                                    handleEdit={handleEdit}
+                                                />
+                                                <DeleteButton
+
+                                                    handleDelete={handleDeleteCity}
+                                                    rowData={item}
+                                                />
                                                 {/* <button onClick={() => handleEdit(item)}><img className="w-5 h-5" src={Edit} alt="edit" /></button>
                                                 <button onClick={() => handleDeleteCity(item)}><img className="w-5 h-5" src={Trash} alt="trash" /></button> */}
                                             </div>
@@ -984,7 +984,7 @@ const City = () => {
                             //  defaultValue="Select State"
                             onChange={(e) => {
                                 setCurrentPages(e.target.value);
-                                // console.log(e.target.value);
+                                // 
                                 fetchQuantityData(e.target.value);
                             }}
                         >

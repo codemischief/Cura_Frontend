@@ -31,8 +31,6 @@ export const pmaSlice = createSlice({
     setData: (state, { payload }) => {
       const { data, year, month } = payload;
       state.Data = sendClientStatement(data.data, year, month);
-      console.log(payload.data)
-      console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
       state.openingBalance = payload.data.opening_balance;
       state.closingBalance = payload.data.closing_balance;
@@ -85,7 +83,6 @@ export const {
 
 export const getData =
   (payloadObj, year, month) => async (dispatch) => {
-    console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(

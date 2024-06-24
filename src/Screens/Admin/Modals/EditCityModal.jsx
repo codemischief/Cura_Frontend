@@ -7,7 +7,7 @@ import Draggable from 'react-draggable';
 import useAuth from '../../../context/JwtContext';
 const EditCityModal = ({ handleClose, initialCountry, initialData, openSuccess }) => {
     const { user } = useAuth()
-    console.log(initialData)
+    
     // const [allCountry,setAllCountry] = useState(initialCountry) 
     const initialValues = {
         country: 5,
@@ -77,7 +77,7 @@ const EditCityModal = ({ handleClose, initialCountry, initialData, openSuccess }
         }
         const response = await APIService.editCities(data)
         const res = await response.json()
-        console.log(res)
+        
         if (res.result == 'success') {
             openSuccess()
         }

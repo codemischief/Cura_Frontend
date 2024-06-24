@@ -24,7 +24,7 @@ import AlertModal, {
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 import errorHandler from "../../../Components/common/ErrorHandler";
-import EmployerForm from "./EmployerForm"
+import ArchitectForm from "./ArchitectForm"
 import useAuth from "../../../context/JwtContext";
 const ResearchArchitect = () => {
   const dispatch = useDispatch();
@@ -173,8 +173,14 @@ const ResearchArchitect = () => {
          "societyname",
          "id"
       ],
-      
-      // colmap: { state: "State", country: "Country", city: "City" },
+      colmap : {
+        "name" : "Name",
+        "city" : "City",
+        "emailid" : "Email ID",
+        "phoneno" : "Phone Number",
+        "societyname" : "Society Name",
+        "id" : "ID"
+      },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
@@ -201,7 +207,14 @@ const ResearchArchitect = () => {
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",
       routename: "/research/architect",
-      // colmap: { state: "State", country: "Country", city: "City" },
+      colmap : {
+        "name" : "Name",
+        "city" : "City",
+        "emailid" : "Email ID",
+        "phoneno" : "Phone Number",
+        "societyname" : "Society Name",
+        "id" : "ID"
+      },
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
@@ -265,7 +278,7 @@ const ResearchArchitect = () => {
   return (
     <div className="h-[calc(100vh-7rem)]">
       {openForm && (
-        <EmployerForm
+        <ArchitectForm
           isOpen={openForm}
           handleClose={openCancel}
           editData={editData}

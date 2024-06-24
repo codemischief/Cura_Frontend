@@ -57,7 +57,7 @@ const LobReceiptPayments = () => {
     }
     const response = await APIService.getModesAdmin({ ...data, user_id: user.id });
     const result = (await response.json());
-    // console.log(result.data);
+    // 
     setPaymentMode(result.data);
     // setFormValues((existing) => {
     //     return { ...existing, paymentmode: result.data[0][0] }
