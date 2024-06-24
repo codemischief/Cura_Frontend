@@ -250,13 +250,13 @@ const EditManageBuilder = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Phone1 <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="phone1" value={formValues.phone1} onChange={handleChange} />
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.phone1}</div>
 
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Phone2 </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="phone2" value={formValues.phone2} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Email1</div>

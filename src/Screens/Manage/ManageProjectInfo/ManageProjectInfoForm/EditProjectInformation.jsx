@@ -328,7 +328,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                     <div className="">
                         <div className="text-[13px]">Subscribed E-mail</div>
                         <input
-                            type="text"
+                            type="email"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
                             name="mailgroup2"
                             value={formValues.project_info.mailgroup2}
