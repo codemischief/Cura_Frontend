@@ -281,7 +281,7 @@ const ManageBankStatement = () => {
         const response = await APIService.addClientReceipt(data);
         
         if (response.ok) {
-
+            initials()
             openConfirmModal();
         } else {
 
@@ -409,9 +409,8 @@ const ManageBankStatement = () => {
         setCrFormValues({ ...crFormValues, [name]: value });
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
+    const handleSubmit = () => {
+
         if (!validate()) {
             return;
         }
@@ -1644,7 +1643,7 @@ const ManageBankStatement = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <form onSubmit={handleSubmit}>
+                                
                                     <div className="w-full mt-[5px] ">
                                         <div className="flex gap-[48px] justify-center ">
                                             <div className=" space-y-[20px] py-[20px] px-[10px]">
@@ -1719,11 +1718,11 @@ const ManageBankStatement = () => {
 
                                     <div className="my-10 flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleSubmit} >Add</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                         {isLoading && <CircularProgress />}
                                     </div>
-                                </form>
+                               
                             </div>
                         </div>
                     </Draggable>
@@ -1955,7 +1954,7 @@ const ManageBankStatement = () => {
 
                                     <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addCreditRecipt}>Add</button>
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addCreditRecipt}>Add</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseCR}>Cancel</button>
                                         {isLoading && <CircularProgress />}
                                     </div>

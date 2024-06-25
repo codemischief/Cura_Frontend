@@ -58,6 +58,21 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       },
     },
     {
+      id: 2,
+      filterComponent: TextFilterField,
+      title: "Branch Adress",
+      field: "bankaddress",
+      sorting: true,
+    //   width : '1000px',
+      align: "left",
+      filterDisabled: false,
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        width : '13%'
+      },
+    },
+    {
       id: 3,
       filterComponent: TextFilterField,
       title: "Email ID",
