@@ -141,13 +141,13 @@ export const editArchitect = (payload) => async (dispatch) => {
   }
 };
 
-export const downloadArchitect = (payloadObj) => async (dispatch) => {
+export const downloadArchitect = (payloadObj ,type) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(`getResearchArchitect`, payloadObj);
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
-        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
       );
     }
     dispatch(setStatus("success"));
@@ -158,7 +158,7 @@ export const downloadArchitect = (payloadObj) => async (dispatch) => {
     dispatch(setStatus("error"));
   }
 };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (dispatch) => {
   try {
     const response = await axios.post(
       `download/${filename}`,
@@ -173,7 +173,11 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "ArchitectData.xlsx");
+    if(type == 'excel') {
+      FileSaver.saveAs(blob, "ArchitectData.xlsx");
+    }else {
+      FileSaver.saveAs(blob, "ArchitectData.pdf");
+    }
   } catch (error) {
     console.log("error", error);
   }
