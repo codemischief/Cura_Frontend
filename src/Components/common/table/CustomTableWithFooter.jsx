@@ -227,29 +227,17 @@ const helper = (index, obj, pageName) => {
     if (index == 1) {
 
     } else if (index == 2) {
-      return `Total: ${obj[0].jan}`
+      return `Total: ${obj.currentmonth}`
     } else if (index == 3) {
-      return `Total: ${obj[0].feb}`
+      return `Total: ${obj.cm1}`
     } else if (index == 4) {
-      return `Total: ${obj[0].mar}`
+      return `Total: ${obj.cm2}`
     } else if (index == 5) {
-      return `Total: ${obj[0].apr}`
+      return `Total: ${obj.cm3}`
     } else if (index == 6) {
-      return `Total: ${obj[0].may}`
+      return `Total: ${obj.cm4}`
     } else if (index == 7) {
-      return `Total: ${obj[0].jun}`
-    } else if (index == 8) {
-      return `Total: ${obj[0].jul}`
-    } else if (index == 9) {
-      return `Total: ${obj[0].aug}`
-    } else if (index == 10) {
-      return `Total: ${obj[0].sep}`
-    } else if (index == 11) {
-      return `Total: ${obj[0].oct}`
-    } else if (index == 12) {
-      return `Total: ${obj[0].nov}`
-    } else if (index == 13) {
-      return `Total: ${obj[0].dec}`
+      return `Total: ${obj.cm5}`
     }
   } else if (pageName == "lobreceiptpaymentconsolidated") {
     if (index == 2) {

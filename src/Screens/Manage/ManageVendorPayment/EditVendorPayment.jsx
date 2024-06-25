@@ -13,7 +13,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
     
     const initialValues = {
         client: null,
-        paymentby: null,
+        paymentby: user.id,
         amount: null,
         paymentdate: null,
         orderid: null,
@@ -123,6 +123,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         const data = { "user_id": user.id, "orderid": id }
         const response = await APIService.getOrderPending(data)
         const res = await response.json()
+        console.log(res.data)
         const existing = { ...tempFormValues }
         existing.orderdate = res.data.orderdate
         existing.orderstatus = res.data.orderstatus

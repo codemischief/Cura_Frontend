@@ -254,7 +254,7 @@ const ManageOrder = () => {
     }, []);
     const initialValues = {
         "order_info": {
-            "clientid": null,
+            "clientid": clientid,
             "briefdescription": null,
             "orderdate": null,
             "earlieststartdate": null,
@@ -424,7 +424,7 @@ const ManageOrder = () => {
             const statusres = await statusresponse.json();
             // we need to open add success
             setShowAddConfirmation(false);
-            setFormValues(initialValues);
+            
             openAddSuccess();
             initials()
             setSubmit(false)
