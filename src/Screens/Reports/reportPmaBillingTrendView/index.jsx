@@ -78,18 +78,18 @@ const PmaBillingTrendView = () => {
   };
 
   const handleRefresh = () => {
-    if (startDate) {
+    
       let obj = {
         user_id: user.id,
         rows: [
           "clientname",
-          "description",
-          "currentmonth",
-          "cm1",
-          "cm2",
-          "cm3",
-          "cm4",
-          "cm5",  ],
+          "property",
+          "cm",
+          "cm_1",
+          "cm_2",
+          "cm_3",
+          "cm_4",
+          "cm_5",  ],
         sort_by: [],
         filters: formatedFilterData(filter),
         search_key: search,
@@ -97,7 +97,7 @@ const PmaBillingTrendView = () => {
         pg_size: +countPerPage,
       };
       dispatch(getPmaBillingTrendViewData(obj));
-    }
+    
   };
 
   const handleSearch = () => {
@@ -129,13 +129,13 @@ const PmaBillingTrendView = () => {
         user_id: user.id,
         rows: [
           "clientname",
-      "description",
-      "currentmonth",
-      "cm1",
-      "cm2",
-      "cm3",
-      "cm4",
-      "cm5",  
+      "property",
+      "cm",
+      "cm_1",
+      "cm_2",
+      "cm_3",
+      "cm_4",
+      "cm_5",  
         
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -172,16 +172,15 @@ const PmaBillingTrendView = () => {
     
     let obj = {
       user_id: user.id,
-      fy: String(startYear),
       rows: [
         "clientname",
-        "description",
-        "currentmonth",
-        "cm1",
-        "cm2",
-        "cm3",
-        "cm4",
-        "cm5",  
+        "property",
+        "cm",
+        "cm_1",
+        "cm_2",
+        "cm_3",
+        "cm_4",
+        "cm_5",  
         ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -189,13 +188,13 @@ const PmaBillingTrendView = () => {
       colmap: {
 
         "clientname" : "Client Name",
-      "description" : "Property Description",
-      "currentmonth" : "Current Month", 
-      "cm1" : "Current Month - 1",
-      "cm2" : "Current Month - 2",
-      "cm3" : "Current Month - 3",
-      "cm4" : "Current Month - 4",
-      "cm5" : "Current Month - 5",  
+      "property" : "Property Description",
+      "cm" : "Current Month", 
+      "cm_1" : "Current Month - 1",
+      "cm_2" : "Current Month - 2",
+      "cm_3" : "Current Month - 3",
+      "cm_4" : "Current Month - 4",
+      "cm_5" : "Current Month - 5",  
       },
       search_key: search,
       pg_no: 0,
@@ -209,26 +208,26 @@ const PmaBillingTrendView = () => {
     let obj = {
       user_id: user.id,
       rows: ["clientname",
-        "description",
-        "currentmonth",
-        "cm1",
-        "cm2",
-        "cm3",
-        "cm4",
-        "cm5",  ],
+        "property",
+        "cm",
+        "cm_1",
+        "cm_2",
+        "cm_3",
+        "cm_4",
+        "cm_5",  ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",
       routename: "/reports/pmaBillingTrendView",
       colmap: {
 
         "clientname" : "Client Name",
-      "description" : "Property Description",
-      "currentmonth" : "Current Month", 
-      "cm1" : "Current Month - 1",
-      "cm2" : "Current Month - 2",
-      "cm3" : "Current Month - 3",
-      "cm4" : "Current Month - 4",
-      "cm5" : "Current Month - 5",  
+      "property" : "Property Description",
+      "cm" : "Current Month", 
+      "cm_1" : "Current Month - 1",
+      "cm_2" : "Current Month - 2",
+      "cm_3" : "Current Month - 3",
+      "cm_4" : "Current Month - 4",
+      "cm_5" : "Current Month - 5",  
       },
       filters: formatedFilterData(filter),
       search_key: search,
