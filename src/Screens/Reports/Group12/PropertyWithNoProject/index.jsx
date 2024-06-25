@@ -181,8 +181,8 @@ const PropertyWithNoProjectView = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Owner with no Properties Report"}
-            path={["Reports", "Exceptions", "Owner with no Properties Report"]}
+            heading={"PMA Properties With No Projects "}
+            path={["Reports", "Exceptions", "PMA Properties With No Projects "]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">

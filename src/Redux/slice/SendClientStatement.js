@@ -29,8 +29,11 @@ export const pmaSlice = createSlice({
   initialState,
   reducers: {
     setData: (state, { payload }) => {
-      const { data, year, month } = payload;
-      state.Data = sendClientStatement(data.data, year, month);
+      console.log(payload)
+      const { data } = payload;
+      
+      state.Data = data.data;
+      // console.log(state.Data)
       state.totalCount = payload.data.total_count;
       state.openingBalance = payload.data.opening_balance;
       state.closingBalance = payload.data.closing_balance;
