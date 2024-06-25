@@ -509,6 +509,13 @@ const ManageLLAgreement = () => {
     const initials = () => {
         setHyperlinkData()
         setFormValues(initialValues);
+        if(clientPropertyId) {
+            // we came thru hyperlink
+            setFormValues(prev => ({
+                ...prev,
+                client : state.clientid
+            }))
+        }
         setFormErrors({});
         setSelectedOption(
             {
@@ -738,9 +745,23 @@ const ManageLLAgreement = () => {
             setOrderText("Select Order")
             setPropertyText("Select Client Property")
             setFormValues(initialValues);
+            if(clientPropertyId) {
+                // we came thru hyperlink
+                setFormValues(prev => ({
+                    ...prev,
+                    client : state.clientid
+                }))
+            }
             openAddSuccess();
         } else {
             setFormValues(initialValues);
+            if(clientPropertyId) {
+                // we came thru hyperlink
+                setFormValues(prev => ({
+                    ...prev,
+                    client : state.clientid
+                }))
+            }
             setSelectedOption({
 
                 label: "Enter Client Name",
@@ -750,18 +771,15 @@ const ManageLLAgreement = () => {
             openFailureModal();
             setErrorMessage(result.message)
         }
-
-        
-        
     }
 
     const initialValues = {
-        client: "",
-        clientProperty: null,
+        client: null,
+        clientProperty: clientPropertyId,
         startDate: null,
         rentAmount: null,
         depositeAmount: null,
-        scan: "",
+        scan: null,
         order: null,
         durationInMonth: null,
         endDate: null,

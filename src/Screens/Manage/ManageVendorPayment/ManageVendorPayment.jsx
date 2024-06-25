@@ -446,7 +446,9 @@ const ManageVendorPayment = () => {
             temp2.orderstatus = null
             setOrderData(temp2);
             openAddSuccess();
+            setHyperLinkData()
         } else {
+            setHyperLinkData()
             setFormValues(initialValues);
             const temp1 = { ...selectedOption }
             temp1.label = "Select Client"
@@ -475,7 +477,7 @@ const ManageVendorPayment = () => {
     }
     const initialValues = {
         client: state?.clientid,
-        paymentby: null,
+        paymentby: user.id,
         amount: "",
         paymentdate: null,
         orderid: state?.orderid,
@@ -563,8 +565,8 @@ const ManageVendorPayment = () => {
     }
 
     const initials = () => {
-        setHyperLinkData()
         setFormValues(initialValues);
+        setHyperLinkData()
         setFormErrors({});
         setSelectedOption(
             {

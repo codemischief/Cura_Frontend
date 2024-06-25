@@ -399,9 +399,11 @@ const ManagePmaArgreement = () => {
             setOrderText("Select Order")
             setPropertyText("Select Client Property")
             setFormValues(initialValues);
+            handleHyperLinkState()
             openAddSuccess();
         } else {
             openFailureModal();
+            handleHyperLinkState()
             setErrorMessage(res.message)
         }
     }
