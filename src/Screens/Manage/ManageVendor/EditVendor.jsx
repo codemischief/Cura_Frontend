@@ -122,6 +122,12 @@ const EditVendor = ({ handleClose, currVendor, allCity, tallyLedgerData, allCate
                 return { ...existing, email: "Enter Email" }
             })
             res = false;
+        } else if (formValues.email != "" && formValues.email != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email)) {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, email: "Enter a valid email address" }
+            })
+            res = false
         } else {
             setFormErrors((existing) => {
                 return { ...existing, email: "" }
@@ -231,7 +237,7 @@ const EditVendor = ({ handleClose, currVendor, allCity, tallyLedgerData, allCate
                                             </div>
                                             <div className="">
                                                 <div className="text-sm text-[#505050]">Phone <label className="text-red-500">*</label></div>
-                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phone" value={formValues.phone} onChange={handleChange} />
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="phone" value={formValues.phone} onChange={handleChange} />
                                                 <div className="text-[10px] text-[#CD0000] absolute">{formErrors.phone}</div>
                                             </div>
                                             <div className="">

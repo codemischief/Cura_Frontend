@@ -1581,7 +1581,7 @@ const ManageVendorInvoice = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Estimate Amount </div>
-                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
                                         </div>
                                         
                                     </div>
