@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useState } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate, useLocation, useParams } from "react-router-dom"
 import { Backdrop, CircularProgress, Typography, Modal , Button } from "@mui/material"
 import { Add } from "@mui/icons-material"
 import Navbar from "../../../Components/Navabar/Navbar"
@@ -15,9 +15,12 @@ import CancelModel from "../../../Components/modals/CancelModel"
 import SucessfullModal from "../../../Components/modals/SucessfullModal"
 import useAuth from "../../../context/JwtContext"
 const DeletePage = () => {
+
   const { user } = useAuth()
-  let { state } = useLocation();
-  
+  // let { state } = useLocation();
+  const [state,setState] = useState({})
+  const {pagename} = useParams();
+  console.log(pagename)
   const navigate = useNavigate(-1)
   const [pageLoading, setPageLoading] = useState(false)
   const [id, setId] = useState("")
@@ -117,6 +120,98 @@ const DeletePage = () => {
     
     
   }
+  useEffect(() => {
+     if(pagename == 'deleteclient') {
+      setState(prev => ({
+        ...prev,
+        tablename : "client" ,
+        entityname : "Client",
+        fielduiname : "Name",
+        fieldbackendname : "firstname"
+      }))
+     }else if(pagename == 'deleteorder') {
+      setState(prev => ({
+        ...prev,
+        tablename : "orders" ,
+        entityname : "Order",
+        fielduiname : "Description",
+        fieldbackendname : "briefdescription"
+      }))
+     }else if(pagename == "deleteclientinvoice") {
+      setState(prev => ({
+        ...prev,
+        tablename : "order_invoice" ,
+        entityname : "Client Invoice",
+        fielduiname : "Quote Description",
+        fieldbackendname : "quotedescription"
+      }))
+     }else if(pagename == "deleteordereceipt") {
+      setState(prev => ({
+        ...prev,
+        tablename : "get_orders_receipt_view" ,
+        entityname : "Order Receipt",
+        fielduiname : "Order Description",
+        fieldbackendname : "briefdescription"
+      }))
+     }else if(pagename == "deleteorderpayment") {
+      setState(prev => ({
+        ...prev,
+        tablename : "order_payment" ,
+        entityname : "Order Payment",
+        fielduiname : "Description",
+        fieldbackendname : "description"
+      }))
+     }else if(pagename == "deleteclientreceipt") {
+      // state={{ tablename : "client_receipt", entityname : "Client Receipt", fielduiname : "Description" , fieldbackendname : "receiptdesc"}}
+      setState(prev => ({
+        ...prev,
+        tablename : "client_receipt" ,
+        entityname : "Client Receipt",
+        fielduiname : "Description",
+        fieldbackendname : "receiptdesc"
+      }))
+     }else if(pagename == "deletevendorinvoice") {
+      setState(prev => ({
+        ...prev,
+        tablename : "order_vendorestimate" ,
+        entityname : "Vendor Invoice",
+        fielduiname : "Description",
+        fieldbackendname : "quotedescription"
+      }))
+     }else if(pagename == "deletevendor") {
+      setState(prev => ({
+        ...prev,
+        tablename : "vendor" ,
+        entityname : "Vendor",
+        fielduiname : "Vendor Name",
+        fieldbackendname : "vendorname"
+      }))
+     }else if(pagename == "deleteuser") {
+      setState(prev => ({
+        ...prev,
+        tablename : "usertable" ,
+        entityname : "User",
+        fielduiname : "Username",
+        fieldbackendname : "username"
+      }))
+     }else if(pagename == "deleteemployee") {
+      setState(prev => ({
+        ...prev,
+        tablename : "employee" ,
+        entityname : "Employee",
+        fielduiname : "Employee Name",
+        fieldbackendname : "employeename"
+      }))
+     }else if(pagename == "deletebankstatement") {
+      setState(prev => ({
+        ...prev,
+        tablename : "bankst" ,
+        entityname : "Bank Statement",
+        fielduiname : "Particulars",
+        fieldbackendname : "particulars"
+      }))
+     }
+  },[])
   return (
     <div className='font-medium'>
       {showCancelModel && <CancelModel isOpen={showCancelModel} message="No ID Found." />}

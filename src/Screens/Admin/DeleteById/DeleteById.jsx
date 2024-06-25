@@ -37,23 +37,23 @@ const DeleteById = () => {
                 </div>
 
             <div class="grid grid-cols-3 grid-rows-4 gap-[18px] w-full h-60 ">
-                  <Link to="deleteclient" state={{tablename : "client" , entityname : "Client", fielduiname : "Name", fieldbackendname : "firstname"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deleteclient" ><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Client</p>
                   </div>
                   </Link>
-                  <Link to="deleteorder" state={{tablename : "orders", entityname : "Order", fielduiname : "Description", fieldbackendname : "briefdescription"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deleteorder" ><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Order</p>
                   </div>
                   </Link>
-                  <Link to="deleteclientinvoice" state={{ tablename : "order_invoice", entityname : "Client Invoice", fielduiname : "Quote Description", fieldbackendname : "quotedescription"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deleteclientinvoice" ><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Client Invoice</p>
                   </div>
                   </Link>
-                  <Link to="deleteordereceipt" state={{ tablename : "get_orders_receipt_view", entityname : "Order Receipt" , fielduiname : "Order Description" , fieldbackendname : "briefdescription"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deleteordereceipt" ><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Order Receipt</p>
                   </div>
                   </Link>
-                  <Link to="deleteorderpayment" state={{  tablename : "order_payment", entityname : "Order Payment" , fielduiname : "Description" , fieldbackendname : "description"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deleteorderpayment" ><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Order Payment</p>
                   </div>
                   </Link>
@@ -61,30 +61,30 @@ const DeleteById = () => {
                            <p>Delete Order Task</p>
                   </div>
                   </Link> */}
-                  <Link to="deleteclientreceipt" state={{ tablename : "client_receipt", entityname : "Client Receipt", fielduiname : "Description" , fieldbackendname : "receiptdesc"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deleteclientreceipt" ><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Client Receipt</p>
                   </div>
                   </Link>
-                  <Link to="deletevendorinvoice" state={{tablename : "order_vendorestimate", entityname : "Vendor Invoice", fielduiname : "Description", fieldbackendname : "quotedescription"}}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deletevendorinvoice" ><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Vendor Invoice</p>
                   </div>
                   </Link>
-                  <Link to="deletevendor" state={{tablename : "vendor", entityname : "Vendor", fielduiname : "Vendor Name" , fieldbackendname : "vendorname"}}>
+                  <Link to="deletevendor" >
                   <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Vendor</p>
                   </div>
                   </Link>
-                  <Link to="deleteuser" state={{tablename : "usertable" , entityname : "User", fielduiname : "Username", fieldbackendname : "username"}}>
+                  <Link to="deleteuser" >
                   <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete User</p>
                   </div>
                   </Link>
-                  <Link to="deleteemployee" state={{ tablename : "employee" , entityname : "Employee", fielduiname : "Employee Name" , fieldbackendname : "employeename"}}>
+                  <Link to="deleteemployee" >
                   <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Employee</p>
                   </div>
                   </Link>
-                  <Link to="deletebankstatement" state={{ tablename : "bankst" , entityname : "Bank Statement", fielduiname : "Particulars", fieldbackendname : "particulars"}}>
+                  <Link to="deletebankstatement" >
                   <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Bank Statement</p>
                   </div>
