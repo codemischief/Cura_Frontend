@@ -301,6 +301,12 @@ const EditManageEmployee = (props) => {
                 return { ...existing, email: "Enter Email Address" }
             })
             res = false;
+        } else if (formValues.email != "" && formValues.email != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email)) {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, email: "Enter a valid email address" }
+            })
+            res = false
         } else {
             setFormErrors((existing) => {
                 return { ...existing, email: "" }
