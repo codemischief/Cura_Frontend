@@ -226,18 +226,18 @@ const helper = (index, obj, pageName) => {
   } else if (pageName == "pmaBillingTrendView") {
     if (index == 1) {
 
-    } else if (index == 2) {
-      return `Total: ${obj.currentmonth}`
     } else if (index == 3) {
-      return `Total: ${obj.cm1}`
+      return `Total: ${obj.cm}`
     } else if (index == 4) {
-      return `Total: ${obj.cm2}`
+      return `Total: ${obj.cm_1}`
     } else if (index == 5) {
-      return `Total: ${obj.cm3}`
+      return `Total: ${obj.cm_2}`
     } else if (index == 6) {
-      return `Total: ${obj.cm4}`
+      return `Total: ${obj.cm_3}`
     } else if (index == 7) {
-      return `Total: ${obj.cm5}`
+      return `Total: ${obj.cm_4}`
+    } else if (index == 8) {
+      return `Total: ${obj.cm_5}`
     }
   } else if (pageName == "lobreceiptpaymentconsolidated") {
     if (index == 2) {

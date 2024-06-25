@@ -85,7 +85,7 @@ export const getPmaBillingTrendViewData =
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportPMABillingTrendView`,
+        `${env_URL_SERVER}getPMABillingTrend`,
         payloadObj
       );
       dispatch(setPmaBillingTrendView({ data: response.data, year, month }));
@@ -100,7 +100,7 @@ export const downloadPmaBillingTrendView =
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportPMABillingTrendView`,
+        `${env_URL_SERVER}getPMABillingTrend`,
         payloadObj
       );
       if ((response.data.filename, payloadObj.user_id)) {
