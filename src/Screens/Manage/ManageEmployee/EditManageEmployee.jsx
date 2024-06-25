@@ -301,6 +301,12 @@ const EditManageEmployee = (props) => {
                 return { ...existing, email: "Enter Email Address" }
             })
             res = false;
+        } else if (formValues.email != "" && formValues.email != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email)) {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, email: "Enter a valid email address" }
+            })
+            res = false
         } else {
             setFormErrors((existing) => {
                 return { ...existing, email: "" }
@@ -576,7 +582,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Phone Number <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phoneno" value={formValues.phoneno} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="phoneno" value={formValues.phoneno} onChange={handleChange} />
                                             <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.phoneno}</div>
                                         </div>
                                         <div className="">

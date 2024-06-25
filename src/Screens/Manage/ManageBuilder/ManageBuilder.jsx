@@ -268,7 +268,7 @@ const ManageBuilder = () => {
         setShowDelete(true);
         setCurrentBuilderId(item.id);
         setCurrentBuilder(item.buildername)
-        console.log(currentBuilder)
+        
         setDeleted(true);
     }
     const [errorMessage, setErrorMessage] = useState("");
@@ -828,7 +828,7 @@ const ManageBuilder = () => {
                                         'buildername')}
 
                                 />
-                                {console.log(filterMapState)}
+                                {}
                                 {filterMapState.buildername.filterType == "" ? <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {builderFilter && <CharacterFilter inputVariable={builderFilterInput} setInputVariable={setBuilderFilterInput} handleFilter={newHandleFilter} filterColumn='buildername' menuRef={menuRef} filterType={filterMapState.buildername.filterType} />}
@@ -1100,12 +1100,12 @@ const ManageBuilder = () => {
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Phone 1 <label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="phone1" value={formValues.phone1} onChange={handleChange} />
                                                 <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.phone1}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[14px]">Phone 2</div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="phone2" value={formValues.phone2} onChange={handleChange} />
                                                 {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div> */}
                                             </div>
                                             <div className="">

@@ -95,7 +95,7 @@ export const getVendorInvoiceData =
   };
 
 export const downloadVendorInvoiceDataXls =
-  (payloadObj, year, month ,type) => async (dispatch) => {
+  (payloadObj,type) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
@@ -105,7 +105,7 @@ export const downloadVendorInvoiceDataXls =
 
       if ((response.data.filename, payloadObj.user_id)) {
         await dispatch(
-          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+          downloadXlsEndpoint(response.data.filename, payloadObj.user_id ,type)
         );
       }
       dispatch(setStatus("success"));

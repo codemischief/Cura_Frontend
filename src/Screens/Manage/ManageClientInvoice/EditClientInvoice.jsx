@@ -38,7 +38,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, s
         }
         const response = await APIService.getItembyId({...data, user_id : user.id});
         const res = await response.json();
-        console.log(res);
+        
         const existing = { ...formValues }
         if (res.data.clientid != null) {
             getOrdersByClientId(res.data.clientid)
@@ -80,7 +80,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, s
             })
         }
         if (!formValues.invoiceDescription) {
-            console.log('issue is in panno')
+            
             setFormErrors((existing) => {
                 return { ...existing, invoiceDescription: "Enter Invoice Description" }
             })
@@ -119,7 +119,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, s
         }
         const response = await APIService.editOrdersInvoice({...data, user_id : user.id});
         const res = await response.json();
-        console.log(res)
+        
         if (res.result == 'success') {
             showSuccess()
         }
@@ -143,8 +143,8 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, s
     const [query, setQuery] = useState('')
 
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -161,7 +161,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, s
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
     function convertToIdNameObject(items) {
@@ -179,20 +179,20 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, s
         const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
         const res = await response.json()
         
-        console.log(res.data)
+        
         setOrders(convertToIdNameObject(res.data))
 
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
         //    existing.order = res.data[0].id
-        //    console.log(res.data[0].id)
+        //    
         //    setFormValues(existing)
 
         // } 
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "pg_no": 0,

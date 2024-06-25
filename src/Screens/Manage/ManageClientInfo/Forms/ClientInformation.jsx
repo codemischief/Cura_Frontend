@@ -62,12 +62,12 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         })
     };
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         setAllState(result)
         
     }
@@ -75,7 +75,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
         }
@@ -103,7 +103,7 @@ function convertToIdNameObject(items) {
 
     const response = await APIService.getClientPropertyByClientId(data)
     const res = await response.json()
-    console.log(res)
+    
     setTenantOfProperty(
         convertToIdNameObject(res.data)
     )
@@ -116,8 +116,8 @@ function convertToIdNameObject(items) {
    });
    const [query,setQuery] = useState('')
    const handleClientNameChange = (e) => {
-       console.log('hey')
-       console.log(e)
+       
+       
       //  setFormValues({...formValues,client_property : {
       //   ...formValues.client_property,
       //   clientid : e.value
@@ -132,11 +132,11 @@ function convertToIdNameObject(items) {
        temp.tenentofpropertyname = 'Select Tenant Of Property'
        existing.client_info = temp;
        setFormValues(existing)
-       console.log(formValues)
+       
        setSelectedOption(e)
    }
    const loadOptions = async (e) => {
-      console.log(e)
+      
       if(e.length < 3) return ;
       const data = {
         "user_id" : user.id,
@@ -504,7 +504,7 @@ function convertToIdNameObject(items) {
 
                     <div className="">
                         <div className="text-[13px]">Tenant Of Property</div>
-                        {console.log(tenantOfProperty)}
+                        {}
                         {/* <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.tenentofproperty} name="city" onChange={(e) => {
                             setFormValues({
                                 ...formValues, client_info: {
@@ -590,7 +590,7 @@ function convertToIdNameObject(items) {
                         checked={formValues.client_info.includeinmailinglist}
                         className='mr-3 h-4 w-4'
                         onClick={(e) => {
-                            // console.log(e.target.checked)
+                            // 
                             const existing = {...formValues};
                             const temp = {...existing.client_info};
                             temp.includeinmailinglist = !temp.includeinmailinglist

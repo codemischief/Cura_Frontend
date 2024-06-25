@@ -99,7 +99,7 @@ export const getClientOrderReceiptMismatchDetails =
   };
 
 export const downloadClientOrderReceiptMismatchDetails =
-  (payloadObj, year, month ,type) => async (dispatch) => {
+  (payloadObj,type) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(

@@ -41,11 +41,11 @@ const EditClientProperty = (props) => {
             }
             const response = await APIService.getItembyId(data)
             const res = await (response.json());
-            console.log(res);
+            
             const existing = {...clientName};
             existing.label = res.data.firstname + " " + res.data.middlename + " " + res.data.lastname;
             existing.value = id;
-            console.log(existing)
+            
             setClientName(existing);
           
     }
@@ -59,7 +59,7 @@ const EditClientProperty = (props) => {
         }
         const response = await APIService.getClientPropertyById(data);
         const res = await response.json()
-        console.log(res);
+        
         await fetchClientName(res.data.client_property.clientid);
         setFormValues(res.data);
         setInitialClientPropertyData({...res.data});
@@ -67,7 +67,7 @@ const EditClientProperty = (props) => {
         setTimeout(() => {
             setPageLoading(false)
         },1000)
-        console.log(formValues);
+        
     }
     
     const [initialClientPropertyData,setInitialClientPropertyData] = useState({});
@@ -166,7 +166,7 @@ const EditClientProperty = (props) => {
         const data = {"user_id" : user.id}
         const response = await APIService.getLevelOfFurnishingAdmin(data);
         const res = await response.json()
-        console.log(res);
+        
         setLevelOfFurnishing(res);
     }
     function projectHelper(items) {
@@ -184,30 +184,30 @@ const EditClientProperty = (props) => {
         const data = {"user_id" : user.id};
         const response = await APIService.getBuildersAndProjectsList(data);
         const res = await response.json();
-        console.log(res.data);
+        
         setExistingSociety(projectHelper(res.data));
     }
     const fetchPropertyType = async () => {
         const data = {"user_id" : user.id}
         const response = await APIService.getPropertyType(data)
         const res = await response.json();
-        console.log(res);
+        
         setPropertyType(res);
     }
     const fetchPropertyStatus = async () => {
         const data = {"user_id" : user.id};
         const response = await APIService.getPropertyStatusAdmin(data);
         const res = await response.json();
-        console.log(res);
+        
         setPropertyStatus(res);
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         fetchCityData(formValues.client_property.state);
         if (Array.isArray(result)) {
             setAllState(result)
@@ -217,7 +217,7 @@ const EditClientProperty = (props) => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
         }
@@ -281,18 +281,18 @@ const EditClientProperty = (props) => {
                 return { ...existing, propertydescription: "" }
             })
         }
-        console.log(formValues.client_property.projectid)
+        
         if (!formValues.client_property.projectid) {
             setFormErrors((existing) => {
                 return { ...existing, projectid: "Select Project Name" }
             })
             res = false;
-            // console.log('here')
+            // 
         } else {
             setFormErrors((existing) => {
                 return { ...existing, projectid: "" }
             })
-            console.log('here')
+            
         }
         if (!formValues.client_property.status) {
             setFormErrors((existing) => {
@@ -358,9 +358,9 @@ const EditClientProperty = (props) => {
         const insertArrayClientPhotos = []
         const deleteArrayClientPhotos = []
         helper1(updateArrayClientPhotos,insertArrayClientPhotos,deleteArrayClientPhotos)
-        console.log(formValues)
-        console.log(initialClientPropertyData)
-        console.log(formValues.client_property_owner.owner1name)
+        
+        
+        
         const data = {
             "user_id": user.id,
             "client_property_id": props.clientId,
@@ -400,7 +400,7 @@ const EditClientProperty = (props) => {
         };
         const response = await APIService.editClientProperty(data)
         const res = await response.json()
-        console.log(res);
+        
         if(res.result == 'success') {
             props.openEditSuccess();
         }

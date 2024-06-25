@@ -22,12 +22,12 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
         setAllCountry(result)
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { user_id: user.id, country_id: id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllState(result);
         }
@@ -36,7 +36,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
         const data = { user_id: user.id, state_name: id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result);
             // if (result.length > 0) {
@@ -328,12 +328,15 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                     <div className="">
                         <div className="text-[13px]">Subscribed E-mail</div>
                         <input
-                            type="text"
+                            type="email"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
                             name="mailgroup2"
                             value={formValues.project_info.mailgroup2}
                             onChange={handleProjectInfoChange}
                         />
+                        <div className="w-full text-[9.5px] text-[#CD0000] absolute  ">
+                            {formErrors.mailgroup2}
+                        </div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Website</div>
@@ -354,7 +357,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                             checked={formValues.project_info.tenantworkingbachelorsallowed}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_info};
                                 temp.tenantworkingbachelorsallowed = !temp.tenantworkingbachelorsallowed
@@ -370,7 +373,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                             checked={formValues.project_info.tenantstudentsallowed}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_info};
                                 temp.tenantstudentsallowed = !temp.tenantstudentsallowed
@@ -386,7 +389,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                             checked={formValues.project_info.tenantforeignersallowed}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_info};
                                 temp.tenantforeignersallowed = !temp.tenantforeignersallowed

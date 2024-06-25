@@ -28,9 +28,9 @@ const ManageBuilderContact = () => {
     const { user } = useAuth()
     const params = useParams()
     let { state } = useLocation();
-    console.log(state)
-    console.log(params.builderid)
-    // console.log(params)
+    
+    
+    // 
     const [existingProjects, setExistingProjects] = useState([]);
     const [existingContacts, setExistingContacts] = useState([])
     const [pageLoading, setPageLoading] = useState(false);
@@ -111,7 +111,7 @@ const ManageBuilderContact = () => {
         }
         const response = await APIService.getBuilderContactsById(data);
         const res = await response.json()
-        console.log(res.data)
+        
         setPageLoading((prev) => false)
         setExistingContacts((prev) => res.data)
     }
@@ -120,7 +120,7 @@ const ManageBuilderContact = () => {
         const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCountry(result);
         }
@@ -131,7 +131,7 @@ const ManageBuilderContact = () => {
         const data = { "user_id": userId || user.id, "country_id": 5 };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        // console.log(result)
+        // 
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -229,13 +229,13 @@ const ManageBuilderContact = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
-        // console.log(e.target.value)
+        // 
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues)); // validate form and set error message
-        console.log(formErrors)
+        
         if (formValues.builderName == "") {
             return;
         }
@@ -333,7 +333,7 @@ const ManageBuilderContact = () => {
         };
         const response = await APIService.getBuilderContactsById(data);
         const res = await response.json()
-        console.log(res.data)
+        
         setPageLoading((prev) => false)
         setExistingContacts((prev) => res.data)
     }
@@ -375,12 +375,12 @@ const ManageBuilderContact = () => {
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
-        console.log(res)
+        
         const result = res.data.builder_info;
         setTotalItems(res.total_count);
-        console.log(res.total_count);
+        
         setPageLoading(false);
-        // console.log(result);
+        // 
         setExistingBuilders(result);
     }
 
@@ -412,12 +412,12 @@ const ManageBuilderContact = () => {
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
-        console.log(res)
+        
         const result = res.data.builder_info;
         setTotalItems(res.total_count);
-        console.log(res.total_count);
+        
         setPageLoading(false);
-        // console.log(result);
+        // 
         setExistingBuilders(result);
 
     }
@@ -710,7 +710,7 @@ const ManageBuilderContact = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}

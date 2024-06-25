@@ -16,7 +16,7 @@ const EditManageBuilder = (props) => {
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [currCountry, setCurrCountry] = useState(-1);
-    console.log(props.currBuilder)
+    
     const openSuccessModal = () => {
         // set the state for true for some time
         // props.setOpenDialog(false);
@@ -55,7 +55,7 @@ const EditManageBuilder = (props) => {
             "website": formValues.website,
             "comments": formValues.comment
         }
-        console.log(data);
+        
         const response = await APIService.editBuilderInfo(data);
         const res = await response.json()
         if (res.result == 'success') {
@@ -65,7 +65,7 @@ const EditManageBuilder = (props) => {
         } else {
             openFailureModal();
         }
-        console.log("done");
+        
         
     }
 
@@ -94,7 +94,7 @@ const EditManageBuilder = (props) => {
         const data = { "user_id": user.id, "country_id": e };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -103,7 +103,7 @@ const EditManageBuilder = (props) => {
         props.setOpenDialog(false);
         props.showCancel(false);
     };
-    console.log(props.builder)
+    
     const initialValues = {
         builderName: null ,
         phone1: null,
@@ -135,7 +135,7 @@ const EditManageBuilder = (props) => {
         if (formValues.builderName == "") {
             return;
         }
-        console.log('here')
+        
         setIsLoading(true);
         editNewBuilder();
          
@@ -204,7 +204,7 @@ const EditManageBuilder = (props) => {
         temp.website =  res.data.website
         temp.comment =  res.data.comments
         setFormValues(temp)
-        console.log(res)
+        
         setLoading(false)
     }
     useEffect(() => {
@@ -250,13 +250,13 @@ const EditManageBuilder = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Phone1 <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="phone1" value={formValues.phone1} onChange={handleChange} />
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.phone1}</div>
 
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Phone2 </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="phone2" value={formValues.phone2} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Email1</div>
@@ -325,7 +325,7 @@ const EditManageBuilder = (props) => {
                                                         const existing = { ...formValues }
                                                         existing.state = e.target.value
                                                         existing.city = null
-                                                        console.log(existing)
+                                                        
                                                         setFormValues(existing)
                                                     }}
                                                 >
@@ -346,7 +346,7 @@ const EditManageBuilder = (props) => {
                                                     defaultValue="Select City"
                                                     onChange={e => {
                                                         // fetchCityData(e.target.value);
-                                                        console.log(e.target.value);
+                                                        
                                                         setFormValues((existing) => {
                                                             const newData = { ...existing, city: e.target.value }
                                                             return newData;

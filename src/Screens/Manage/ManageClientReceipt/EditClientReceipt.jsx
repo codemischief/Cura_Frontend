@@ -9,7 +9,7 @@ import Draggable from 'react-draggable';
 import useAuth from '../../../context/JwtContext';
 const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCancel}) => {
     const {user} = useAuth()
-    console.log(currClientReceipt)
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -46,7 +46,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
          const response = await APIService.getModesAdmin({...data,user_id : user.id})
          const res = await response.json()
          setModesData(res.data)
-         console.log(res)
+         
     }
     const [howReceivedData,setHowReceivedData] = useState([])
     const fetchHowReceivedData = async () => {
@@ -55,11 +55,11 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
         }
         const response = await APIService.getHowReceivedAdmin({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
+        
         setHowReceivedData(res.data)
     }
     const validate = () => {
-        console.log(formValues)
+        
         var res = true;
         if (!formValues.receivedDate) {
             setFormErrors((existing) => {
@@ -107,7 +107,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
     } 
     const handleEdit = async () => {
         if(!validate()) {
-            console.log("heyyy")
+            
             return ;
         }
         const data = {
@@ -128,7 +128,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
         const response = await APIService.editClientReceipt({...data,user_id : user.id})
         const res = await response.json()
         if(res.result == 'success') {
-            console.log('updated')
+            
             showSuccess()
         }
     }
@@ -138,8 +138,8 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
        });
        const [query,setQuery] = useState('')
        const handleClientNameChange = (e) => {
-           console.log('hey')
-           console.log(e)
+           
+           
           //  setFormValues({...formValues,client_property : {
           //   ...formValues.client_property,
           //   clientid : e.value
@@ -148,11 +148,11 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
            const existing = {...formValues}
            existing.client = e.value
            setFormValues(existing)
-           console.log(formValues)
+           
            setSelectedOption(e)
        }
        const loadOptions = async (e) => {
-          console.log(e)
+          
           if(e.length < 3) return ;
           const data = {
             "pg_no" : 0,
@@ -179,7 +179,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
         }
         const response = await APIService.getItembyId({...d,user_id : user.id})
         const res = await response.json()
-        console.log(res.data)
+        
         const temp = {...formValues}
         temp.receivedBy = res.data.receivedby 
         temp.receivedDate = res.data.recddate

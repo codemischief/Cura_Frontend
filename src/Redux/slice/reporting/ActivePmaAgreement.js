@@ -97,7 +97,7 @@ export const getActivePmaAgreement =
   };
 
 export const downloadActivePmaAgreement =
-  (payloadObj, year, month ,type) => async (dispatch) => {
+  (payloadObj,type) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(

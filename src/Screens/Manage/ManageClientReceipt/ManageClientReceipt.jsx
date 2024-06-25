@@ -46,7 +46,7 @@ const ManageClientReceipt = () => {
     const {user} = useAuth()
     const canEdit = checkEditAccess();
     const location = useLocation()
-    console.log(location)
+    
     const navigate = useNavigate()
     const initialRows = [
         "clientname",
@@ -126,18 +126,18 @@ const ManageClientReceipt = () => {
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
-        console.log(result.data);
+        
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = {  "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -150,7 +150,7 @@ const ManageClientReceipt = () => {
         }
         const response = await APIService.getHowReceivedAdmin({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
+        
         setHowReceivedData(res.data)
     }
     const fetchModesData = async () => {
@@ -160,13 +160,13 @@ const ManageClientReceipt = () => {
         const response = await APIService.getModesAdmin({...data,user_id : user.id})
         const res = await response.json()
         setModesData(res.data)
-        console.log(res)
+        
     }
     const fetchCityData = async (id) => {
         const data = {  "state_name": id };
         const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -184,8 +184,8 @@ const ManageClientReceipt = () => {
     //     const response = await APIService.getUsers({...data,user_id : user.id})
     //     const result = (await response.json());
 
-    //     console.log(result.data);
-    //     console.log('hey')
+    //     
+    //     
     //     setFormValues((existing) => {
     //         return { ...existing, userName: result.data[0].id }
     //     })
@@ -200,7 +200,7 @@ const ManageClientReceipt = () => {
         const data = { };
         const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, role: result.data[0].id }
         })
@@ -215,7 +215,7 @@ const ManageClientReceipt = () => {
         const data = {  };
         const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, entity: result.data[0][0] }
         })
@@ -229,10 +229,10 @@ const ManageClientReceipt = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        console.log('ugm')
+        
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 if(filterMapState[key].filterData == 'Numeric') {
@@ -263,7 +263,7 @@ const ManageClientReceipt = () => {
         const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientReceipt(result);
@@ -285,7 +285,7 @@ const ManageClientReceipt = () => {
         const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientReceipt(result);
@@ -293,7 +293,7 @@ const ManageClientReceipt = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        console.log(searchInput);
+        
         setCurrentPage((prev) => 1)
         const data = {
             
@@ -308,7 +308,7 @@ const ManageClientReceipt = () => {
         const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientReceipt(result);
@@ -317,7 +317,7 @@ const ManageClientReceipt = () => {
     
 
     const handleOpenEdit = (oldItem) => {
-        console.log('called');
+        
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -360,9 +360,9 @@ const ManageClientReceipt = () => {
         setUsersData(res.data)
     }
     const handleAddClientReceipt = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         setIsClientReceiptDialogue(false)
@@ -456,7 +456,7 @@ const ManageClientReceipt = () => {
 
 
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -510,7 +510,7 @@ const ManageClientReceipt = () => {
         const response = await APIService.getClientReceipt({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
@@ -528,7 +528,7 @@ const ManageClientReceipt = () => {
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'ClientReceiptData.pdf');
                 }
-                console.log('Success:', result);
+                
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -542,7 +542,7 @@ const ManageClientReceipt = () => {
     }
     
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
@@ -558,7 +558,7 @@ const ManageClientReceipt = () => {
         const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientReceipt(result);
@@ -581,7 +581,7 @@ const ManageClientReceipt = () => {
         const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientReceipt(result);
@@ -645,8 +645,8 @@ const ManageClientReceipt = () => {
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -656,7 +656,7 @@ const ManageClientReceipt = () => {
         const existing = { ...formValues }
         existing.client = e.value
         setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
     
@@ -670,7 +670,7 @@ const ManageClientReceipt = () => {
 
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "pg_no": 0,
@@ -694,19 +694,19 @@ const ManageClientReceipt = () => {
 
     const getOrdersByClientId = async (id) => {
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             "client_id" : id
         }
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders(res.data)
         
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
         //    existing.order = res.data[0].id
-        //    console.log(res.data[0].id)
+        //    
         //    setFormValues(existing)
            
         // } 
@@ -741,7 +741,7 @@ const ManageClientReceipt = () => {
             openAddSuccess()
             fetchData()
         }
-        console.log({...data,user_id : user.id})
+        
 
     }
     const deleteClientReceipt = async (id) => {
@@ -818,9 +818,9 @@ const ManageClientReceipt = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
         var existing = filterMapState;
         existing = {
@@ -853,8 +853,8 @@ const ManageClientReceipt = () => {
         setFilterMapState(mapState)
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -875,7 +875,7 @@ const ManageClientReceipt = () => {
         const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientReceipt(result);
@@ -887,7 +887,7 @@ const ManageClientReceipt = () => {
         const tempArray = [];
         // we need to query thru the object
         setSortField(field)
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -907,7 +907,7 @@ const ManageClientReceipt = () => {
         const response = await APIService.getClientReceipt({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientReceipt(result);
@@ -924,8 +924,8 @@ const ManageClientReceipt = () => {
         }
         const response = await APIService.getItembyId(data)
         const res = await response.json()
-        console.log(res.data)
-        console.log(item);
+        
+        
         const existing = {...orFormValues}
         existing.client = res?.data?.clientid
         existing.amountReceived = res?.data?.amount
@@ -1060,7 +1060,7 @@ const ManageClientReceipt = () => {
         }
         const response = await APIService.addOrderReceipt({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
+        
         if(res.result == 'success') {
             openOrAddSuccess()
         }
@@ -1078,13 +1078,13 @@ const ManageClientReceipt = () => {
     const [orOrders,setOrOrders] = useState([])
     const getOrOrdersByClientId = async (id) => {
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             "client_id" : id
         }
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res.data)
+        
         setOrOrders((prev) => {
             const temp = {}
              res.data.forEach((item) => {
@@ -1107,7 +1107,7 @@ const ManageClientReceipt = () => {
                     // const temp = {...filterMapState};
                     // temp[columnName].type = "".
                     // setFilterMapState(temp)
-                    console.log(inputVariable)
+                    
                     if(inputVariable == "") {
                         const temp = {...filterMapState}
                         temp[columnName].filterType = ""
@@ -1133,7 +1133,7 @@ const ManageClientReceipt = () => {
        const data = {"orderid": Number(id)}
        const response = await APIService.getOrderPending({...data,user_id : user.id})
        const res = await response.json()
-       console.log(res)
+       
        const temp = {...orderData}
        temp.pendingamount = res.data.pending 
        temp.orderdate = res.data.orderdate
@@ -1604,7 +1604,7 @@ const ManageClientReceipt = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}

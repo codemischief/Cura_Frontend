@@ -16,10 +16,10 @@ const Delete = (props) => {
     const deleteStatement = async (item) =>{
         // props.setShowDelete(true);
         
-        console.log(props);
+        
         // setShowLoading(true);
         const data = {"user_id":user.id,"id": props.currentStatement};
-        console.log(data);
+        
         const response = await APIService.deleteBankStatement(data);
         props.closeDialog(false);
           await props.fetchData();

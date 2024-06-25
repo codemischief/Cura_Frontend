@@ -7,7 +7,7 @@ const EditLegalInformation = ({formValues,setFormValues,relationData,allCountry,
 //   const [country, setCountry] = useState(allCountry);
 //   const [state,setAllState] = useState(allState);
   const [allState,setAllState] = useState([]);
-  // console.log(initialCities)
+  // 
   const [allCity, setAllCity] = useState([]);
   // const [allState, setAllState] = useState([]);
   const handleChange = (e) => {
@@ -18,16 +18,16 @@ const EditLegalInformation = ({formValues,setFormValues,relationData,allCountry,
      }})
    }
    const fetchStateData = async (id) => {
-    console.log('hey')
-    console.log(id);
+    
+    
     const data = { "user_id": user.id, "country_id": id };
     const response = await APIService.getState(data);
     const result = (await response.json()).data;
-    console.log(result)
+    
     if (Array.isArray(result)) {
         setAllState(result)
         // if(result.length >= 1) {
-        //     console.log('hey')
+        //     
         //     fetchCityData(result[0][0])
         // }
     }
@@ -36,7 +36,7 @@ const fetchCityData = async (id) => {
   const data = { "user_id": user.id, "state_name": id };
   const response = await APIService.getCities(data);
   const result = (await response.json()).data;
-  console.log(result);
+  
   if (Array.isArray(result)) {
       setAllCity(result)
   }

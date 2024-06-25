@@ -101,15 +101,15 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
     // client name field
     const [options, setOptions] = useState([]);
     
-    console.log(formValues.order_info.clientid)
+    
     const [selectedOption, setSelectedOption] = useState({
         label: formValues.order_info.clientname ?? 'Select Client',
         value: formValues.order_info.clientid
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         const existing = { ...formValues }
         const temp = existing.order_info
         temp.clientid = e.value
@@ -117,11 +117,11 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
         getClientPropertyByClientId(e.value)
         existing.order_info = temp;
         setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,
@@ -159,7 +159,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                             <input className="bg-[#F5F5F5] w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Cura"} name="Entity" readOnly />
                         </div>
                         <div className="">
-                            {console.log(formValues.order_info.owner)}
+                            {}
                             <div className="text-[13px]">Assigned to <label className="text-red-500">*</label></div>
                             <ClientPropertySelectNative
                         data={Object.keys(usersData)}
@@ -231,7 +231,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                             <div className="text-[13px]">Client Property</div>
                             {/* <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="clientpropertyid" value={formValues.order_info.clientpropertyid} onChange={handleChange} >
                                 <option value={null} hidden> Select Client Property</option>
-                                {console.log(propertyData)}
+                                {}
                                 {propertyData.map(item => (
                                     <option key={item.id} value={item.id}>
                                         {item.propertyname}
@@ -303,7 +303,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                         <div className="">
                             <div className="text-[13px]">Client Name<label className="text-red-500">*</label></div>
-                            {console.log(hyperlinkstate)}
+                            {}
                             {hyperlinkstate?.hyperlinked ?
                                                  <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{hyperlinkstate.clientname}</div> : 
                             <AsyncSelect

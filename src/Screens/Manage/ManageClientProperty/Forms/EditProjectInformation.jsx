@@ -7,11 +7,11 @@ import useAuth from "../../../../context/JwtContext";
 import { APIService } from "../../../../services/API";
 import ClientPropertySelectNative from "../../../../Components/common/select/ClientPropertySelectNative";
 const EditProjectInformation = ({ clientData, initialSociety, initialStates, initialCities, formValues, setFormValues, propertyType, levelOfFurnishing, propertyStatus, clientNameOption, formErrors }) => {
-  // console.log(levelOfFurnishing)
+  // 
   const {user} = useAuth()
-  console.log(clientNameOption);
-  console.log(formValues)
-  console.log(formValues.client_property.leveloffurnishing)
+  
+  
+  
   // const [propertyType, setPropertyType] = useState([]);
   // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
   const [state, setState] = useState(initialStates);
@@ -33,8 +33,8 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
     const data = { "user_id": user.id, "state_name": id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
-    console.log(result)
-    console.log(result);
+    
+    
     if (Array.isArray(result)) {
         setCity(result)
         
@@ -44,7 +44,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
     
 
     const { name, value } = e.target;
-    console.log(name,value)
+    
     setFormValues({
       ...formValues, client_property: {
         ...formValues.client_property,
@@ -57,8 +57,8 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
   const handleClientNameChange = (e) => {
     setSelectedOption(e)
 
-    console.log('hey')
-    console.log(e)
+    
+    
     const existing = {...formValues}
     const temp = existing.client_property
     temp.clientid = e.value
@@ -66,7 +66,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
     setFormValues(existing)
   }
   const loadOptions = async (e) => {
-    console.log(e)
+    
     if (e.length < 3) return;
     const data = {
       "user_id": user.id,
@@ -575,7 +575,7 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
           checked={formValues.client_property.propertyownedbyclientonly}
           className='mr-3 h-4 w-4'
           onClick={(e) => {
-            // console.log(e.target.checked)
+            // 
             const existing = { ...formValues };
             const temp = { ...existing.client_property };
             temp.propertyownedbyclientonly = !temp.propertyownedbyclientonly

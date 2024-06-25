@@ -7,7 +7,7 @@ import DropDown from "../../../../Components/Dropdown/Dropdown"
 import useAuth from "../../../../context/JwtContext";
 import ClientPropertySelectNative from "../../../../Components/common/select/ClientPropertySelectNative";
 const ProjectInformation = ({ clientData, initialSociety, initialStates, initialCities, formValues, setFormValues, propertyType, levelOfFurnishing, propertyStatus, formErrors, setCurrClientName, clientname, clientid , setClientNameText, hyperlinkState}) => {
-  // console.log(levelOfFurnishing)
+  // 
   // const [propertyType, setPropertyType] = useState([]);
   // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
   const { user} = useAuth()
@@ -58,18 +58,18 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
   const handleClientNameChange = (e) => {
     setSelectedOption(e)
     setClientNameText(e.label)
-    console.log(e.value)
+    
     const temp = {...formValues}
     const ex = temp.client_property
     ex.clientid = e.value 
     temp.client_property = ex 
-    console.log(temp)
+    
     setFormValues(temp)
     setCurrClientName(e.label)
-    console.log(formValues)
+    
   }
   const loadOptions = async (e) => {
-    console.log(e)
+    
     if (e.length < 3) return;
     const data = {
       "user_id": user.id,
@@ -91,13 +91,13 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
     return results
   }
   const handleInputChange = (value) => {
-    console.log(value)
+    
   }
   const fetchCityData = async (id) => {
     const data = { "user_id": user.id, "state_name": id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
-    console.log(result);
+    
    
     setCity(result)
 
@@ -569,7 +569,7 @@ const ProjectInformation = ({ clientData, initialSociety, initialStates, initial
           checked={formValues.client_property.propertyownedbyclientonly}
           className='mr-3 h-4 w-4'
           onClick={(e) => {
-            // console.log(e.target.checked)
+            // 
             const existing = { ...formValues };
             const temp = { ...existing.client_property };
             temp.propertyownedbyclientonly = !temp.propertyownedbyclientonly

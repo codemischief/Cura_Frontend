@@ -26,20 +26,20 @@ const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,for
         };
         const response = await APIService.getCountries(data);
         const result = (await response.json()).data;
-        console.log(result.data);
+        
 
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
-        console.log(result.data);
+        
     };
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = { user_id: user.id, country_id: id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllState(result);
         }
@@ -48,7 +48,7 @@ const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,for
         const data = { user_id: user.id, state_name: id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result);
             // if (result.length > 0) {
@@ -280,7 +280,7 @@ const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,for
                         <div className="text-[13px]">
                             Builder Name <label className="text-red-500">*</label>
                         </div>
-                        {console.log(builderName)}
+                        {}
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
@@ -372,7 +372,7 @@ const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,for
                             checked={formValues.project_info.tenantworkingbachelorsallowed}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_info};
                                 temp.tenantworkingbachelorsallowed = !temp.tenantworkingbachelorsallowed
@@ -388,7 +388,7 @@ const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,for
                             checked={formValues.project_info.tenantstudentsallowed}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_info};
                                 temp.tenantstudentsallowed = !temp.tenantstudentsallowed
@@ -406,7 +406,7 @@ const BuilderProjectInformation = ({formValues,setFormValues,projectTypeData,for
                             checked={formValues.project_info.tenantforeignersallowed}
                             className='mr-3 h-4 w-4'
                             onClick={(e) => {
-                                // console.log(e.target.checked)
+                                // 
                                 const existing = {...formValues};
                                 const temp = {...existing.project_info};
                                 temp.tenantforeignersallowed = !temp.tenantforeignersallowed

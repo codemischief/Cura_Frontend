@@ -184,8 +184,8 @@ const ManageBankStatement = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -220,18 +220,18 @@ const ManageBankStatement = () => {
     }
 
     const deleteStatement = async (item) => {
-        console.log(item)
+        
         setShowDelete(true);
         setCurrentStatementId(item);
         setDeleted(true);
     }
 
     const addBankStatement = async () => {
-        // console.log(formValues.modeofpayment)
+        // 
         // setVendorId((formValues.vendor).split(",", 1)[0]);
         // setModeEdit((formValues.modeofpayment).split(",", 1)[0])
-        // console.log(modeEdit, vendorId)
-        console.log('called')
+        // 
+        
         const data = {
             "user_id": user.id,
             "modeofpayment": formValues.modeofpayment,
@@ -279,9 +279,9 @@ const ManageBankStatement = () => {
         }
         setClientName(formValues.client);
         const response = await APIService.addClientReceipt(data);
-        console.log(response)
+        
         if (response.ok) {
-
+            initials()
             openConfirmModal();
         } else {
 
@@ -409,9 +409,8 @@ const ManageBankStatement = () => {
         setCrFormValues({ ...crFormValues, [name]: value });
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(validate)
+    const handleSubmit = () => {
+
         if (!validate()) {
             return;
         }
@@ -424,7 +423,7 @@ const ManageBankStatement = () => {
     };
     const [crValues, setCrValues] = useState(initialValues);
     const handleCR = (e) => {
-        console.log("started");
+        
         // e.preventDefault();
         // if(!validateCR()) {
         //     return ;
@@ -460,8 +459,8 @@ const ManageBankStatement = () => {
                 return { ...existing, particulars: "" }
             })
         }
-        console.log(formValues.amount);
-        // console.log(!Number.isInteger(formValues.amount));
+        
+        // );
         if (!formValues.amount) {
             setFormErrors((existing) => {
                 return { ...existing, amount: "Amount is Mandatory" }
@@ -516,7 +515,7 @@ const ManageBankStatement = () => {
                 return { ...existing, employee: "" }
             })
         }
-        console.log(formValues.amount);
+        
         if (!formValues.amount) {
             setFormErrors((existing) => {
                 return { ...existing, amount: "Enter Amount" }
@@ -644,7 +643,7 @@ const ManageBankStatement = () => {
         const response = await APIService.getBankStatement(data)
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
@@ -670,7 +669,7 @@ const ManageBankStatement = () => {
                         FileSaver.saveAs(result, 'BankStatementData.pdf');
                     }
 
-                    console.log('Success:', result);
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -830,9 +829,9 @@ const ManageBankStatement = () => {
 
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
+        // 
         setFilterMapState((prev) => mapState)
-        console.log(filterMapState)
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -840,8 +839,8 @@ const ManageBankStatement = () => {
         })
         setFilterState(tempArray);
         setCurrentPage(1);
-        console.log('this is getting called')
-        console.log(tempArray)
+        
+        
         const data = {
             "user_id": user.id,
             "rows": dataRows,
@@ -924,7 +923,7 @@ const ManageBankStatement = () => {
     })
     const openCreditRecipt = async (item) => {
         setStatementIdForClientReceipt((prev) => item.id)
-        console.log(item)
+        
         const data = {
             user_id : user.id,
             table_name : "get_bankst_view",
@@ -933,7 +932,7 @@ const ManageBankStatement = () => {
         const response = await APIService.getItembyId(data)
         const res = await response.json()
         
-        console.log(item)
+        
         const temp = {...crFormValues}
         temp.receiptMode = res.data.modeofpayment
         temp.receivedDate = res.data.date 
@@ -992,7 +991,7 @@ const ManageBankStatement = () => {
     const [crFormErrors,setCrFormErrors] = useState({})
     const crValidate = () => {
         var res = true;
-        console.log(crFormValues)
+        
         if (!crFormValues.client) {
             setCrFormErrors((existing) => {
                 return { ...existing, client: "Select Client" }
@@ -1092,16 +1091,16 @@ const ManageBankStatement = () => {
         'value' : null
     })
     const handleCrClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         const existing = { ...crFormValues }
         existing.client = e.value
         setCrFormValues(existing)
         setCrSelectedOption(e)
     }
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -1113,11 +1112,11 @@ const ManageBankStatement = () => {
         //    temp.tenantof = e.value
         //    existing.client_info = temp;
         setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,
@@ -1280,8 +1279,8 @@ const ManageBankStatement = () => {
                                         'contains',
                                         'mode')}
                                     />
-                                    {console.log(filterMapState)}
-                                    {console.log(filterMapState.mode.filterType)}
+                                    {}
+                                    {}
                                     {filterMapState.mode.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setModeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                     
                                 </div>
@@ -1644,7 +1643,7 @@ const ManageBankStatement = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <form onSubmit={handleSubmit}>
+                                
                                     <div className="w-full mt-[5px] ">
                                         <div className="flex gap-[48px] justify-center ">
                                             <div className=" space-y-[20px] py-[20px] px-[10px]">
@@ -1719,11 +1718,11 @@ const ManageBankStatement = () => {
 
                                     <div className="my-10 flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleSubmit} >Add</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                         {isLoading && <CircularProgress />}
                                     </div>
-                                </form>
+                               
                             </div>
                         </div>
                     </Draggable>
@@ -1955,7 +1954,7 @@ const ManageBankStatement = () => {
 
                                     <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addCreditRecipt}>Add</button>
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addCreditRecipt}>Add</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseCR}>Cancel</button>
                                         {isLoading && <CircularProgress />}
                                     </div>

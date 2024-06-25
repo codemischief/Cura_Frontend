@@ -533,7 +533,7 @@ const addClientReceipt = async (data) => {
     body: JSON.stringify({
       ...data,
       modulename : modulename,
-      actionname : moduleMethods.edit + modulename,
+      actionname : moduleMethods.add + modulename,
       authorization : uuidv4()
     }),
   });

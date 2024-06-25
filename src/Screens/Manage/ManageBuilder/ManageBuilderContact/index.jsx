@@ -31,7 +31,7 @@ const ManageBuilderContact = () => {
   // const {state} = useLocation()
   const {builderid} = useParams()
   const [state,setState] = useState({})
-  console.log(state)
+  
   const {
     ContactData,
     status,
@@ -157,8 +157,6 @@ const ManageBuilderContact = () => {
   };
 
   const downloadExcel = async () => {
-    
-
     let obj = {
       user_id: user.id,
       builderid :state.builderid,
@@ -190,6 +188,38 @@ const ManageBuilderContact = () => {
     dispatch(downloadContactData(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      builderid :state.builderid,
+      rows: [
+        "contactname",
+        "buildername",
+        "jobtitle",
+        "suburb",
+        "city",
+        "id",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : "",
+      downloadType: "pdf",
+      routename: "/manage/manageBuilder/contacts/",
+      colmap: {
+        "contactname" : "Contact Name",
+        "buildername" : "Builder Name",
+        "jobtitle" : "Job Title",
+        "suburb" : "Suburb",
+        "city" : "City",
+        "id" : "ID"
+      },
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : "",
+    };
+    dispatch(downloadContactData(obj, 'pdf'))
+  }
+
   const handleFormOpen = () => {
     setOpenForm(true);
     setEditData({buildername : state.buildername, builderid : state.builderid});
@@ -220,7 +250,7 @@ const ManageBuilderContact = () => {
         }
         const response = await APIService.getItembyId(data)
         const res = await response.json()
-        console.log(res.data)
+        
         setState(prev => ({
           ...prev,
           buildername : res.data.buildername,
@@ -305,12 +335,13 @@ const ManageBuilderContact = () => {
             totalCount={totalCount}
             style={"text-center"}
             countPerPage={countPerPage}
-            height="calc(100vh - 18rem)"
+            height="calc(100vh - 16rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
             handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
+            downloadPdf={downloadPdf}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
           />

@@ -48,8 +48,8 @@ const ManageLLAgreement = () => {
     const canEdit = checkEditAccess();
     const {pathname} =  useLocation();
     const [state,setState] = useState({})
-    console.log(pathname)
-    console.log(state)
+    
+    
 
     // const initialRows = [
     //     "id",
@@ -142,18 +142,18 @@ const ManageLLAgreement = () => {
         const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries({...data,user_id : user.id})
         const result = (await response.json()).data;
-        console.log(result.data);
+        
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        
         const data = {  "country_id": id };
         // const data = {"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState({...data,user_id : user.id});
         const result = (await response.json()).data;
-        console.log(result)
+        
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -162,7 +162,7 @@ const ManageLLAgreement = () => {
         const data = {  "state_name": id };
         const response = await APIService.getCities({...data,user_id : user.id});
         const result = (await response.json()).data;
-        console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -180,8 +180,8 @@ const ManageLLAgreement = () => {
         const response = await APIService.getUsers({...data,user_id : user.id})
         const result = (await response.json());
 
-        console.log(result.data);
-        console.log('hey')
+        
+        
         setFormValues((existing) => {
             return { ...existing, userName: result.data[0].id }
         })
@@ -196,7 +196,7 @@ const ManageLLAgreement = () => {
         const data = {  };
         const response = await APIService.getRoles({...data,user_id : user.id})
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, role: result.data[0].id }
         })
@@ -211,7 +211,7 @@ const ManageLLAgreement = () => {
         const data = {  };
         const response = await APIService.getEntityAdmin({...data,user_id : user.id})
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, entity: result.data[0][0] }
         })
@@ -233,7 +233,7 @@ const ManageLLAgreement = () => {
         };
         const response = await APIService.getLob({...data,user_id : user.id});
         const result = (await response.json());
-        console.log(result.data);
+        
         setFormValues((existing) => {
             return { ...existing, lob: result.data[0].id }
         })
@@ -246,14 +246,14 @@ const ManageLLAgreement = () => {
 
     const getOrdersByClientId = async (id) => {
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res.data)
+        
         setOrders((prev) => {
             const temp = {}
              res.data.forEach((item) => {
@@ -281,7 +281,7 @@ const ManageLLAgreement = () => {
 
         const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
         const res = await response.json()
-        console.log(res)
+        
         setClientPropertyData(convertToIdNameObject(res.data))
     }
 
@@ -292,8 +292,8 @@ const ManageLLAgreement = () => {
     const [query, setQuery] = useState('')
 
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -310,7 +310,7 @@ const ManageLLAgreement = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
     const handleTenantClientNameChange = (e, index) => {
@@ -320,7 +320,7 @@ const ManageLLAgreement = () => {
         setSelectedOptions(temp);
     }
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             
@@ -346,13 +346,13 @@ const ManageLLAgreement = () => {
     const [flag, setFlag] = useState(false)
     const [existingLLAgreement, setExistingLLAgreement] = useState([])
     const fetchData = async () => {
-        console.log('ugm')
+        
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -372,7 +372,7 @@ const ManageLLAgreement = () => {
         const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLLAgreement(result);
@@ -393,7 +393,7 @@ const ManageLLAgreement = () => {
         const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLLAgreement(result);
@@ -401,7 +401,7 @@ const ManageLLAgreement = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        console.log(searchInput);
+        
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
         const data = {
@@ -417,7 +417,7 @@ const ManageLLAgreement = () => {
         const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLLAgreement(result);
@@ -492,7 +492,7 @@ const ManageLLAgreement = () => {
     }, []);
 
     const handleOpenEdit = (oldItem) => {
-        console.log('called');
+        
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -539,7 +539,7 @@ const ManageLLAgreement = () => {
         }
         setSelectedOptions((prev) => tempArray)
 
-        console.log(res)
+        
         
         // now we need to set the data
 
@@ -694,9 +694,9 @@ const ManageLLAgreement = () => {
     //end
 
     const handleAddLLAgreement = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         setIsLLAgreementDialogue(false);
@@ -705,8 +705,8 @@ const ManageLLAgreement = () => {
     }
 
     const addLLAgreement = async () => {
-        // console.log('clicked')
-        console.log(formValues)
+        // 
+        
         // setPageLoading(true);
         const data = {
             
@@ -728,7 +728,7 @@ const ManageLLAgreement = () => {
         const result = (await response.json())
 
         setOpenAddConfirmation(false);
-        console.log(result)
+        
         setIsLLAgreementDialogue(false);
         if (result.result == "success") {
             const temp = { ...selectedOption }
@@ -751,8 +751,8 @@ const ManageLLAgreement = () => {
             setErrorMessage(result.message)
         }
 
-        console.log({...data,user_id : user.id});
-        console.log(result);
+        
+        
     }
 
     const initialValues = {
@@ -872,7 +872,7 @@ const ManageLLAgreement = () => {
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -920,7 +920,7 @@ const ManageLLAgreement = () => {
         const response = await APIService.getLLAgreement({...data,user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
@@ -938,7 +938,7 @@ const ManageLLAgreement = () => {
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'LLAgreementData.pdf');
                 }
-                console.log('Success:', result);
+                
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -971,7 +971,7 @@ const ManageLLAgreement = () => {
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setCurrentPage((prev) => 1)
         // setCurrentPages(15)
@@ -989,7 +989,7 @@ const ManageLLAgreement = () => {
         const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLLAgreement(result);
@@ -1013,7 +1013,7 @@ const ManageLLAgreement = () => {
         const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLLAgreement(result);
@@ -1074,7 +1074,7 @@ const ManageLLAgreement = () => {
         // const tempArray = [];
         // we need to query thru the object
         setSortField(field)
-        // console.log(filterMapState);
+        // 
         // Object.keys(filterMapState).forEach(key => {
         //     if (filterMapState[key].filterType != "") {
         //         tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -1095,7 +1095,7 @@ const ManageLLAgreement = () => {
         const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLLAgreement(result);
@@ -1155,9 +1155,9 @@ const ManageLLAgreement = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
        
             var existing = filterMapState;
             existing = {
@@ -1190,8 +1190,8 @@ const ManageLLAgreement = () => {
         setFilterMapState(mapState)
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -1212,7 +1212,7 @@ const ManageLLAgreement = () => {
         const response = await APIService.getLLAgreement({...data,user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLLAgreement(result);
@@ -1226,7 +1226,7 @@ const ManageLLAgreement = () => {
     ])
 
     const handleAddClient = () => {
-        console.log('called')
+        
         const temp = [...selectedOptions];
         temp.push({
             label: "Select Client",
@@ -1266,7 +1266,7 @@ const ManageLLAgreement = () => {
             }
             const response = await APIService.addLLTenant({...data,user_id : user.id})
             const res = await response.json()
-            console.log(res)
+            
             setTenantDetails(false)
             openAddTenantConfirmation()
         }else {
@@ -1682,7 +1682,7 @@ const ManageLLAgreement = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -2028,7 +2028,7 @@ const ManageLLAgreement = () => {
                                     checked={formValues.status}
                                     className='mr-3 h-4 w-4'
                                     onClick={(e) => {
-                                        // console.log(e.target.checked)
+                                        // 
                                         const existing = { ...formValues };
                                         existing.status = !existing.status;
                                         setFormValues(existing)

@@ -48,7 +48,7 @@ const ManageClientInvoice = () => {
     const {orderid} = useParams()
     const {user} = useAuth();
     const canEdit = checkEditAccess();
-    console.log(pathname)
+    
     const dataRows = [
         "clientname",
         "quotedescription",
@@ -138,8 +138,8 @@ const ManageClientInvoice = () => {
     const [query, setQuery] = useState('')
 
     const handleClientNameChange = (e) => {
-        console.log('hey')
-        console.log(e)
+        
+        
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -155,7 +155,7 @@ const ManageClientInvoice = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        console.log(formValues)
+        
         setSelectedOption(e)
     }
      function convertToIdNameObject(items) {
@@ -168,28 +168,28 @@ const ManageClientInvoice = () => {
     const [orders, setOrders] = useState({});
     const getOrdersByClientId = async (id) => {
         if(id == null) return 
-        console.log('hello')
+        
         const data = {
             "client_id": id
         }
         const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
         const res = await response.json()
         
-        console.log(res.data)
+        
         setOrders(convertToIdNameObject(res.data))
         // setOrders(res.data)
 
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
         //    existing.order = res.data[0].id
-        //    console.log(res.data[0].id)
+        //    
         //    setFormValues(existing)
 
         // } 
     }
 
     const loadOptions = async (e) => {
-        console.log(e)
+        
         if (e.length < 3) return;
         const data = {
             "pg_no": 0,
@@ -213,10 +213,10 @@ const ManageClientInvoice = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        console.log('ugm')
+        
         // const tempArray = [];
         // // we need to query thru the object
-        // console.log(filterMapState);
+        // 
         // Object.keys(filterMapState).forEach(key => {
         //     if (filterMapState[key].filterType != "") {
         //         tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -224,7 +224,7 @@ const ManageClientInvoice = () => {
         // })
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -244,7 +244,7 @@ const ManageClientInvoice = () => {
         const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInvoice(result);
@@ -254,7 +254,7 @@ const ManageClientInvoice = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -273,7 +273,7 @@ const ManageClientInvoice = () => {
         const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInvoice(result);
@@ -283,14 +283,14 @@ const ManageClientInvoice = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         setCurrentPage((prev) => 1)
-        console.log(searchInput);
+        
         const data = {
             "rows": dataRows,
             "filters": filterState,
@@ -303,7 +303,7 @@ const ManageClientInvoice = () => {
         const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInvoice(result);
@@ -351,12 +351,12 @@ const ManageClientInvoice = () => {
     const [invoiceId, setInvoiceId] = useState(0);
     const handleEdit = (id) => {
         setInvoiceId(id)
-        console.log(id);
-        console.log(invoiceId)
+        
+        
         setIsEditDialogue(true)
     }
     const handleOpenEdit = (oldItem) => {
-        console.log('called');
+        
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -385,9 +385,9 @@ const ManageClientInvoice = () => {
         setFormErrors({});
     }
     const handleAddClientInvoice = () => {
-        console.log(formValues)
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         setIsClientInvoiceDialogue(false);
@@ -395,10 +395,10 @@ const ManageClientInvoice = () => {
 
     }
     const addClientInvoice = async () => {
-        // console.log('clicked')
-        console.log(formValues)
+        // 
+        
         if (!validate()) {
-            console.log('hu')
+            
             return;
         }
         // setPageLoading(true);
@@ -420,7 +420,7 @@ const ManageClientInvoice = () => {
         const result = (await response.json())
 
         setOpenAddConfirmation(false);
-        console.log(result)
+        
         setIsClientInvoiceDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
@@ -434,8 +434,8 @@ const ManageClientInvoice = () => {
             setErrorMessage(result.message)
         }
 
-        console.log({...data, user_id : user.id});
-        console.log(result);
+        
+        
     }
 
     const initialValues = {
@@ -472,7 +472,7 @@ const ManageClientInvoice = () => {
             })
         }
         if (!formValues.invoiceDescription) {
-            console.log('issue is in panno')
+            
             setFormErrors((existing) => {
                 return { ...existing, invoiceDescription: "Enter Invoice Description" }
             })
@@ -509,7 +509,7 @@ const ManageClientInvoice = () => {
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
-        console.log(value);
+        
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -559,7 +559,7 @@ const ManageClientInvoice = () => {
         const response = await APIService.getClientInvoice({...data, user_id : user.id})
         const temp = await response.json();
         const result = temp.data;
-        console.log(temp)
+        
         if(temp.result == 'success') {
             const d = {
                 "filename" : temp.filename,
@@ -585,7 +585,7 @@ const ManageClientInvoice = () => {
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'ClientInvoiceData.pdf');
                 }
-                console.log('Success:', result);
+                
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -599,7 +599,7 @@ const ManageClientInvoice = () => {
     }
 
     const handleSearch = async () => {
-        // console.log("clicked")
+        // 
         setPageLoading(true);
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
@@ -615,7 +615,7 @@ const ManageClientInvoice = () => {
         const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInvoice(result);
@@ -638,7 +638,7 @@ const ManageClientInvoice = () => {
         const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInvoice(result);
@@ -776,8 +776,8 @@ const ManageClientInvoice = () => {
         setIdFilter(false)
         const tempArray = [];
         // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
+        // 
+        
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -799,16 +799,16 @@ const ManageClientInvoice = () => {
         const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInvoice(result);
         setPageLoading(false);
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        console.log(columnName)
-        console.log('hey')
-        console.log(filterMapState);
+        
+        
+        
 
         var existing = filterMapState;
         existing = {
@@ -834,7 +834,7 @@ const ManageClientInvoice = () => {
         const tempArray = [];
         // we need to query thru the object
         setSortField(field)
-        console.log(filterMapState);
+        
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -854,7 +854,7 @@ const ManageClientInvoice = () => {
         const response = await APIService.getClientInvoice({...data, user_id : user.id});
         const temp = await response.json();
         const result = temp.data;
-        console.log(result);
+        
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientInvoice(result);
@@ -874,7 +874,7 @@ const ManageClientInvoice = () => {
                     // const temp = {...filterMapState};
                     // temp[columnName].type = "".
                     // setFilterMapState(temp)
-                    console.log(inputVariable)
+                    
                     if(inputVariable == "") {
                         const temp = {...filterMapState}
                         temp[columnName].filterType = ""
@@ -1325,7 +1325,7 @@ const ManageClientInvoice = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                console.log(e.target.value);
+                                
 
                                 fetchQuantityData(e.target.value)
                             }}

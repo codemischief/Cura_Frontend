@@ -88,9 +88,9 @@ function AuthProvider({ children }) {
       try {
         const accessToken = localStorage.getItem("accessToken");
         const user = localStorage.getItem("user");
+        const refreshToken = localStorage.getItem("refreshToken")
         if (accessToken && isValidToken(accessToken)) {
-          setSession(JSON.parse(user), accessToken);
-          
+          setSession(JSON.parse(user), accessToken, refreshToken);
           dispatch({
             type: Types.Initial,
             payload: {
@@ -162,17 +162,34 @@ function AuthProvider({ children }) {
     }
   };
 
+  const pauseIdleTimer = () => {
+    if (idleTimeoutRef.current) {
+      clearTimeout(idleTimeoutRef.current);
+    }
+  };
+
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        pauseIdleTimer();
+      } else {
+        resetIdleTimer();
+      }
+    };
+
     if (state.isAuthenticated && idleTimeout !== null) {
       idleEvents.forEach((event) => {
         window.addEventListener(event, resetIdleTimer);
       });
+      document.addEventListener("visibilitychange", handleVisibilityChange);
       resetIdleTimer();
     }
+
     return () => {
       idleEvents.forEach((event) => {
         window.removeEventListener(event, resetIdleTimer);
       });
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       if (idleTimeoutRef.current) {
         clearTimeout(idleTimeoutRef.current);
       }
@@ -189,7 +206,7 @@ function AuthProvider({ children }) {
           company_key,
         }
       );
-      const { token, user_id, role_id, access_rights, idleTimeOut,refresh_token } =
+      const { token, user_id, role_id, access_rights, idleTimeOut, refresh_token } =
         response.data;
       if (token) {
         let userObj = {
@@ -211,7 +228,7 @@ function AuthProvider({ children }) {
           localStorage.setItem("idleTimeout", idleTimeoutInMs); // Store idleTimeout in milliseconds
           setIdleTimeout(idleTimeoutInMs); // Set idleTimeout state
         }
-        setSession(userObj, token,refresh_token);
+        setSession(userObj, token, refresh_token);
         dispatch({
           type: Types.Login,
           payload: {
@@ -228,7 +245,7 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    const response = await APIService.logOut()
+    const response = await APIService.logOut();
     setIsModalOpen(false);
     clearInterval(countdownRef.current);
     setSession(null);
@@ -237,7 +254,6 @@ function AuthProvider({ children }) {
     toast.success("Logged out successfully");
     navigate("/login");
     setAccessToken(null);
-    
   };
 
   const handleContinueSession = () => {
@@ -260,7 +276,6 @@ function AuthProvider({ children }) {
         updateProfile,
       }}
     >
-   
       {children}
       {state.isAuthenticated && (
         <SessionTimeoutModal

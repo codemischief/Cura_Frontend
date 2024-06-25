@@ -11,7 +11,7 @@ const EditOrderStatusHistory = ({formValues,setFormValues,orderId}) => {
          const response = await APIService.getOrderStatusHistory({...data,user_id : user.id});
          const res = await response.json();
          setOrderStatusData(res.data);
-         console.log(res)
+         
          setOrderStatusData(res.data)
     }
     // const handleAdd = () => {

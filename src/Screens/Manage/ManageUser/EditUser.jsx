@@ -114,6 +114,12 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                 return { ...existing, email1: "Enter Email" }
             })
             res = false;
+        } else if (formValues.email1 != "" && formValues.email1 != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email1)) {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, email1: "Enter a valid email address" }
+            })
+            res = false
         } else {
             setFormErrors((existing) => {
                 return { ...existing, email1: "" }
@@ -196,6 +202,18 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             })
             res = false;
         }
+
+        if (formValues.email2 != "" && formValues.email2 != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email2)) {
+                // we need to set the formErrors
+                setFormErrors((existing) => {
+                    return { ...existing, email2: "Enter a valid email address" }
+                })
+                res = false
+            } else {
+                setFormErrors((existing) => {
+                    return { ...existing, email2: "" }
+                })
+            }
 
         return res;
     }
@@ -372,12 +390,12 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Email 1 <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="email1" value={formValues.email1} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
                                             <div className="text-[9px] text-[#CD0000] absolute">{formErrors.email1}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Work Phone</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="workPhone" value={formValues.workPhone} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="workPhone" value={formValues.workPhone} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Address Line 1 <label className="text-red-500">*</label></div>
@@ -449,11 +467,12 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Email 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="email2" value={formValues.email2} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="email2" value={formValues.email2} onChange={handleChange} />
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.email2}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Home Phone <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="homePhone" value={formValues.homePhone} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="homePhone" value={formValues.homePhone} onChange={handleChange} />
                                             <div className="text-[9px] text-[#CD0000] absolute">{formErrors.homePhone}</div>
                                         </div>
                                         <div className="">
