@@ -88,6 +88,7 @@ const ResearchBanks = () => {
       rows: [
         "id",
         "name",
+        "bankaddress",
         "emailid",
         "phoneno",
         "website",
@@ -150,6 +151,7 @@ const ResearchBanks = () => {
       user_id: user.id,
       rows: [
         "name",
+        "bankaddress",
         "emailid",
         "phoneno",
         "website",
@@ -158,6 +160,7 @@ const ResearchBanks = () => {
       ],
       colmap: {
         "name": "Name",
+        "bankaddress" : "Branch Address",
         "emailid": "Email ID",
         "phoneno": "Phone Number",
         "website": "Website",
@@ -181,6 +184,7 @@ const ResearchBanks = () => {
       user_id: user.id,
       rows: [
         "name",
+        "bankaddress",
         "emailid",
         "phoneno",
         "website",
@@ -189,6 +193,7 @@ const ResearchBanks = () => {
       ],
       colmap: {
         "name": "Name",
+        "bankaddress" : "Bank Address",
         "emailid": "Email ID",
         "phoneno": "Phone Number",
         "website": "Website",

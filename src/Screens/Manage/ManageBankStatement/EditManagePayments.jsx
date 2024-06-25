@@ -97,12 +97,11 @@ const EditManageStatement = (props) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleSubmit = async  (e) => {
-        e.preventDefault();
+    const handleSubmit = async  () => {
         if(!validate()) {
             return ;
         }
-        // setFormErrors(validate(formValues)); // validate form and set error message
+        
         setIsLoading(true);
         await editBankStatement();
         await props.fetchData();   
@@ -212,7 +211,7 @@ const EditManageStatement = (props) => {
                                 </div>
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        
                             <div className="h-auto w-full">
                                 <div className="flex gap-[48px] justify-center ">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -290,11 +289,11 @@ const EditManageStatement = (props) => {
                             </div>
 
                             <div className="my-10 flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleSubmit}>Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
                                 
                             </div>
-                        </form>
+                      
                     </div>
                 </div>
                     </Draggable>
