@@ -547,7 +547,7 @@ const OrderReceiptList = () => {
           </Stack>
         </div>
         }
-
+        {console.log(Data)}
         <SimpleTable
           columns={columns}
           data={Data}

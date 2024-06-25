@@ -281,6 +281,18 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
                 return { ...existing, city: "" }
             })
         }
+        if (formValues.project_info.mailgroup2 != "" && formValues.project_info.mailgroup2 != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.project_info.mailgroup2)) {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, mailgroup2: "Enter a valid email address" }
+            })
+            res.status = false
+            res.page = 1
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, mailgroup2: "" }
+            })
+        }
         return res
     }
     const helper1 = (insertBankDetails,updateBankDetails) => {
@@ -369,6 +381,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
       }
     }
     const handleEdit = async () => {
+        
         const temp = validate();
         if(!temp.status) {
             setSelectedDialogue(temp.page)
@@ -508,6 +521,8 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
                                     <button onClick={() => setSelectedDialogue(5)}><div>Photos</div></button>
                                 </div>
                             </div>
+                           
+
                             {!pageLoading && <>
                             {selectedDialogue == 1 && <EditProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} state={state}/>}
                             {selectedDialogue == 2 && <EditProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors}/>}
@@ -515,15 +530,12 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel, state
                             {selectedDialogue == 4 && <EditContact formValues={formValues} setFormValues={setFormValues}/>}
                             {selectedDialogue == 5 &&  <EditPhotos formValues={formValues} setFormValues={setFormValues}/>}
                             </>}
-                            {/* {selectedDialogue == 1 && <ProjectInformation  />}
-                            {selectedDialogue == 2 && <ProjectDetails />}
-                            {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
-                            {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues}/>}
-                            {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues}/>} */}
+                
                             <div className="my-2 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
                             </div>
+                            
                         </div>
                         </Draggable>
                     </div>

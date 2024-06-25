@@ -334,6 +334,9 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                             value={formValues.project_info.mailgroup2}
                             onChange={handleProjectInfoChange}
                         />
+                        <div className="w-full text-[9.5px] text-[#CD0000] absolute  ">
+                            {formErrors.mailgroup2}
+                        </div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Website</div>

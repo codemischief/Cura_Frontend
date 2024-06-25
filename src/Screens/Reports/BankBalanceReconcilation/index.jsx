@@ -211,7 +211,7 @@ const BankBalanceReconcilation = () => {
                 </div>
                 <div className="flex flex-col gap-12 mt-7 h-full" >
                     <div className="flex flex-col gap-4">
-                        <p className="font-semibold text-xl leading-[1.35]">Application Bank Balance</p>
+                    <p className="font-semibold text-xl leading-[1.35]">Passbook Bank Balance</p>
                         <table style={{ width: "-webkit-fill-available" }}>
                             <thead className="sticky top-0 z-100 bg-white">
                                 <tr className="bg-[#F0F6FF] h-[56px]  ">
@@ -261,7 +261,8 @@ const BankBalanceReconcilation = () => {
                                             >
                                                 <div className="w-full h-full py-5 flex flex-col gap-3 items-start sm:items-center justify-center border-b dark:border-gray-700">
                                                     <p className="text-sm max-w-[10em] lg:max-w-none">
-                                                        No Record To Show In Application Bank Balance Table.
+                                                        
+                                                        No Record To Show In Passbook Bank Balance Table.
                                                     </p>
                                                 </div>
                                             </td>
@@ -303,7 +304,8 @@ const BankBalanceReconcilation = () => {
                         </table>
                     </div>
                     <div className="flex flex-col gap-4">
-                        <p className="font-semibold text-xl leading-[1.35]">Passbook Bank Balance</p>
+                        
+                        <p className="font-semibold text-xl leading-[1.35]">Application Bank Balance</p>
                         <table style={{ width: "-webkit-fill-available" }}>
                             <thead className="sticky top-0 z-100 bg-white">
                                 <tr className="bg-[#F0F6FF] h-[56px]  ">
@@ -330,7 +332,7 @@ const BankBalanceReconcilation = () => {
                                             >
                                                 <div className="w-full h-full py-5 flex flex-col gap-3 items-start sm:items-center justify-center border-b dark:border-gray-700">
                                                     <p className="text-sm max-w-[10em] lg:max-w-none">
-                                                        No Record To Show In Passbook Bank Balance Table.
+                                                        No Record To Show In Application Bank Balance Table.
                                                     </p>
                                                 </div>
                                             </td>

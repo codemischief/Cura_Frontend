@@ -314,7 +314,6 @@ const ManageProjectInfo = () => {
             setFormErrors((existing) => {
                 return { ...existing, builderid: "Select Builder Name" }
             })
-
             res.status = false
             res.page = 1
         } else {
@@ -349,6 +348,19 @@ const ManageProjectInfo = () => {
         } else {
             setFormErrors((existing) => {
                 return { ...existing, city: "" }
+            })
+        }
+
+        if (formValues.project_info.mailgroup2 != "" && formValues.project_info.mailgroup2 != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.project_info.mailgroup2)) {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, mailgroup2: "Enter a valid email address" }
+            })
+            res.status = false
+            res.page = 1
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, mailgroup2: "" }
             })
         }
       
@@ -1481,6 +1493,10 @@ const ManageProjectInfo = () => {
                                     <button onClick={selectFifth}><div>Photos</div></button>
                                 </div>
                             </div>
+                           
+
+
+
                             {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} state={state}/>}
                             {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors} />}
                             {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
@@ -1490,6 +1506,7 @@ const ManageProjectInfo = () => {
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddProjectInfo} >Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
+                            
                         </div>
                         </Draggable>
                     </div>
