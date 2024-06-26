@@ -7,7 +7,7 @@ import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
-
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import { useDispatch } from "react-redux";
 import {
   downloadLLlist,
@@ -16,7 +16,8 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
-  setInitialState
+  setInitialState,
+  resetFilters
 } from "../../../Redux/slice/reporting/LLlist/LllistSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -348,6 +349,7 @@ const LLlistReport = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

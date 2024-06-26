@@ -5,8 +5,8 @@ import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
-
 import { useDispatch } from "react-redux";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadPaymentDataXls,
   getOrderPaymentData,
@@ -15,6 +15,7 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../Redux/slice/reporting/OrderPaymentSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -321,6 +322,7 @@ const OrderPaymentList = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

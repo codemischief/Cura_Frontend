@@ -8,7 +8,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import useAuth from "../../../context/JwtContext";
-
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import { useDispatch } from "react-redux";
 import {
   downloadClientReceiptDataXls,
@@ -18,7 +18,8 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
-  resetData
+  resetData,
+  resetFilters
 } from "../../../Redux/slice/reporting/ClientReceiptSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -324,6 +325,7 @@ const ClientReceiptList = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

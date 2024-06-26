@@ -59,6 +59,9 @@ export const OwnersPhoneNoSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -70,6 +73,7 @@ export const {
   setOwnerPhoneNoFilter,
   setInitialState,
   setSorting,
+  resetFilters
 } = OwnersPhoneNoSlice.actions;
 
 export const getOwnersPhoneNo = (payloadObj) => async (dispatch) => {

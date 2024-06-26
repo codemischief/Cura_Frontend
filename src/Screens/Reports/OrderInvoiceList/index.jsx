@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
-
 import { useDispatch } from "react-redux";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadInvoiceDataXls,
   getOrderInvoiceData,
@@ -15,6 +15,7 @@ import {
   setSorting,
   setStatus,
   resetData,
+  resetFilters
 } from "../../../Redux/slice/reporting/OrderInvoiceSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -322,6 +323,7 @@ const OrderInvoiceList = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

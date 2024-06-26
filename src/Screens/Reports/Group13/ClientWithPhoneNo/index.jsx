@@ -12,12 +12,14 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
-  setInitialState
+  setInitialState,
+  resetFilters
 } from "../../../../Redux/slice/reporting/Group13/ClientPhoneNo";
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
-import useAuth from "../../../../context/JwtContext"
+import useAuth from "../../../../context/JwtContext";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 
 const ClientPhoneNo = () => {
   const dispatch = useDispatch();
@@ -211,6 +213,7 @@ const ClientPhoneNo = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
         <Stack
