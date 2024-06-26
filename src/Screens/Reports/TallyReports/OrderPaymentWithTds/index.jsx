@@ -15,8 +15,10 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetFilters
 } from "../../../../Redux/slice/reporting/TallyReports/OrderPaymentWithTds/OrderPaymentWithTds";
 import connectionDataColumn from "./Columns";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
@@ -280,6 +282,7 @@ const OrderPaymentWithTdsView = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 
