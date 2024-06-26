@@ -234,26 +234,10 @@ const ManageVendorPayment = () => {
         }
         const response = await APIService.getModesAdmin(data)
         const res = await response.json()
-        const tempArray = []
-        const len = res.data.length
-        for (var i = 0; i < len; i++) {
-            if (res.data[i][1][0] == 'Z') {
-
-            } else {
-                tempArray.push(res.data[i])
-            }
-
-        }
         
-        setModesData(tempArray)
-        // setModesData(res.data && res.data.map((item) => {
-        //     // console.log()
-        //    if(item[1].startsWith('Z')) {
-
-        //    }else {
-        //     return item
-        //    }
-        // }))
+        
+        setModesData(res.data)
+        
         
         
     }

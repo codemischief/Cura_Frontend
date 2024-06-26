@@ -41,24 +41,8 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         }
         const response = await APIService.getModesAdmin(data)
         const res = await response.json()
-
-        const tempArray = []
-        const len = res.data.length
-        for (var i = 0; i < len; i++) {
-            if (res.data[i][1][0] == 'Z') {
-
-            } else {
-                tempArray.push(res.data[i])
-            }
-
-        }
-        
-        setModesData(tempArray)
-        
-        
+        setModesData(res.data)
     }
-
-    // const [modesData,setModesData] = useState([])
     const [orders, setOrders] = useState([])
     // const [vendorData,setVendorData] = useState([])
     const [pageLoading, setPageLoading] = useState(false)

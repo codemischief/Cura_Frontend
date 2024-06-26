@@ -4,7 +4,7 @@ import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import { addNewInvoices, getPmaBilling , setPageNumber , setCountPerPage , setSorting , downloadPmaBillingDataXls} from "../../../Redux/slice/pmaSlice";
+import { addNewInvoices, getPmaBilling , setPageNumber , setCountPerPage , setSorting , downloadPmaBillingDataXls, resetFilters} from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
@@ -12,6 +12,7 @@ import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../../context/JwtContext";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -192,10 +193,27 @@ const PmaBilling = () => {
     <Stack gap="1rem">
       {/* <Navbar /> */}
       <Stack direction={"column"} paddingX={"14px"}>
+        <Stack direction={'row'} justifyContent={'space-between'}>
+
         <HeaderBreadcum
           heading={"Manage PMA Billing"}
           path={["Manage", "Manage PMA Billing"]}
         />
+        <Stack
+           direction={'row'}
+           alignContent={'center'}
+          >
+
+          <CustomButton
+            title="Add New PMA Invoice"
+            onClick={() => {
+              selectedYear && selectedMonth && showTable && setOpenModal(true);
+            }}
+          />
+          <RefreshReports onClick={() => dispatch(resetFilters())}/>
+          </Stack>
+
+        </Stack>
         <Stack
           marginTop={"8px"}
           justifyContent={"space-between"}
@@ -273,14 +291,8 @@ const PmaBilling = () => {
             >
               Show
             </Button>
+          
           </Stack>
-
-          <CustomButton
-            title="Add New PMA Invoice"
-            onClick={() => {
-              selectedYear && selectedMonth && showTable && setOpenModal(true);
-            }}
-          />
         </Stack>
 
         {pmaBillingData && (

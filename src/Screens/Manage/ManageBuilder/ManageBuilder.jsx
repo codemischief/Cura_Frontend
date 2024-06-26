@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import FileSaver from "file-saver";
+import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilterButton";
 const ManageBuilder = () => {
     
     const dataRows = [
@@ -313,27 +314,6 @@ const ManageBuilder = () => {
         fetchBuilderData();
     }
 
-    useEffect(() => {
-        // fetchUserId();
-        fetchBuilderData();
-        fetchCountryData();
-        fetchStateData(5)
-        fetchCityData("Maharashtra")
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setCountryFilter(false)
-                setBuilderFilter(false)
-                setCityFilter(false)
-                setSuburbFilter(false)
-                setIdFilter(false)
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
     //Validation of the form
     const initialValues = {
         builderName: null,
@@ -564,6 +544,13 @@ const ManageBuilder = () => {
     const [suburbFilterInput, setSuburbFilterInput] = useState("")
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("")
+    const resetInputStates = () => {
+        setBuilderFilterInput("");
+        setCountryFilterInput("");
+        setCityFilterInput("");
+        setSuburbFilterInput("");
+        setIdFilterInput("");
+    };
     const [addConfirmation, setAddConfirmation] = useState(false);
 
     const filterMapping = {
@@ -752,6 +739,28 @@ const ManageBuilder = () => {
 
         }
     }
+    
+    useEffect(() => {
+        // fetchUserId();
+        fetchBuilderData();
+        fetchCountryData();
+        fetchStateData(5)
+        fetchCityData("Maharashtra")
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setCountryFilter(false)
+                setBuilderFilter(false)
+                setCityFilter(false)
+                setSuburbFilter(false)
+                setIdFilter(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     return (
         <div className="font-medium">
             <Backdrop
@@ -895,7 +904,11 @@ const ManageBuilder = () => {
                         </div>
 
                         <div className='w-1/2 p-4'>
-                            {/* <p>Edit</p> */}
+                            <RefreshFilterButton
+                              filterMapping={filterMapping}
+                               resetAllInputs={resetInputStates}
+                               setFilterMapState={setFilterMapState}
+                            />
                         </div>
                     </div>
                 </div>

@@ -427,9 +427,7 @@ const ManageClientProperty = () => {
                 clientname : res.data.clientname,
                 hyperlinked : true
             }))
-
-            // 
-            // 
+            setCurrClientName(res.data.clientname)
             setClientNameText(state.clientname)
             setFormValues({
                 ...formValues,
@@ -945,8 +943,8 @@ const ManageClientProperty = () => {
                 "gasconnectiondetails": formValues.client_property.gasconnectiondetails,
                 "internalfurnitureandfittings": formValues.client_property.internalfurnitureandfittings,
                 "textforposting": formValues.client_property.textforposting,
-                // "poagiven": true,
-                // "poaid": 202,
+                "poagiven": true,
+                "poaid": 202,
                 "electricitybillingunit": formValues.client_property.electricitybillingunit,
                 "indexiicollected": formValues.client_property.indexiicollected
             },

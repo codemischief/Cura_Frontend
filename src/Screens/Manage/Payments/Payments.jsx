@@ -1235,6 +1235,7 @@ const Payments = () => {
                     value={paidOnFilterInput}
                     onChange={(e) => setPaidOnFilterInput(e.target.value)}
                     type="date"
+                    
                     onKeyDown={(event) =>
                       handleEnterToFilter(
                         event,
