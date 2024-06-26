@@ -8,6 +8,7 @@ import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../../services/API";
 import { useDispatch } from "react-redux";
 import useAuth from "../../../../context/JwtContext";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports"
 import {
   downloadDataXls,
   getData,
@@ -15,6 +16,7 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
+  resetFilters,
   setStatus
 } from "../../../../Redux/slice/reporting/Contacts/ClientContactsDetails";
 import { useSelector } from "react-redux";
@@ -156,7 +158,7 @@ const ClientContactDetails = () => {
     let obj = {
       user_id: user.id,
       rows: [
-        "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
+        "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details", "id"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -169,6 +171,7 @@ const ClientContactDetails = () => {
         "localcontact2name": "Contact 2 Name",
         "localcontact2address": "Contact 2 Address",
         "localcontact2details": "Contact 2 Details",
+        "id" : "ID"
       },
       search_key: search,
       pg_no: 0,
@@ -182,7 +185,7 @@ const ClientContactDetails = () => {
     let obj = {
       user_id: user.id,
       rows: [
-        "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details"
+        "employername", "localcontact1name", "localcontact1address", "localcontact1details", "localcontact2name", "localcontact2address", "localcontact2details" , "id"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",
@@ -195,6 +198,7 @@ const ClientContactDetails = () => {
         "localcontact2name": "Contact 2 Name",
         "localcontact2address": "Contact 2 Address",
         "localcontact2details": "Contact 2 Details",
+        "id" : "ID"
       },
       filters: formatedFilterData(filter),
       search_key: search,
@@ -250,6 +254,7 @@ const ClientContactDetails = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

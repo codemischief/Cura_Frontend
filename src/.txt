@@ -1,0 +1,4 @@
+<RefreshReports onClick={() => dispatch(resetFilters())}/>
+resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },

@@ -168,12 +168,12 @@ const ClientPhoneNo = () => {
     let obj = {
       user_id: user.id,
       rows: [
-        "clientname","homephone","workphone","mobilephone","clienttypename"
+        "clientname","homephone","workphone","mobilephone","clienttypename" 
       ],
       type:phoneNoType,
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",
-      routename: "/reports/clientContactDetails",
+      routename: "/reports/clientphoneno",
       colmap: {
         clientname: "Name",
         homephone: "Phone Number",
