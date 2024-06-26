@@ -53,16 +53,20 @@ export const FilterField = (props) => {
         date: "Date",
       };
       let queryType = type === "number" ? Number(search) : search;
-      if (
-        filters === "noFilter" ||
-        filters === "isNull" ||
-        filters === "isNotNull"
-      ) {
+      if (filters === "noFilter") {
         const prevFilters = { ...filter };
         delete prevFilters[columnfield];
         onFilterChange(prevFilters);
         setSearch("");
-      } else {
+      } 
+      else if(  filters === "isNull" ||
+      filters === "isNotNull") {
+        setSearch("");
+        const prevFilters = { ...filter };
+        prevFilters[columnfield] = [filters, "", filterType[type]];
+        onFilterChange({ ...prevFilters });
+      }
+      else {
         const prevFilters = { ...filter };
         prevFilters[columnfield] = [filters, queryType, filterType[type]];
         onFilterChange({ ...prevFilters });
