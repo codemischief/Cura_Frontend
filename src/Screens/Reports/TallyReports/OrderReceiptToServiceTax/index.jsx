@@ -44,8 +44,8 @@ const OrderReceiptToInvoiceServiceTax = () => {
   const [intialFields, setIntialFields] = useState({
     start_date: "",
     end_date: "",
-    mode: "",
-    entity: "",
+    mode: 5,
+    entity: 1,
   });
 
   const columns = useMemo(() => connectionDataColumn(), []);

@@ -46,7 +46,7 @@ const OrderPaymentDDView = () => {
     start_date: "",
     end_date: "",
     mode: 5,
-    entity: "",
+    entity: 1,
   });
 
 

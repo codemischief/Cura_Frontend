@@ -13,12 +13,13 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Sr No",
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "50px" },
+      
       sorting: false,
       render: (index) => {
         return (
           <Stack
             direction="row"
-            sx={{ justifyContent: "center", width: "50px" }}
+            sx={{ justifyContent: "center" }}
           >
             {index + 1}
           </Stack>
@@ -28,6 +29,7 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Lob Name",
       field: "lobname",
+      
       sorting: true,
       cellStyle: { minWidth: "20px", maxWidth: "34px" },
       filterComponent: TextFilterField,
@@ -36,6 +38,7 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Receipt Amount",
       field: "orderreceiptamount",
+      height : '20px',
       sorting: true,
       filterComponent: NumberFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
@@ -43,16 +46,18 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Payment Amount",
       field: "paymentamount",
+      
       sorting: true,
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px"},
     },
     {
       title: "Difference",
       field: "diff",
       sorting: true,
+      height : '20px',
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px"},
     },
   ];
   return columns;

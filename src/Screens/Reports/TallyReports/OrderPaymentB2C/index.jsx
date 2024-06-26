@@ -46,7 +46,7 @@ const OrderPaymentB2CView = () => {
     start_date: "",
     end_date: "",
     mode: 5,
-    entity: "",
+    entity: 1,
   });
 
   const columns = useMemo(() => connectionDataColumn(), []);

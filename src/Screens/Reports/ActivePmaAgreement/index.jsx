@@ -303,7 +303,7 @@ const PmaInvoiceList = () => {
 
             {/* </div> */}
             <div
-              className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
+              className="border-solid border-black border-[0.5px] rounded-md w-28 h-9 flex items-center justify-center space-x-1 p-2 cursor-pointer"
               onClick={() => { }}
             >
               <button>

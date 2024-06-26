@@ -17,8 +17,8 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   sorting: {
-    sort_by: "",
-    sort_order: "",
+    sort_by: "invoicedate",
+    sort_order: "desc",
   },
 };
 
@@ -51,8 +51,8 @@ export const pmaSlice = createSlice({
         (state.isLoading = false),
         (state.isSuccess = false);
       state.sorting = {
-        sort_by: "",
-        sort_order: "",
+        sort_by: "invoicedate",
+       sort_order: "desc",
       };
     },
     setPmaInvoiceListFilters: (state, { payload }) => {
