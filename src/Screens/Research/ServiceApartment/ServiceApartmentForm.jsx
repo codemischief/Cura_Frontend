@@ -680,7 +680,7 @@ const ServiceApartmentForm = ({ isOpen, handleClose, editData, openSucess }) => 
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title={`${editData?.id ? 'Save Service Aprtment' : 'Add Service Apartment'}`}
+          title={`${editData?.id ? 'Save Service Aprtment & Guest House' : 'Add Service Apartment & Guest House'}`}
           description={
             <div className="flex flex-col items-center">
               <p className="">Apartment Name: {values.name}</p>

@@ -538,16 +538,16 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Save" : "Add"}
+          btnTitle={`${editData?.id ? 'Save' : 'Add'}`}
           onClose={() => {
             setOpenConfimation(false);
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Client"
+          title={editData?.id ? "Save Professional" : "Add Professional"}
           description={
             <div>
-              <p className="">Client: {values.personname}</p>
+              <p className="">Name : {values.name}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",

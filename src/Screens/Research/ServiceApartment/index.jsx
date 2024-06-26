@@ -284,8 +284,8 @@ const ResearchServiceApartments = () => {
       <div className="flex flex-col px-4 gap-[1.75rem]">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
-            heading={"Service Apartment"}
-            path={["Research ", "Service Apartment"]}
+            heading={"Service Apartments & Guest Houses"}
+            path={["Research ", "Service Apartments & Guest Houses"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <SearchBar

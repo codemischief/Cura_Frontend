@@ -319,26 +319,25 @@ const ArchitectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div> */}
                           </div>
                           <div className="">
+                            {/* <div className="text-[13px]">
+                              Suburb <label className="text-red-500">*</label>
+                            </div> */}
                             <div className="flex">
-                              <label className="inputFieldLabel">
-                                Society Name
-                              </label>
+                              <label className="inputFieldLabel">Suburb</label>
                               
                             </div>
                             <input
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="societyname"
-                              value={formik.values.societyname}
-                              onBlur={handleBlur}
+                              name="locality"
+                              value={formik.values.locality}
                               onChange={handleChange}
+                              onBlur={handleBlur}
                             />
-                            {/* <div className="inputValidationError">
-                              {touched.employername && errors.employername && (
-                                <div>{errors.employername}</div>
-                              )}
-                            </div> */}
+                            
                           </div>
+                          
                           
 
                           
@@ -469,24 +468,28 @@ const ArchitectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               {errors.city && <div>{errors.city}</div>}
                             </div>
                           </div>
+                         
                           <div className="">
-                            {/* <div className="text-[13px]">
-                              Suburb <label className="text-red-500">*</label>
-                            </div> */}
                             <div className="flex">
-                              <label className="inputFieldLabel">Suburb</label>
+                              <label className="inputFieldLabel">
+                                Society Name
+                              </label>
                               
                             </div>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
+                            <textarea
+                              className="inputFieldBorder inputFieldValue min-h-[90px] max-h-[90px]"
+                              
                               type="text"
-                              name="locality"
-                              value={formik.values.locality}
-                              onChange={handleChange}
+                              name="societyname"
+                              value={formik.values.societyname}
                               onBlur={handleBlur}
+                              onChange={handleChange}
                             />
-                            
+                            {/* <div className="inputValidationError">
+                              {touched.employername && errors.employername && (
+                                <div>{errors.employername}</div>
+                              )}
+                            </div> */}
                           </div>
                           
                          
