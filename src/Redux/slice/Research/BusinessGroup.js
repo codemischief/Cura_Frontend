@@ -64,6 +64,9 @@ export const businessgroup = createSlice({
     setFormSubmissionStatus: (state, { payload }) => {
       state.formSubmissionStatus = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -78,6 +81,7 @@ export const {
   setInitialState,
   setSorting,
   setFormSubmissionStatus,
+  resetFilters
 } = businessgroup.actions;
 
 export const getBusinessGroup = (payloadObj) => async (dispatch) => {

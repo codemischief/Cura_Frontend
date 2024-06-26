@@ -62,6 +62,9 @@ export const professionals = createSlice({
     setFormSubmissionStatus: (state, { payload }) => {
       state.formSubmissionStatus = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -76,6 +79,7 @@ export const {
   setInitialState,
   setSorting,
   setFormSubmissionStatus,
+  resetFilters
 } = professionals.actions;
 
 export const getProfessionalsData = (payloadObj, year, month) => async (dispatch) => {

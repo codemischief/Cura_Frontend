@@ -8,6 +8,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
 import { APIService } from "../../../services/API";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   deleteData,
   downloadDataXls,
@@ -15,6 +16,7 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../Redux/slice/Research/EducationalInstitute";
 
 import getColumns from "./Columns";
@@ -270,17 +272,8 @@ const ResearchEducational = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
-            {/* <button
-              className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg"
-              onClick={handleFormOpen}
-            >
-              <div className="flex items-center justify-center gap-4">
-                Add New Employer
-                <PlusOutlined className="fill-white stroke-2" />
-              </div>
-            </button> */}
             <AddButton title="Add New Educational Institute" sx={{width: "340px"}} onClick={handleFormOpen} />
-
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">

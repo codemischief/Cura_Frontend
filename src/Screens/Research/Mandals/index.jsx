@@ -8,6 +8,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
 import { APIService } from "../../../services/API";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   deleteMandals,
   donwloadMandalsData,
@@ -15,6 +16,7 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../Redux/slice/Research/MandalSlice";
 import { getCountries } from "../../../Redux/slice/commonApis";
 import getColumns from "./Columns";
@@ -27,7 +29,7 @@ import MandalsForm from "./MandalsForm";
 import useAuth from "../../../context/JwtContext";
 const ResearchMandals = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const {
     MandalsData,
     status,
@@ -151,7 +153,7 @@ const ResearchMandals = () => {
   };
 
   const downloadExcel = async () => {
-  
+
     let obj = {
       user_id: user.id,
       rows: [
@@ -163,16 +165,16 @@ const ResearchMandals = () => {
         "phoneno",
         "id",
       ],
-      colmap: { 
-        typename : "Mandal Type",
-        name : "Name",
-        city : "City",
-        suburb : "Locality",
-        emailid : "Email Id",
-        phoneno : "Phone Number",
-        id : "ID"
+      colmap: {
+        typename: "Mandal Type",
+        name: "Name",
+        city: "City",
+        suburb: "Locality",
+        emailid: "Email Id",
+        phoneno: "Phone Number",
+        id: "ID"
 
-       },
+      },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
@@ -197,15 +199,15 @@ const ResearchMandals = () => {
         "phoneno",
         "id",
       ],
-      colmap : {
-        typename : "Mandal Type",
-        name : "Name",
-        city : "City",
-        suburb : "Locality",
-        emailid : "Email Id",
-        phoneno : "Phone Number",
-        id : "ID"
-     },
+      colmap: {
+        typename: "Mandal Type",
+        name: "Name",
+        city: "City",
+        suburb: "Locality",
+        emailid: "Email Id",
+        phoneno: "Phone Number",
+        id: "ID"
+      },
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",
       routename: "/research/mandals",
@@ -214,7 +216,7 @@ const ResearchMandals = () => {
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
-    }; 
+    };
     dispatch(donwloadMandalsData(obj, 'pdf'))
   }
 
@@ -257,7 +259,7 @@ const ResearchMandals = () => {
     setPromptType(alertVariant.success);
     setOpenForm(false);
     fetchData()
-    
+
   };
 
   const openCancel = () => {
@@ -302,6 +304,7 @@ const ResearchMandals = () => {
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
+            <RefreshReports onClick={() => dispatch(resetFilters())} />
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">

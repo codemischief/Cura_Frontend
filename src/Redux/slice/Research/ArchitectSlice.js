@@ -64,6 +64,9 @@ export const architect = createSlice({
     setFormSubmissionStatus: (state, { payload }) => {
       state.formSubmissionStatus = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -78,6 +81,7 @@ export const {
   setInitialState,
   setSorting,
   setFormSubmissionStatus,
+  resetFilters
 } = architect.actions;
 
 export const getArchitect = (payloadObj) => async (dispatch) => {
