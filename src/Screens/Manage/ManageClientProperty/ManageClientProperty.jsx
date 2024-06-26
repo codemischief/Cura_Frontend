@@ -28,6 +28,7 @@ import OwnerDetails from "./Forms/OwnerDetails";
 import POADetails from "./Forms/POADetails";
 import Photos from "./Forms/Photos";
 import ProjectInformation from "./Forms/ProjectInformation";
+import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilterButton";
 import SaveConfirmationClientProperty from './Forms/SaveConfirmationClientProperty';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientProperty = () => {
@@ -336,6 +337,7 @@ const ManageClientProperty = () => {
                 
             }
         })
+        console.log(tempArray)
         setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         setPageLoading(true);
@@ -446,6 +448,10 @@ const ManageClientProperty = () => {
         }
     }
     useEffect(() => {
+       setHyperLinkData()
+       fetchData()
+    },[filterMapState])
+    useEffect(() => {
         
         
 
@@ -483,7 +489,7 @@ const ManageClientProperty = () => {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-    }, [filterMapState]);
+    }, []);
 
     const handleOpenEdit = (oldItem) => {
         
@@ -939,8 +945,8 @@ const ManageClientProperty = () => {
                 "gasconnectiondetails": formValues.client_property.gasconnectiondetails,
                 "internalfurnitureandfittings": formValues.client_property.internalfurnitureandfittings,
                 "textforposting": formValues.client_property.textforposting,
-                "poagiven": true,
-                "poaid": 202,
+                // "poagiven": true,
+                // "poaid": 202,
                 "electricitybillingunit": formValues.client_property.electricitybillingunit,
                 "indexiicollected": formValues.client_property.indexiicollected
             },
@@ -1383,12 +1389,11 @@ const ManageClientProperty = () => {
 
                             <div className='w-1/2  flex items-center justify-center'>
                                 <div className=''>
-                                   {/* <RefreshFilterButton
-                                    fetchData={fetchData}
+                                 <RefreshFilterButton
                                     setFilterMapState={setFilterMapState}
                                     resetAllInputs={resetAllInputs}
                                     filterMapping={filterMapping}
-                                   /> */}
+                                   /> 
                                 </div>
                             </div>
                         </div>

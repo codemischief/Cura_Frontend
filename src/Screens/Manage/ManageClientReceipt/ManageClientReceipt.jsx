@@ -1395,14 +1395,12 @@ const ManageClientReceipt = () => {
                         </div>
 
                         <div className='w-1/2  flex items-center justify-center'>
-                            {/* <RefreshFilterButton
-
-                              fetchData={fetchData}
+                            <RefreshFilterButton
                               filterMapping={filterMapping}
                               setFilterMapState={setFilterMapState}
                               resetAllInputs={resetAllInputs}
                             
-                            /> */}
+                            />
                         </div>
                     </div>
                 </div>

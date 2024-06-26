@@ -42,6 +42,7 @@ import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageOrderReceipt = () => {
     const {user} = useAuth()
@@ -93,6 +94,19 @@ const ManageOrderReceipt = () => {
     const [createdByFilterInput, setCreatedByFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idFilterInput, setIdFilterInput] = useState("");
+    const resetAllInputs = () => {
+        setClientNameFilterInput("");
+        setPropertyFilterInput("");
+        setOrderDescriptionFilterInput("");
+        setAmountFilterInput("");
+        setReceivedDateFilterInput("");
+        setReceiptModeFilterInput("");
+        setReceivedByFilterInput("");
+        setCreatedByFilterInput("");
+        setIdFilterInput("");
+      };
+
+
 
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -524,35 +538,7 @@ const ManageOrderReceipt = () => {
         //     getOrderData(state.orderid)
         // }
     }
-    useEffect(() => {
-        
-        setHyperlinkData()
-        fetchData();
-        fetchEntitiesData();
-        fetchRoleData();
-        fetchUsersData();
-        fetchLobData();
-        fetchModesData();
-
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setClientNameFilter(false);
-                setPropertyFilter(false);
-                setOrderDescriptionFilter(false);
-                setAmountFilter(false);
-                setReceivedDateFilter(false);
-                setReceiptModeFilter(false);
-                setReceivedByFilter(false);
-                setCreatedByFilter(false);
-                setIdFilter(false);
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+   
 
     const handleOpenEdit = (oldItem) => {
         
@@ -1259,6 +1245,35 @@ const ManageOrderReceipt = () => {
 
         }
     }
+    useEffect(() => {
+        
+        setHyperlinkData()
+        fetchData();
+        fetchEntitiesData();
+        fetchRoleData();
+        fetchUsersData();
+        fetchLobData();
+        fetchModesData();
+
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setClientNameFilter(false);
+                setPropertyFilter(false);
+                setOrderDescriptionFilter(false);
+                setAmountFilter(false);
+                setReceivedDateFilter(false);
+                setReceiptModeFilter(false);
+                setReceivedByFilter(false);
+                setCreatedByFilter(false);
+                setIdFilter(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     return (
         <div className='font-medium'>
             <Backdrop
@@ -1470,7 +1485,7 @@ const ManageOrderReceipt = () => {
                     </div>
                     <div className="w-[10%] flex">
 
-                        <div className='w-[65%] px-3 py-2 ml-[-3px] '>
+                        <div className='w-[55%] px-3 py-2 ml-[-3px] '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                 <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="number" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
 
@@ -1486,10 +1501,12 @@ const ManageOrderReceipt = () => {
                             </div>
                             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                         </div>
-                        <div className='w-[35%]  flex'>
-                            <div className='px-3 py-5'>
-
-                            </div>
+                        <div className='w-[45%]  flex items-center'>
+                            <RefreshFilterButton
+                             filterMapping={filterMapping}
+                             setFilterMapState={setFilterMapState}
+                             resetAllInputs={resetAllInputs}
+                            />
                         </div>
                     </div>
 
