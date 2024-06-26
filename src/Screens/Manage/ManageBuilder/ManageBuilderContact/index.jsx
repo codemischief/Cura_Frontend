@@ -8,6 +8,7 @@ import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../../utils/filters";
 import { APIService } from "../../../../services/API";
 import { getCountries } from "../../../../Redux/slice/commonApis";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import {
   deleteContact,
   downloadContactData,
@@ -15,6 +16,7 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../../Redux/slice/Manage/contact";
 
 import getColumns from "./Columns";
@@ -321,6 +323,9 @@ const ManageBuilderContact = () => {
               <AddButton onClick={handleFormOpen} title="Add New Contact"/>
               
             </button>
+            <RefreshReports 
+               onClick={() => dispatch(resetFilters())}
+            />
           </div>
         </div>
         <div className="w-full px-5  h-12 flex items-center border-gray border-b-[1px]">

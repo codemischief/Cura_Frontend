@@ -61,7 +61,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       id: 2,
       filterComponent: TextFilterField,
       title: "Branch Adress",
-      field: "bankaddress",
+      field: "branchaddress",
       sorting: true,
     //   width : '1000px',
       align: "left",

@@ -1063,6 +1063,16 @@ const ManageClientReceipt = () => {
         
         if(res.result == 'success') {
             openOrAddSuccess()
+            setOrFormValues({
+                client: null,
+                order: null,
+                receiptMode: 5,
+                receivedBy: user.id,
+                TDS: null,
+                receiptDescription: null,
+                receivedDate: null,
+                amountReceived: null
+            })
         }
         
     }

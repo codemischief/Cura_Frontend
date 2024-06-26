@@ -31,6 +31,7 @@ import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
 import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
 import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
+import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilterButton";
 const ManageProjectInfo = () => {
     const {pathname} = useLocation()
     const {user} = useAuth()
@@ -169,32 +170,9 @@ const ManageProjectInfo = () => {
         setExistingProjectInfo(result);
         setPageLoading(false);
     }
-    useEffect(() => {
-        
-        fetchData();
-        const handler = (e) => {
-            
-            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
-                setProjectNameFilter(false)
-                setBuilderNameFilter(false)
-                setSuburbFilter(false)
-                setOtherDetailsFilter(false)
-                setMailGroupFilter(false)
-                setSubscribedEmailFilter(false)
-                setRulesFilter(false)
-                setTenantFilter(false)
-                setIdFilter(false)
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
-
-
-
+    
+    
+    
     const [formErrors, setFormErrors] = useState({});
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [deleteProjectName,setDeleteProjectName] = useState("")
@@ -208,7 +186,7 @@ const ManageProjectInfo = () => {
         setShowDeleteModal(true);
     }
     const deleteProject = async (id) => {
-
+        
         const data = {
             "user_id": user.id,
             "id": id
@@ -220,7 +198,7 @@ const ManageProjectInfo = () => {
             openDeleteSuccess()
             fetchData()
         }
-
+        
     }
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -229,11 +207,11 @@ const ManageProjectInfo = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // setFormErrors(validate(formValues));
-
+        
         // handle adding of data
-
-
-
+        
+        
+        
     };
     // const [formErrors,setFormErrors] = useState({});
     const validate = () => {
@@ -247,7 +225,7 @@ const ManageProjectInfo = () => {
             setFormErrors((existing) => {
                 return { ...existing, project_legal_status: "Enter Project Legal Status" }
             })
-
+            
             res.status = false
             res.page = 2
         } else {
@@ -293,7 +271,7 @@ const ManageProjectInfo = () => {
                 return { ...existing, addressline1: "" }
             })
         }
-
+        
         if (formValues.project_info.suburb == null || formValues.project_info.suburb == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
@@ -306,9 +284,9 @@ const ManageProjectInfo = () => {
                 return { ...existing, suburb: "" }
             })
         }
-
-
-
+        
+        
+        
         if (formValues.project_info.builderid == null || formValues.project_info.builderid == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
@@ -321,14 +299,14 @@ const ManageProjectInfo = () => {
                 return { ...existing, builderid: "" }
             })
         }
-
-
+        
+        
         if (formValues.project_info.state == null || formValues.project_info.state == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
                 return { ...existing, state: "Select State " }
             })
-
+            
             res.status = false
             res.page = 1
         } else {
@@ -336,8 +314,8 @@ const ManageProjectInfo = () => {
                 return { ...existing, state: "" }
             })
         }
-
-
+        
+        
         if (formValues.project_info.city == null || formValues.project_info.city == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
@@ -350,7 +328,7 @@ const ManageProjectInfo = () => {
                 return { ...existing, city: "" }
             })
         }
-
+        
         if (formValues.project_info.mailgroup2 != "" && formValues.project_info.mailgroup2 != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.project_info.mailgroup2)) {
             // we need to set the formErrors
             setFormErrors((existing) => {
@@ -385,79 +363,79 @@ const ManageProjectInfo = () => {
             
             let flag = false;
             Object.keys(arr[i]).forEach(key => {
-               if(arr[i][key] != null && arr[i][key] != "") {
-                flag = true
-               }
+                if(arr[i][key] != null && arr[i][key] != "") {
+                    flag = true
+                }
             })
             if(flag) temp.push(arr[i])
         }
-        return temp
-    }
-    const addProjectInfo = async () => {
-        
-        const data = {
-            "user_id": user.id,
-            "project_info": {
-                "builderid": Number(formValues.project_info.builderid),
-                "projectname": formValues.project_info.projectname,
-                "addressline1": formValues.project_info.addressline1,
-                "addressline2": formValues.project_info.addressline2,
-                "suburb": formValues.project_info.suburb,
-                "city": Number(formValues.project_info.city),
-                "state": formValues.project_info.state,
-                "country": Number(formValues.project_info.country),
-                "zip": formValues.project_info.zip,
-                "nearestlandmark": formValues.project_info.nearestlandmark,
-                "project_type": Number(formValues.project_info.project_type),
-                "mailgroup1": formValues.project_info.mailgroup1,
-                "mailgroup2": formValues.project_info.mailgroup2,
-                "website": formValues.project_info.website,
-                "project_legal_status": Number(formValues.project_info.project_legal_status),
-                "rules": formValues.project_info.rules,
-                "completionyear": Number(formValues.project_info.completionyear),
-                "jurisdiction": formValues.project_info.jurisdiction,
-                "taluka": formValues.project_info.taluka,
-                "corporationward": formValues.project_info.corporationward,
-                "policechowkey": formValues.project_info.policechowkey,
-                "maintenance_details": formValues.project_info.maintenance_details,
-                "numberoffloors": Number(formValues.project_info.numberoffloors),
-                "numberofbuildings": Number(formValues.project_info.numberofbuildings) ,
-                "approxtotalunits": formValues.project_info.approxtotalunits,
-                "tenantstudentsallowed": formValues.project_info.tenantstudentsallowed,
-                "tenantworkingbachelorsallowed": formValues.project_info.tenantworkingbachelorsallowed,
-                "tenantforeignersallowed": formValues.project_info.tenantforeignersallowed,
-                "otherdetails": formValues.project_info.otherdetails,
-                "duespayablemonth": formValues.project_info.duespayablemonth,
-                "policestation": formValues.project_info.policestation
-            },
-            "project_amenities": {
-                "swimmingpool": formValues.project_amenities.swimmingpool,
-                "lift": formValues.project_amenities.lift,
-                "liftbatterybackup": formValues.project_amenities.liftbatterybackup,
-                "clubhouse": formValues.project_amenities.clubhouse,
-                "gym": formValues.project_amenities.gym,
-                "childrensplayarea": formValues.project_amenities.childrensplayarea,
-                "pipedgas": formValues.project_amenities.pipedgas,
-                "cctvcameras": formValues.project_amenities.cctvcameras,
-                "otheramenities": formValues.project_amenities.otheramenities,
-                "studio": formValues.project_amenities.studio,
-                "1BHK": formValues.project_amenities['1BHK'],
-                "2BHK": formValues.project_amenities['2BHK'],
-                "3BHK": formValues.project_amenities['3BHK'],
-                "4BHK": formValues.project_amenities['4BHK'],
-                "RK": formValues.project_amenities['RK'],
-                "penthouse": formValues.project_amenities.penthouse,
-                "other": formValues.project_amenities.other,
-                "duplex": formValues.project_amenities.duplex,
-                "rowhouse": formValues.project_amenities.rowhouse,
-                "otheraccomodationtypes": formValues.project_amenities.otheraccomodationtypes,
-                "sourceofwater": formValues.project_amenities.sourceofwater
-            },
-            "project_bank_details": arrayHelper(formValues.project_bank_details),
-            "project_contacts": arrayHelper(formValues.project_contacts),
+    return temp
+}
+const addProjectInfo = async () => {
+    
+    const data = {
+        "user_id": user.id,
+        "project_info": {
+            "builderid": Number(formValues.project_info.builderid),
+            "projectname": formValues.project_info.projectname,
+            "addressline1": formValues.project_info.addressline1,
+            "addressline2": formValues.project_info.addressline2,
+            "suburb": formValues.project_info.suburb,
+            "city": Number(formValues.project_info.city),
+            "state": formValues.project_info.state,
+            "country": Number(formValues.project_info.country),
+            "zip": formValues.project_info.zip,
+            "nearestlandmark": formValues.project_info.nearestlandmark,
+            "project_type": Number(formValues.project_info.project_type),
+            "mailgroup1": formValues.project_info.mailgroup1,
+            "mailgroup2": formValues.project_info.mailgroup2,
+            "website": formValues.project_info.website,
+            "project_legal_status": Number(formValues.project_info.project_legal_status),
+            "rules": formValues.project_info.rules,
+            "completionyear": Number(formValues.project_info.completionyear),
+            "jurisdiction": formValues.project_info.jurisdiction,
+            "taluka": formValues.project_info.taluka,
+            "corporationward": formValues.project_info.corporationward,
+            "policechowkey": formValues.project_info.policechowkey,
+            "maintenance_details": formValues.project_info.maintenance_details,
+            "numberoffloors": Number(formValues.project_info.numberoffloors),
+            "numberofbuildings": Number(formValues.project_info.numberofbuildings) ,
+            "approxtotalunits": formValues.project_info.approxtotalunits,
+            "tenantstudentsallowed": formValues.project_info.tenantstudentsallowed,
+            "tenantworkingbachelorsallowed": formValues.project_info.tenantworkingbachelorsallowed,
+            "tenantforeignersallowed": formValues.project_info.tenantforeignersallowed,
+            "otherdetails": formValues.project_info.otherdetails,
+            "duespayablemonth": formValues.project_info.duespayablemonth,
+            "policestation": formValues.project_info.policestation
+        },
+        "project_amenities": {
+            "swimmingpool": formValues.project_amenities.swimmingpool,
+            "lift": formValues.project_amenities.lift,
+            "liftbatterybackup": formValues.project_amenities.liftbatterybackup,
+            "clubhouse": formValues.project_amenities.clubhouse,
+            "gym": formValues.project_amenities.gym,
+            "childrensplayarea": formValues.project_amenities.childrensplayarea,
+            "pipedgas": formValues.project_amenities.pipedgas,
+            "cctvcameras": formValues.project_amenities.cctvcameras,
+            "otheramenities": formValues.project_amenities.otheramenities,
+            "studio": formValues.project_amenities.studio,
+            "1BHK": formValues.project_amenities['1BHK'],
+            "2BHK": formValues.project_amenities['2BHK'],
+            "3BHK": formValues.project_amenities['3BHK'],
+            "4BHK": formValues.project_amenities['4BHK'],
+            "RK": formValues.project_amenities['RK'],
+            "penthouse": formValues.project_amenities.penthouse,
+            "other": formValues.project_amenities.other,
+            "duplex": formValues.project_amenities.duplex,
+            "rowhouse": formValues.project_amenities.rowhouse,
+            "otheraccomodationtypes": formValues.project_amenities.otheraccomodationtypes,
+            "sourceofwater": formValues.project_amenities.sourceofwater
+        },
+        "project_bank_details": arrayHelper(formValues.project_bank_details),
+        "project_contacts": arrayHelper(formValues.project_contacts),
             "project_photos": arrayHelper(formValues.project_photos)
         }
-         
+        
         const response = await APIService.addProject(data)
         const res = await response.json()
         if (res.result == 'success') {
@@ -541,7 +519,7 @@ const ManageProjectInfo = () => {
                 },
                 body: JSON.stringify(d) // Convert the object to a JSON string
             })
-                .then(response => {
+            .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
@@ -553,76 +531,76 @@ const ManageProjectInfo = () => {
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'ProjectData.pdf');
                     }
-
+                    
                     
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
-
-            setTimeout(() => {
-                // setBackDropLoading(false)
-                setPageLoading(false)
-            }, 1000)
+                
+                setTimeout(() => {
+                    // setBackDropLoading(false)
+                    setPageLoading(false)
+                }, 1000)
+            }
         }
-    }
-    const handleSort = async (field) => {
-        setPageLoading(true);
-        setSortField((prev) => field)
-        setFlag((prev) => !prev);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": stateArray,
-            "sort_by": [sortField],
-            "order": !flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
+        const handleSort = async (field) => {
+            setPageLoading(true);
+            setSortField((prev) => field)
+            setFlag((prev) => !prev);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": stateArray,
+                "sort_by": [sortField],
+                "order": !flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            }
+            const response = await APIService.getProjectInfo(data)
+            const res = await response.json();
+            setExistingProjectInfo(res.data)
+            setPageLoading(false)
         }
-        const response = await APIService.getProjectInfo(data)
-        const res = await response.json();
-        setExistingProjectInfo(res.data)
-        setPageLoading(false)
-    }
-    const handleSearch = async () => {
-        // 
-        setPageLoading(true);
-        setIsSearchOn(true);
-        setCurrentPage((prev) => 1)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": stateArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getProjectInfo(data);
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingProjectInfo(result);
-        setPageLoading(false);
-    }
-    const handleCloseSearch = async () => {
-        setIsSearchOn(false)
-        setPageLoading(true)
-        setSearchInput("")
-        setCurrentPage((prev) => 1)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": stateArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
-        };
+        const handleSearch = async () => {
+            // 
+            setPageLoading(true);
+            setIsSearchOn(true);
+            setCurrentPage((prev) => 1)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": stateArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getProjectInfo(data);
+            const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingProjectInfo(result);
+            setPageLoading(false);
+        }
+        const handleCloseSearch = async () => {
+            setIsSearchOn(false)
+            setPageLoading(true)
+            setSearchInput("")
+            setCurrentPage((prev) => 1)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": stateArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": ""
+            };
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
         const result = temp.data;
@@ -699,18 +677,18 @@ const ManageProjectInfo = () => {
             "sourceofwater": null
         },
         "project_bank_details": [
-
+            
         ],
         "project_contacts": [
-
+            
         ],
         "project_photos": [
 
         ]
     }
     const [formValues, setFormValues] = useState(initialValues);
-
-
+    
+    
     // utlity routes
     const [builderNameData, setBuilderNameData] = useState([])
     const [projectTypeData, setProjectTypeData] = useState([])
@@ -743,7 +721,7 @@ const ManageProjectInfo = () => {
         setProjectLegalData(res.data)
     }
     
-
+    
     const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
     const [showCancelModel, setShowCancelModel] = useState(false);
     const openAddCancelModal = () => {
@@ -756,13 +734,13 @@ const ManageProjectInfo = () => {
     }
     const openCancelModal = () => {
         // set the state for true for some time
-
+        
         setShowCancelModel(true);
         setTimeout(function () {
             setShowCancelModel(false)
         }, 2000)
     }
-
+    
     const [projectNameFilter, setProjectNameFilter] = useState(false);
     const [projectNameFilterInput, setProjectNameFilterInput] = useState("");
     const [builderNameFilter, setBuilderNameFilter] = useState(false);
@@ -781,7 +759,17 @@ const ManageProjectInfo = () => {
     const [tenantFilterInput,setTenantFilterInput] = useState("")
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
-
+    const resetFilters = () => {
+        setProjectNameFilterInput("");
+        setBuilderNameFilterInput("");
+        setSuburbFilterInput("");
+        setOtherDetailsFilterInput("");
+        setMailGroupFilterInput("");
+        setSubscribedEmailFilterInput("");
+        setRulesFilterInput("");
+        setTenantFilterInput("");
+        setIdFilterInput("");
+    };
     const filterMapping = {
         projectname: {
             filterType: "",
@@ -843,15 +831,15 @@ const ManageProjectInfo = () => {
             filterData: "Numeric",
             filterInput: builderid
         }
-
+        
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
-
+    
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
         
         
         
-
+        
         var existing = filterMapState;
         existing = {
             ...existing, [columnName]: {
@@ -865,26 +853,26 @@ const ManageProjectInfo = () => {
                 filterValue: type == 'noFilter' ? "" : inputVariable
             }
         }
-
+        
         if (type == 'noFilter') setInputVariable("");
-
-
+        
+        
         fetchFiltered(existing);
     }
-
+    
     const [stateArray, setStateArray] = useState([]);
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
         setProjectNameFilter(false)
-                setBuilderNameFilter(false)
-                setSuburbFilter(false)
-                setOtherDetailsFilter(false)
-                setMailGroupFilter(false)
-                setSubscribedEmailFilter(false)
-                setRulesFilter(false)
-                setTenantFilter(false)
-                setIdFilter(false)
+        setBuilderNameFilter(false)
+        setSuburbFilter(false)
+        setOtherDetailsFilter(false)
+        setMailGroupFilter(false)
+        setSubscribedEmailFilter(false)
+        setRulesFilter(false)
+        setTenantFilter(false)
+        setIdFilter(false)
         // we need to query thru the object
         // 
         
@@ -908,13 +896,13 @@ const ManageProjectInfo = () => {
                     ]);
                 }else {
                     
-                   tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                    tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
                 }
-               
+                
             }
         })
         
-
+        
         setStateArray(tempArray)
         setCurrentPage((prev) => 1)
         setPageLoading(true);
@@ -937,11 +925,11 @@ const ManageProjectInfo = () => {
         
         setPageLoading(false);
     }
-
-
+    
+    
     // end utility routes here
     const fetchHyperLinkData = async () => {
-         if(builderid != null) {
+        if(builderid != null) {
             const data = {
                 user_id : user.id,
                 table_name : "get_builder_view",
@@ -956,7 +944,7 @@ const ManageProjectInfo = () => {
                 hyperlinked : true,
                 builderid : builderid
             }))
-         }
+        }
     }
     useEffect(() => {
         fetchHyperLinkData()
@@ -965,7 +953,7 @@ const ManageProjectInfo = () => {
         getProjectLegalData()
     }, [])
     const addProject = () => {
-
+        
     }
     const [currProject, setCurrProject] = useState(0);
     const handleEdit = (id) => {
@@ -992,11 +980,11 @@ const ManageProjectInfo = () => {
         fetchData();
     }
     const [showAddConfirmation,setShowAddConfirmation] = useState(false);
-
-
+    
+    
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
-          handleSearch()
+            handleSearch()
         }
     }
     const handleEnterToFilter = (event,inputVariable,
@@ -1004,27 +992,50 @@ const ManageProjectInfo = () => {
         type,
         columnName) => {
             if (event.keyCode === 13) {
-                    // if its empty then we remove that 
-                    // const temp = {...filterMapState};
-                    // temp[columnName].type = "".
-                    // setFilterMapState(temp)
-                    
-                    if(inputVariable == "") {
-                        const temp = {...filterMapState}
-                        temp[columnName].filterType = ""
-                        setFilterMapState(temp)
-                        // fetchCityData()
-                        fetchData()
-                    }else {
-                        newHandleFilter(inputVariable,
-                            setInputVariable,
-                            type,
-                            columnName)
+                // if its empty then we remove that 
+                // const temp = {...filterMapState};
+                // temp[columnName].type = "".
+                // setFilterMapState(temp)
+                
+                if(inputVariable == "") {
+                    const temp = {...filterMapState}
+                    temp[columnName].filterType = ""
+                    setFilterMapState(temp)
+                    // fetchCityData()
+                    fetchData()
+                }else {
+                    newHandleFilter(inputVariable,
+                        setInputVariable,
+                        type,
+                        columnName)
                     }
-              }
-      }
-    return (
-        <div className="font-medium">
+                }
+            }
+            useEffect(() => {
+                
+                fetchData();
+                const handler = (e) => {
+                    
+                    if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                        setProjectNameFilter(false)
+                        setBuilderNameFilter(false)
+                        setSuburbFilter(false)
+                        setOtherDetailsFilter(false)
+                        setMailGroupFilter(false)
+                        setSubscribedEmailFilter(false)
+                        setRulesFilter(false)
+                        setTenantFilter(false)
+                        setIdFilter(false)
+                    }
+                }
+            
+                document.addEventListener("mousedown", handler);
+                return () => {
+                    document.removeEventListener("mousedown", handler);
+                };
+            }, [filterMapState]);
+            return (
+                <div className="font-medium">
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -1218,7 +1229,7 @@ const ManageProjectInfo = () => {
                                 {tenantFilter && <CharacterFilter filterColumn='tenant' inputVariable={tenantFilterInput} setInputVariable={setTenantFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.tenant.filterType} />}
                             </div>
                         </div>
-                        <div className="w-[12%] px-3 py-2.5">
+                        <div className="w-[12%] px-2 py-2.5 flex">
                             <div className='w-[65%]  '>
                                 <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none"  value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
@@ -1234,9 +1245,11 @@ const ManageProjectInfo = () => {
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
                             <div className='w-[35%]  flex'>
-                                <div className='p-3'>
-
-                                </div>
+                                <RefreshFilterButton
+                                  filterMapping={filterMapping}
+                                  setFilterMapState={setFilterMapState}
+                                  resetAllInputs={resetFilters}
+                                />
                             </div>
                         </div>
                     </div>
