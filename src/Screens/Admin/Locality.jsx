@@ -34,10 +34,11 @@ import EditButton from '../../Components/common/buttons/EditButton';
 import DeleteButton from '../../Components/common/buttons/deleteButton';
 import useAuth from '../../context/JwtContext';
 import checkEditAccess from '../../Components/common/checkRoleBase';
+import RefreshFilterButton from '../../Components/common/buttons/RefreshFilterButton';
 
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Locality = () => {
-    
+
     const menuRef = useRef();
     const { user } = useAuth()
     const { pathname } = useLocation()
@@ -64,6 +65,19 @@ const Locality = () => {
     const [failureModal, setFailureModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [filterArray, setFilterArray] = useState([["country", "contains", ""], ["state", "contains", ""], ["city", "contains", ""], ["locality", "contains", ""]]);
+
+    const resetFilters = () => {
+        setCountryFilterInput("");
+        setCountryFilterType("");
+        setStateFilterInput("");
+        setStateFilterType("");
+        setCityFilterInput("");
+        setCityFilterType("");
+        setLocalityFilterInput("");
+        setLocalityFilterType("");
+        setidFilterInput("");
+    };
+    
 
 
     const [sortField, setSortField] = useState("id");
@@ -138,12 +152,12 @@ const Locality = () => {
         // }
     }
     const fetchStateData = async (id) => {
-        
+
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        
+
         if (Array.isArray(result)) {
             setAllState(result)
         }
@@ -152,33 +166,12 @@ const Locality = () => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        
+
         if (Array.isArray(result)) {
             setAllCity(result)
         }
     }
-    useEffect(() => {
-        initials();
-        fetchData();
-        fetchCountryData();
-        fetchStateData(5);
-        fetchCityData("Maharashtra")
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setCountryFilter(false);
-                setStateFilter(false);
-                setCityFilter(false)
-                setLocalityFilter(false)
-                setIdFilter(false)
-            }
-
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+    
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         const tempArray = [];
@@ -188,7 +181,7 @@ const Locality = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
-        
+
         setCurrentPage(pageNumber);
         const data = {
             "user_id": user.id,
@@ -218,7 +211,7 @@ const Locality = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
-        
+
         const data = {
             "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
@@ -241,7 +234,7 @@ const Locality = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        
+
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 if (filterMapState[key].filterData == 'Numeric') {
@@ -264,8 +257,8 @@ const Locality = () => {
         })
         setFilterState(tempArray)
 
-        
-        
+
+
         const data = {
             "user_id": user.id,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
@@ -276,14 +269,14 @@ const Locality = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchQuery : ""
         };
-        
+
         const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        
-        
+
+
         setExistingLocalities(result);
         setPageLoading(false);
     }
@@ -296,7 +289,7 @@ const Locality = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
-        
+
         setSortField(field);
         const data = {
             "user_id": user.id,
@@ -313,7 +306,7 @@ const Locality = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        
+
         setExistingLocalities(result);
         setPageLoading(false);
         setFlag((prev) => {
@@ -335,7 +328,7 @@ const Locality = () => {
             "cityid": formValues.city,
             "locality": formValues.locality
         }
-        
+
         const response = await APIService.addLocality(data);
         const res = await response.json();
         setAddConfirmation(false)
@@ -434,7 +427,7 @@ const Locality = () => {
         const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
-        
+
         if (temp.result == 'success') {
             const d = {
                 "filename": temp.filename,
@@ -453,7 +446,7 @@ const Locality = () => {
                         FileSaver.saveAs(result, 'localityData.pdf');
                     }
 
-                    
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -472,7 +465,7 @@ const Locality = () => {
     }
     const handleChange = (e) => {
         const { value } = e.target;
-        
+
         setLobName(value);
     }
     const [flag, setFlag] = useState(false);
@@ -496,7 +489,7 @@ const Locality = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        
+
         setExistingLocalities(result);
         setPageLoading(false);
     }
@@ -506,7 +499,7 @@ const Locality = () => {
         setLobFilter((prev) => !prev)
     }
     const handlePageChange = (event, value) => {
-        
+
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -537,7 +530,7 @@ const Locality = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        
+
         setExistingLocalities(result);
         setPageLoading(false);
     }
@@ -608,9 +601,9 @@ const Locality = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        
-        
-        
+
+
+
 
         var existing = filterMapState;
         existing = {
@@ -642,7 +635,7 @@ const Locality = () => {
         setIdFilter(false)
         // we need to query thru the object
         // 
-        
+
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterData == 'Numeric') {
                 tempArray.push([
@@ -662,8 +655,8 @@ const Locality = () => {
         })
         setFilterMapState((prev) => mapState)
         setFilterState(tempArray)
-        
-        
+
+
         setCurrentPage(1);
         const data = {
             "user_id": user.id,
@@ -721,6 +714,29 @@ const Locality = () => {
 
         }
     }
+
+    useEffect(() => {
+        initials();
+        fetchData();
+        fetchCountryData();
+        fetchStateData(5);
+        fetchCityData("Maharashtra")
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setCountryFilter(false);
+                setStateFilter(false);
+                setCityFilter(false)
+                setLocalityFilter(false)
+                setIdFilter(false)
+            }
+
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     return (
         <div className='font-medium'>
             <Backdrop
@@ -855,7 +871,7 @@ const Locality = () => {
                             {localityFilter && <CharacterFilter inputVariable={localityFilterInput} setInputVariable={setLocalityFilterInput} handleFilter={newHandleFilter} filterColumn='locality' menuRef={menuRef} filterType={filterMapState.locality.filterType} />}
                         </div>
                     </div>
-                    <div className='w-1/6 px-3 py-2.5 '>
+                    <div className='w-1/6 py-2.5 flex items-center justify-center'>
                         <div className='w-[40%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
                             <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)}
 
@@ -870,6 +886,11 @@ const Locality = () => {
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                         <div className='w-1/2 p-4'>
+                            <RefreshFilterButton
+                                filterMapping={filterMapping}
+                                setFilterMapState={setFilterMapState}
+                                resetAllInputs={resetFilters}
+                            />
                         </div>
                     </div>
                 </div>
@@ -904,7 +925,7 @@ const Locality = () => {
                                 </p>
                             </div>
                             <div className='w-1/2 0 p-4'>
-                                <p>{canEdit ? "Edit": ""}</p>
+                                <p>{canEdit ? "Edit" : ""}</p>
                             </div>
                         </div>
                     </div>
@@ -976,7 +997,7 @@ const Locality = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                
+
                                 fetchQuantityData(e.target.value)
                             }}
 
@@ -1099,7 +1120,7 @@ const Locality = () => {
                                                             const existing = { ...formValues }
                                                             existing.state = e.target.value
                                                             existing.city = null
-                                                            
+
                                                             setFormValues(existing)
                                                         }}
                                                     >
@@ -1121,7 +1142,7 @@ const Locality = () => {
                                                         defaultValue="Select City"
                                                         onChange={e => {
                                                             // fetchCityData(e.target.value);
-                                                            
+
                                                             setFormValues((existing) => {
                                                                 const newData = { ...existing, city: e.target.value }
                                                                 return newData;

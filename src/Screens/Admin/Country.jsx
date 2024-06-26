@@ -35,6 +35,7 @@ import EditButton from '../../Components/common/buttons/EditButton';
 import DeleteButton from '../../Components/common/buttons/deleteButton';
 import useAuth from '../../context/JwtContext';
 import checkEditAccess from '../../Components/common/checkRoleBase';
+import RefreshFilterButton from '../../Components/common/buttons/RefreshFilterButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Country = () => {
   // we have the module here
@@ -78,9 +79,16 @@ const Country = () => {
       setShowSucess(false)
     }, 2000)
   }
+
+  const resetFilters = () => {
+    setCountryFilterInput("");
+    setIdFilterInput("");
+};
+
+
   const openSuccessEditModal = () => {
     setShowEdit(false);
-    
+
     setShowEditSuccess(true);
     setTimeout(function () {
       setShowEditSuccess(false);
@@ -100,7 +108,7 @@ const Country = () => {
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const openDeleteSuccess = () => {
     // setIsLobDialogue(false);
-    
+
     setShowDeleteSuccess(true);
     setTimeout(function () {
       setShowDeleteSuccess(false);
@@ -121,7 +129,7 @@ const Country = () => {
     setShowEdit(false);
     setShowCancelEdit(true);
     setTimeout(function () {
-      
+
       setShowCancelEdit(false)
     }, 1000);
   }
@@ -140,7 +148,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries({...data,user_id : user.id})
+    const response = await APIService.getCountries({ ...data, user_id: user.id })
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -167,7 +175,7 @@ const Country = () => {
       "pg_size": Number(quantity),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries({...data,user_id : user.id})
+    const response = await APIService.getCountries({ ...data, user_id: user.id })
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -214,7 +222,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries({...data,user_id : user.id})
+    const response = await APIService.getCountries({ ...data, user_id: user.id })
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -226,9 +234,9 @@ const Country = () => {
   const addCountry = async () => {
 
     const data = { "country_name": formValues.countryName };
-    const response = await APIService.addCountries({...data,user_id : user.id});
+    const response = await APIService.addCountries({ ...data, user_id: user.id });
     const res = await response.json();
-    
+
     // {
     //   "result": "error",
     //   "message": "Already Exists",
@@ -261,23 +269,6 @@ const Country = () => {
     // 
 
   }
-  // /edit country modal
-  useEffect(() => {
-    // fetchUserId()
-    fetchCountryData()
-    const handler = (e) => {
-      if (!menuRef.current.contains(e.target)) {
-        setCountryFilter(false)
-        setIdFilter(false)
-        setDownloadModal(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handler);
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    };
-  }, []);
   //Validation of the form
   const initialValues = {
     countryName: "",
@@ -332,7 +323,7 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(number)
     };
-    const response = await APIService.getCountries({...data,user_id : user.id})
+    const response = await APIService.getCountries({ ...data, user_id: user.id })
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -347,7 +338,7 @@ const Country = () => {
   }
 
   const handleSort = async (field) => {
-    
+
     setPageLoading(true);
     setSortField(field);
     setFlag((prev) => {
@@ -362,7 +353,7 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(currentPages)
     };
-    const response = await APIService.getCountries({...data,user_id : user.id})
+    const response = await APIService.getCountries({ ...data, user_id: user.id })
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -376,7 +367,7 @@ const Country = () => {
     setPageLoading(true);
     setIsSearchOn(true);
     setCurrentPage(1);
-    
+
     const data = {
 
       "rows": ["id", "name"],
@@ -387,7 +378,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": searchQuery
     };
-    const response = await APIService.getCountries({...data,user_id : user.id})
+    const response = await APIService.getCountries({ ...data, user_id: user.id })
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -421,7 +412,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": ""
     };
-    const response = await APIService.getCountries({...data,user_id : user.id})
+    const response = await APIService.getCountries({ ...data, user_id: user.id })
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -456,14 +447,14 @@ const Country = () => {
         "id": "ID"
       }
     };
-    const response = await APIService.getCountries({...data,user_id : user.id})
+    const response = await APIService.getCountries({ ...data, user_id: user.id })
     const temp = await response.json();
     const result = temp.data;
-    
+
     if (temp.result == 'success') {
       const d = {
         "filename": temp.filename,
-        "user_id" : user.id
+        "user_id": user.id
       }
       APIService.download(d, temp.filename).then(response => {
         if (!response.ok) {
@@ -477,7 +468,7 @@ const Country = () => {
           } else if (type == "pdf") {
             FileSaver.saveAs(result, 'CountryData.pdf');
           }
-          
+
         })
         .catch(error => {
           console.error('Error:', error);
@@ -490,9 +481,9 @@ const Country = () => {
     }
   }
   const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-    
-    
-    
+
+
+
     // 
     var existing = { ...filterMapState };
     existing = {
@@ -509,8 +500,8 @@ const Country = () => {
     }
 
     if (type == 'noFilter' || type == 'isNull' || type == "isNotNull") setInputVariable("");
-    
-    
+
+
     fetchFiltered(existing);
   }
 
@@ -532,7 +523,7 @@ const Country = () => {
 
   const fetchFiltered = async (mapState) => {
 
-    
+
     // setCountryValues([])
     setFilterMapState(mapState)
     // 
@@ -576,9 +567,9 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries({...data,user_id : user.id})
+    const response = await APIService.getCountries({ ...data, user_id: user.id })
     const res = await response.json()
-    
+
     setTotalItems(res.total_count);
     // setCountryValues([])
 
@@ -617,6 +608,24 @@ const Country = () => {
 
     }
   }
+
+  useEffect(() => {
+    // fetchUserId()
+    fetchCountryData()
+    const handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        setCountryFilter(false)
+        setIdFilter(false)
+        setDownloadModal(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, [filterMapState]);
+
   return (
     <div className=' w-full font-medium'>
       <Backdrop
@@ -698,7 +707,7 @@ const Country = () => {
             </div>
 
           </div>
-          <div className='w-[20%] px-3 py-2.5'>
+          <div className='w-[20%] px-3 py-2.5 flex items-center justify-center'>
             <div className='w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
               <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }}
 
@@ -712,7 +721,11 @@ const Country = () => {
             </div>
             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
             <div className='w-1/2 p-4'>
-
+              <RefreshFilterButton
+                filterMapping={filterMapping}
+                setFilterMapState={setFilterMapState}
+                resetAllInputs={resetFilters}
+              />
             </div>
           </div>
         </div>
@@ -798,7 +811,7 @@ const Country = () => {
               //  defaultValue="Select State"
               onChange={e => {
                 // setCurrentPages(e.target.value);
-                
+
                 fetchQuantityData(e.target.value);
                 // fetchPageCountryData(e.target.value)
               }}
