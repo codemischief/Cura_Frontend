@@ -32,6 +32,7 @@ import Photos from './Dialog/Photos';
 import EditOrderModal from './EditOrderModal';
 import SaveConfirmationOrder from './SaveConfirmationOrder';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
+import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilterButton";
 const ManageOrder = () => {
     // we have the module here
     const datarows = [
@@ -220,38 +221,7 @@ const ManageOrder = () => {
         // setFormValues(temp)
        }
     }    
-    useEffect(() => {
-        fetchHyperLinkData()
-        
-        fetchData();
-        fetchUsersData()
-        fetchOrderStatusData()
-        // fetchClientPropertyData()
-        fetchServiceData()
-        fetchVendorData()
-        fetchTallyLedgerData()
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setClientNameFilter(false);
-                setAssignedToFilter(false);
-                setOrderDescriptionFilter(false);
-                setPropertyDescriptionFilter(false);
-                setServiceFilter(false);
-                setOrderStatusFilter(false);
-                setStartDateFilter(false);
-                setCompletionDateFilter(false);
-                setOrderDateFilter(false);
-                setAgingFilter(false);
-                setCreatedByFilter(false);
-                setIdFilter(false);
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+   
     const initialValues = {
         "order_info": {
             "clientid": clientid,
@@ -585,7 +555,20 @@ const ManageOrder = () => {
     }
 
     // const [sortField, setSortField] = useState("id");
-
+    const resetAllInputs = () => {
+        setClientNameFilterInput("");
+        setAssignedToFilterInput("");
+        setOrderDescriptionFilterInput("");
+        setPropertyDescriptionFilterInput("");
+        setServiceFilterInput("");
+        setOrderStatusFilterInput("");
+        setStartDateFilterInput("");
+        setCompletionDateFilterInput("");
+        setOrderDateFilterInput("");
+        setAgingFilterInput("");
+        setCreatedByFilterInput("");
+        setIdFilterInput("");
+      }; 
     const [clientNameFilter, setClientNameFilter] = useState(false);
     const [clientNameFilterInput, setClientNameFilterInput] = useState("");
     const [assignedToFilter, setAssignedToFilter] = useState(false);
@@ -989,7 +972,38 @@ const ManageOrder = () => {
         }
     }
     const [orderText,setOrderText] = useState('Select Client Property')
-    
+    useEffect(() => {
+        fetchHyperLinkData()
+        
+        fetchData();
+        fetchUsersData()
+        fetchOrderStatusData()
+        // fetchClientPropertyData()
+        fetchServiceData()
+        fetchVendorData()
+        fetchTallyLedgerData()
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setClientNameFilter(false);
+                setAssignedToFilter(false);
+                setOrderDescriptionFilter(false);
+                setPropertyDescriptionFilter(false);
+                setServiceFilter(false);
+                setOrderStatusFilter(false);
+                setStartDateFilter(false);
+                setCompletionDateFilter(false);
+                setOrderDateFilter(false);
+                setAgingFilter(false);
+                setCreatedByFilter(false);
+                setIdFilter(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     return (
         <div className=" font-medium">
             {/* <Navbar/> */}
@@ -1288,6 +1302,14 @@ const ManageOrder = () => {
                                     {/* <button className='w-[28%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType} />}
+                            </div>
+                            <div className='w-[110px] px-4  py-2.5'>
+                               <RefreshFilterButton
+                               
+                                resetAllInputs={resetAllInputs}
+                                setFilterMapState={setFilterMapState}
+                                filterMapping={filterMapping}
+                               />
                             </div>
                         </div>
                         {/* pending space here */}

@@ -295,6 +295,10 @@ const ManageClientInfo = () => {
         setPageLoading(false);
     }
     useEffect(() => {
+        fetchData()
+    },[filterMapState])
+
+    useEffect(() => {
         fetchData();
         fetchCountryData();
         fetchStateData(5);
@@ -327,7 +331,7 @@ const ManageClientInfo = () => {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-    }, [filterMapState]);
+    }, []);
 
     const handleOpenEdit = (oldItem) => {
         
@@ -1359,13 +1363,12 @@ const ManageClientInfo = () => {
                             </div>
 
                             <div className='w-1/2 p-3 flex items-center'>
-                                {/* <RefreshFilterButton
-                                    fetchData={fetchData}
+                                 <RefreshFilterButton
+                                   
                                     resetAllInputs={resetAllInputs}
                                     setFilterMapState={setFilterMapState}
                                     filterMapping={filterMapping}
-                                /> */}
-
+                                /> 
                             </div>
                         </div>
                     </div>

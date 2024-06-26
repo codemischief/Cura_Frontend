@@ -37,6 +37,7 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
@@ -122,6 +123,14 @@ const ManageVendor = () => {
     const [cityFilterInput, setCityFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
+    const resetAllInputs = () => {
+        setVendorNameFilterInput("");
+        setTdsSectionFilterInput("");
+        setTallyLedgerFilterInput("");
+        setCategoryFilterInput("");
+        setCityFilterInput("");
+        setIdFilterInput("");
+      };
     // const [filterArray,setFilterArray] = useState([]);
 
     const [typeOfOrganization, setTypeOfOrganization] = useState([
@@ -319,27 +328,7 @@ const ManageVendor = () => {
         setExistingVendors(result);
         setPageLoading(false);
     }
-    useEffect(() => {
-        fetchData();
-        fetchCityData('Maharashtra')
-        fetchTallyLedgerData();
-        getVendorCategoryAdmin();
-        const handler = (e) => {
-            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
-                setVendorNameFilter(false)
-                setTdsSectionFilter(false)
-                setTallyLedgerFilter(false)
-                setCategoryFilter(false)
-                setCityFilter(false)
-                setIdFilter(false)
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+    
     const [invoiceId, setInvoiceId] = useState(0);
     const handleEdit = (id) => {
         setInvoiceId((prev) => id)
@@ -907,6 +896,27 @@ const ManageVendor = () => {
             }
         }
     }
+    useEffect(() => {
+        fetchData();
+        fetchCityData('Maharashtra')
+        fetchTallyLedgerData();
+        getVendorCategoryAdmin();
+        const handler = (e) => {
+            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                setVendorNameFilter(false)
+                setTdsSectionFilter(false)
+                setTallyLedgerFilter(false)
+                setCategoryFilter(false)
+                setCityFilter(false)
+                setIdFilter(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     // fetching utility routes end here
     return (
         <div className='w-full font-medium'>
@@ -1069,10 +1079,12 @@ const ManageVendor = () => {
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
-                            <div className='w-[35%]  flex'>
-                                <div className='p-3'>
-
-                                </div>
+                            <div className='w-[35%]  flex items-center'>
+                                <RefreshFilterButton
+                                 filterMapping={filterMapping}
+                                 setFilterMapState={setFilterMapState}
+                                 resetAllInputs={resetAllInputs}
+                                />
                             </div>
                         </div>
                     </div>
