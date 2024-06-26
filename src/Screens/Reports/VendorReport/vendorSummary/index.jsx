@@ -7,6 +7,7 @@ import SucessfullModal from "../../../../Components/modals/SucessfullModal";
 import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import { APIService } from "../../../../services/API";
 import { useDispatch } from "react-redux";
 import {
@@ -17,6 +18,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetFilters
 } from "../../../../Redux/slice/reporting/Group9/VendorSummary";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../../Components/common/select/CustomDate";
@@ -227,6 +229,7 @@ const VendorSummary = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

@@ -62,6 +62,9 @@ export const orderStatisticsReport = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -73,6 +76,7 @@ export const {
   setOrderStatisticsReportFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = orderStatisticsReport.actions;
 
 export const getOrderStatisticsReport =

@@ -14,9 +14,11 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus
+  setStatus,
+  resetFilters
 } from "../../../../Redux/slice/reporting/Statistics/ClientStatistics"
 import { useSelector } from "react-redux";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 // import DatePicker from "../../../Components/common/select/CustomDate";
 import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../../utils/filters";
@@ -228,6 +230,7 @@ const ClientStatistics = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

@@ -59,6 +59,9 @@ export const tdsByVendorReport = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -70,6 +73,7 @@ export const {
   setTdsByVendorReportFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = tdsByVendorReport.actions;
 
 export const getTdByVendorView = (payloadObj) => async (dispatch) => {

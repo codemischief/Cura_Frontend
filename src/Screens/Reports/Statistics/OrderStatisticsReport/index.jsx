@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import {
   downloadOrderStatisticsReport,
   getOrderStatisticsReport,
@@ -13,6 +14,7 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../../Redux/slice/reporting/Statistics/OrderStatisticsReport/OrderStatisticsReport";
 import connectionDataColumn from "./Columns";
 import { APIService } from "../../../../services/API";
@@ -275,6 +277,7 @@ const OrderStaticsView = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

@@ -17,6 +17,7 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../../Redux/slice/reporting/ClientTraceReport";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../../Components/common/select/CustomDate";
@@ -24,8 +25,9 @@ import { formatedFilterData } from "../../../../utils/filters";
 import * as XLSX from "xlsx";
 import Container from "../../../../Components/common/Container";
 import useAuth from "../../../../context/JwtContext";
-
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 const LobReceiptPayments = () => {
+  
   const dispatch = useDispatch();
   const {user} = useAuth();
   const {
@@ -56,7 +58,7 @@ const LobReceiptPayments = () => {
     dispatch(setCountPerPage(e.target.value));
     dispatch(setPageNumber(1));
   };
-
+  
   const handleRefresh = () => {
     if (selectedOption.value) {
       let obj = {
@@ -220,7 +222,7 @@ const LobReceiptPayments = () => {
   return (
     <Container>
       
-    
+      
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -242,6 +244,7 @@ const LobReceiptPayments = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

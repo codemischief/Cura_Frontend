@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadActiveLLAgreementReport,
   getActiveLLAgreement,
@@ -13,6 +14,7 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "./../../../Redux/slice/reporting/ActiveLLAgreement/ActiveLLAgreement";
 import { formatedFilterData } from "../../../utils/filters";
 import SimpleTable from "../../../Components/common/table/CustomTable";
@@ -243,6 +245,7 @@ const ActiveLLAgreementView = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

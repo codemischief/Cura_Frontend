@@ -9,6 +9,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../../services/API";
 import { useDispatch } from "react-redux";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import AsyncSelect from "react-select/async";
 import {
   downloadDataXls,
@@ -16,6 +17,7 @@ import {
   setCountPerPage,
   setInitialState,
   setPageNumber,
+  resetFilters,
   setSorting,
 } from "../../../../Redux/slice/reporting/OrderTraceReport";
 import { useSelector } from "react-redux";
@@ -242,6 +244,7 @@ const OrderTraceReport = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

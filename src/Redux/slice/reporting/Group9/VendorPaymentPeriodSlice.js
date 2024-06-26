@@ -60,6 +60,9 @@ export const vendorPaymentPeriod = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -71,6 +74,7 @@ export const {
   setvendorPaymentPeriodViewFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = vendorPaymentPeriod.actions;
 
 export const getVendorPaymentPeriodView = (payloadObj) => async (dispatch) => {

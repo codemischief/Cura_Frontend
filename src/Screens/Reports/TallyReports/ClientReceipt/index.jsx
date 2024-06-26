@@ -13,7 +13,7 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  resetFilters
+  resetFilters,
 } from "../../../../Redux/slice/reporting/TallyReports/ClientReceipt/ClientReceipt";
 import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";

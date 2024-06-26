@@ -58,6 +58,9 @@ export const PropertyWithNoProjectSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -69,6 +72,7 @@ export const {
   setPropertyWithNoProjectFilter,
   setInitialState,
   setSorting,
+  resetFilters
 } = PropertyWithNoProjectSlice.actions;
 
 export const getPropertyWithNoProject = (payloadObj) => async (dispatch) => {

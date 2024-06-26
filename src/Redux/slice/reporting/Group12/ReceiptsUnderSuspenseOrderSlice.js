@@ -59,6 +59,9 @@ export const ReceiptsUnderSuspenseOrderSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -70,6 +73,7 @@ export const {
   setReceiptUnderSuspenseOrderFilter,
   setInitialState,
   setSorting,
+  resetFilters
 } = ReceiptsUnderSuspenseOrderSlice.actions;
 
 export const getreceiptsUnderSuspenseOrder = (payloadObj) => async (dispatch) => {

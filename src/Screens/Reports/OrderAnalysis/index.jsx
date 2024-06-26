@@ -7,7 +7,7 @@ import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
-
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import { useDispatch } from "react-redux";
 import {
   dowmloadOrderAnalysis,
@@ -17,6 +17,7 @@ import {
   setSorting,
   setInitialState,
   setStatus,
+  resetFilters
 } from "../../../Redux/slice/reporting/OrderAnalysis/OrderAnalysis";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -357,6 +358,7 @@ const OrderAnalysis = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

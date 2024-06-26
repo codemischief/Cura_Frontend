@@ -62,6 +62,7 @@ export const orderReceiptToInvoiceServiceTax = createSlice({
     resetFilters: (state, { payload }) => {
       state.filter = [];
     },
+    
   },
 });
 
