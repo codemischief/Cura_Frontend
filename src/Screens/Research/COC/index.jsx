@@ -276,7 +276,7 @@ const ResearchBusinessGroup = () => {
   const openSucess = () => {
     let messageToUpdate = editData?.id
       ? "Changes Saved Successfully"
-      : "New Prospect created successfully";
+      : "New COC and Business Group created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
@@ -286,7 +286,7 @@ const ResearchBusinessGroup = () => {
   const openCancel = () => {
     let messageToUpdate = editData?.id
       ? "Process cancelled, No Changes Saved."
-      : "Process cancelled, No New Prospect Created.";
+      : "Process cancelled, No New COC and Business Group Created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
