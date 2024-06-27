@@ -42,7 +42,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
   const { formSubmissionStatus } = useSelector((state) => state.employer);
 
   const fetchCountryData = async () => {
-    setLoading(true);
+    
     const data = {
       user_id: user.id,
       rows: ["id", "name"],
@@ -55,7 +55,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
     setCountryData(result)
-    setLoading(false); 
+  
   };
 
   const fetchCityData = async (id) => {

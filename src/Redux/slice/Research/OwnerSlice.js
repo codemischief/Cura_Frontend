@@ -185,10 +185,12 @@ export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (di
         responseType: "blob",
       }
     );
+    console.log('here')
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     if(type == 'excel') {
+
       FileSaver.saveAs(blob, "OwnerData.xlsx");
     }else {
       FileSaver.saveAs(blob, "OwnerData.pdf");

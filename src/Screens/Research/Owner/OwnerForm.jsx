@@ -239,7 +239,7 @@ const OwnerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                     </div>
                     <div className="h-auto w-full mt-[5px] ">
                       <div className="flex gap-[48px] justify-center items-start">
-                        <div className=" space-y-[10px] py-[20px] px-[10px]">
+                        <div className=" space-y-[10px] py-[20px] px-[10px] mt-1">
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
