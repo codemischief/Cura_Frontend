@@ -155,7 +155,7 @@ const OrderAnalysis = () => {
   }, []);
 
   const handleRefresh = () => {
-    if (intialValue.status && intialValue.client && intialValue.lobname && intialValue.service) {
+    if (intialValue.status && intialValue.client.value !== "" && intialValue.lobname && intialValue.service) {
       let obj = {
         user_id: user.id,
         rows: ["service",
@@ -205,7 +205,7 @@ const OrderAnalysis = () => {
 
 
   useEffect(() => {
-    if (intialValue.status && intialValue.client && intialValue.lobname && intialValue.service) {
+    if (intialValue.status && intialValue.client.value !== "" && intialValue.lobname && intialValue.service) {
       let obj = {
         user_id: user.id,
         lobName: intialValue.lobname,
@@ -444,7 +444,7 @@ const OrderAnalysis = () => {
                 </select>
               </div>
               <div className="flex flex-col h-16 w-[200px]">
-                <div className="text-[13px]">Client Name</div>
+                <div className="text-[13px]">Client Name <span className="text-red-500">*</span></div>
                 <AsyncSelect
                   onChange={handleClient}
                   value={intialValue.client}
@@ -536,7 +536,7 @@ const OrderAnalysis = () => {
                   },
                 }}
                 onClick={handleShow}
-                disabled={!(intialValue.status && intialValue.client && intialValue.lobname && intialValue.service)}
+                disabled={!(intialValue.status && intialValue.client.value !== "" && intialValue.lobname && intialValue.service)}
               >
                 Show
               </Button>
