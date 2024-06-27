@@ -63,7 +63,7 @@ const OrderAnalysis = () => {
     service: "",
     client: {
       value:"",
-      label:""
+      label:"Enter Client Name"
     },
   });
 
@@ -97,28 +97,35 @@ const OrderAnalysis = () => {
   };
 
   const loadOptions = async (e) => {
-    if (e.length < 2) return;
+
+    const temp  = [{
+      label : 'all',
+      value : 'all'
+    }]
+    if (e.length < 2) return temp;
+    let str = 'all'
+    if(!str.startsWith(e)) {
+         temp.pop()
+    }
     const data = {
       user_id: user.id,
       pg_no: 0,
       pg_size: 0,
       search_key: e,
     };
-    const response = await APIService.getClientAdminPaginated({...data , user_id:user.id});
-
+    const response = await APIService.getClientAdminPaginated({...data , user_id:user.id});  
     const res = await response.json();
-
-    const results = res.data.map((e) => {
-      return {
+    res.data.map((e) => {
+      temp.push({
         label: e[1],
         value: e[1],
-      };
+      });
     });
-
-    if (results === "No Result Found") {
-      return [];
-    }
-    return results;
+    
+    // if (results === "No Result Found") {
+    //   return [];
+    // }
+    return temp;
   };
 
   const statusFetch = async () => {
@@ -164,7 +171,7 @@ const OrderAnalysis = () => {
           : intialValue.lobname,
         statusName: intialValue.status,
         serviceName: intialValue.service,
-        clientName: intialValue.client.value,
+        clientName: intialValue.client.value == "" ? "all" : intialValue.client.value,
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
@@ -204,7 +211,7 @@ const OrderAnalysis = () => {
         lobName: intialValue.lobname,
         statusName: intialValue.status,
         serviceName: intialValue.service,
-        clientName: intialValue.client.value,
+        clientName: intialValue.client.value == "" ? "all" : intialValue.client.value,
         rows: [
           "service",
           "clientname",
@@ -265,7 +272,7 @@ const OrderAnalysis = () => {
         : intialValue.lobname,
       statusName: intialValue.status,
       serviceName: intialValue.service,
-      clientName: intialValue.client?.value,
+      clientName: intialValue.client.value == "" ? "all" : intialValue.client.value,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       colmap: {
@@ -290,6 +297,9 @@ const OrderAnalysis = () => {
   const downloadPdf = () => {
     let obj = {
       user_id: user.id,
+      statusName: intialValue.status,
+      serviceName: intialValue.service,
+      clientName: intialValue.client.value == "" ? "all" : intialValue.client.value,
       rows: [
         "service",
         "clientname",
@@ -329,6 +339,7 @@ const OrderAnalysis = () => {
   
   const handleClient = (value)=>{
     // setQuery(value.value)
+
     setQuery(value.value)
     
     setIntialValue({...intialValue,client:value})
@@ -433,12 +444,12 @@ const OrderAnalysis = () => {
                 </select>
               </div>
               <div className="flex flex-col h-16 w-[200px]">
-                <div className="text-[13px]">Client Name <span className="text-red-500">*</span></div>
+                <div className="text-[13px]">Client Name</div>
                 <AsyncSelect
                   onChange={handleClient}
-                  // value={intialValue.client}
+                  value={intialValue.client}
                   name={"client"}
-                  inputValue={query}
+                  // inputValue={query}
                   // defaultInputValue={'zammer'}
                   loadOptions={loadOptions}
                   cacheOptions
@@ -449,38 +460,59 @@ const OrderAnalysis = () => {
                   } }
                   styles={{
                     control: (provided, state) => ({
-                      ...provided,
-                      minHeight: 30,
-                      lineHeight: "0.8",
-                      height: 8,
-                      width: 180,
-                      fontSize: 10,
-                      // padding: '1px'
+                        ...provided,
+                        minHeight: 23,
+                        // lineHeight: '0.8',
+                        height: '35px',
+                        width: 180,
+                        fontSize: 12,
+                        // padding: '1px'
+                        borderRadius : '2px'
                     }),
-
+                    indicatorSeparator: (provided, state) => ({
+                      display : 'none'
+                    }),
                     dropdownIndicator: (provided, state) => ({
-                      ...provided,
-                      padding: "1px", // adjust padding for the dropdown indicator
+                        ...provided,
+                        padding: '1px',
+                        paddingRight : '2px', // Adjust padding for the dropdown indicator
+                        width: 15, // Adjust width to make it smaller
+                        height: 15, // Adjust height to make it smaller
+                        display: 'flex', // Use flex to center the icon
+                        alignItems: 'center', // Center vertically
+                        justifyContent: 'center'
+                         // adjust padding for the dropdown indicator
                     }),
-
+                    input: (provided, state) => ({
+                        ...provided,
+                        margin: 0, // Remove any default margin
+                        padding: 0, // Remove any default padding
+                        fontSize: 12, // Match the font size
+                        height: 'auto', // Adjust input height
+                      }),
+                    // options: (provided, state) => ({
+                    //     ...provided,
+                    //     fontSize: 10// adjust padding for the dropdown indicator
+                    // }),
                     option: (provided, state) => ({
-                      ...provided,
-                      padding: "2px 10px", // Adjust padding of individual options (top/bottom, left/right)
-                      margin: 0, // Ensure no extra margin
-                      fontSize: 10, // Adjust font size of individual options
+                        ...provided,
+                        padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                        margin: 0, // Ensure no extra margin
+                        fontSize: 12 // Adjust font size of individual options
                     }),
                     menu: (provided, state) => ({
-                      ...provided,
-                      width: 180, // Adjust the width of the dropdown menu
-                      zIndex: 9999, // Ensure the menu appears above other elements
+                        ...provided,
+                        width: 180, // Adjust the width of the dropdown menu
+                        zIndex: 9999 // Ensure the menu appears above other elements
                     }),
                     menuList: (provided, state) => ({
-                      ...provided,
-                      padding: 0, // Adjust padding of the menu list
-                      fontSize: 10,
-                      maxHeight: 150, // Adjust font size of the menu list
+                        ...provided,
+                        padding: 0, // Adjust padding of the menu list
+                        fontSize: 12,
+                        maxHeight: 150 // Adjust font size of the menu list
                     }),
-                  }}
+                    
+                }}
                 />
               </div>
               <Button
@@ -492,6 +524,7 @@ const OrderAnalysis = () => {
                   color: "#004DD7",
                   borderRadius: "8px",
                   width: "133px",
+                  marginTop : '8px',
                   fontSize: "14px",
                   border: "1px solid #004DD7",
                   fontWeight: "600px",
