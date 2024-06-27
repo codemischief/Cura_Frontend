@@ -4,7 +4,7 @@ import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import { addNewInvoices, getPmaBilling , setPageNumber , setCountPerPage , setSorting , downloadPmaBillingDataXls, resetFilters} from "../../../Redux/slice/pmaSlice";
+import { addNewInvoices, getPmaBilling, setPageNumber, setCountPerPage, setSorting, downloadPmaBillingDataXls, resetFilters , setInitialState, } from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
@@ -13,6 +13,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../../context/JwtContext";
 import RefreshReports from "../../../Components/common/buttons/RefreshReports";
+import Container from "../../../Components/common/Container"
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -38,8 +39,8 @@ const MONTHS = [
   "December",
 ];
 const PmaBilling = () => {
-  const {pathname} = useLocation()
-  const {user} = useAuth()
+  const { pathname } = useLocation()
+  const { user } = useAuth()
   console.log(pathname)
   const dispatch = useDispatch();
   const {
@@ -68,6 +69,10 @@ const PmaBilling = () => {
       }
     });
   }
+
+  useEffect(() => {
+    dispatch(setInitialState())
+  }, [])
 
   useEffect(() => {
     if (selectedMonth && selectedYear) {
@@ -180,8 +185,8 @@ const PmaBilling = () => {
       filters: convertData(filter),
       pg_no: 0,
       insertIntoDB: false,
-      downloadType : 'excel',
-      routename : '/manage/pmaBilling',
+      downloadType: 'excel',
+      routename: '/manage/pmaBilling',
       pg_size: 0,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -190,27 +195,28 @@ const PmaBilling = () => {
   };
 
   return (
-    <Stack gap="1rem">
-      {/* <Navbar /> */}
+    <Container>
+
       <Stack direction={"column"} paddingX={"14px"}>
         <Stack direction={'row'} justifyContent={'space-between'}>
 
-        <HeaderBreadcum
-          heading={"Manage PMA Billing"}
-          path={["Manage", "Manage PMA Billing"]}
-        />
-        <Stack
-           direction={'row'}
-           alignContent={'center'}
+          <HeaderBreadcum
+            heading={"Manage PMA Billing"}
+            path={["Manage", "Manage PMA Billing"]}
+          />
+          <Stack
+            direction={'row'}
+            alignContent={'center'}
+            gap={"20px"}
           >
 
-          <CustomButton
-            title="Add New PMA Invoice"
-            onClick={() => {
-              selectedYear && selectedMonth && showTable && setOpenModal(true);
-            }}
-          />
-          <RefreshReports onClick={() => dispatch(resetFilters())}/>
+            <CustomButton
+              title="Add New PMA Invoice"
+              onClick={() => {
+                selectedYear && selectedMonth && showTable && setOpenModal(true);
+              }}
+            />
+            <RefreshReports onClick={() => dispatch(resetFilters())} />
           </Stack>
 
         </Stack>
@@ -291,7 +297,7 @@ const PmaBilling = () => {
             >
               Show
             </Button>
-          
+
           </Stack>
         </Stack>
 
@@ -352,7 +358,7 @@ const PmaBilling = () => {
           message="New Invoice Added Successfully"
         />
       )}
-    </Stack>
+    </Container>
   );
 };
 export default PmaBilling;
