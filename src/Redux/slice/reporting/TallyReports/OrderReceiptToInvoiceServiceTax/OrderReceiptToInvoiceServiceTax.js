@@ -59,6 +59,10 @@ export const orderReceiptToInvoiceServiceTax = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
+    
   },
 });
 
@@ -72,6 +76,7 @@ export const {
   setInvoiceServiceTaxFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = orderReceiptToInvoiceServiceTax.actions;
 
 export const getInvoiceTaxData = (payloadObj) => async (dispatch) => {

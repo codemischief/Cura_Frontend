@@ -37,6 +37,7 @@ import AddButton from '../../../Components/common/CustomButton';
 import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
@@ -122,6 +123,14 @@ const ManageVendor = () => {
     const [cityFilterInput, setCityFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
+    const resetAllInputs = () => {
+        setVendorNameFilterInput("");
+        setTdsSectionFilterInput("");
+        setTallyLedgerFilterInput("");
+        setCategoryFilterInput("");
+        setCityFilterInput("");
+        setIdFilterInput("");
+      };
     // const [filterArray,setFilterArray] = useState([]);
 
     const [typeOfOrganization, setTypeOfOrganization] = useState([
@@ -319,27 +328,7 @@ const ManageVendor = () => {
         setExistingVendors(result);
         setPageLoading(false);
     }
-    useEffect(() => {
-        fetchData();
-        fetchCityData('Maharashtra')
-        fetchTallyLedgerData();
-        getVendorCategoryAdmin();
-        const handler = (e) => {
-            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
-                setVendorNameFilter(false)
-                setTdsSectionFilter(false)
-                setTallyLedgerFilter(false)
-                setCategoryFilter(false)
-                setCityFilter(false)
-                setIdFilter(false)
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+    
     const [invoiceId, setInvoiceId] = useState(0);
     const handleEdit = (id) => {
         setInvoiceId((prev) => id)
@@ -498,6 +487,12 @@ const ManageVendor = () => {
                 return { ...existing, email: "Enter Email" }
             })
             res = false;
+        } else if (formValues.email != "" && formValues.email != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email)) {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, email: "Enter a valid email address" }
+            })
+            res = false
         } else {
             setFormErrors((existing) => {
                 return { ...existing, email: "" }
@@ -901,6 +896,27 @@ const ManageVendor = () => {
             }
         }
     }
+    useEffect(() => {
+        fetchData();
+        fetchCityData('Maharashtra')
+        fetchTallyLedgerData();
+        getVendorCategoryAdmin();
+        const handler = (e) => {
+            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                setVendorNameFilter(false)
+                setTdsSectionFilter(false)
+                setTallyLedgerFilter(false)
+                setCategoryFilter(false)
+                setCityFilter(false)
+                setIdFilter(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     // fetching utility routes end here
     return (
         <div className='w-full font-medium'>
@@ -1063,10 +1079,12 @@ const ManageVendor = () => {
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
-                            <div className='w-[35%]  flex'>
-                                <div className='p-3'>
-
-                                </div>
+                            <div className='w-[35%]  flex items-center'>
+                                <RefreshFilterButton
+                                 filterMapping={filterMapping}
+                                 setFilterMapState={setFilterMapState}
+                                 resetAllInputs={resetAllInputs}
+                                />
                             </div>
                         </div>
                     </div>
@@ -1305,7 +1323,7 @@ const ManageVendor = () => {
                                                 </div>
                                                 <div className="">
                                                     <div className="text-sm text-[#505050]">Phone <label className="text-red-500">*</label></div>
-                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phone" value={formValues.phone} onChange={handleChange} />
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="phone" value={formValues.phone} onChange={handleChange} />
                                                     <div className="text-[9px] text-[#CD0000] absolute">{formErrors.phone}</div>
                                                 </div>
                                                 <div className="">

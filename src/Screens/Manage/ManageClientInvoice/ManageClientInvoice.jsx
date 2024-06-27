@@ -121,6 +121,7 @@ const ManageClientInvoice = () => {
     // const [filterArray,setFilterArray] = useState([]);
     const resetAllInputs = () => {
         setClientNameFilterInput("");
+        setOrderNameFilterInput("")
         setOrderDescriptionFilterInput("");
         setEstimateAmountFilterInput("");
         setEstimateDateFilterInput("");
@@ -889,6 +890,11 @@ const ManageClientInvoice = () => {
                                 }
                                 }
                                 }
+                                useEffect(() => {
+                                    setHyperLinkData()
+                                    fetchData();
+                                },[filterMapState])
+
                                     useEffect(() => {
                                         setHyperLinkData()
                                         fetchData();
@@ -912,7 +918,7 @@ const ManageClientInvoice = () => {
                                         return () => {
                                             document.removeEventListener("mousedown", handler);
                                         };
-                                    }, [filterMapState]);
+                                    }, []);
 
     const [orderText, setOrderText] = useState("Select Order")
     const handleOrderChange = (e) => {
@@ -1135,12 +1141,12 @@ const ManageClientInvoice = () => {
                             </div>
 
                             <div className='w-[45%]  flex items-center'>
-                                {/* <RefreshFilterButton
-                                 fetchData={fetchData}
+                                <RefreshFilterButton
+                                 
                                  filterMapping={filterMapping}
                                  setFilterMapState={setFilterMapState}
                                  resetAllInputs={resetAllInputs}
-                                /> */}
+                                />
                             </div>
                         </div>
                     </div>

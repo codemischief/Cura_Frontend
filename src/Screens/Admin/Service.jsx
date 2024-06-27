@@ -33,6 +33,7 @@ import EditButton from '../../Components/common/buttons/EditButton';
 import DeleteButton from '../../Components/common/buttons/deleteButton';
 import useAuth from '../../context/JwtContext';
 import checkEditAccess from '../../Components/common/checkRoleBase';
+import RefreshFilterButton from '../../Components/common/buttons/RefreshFilterButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Service = () => {
     const { user } = useAuth()
@@ -75,6 +76,13 @@ const Service = () => {
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
     // const [filterArray,setFilterArray] = useState([]);
+
+    const resetFilters = () => {
+        setLobNameFilterInput("");
+        setServiceFilterInput("");
+        setIdFilterInput("");
+    };
+    
 
     const fetchLobData = async () => {
         setPageLoading(true);
@@ -233,26 +241,6 @@ const Service = () => {
         setExistingService(result);
         setPageLoading(false);
     }
-    useEffect(() => {
-        fetchData();
-        fetchLobData();
-        fetchCityData('Maharashtra')
-        fetchTallyLedgerData();
-        getVendorCategoryAdmin();
-        fetchRoleData();
-        const handler = (e) => {
-            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
-                setLobNameFilter(false)
-                setServiceFilter(false)
-                setIdFilter(false)
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
     const [editId, setEditId] = useState(0);
     const handleEdit = (id) => {
         setEditId((prev) => id)
@@ -724,6 +712,28 @@ const Service = () => {
 
         }
     }
+
+    useEffect(() => {
+        fetchData();
+        fetchLobData();
+        fetchCityData('Maharashtra')
+        fetchTallyLedgerData();
+        getVendorCategoryAdmin();
+        fetchRoleData();
+        const handler = (e) => {
+            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                setLobNameFilter(false)
+                setServiceFilter(false)
+                setIdFilter(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
+
     // fetching utility routes end here
     return (
         <div className='font-medium'>
@@ -825,7 +835,7 @@ const Service = () => {
                                 {serviceFilter && <CharacterFilter inputVariable={serviceFilterInput} setInputVariable={setServiceFilterInput} filterColumn='service' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.service.filterType} />}
                             </div>
                         </div>
-                        <div className="w-[30%] flex">
+                        <div className="w-[30%] flex items-center justify-center">
                             <div className='w-[75%] px-3 py-2.5 mx-[-3px]'>
                                 <div className="w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
@@ -841,10 +851,12 @@ const Service = () => {
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
 
-                            <div className='w-[35%]  flex'>
-                                <div className='p-3'>
-
-                                </div>
+                            <div className='w-[35%] '>
+                            <RefreshFilterButton
+                                filterMapping={filterMapping}
+                                setFilterMapState={setFilterMapState}
+                                resetAllInputs={resetFilters}
+                            /> 
                             </div>
                         </div>
                     </div>

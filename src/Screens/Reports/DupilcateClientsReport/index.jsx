@@ -6,6 +6,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
 import useAuth from "../../../context/JwtContext";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadDuplicateClientsReport,
   getDuplicateClientsReport,
@@ -13,7 +14,8 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus
+  setStatus,
+  resetFilters
 } from "../../../Redux/slice/reporting/DuplicateClientReports"
 import { useSelector } from "react-redux";
 import { formatedFilterData } from "../../../utils/filters";
@@ -235,6 +237,7 @@ const PmaClientReport = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

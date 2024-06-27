@@ -8,6 +8,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
 import { APIService } from "../../../services/API";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   deleteServiceApartment,
   downloadServiceApartmentData,
@@ -15,6 +16,7 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../Redux/slice/Research/ServiceApartmentSlice";
 
 import getColumns from "./Columns";
@@ -282,8 +284,8 @@ const ResearchServiceApartments = () => {
       <div className="flex flex-col px-4 gap-[1.75rem]">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
-            heading={"Service Apartment"}
-            path={["Research ", "Service Apartment"]}
+            heading={"Service Apartments & Guest Houses"}
+            path={["Research ", "Service Apartments & Guest Houses"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <SearchBar
@@ -302,6 +304,7 @@ const ResearchServiceApartments = () => {
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">

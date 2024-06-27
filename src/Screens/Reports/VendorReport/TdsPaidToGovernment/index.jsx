@@ -6,12 +6,14 @@ import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import {
   downloadTdsPaidToGovtReport,
   getTdsPaidGovtData,
   setCountPerPage,
   setPageNumber,
   setSorting,
+  resetFilters,
   setInitialState,
 } from "../../../../Redux/slice/reporting/Group9/tdsPaidToGovt";
 import connectionDataColumn from "./Columns";
@@ -201,6 +203,7 @@ const TdsPaidByVendorView = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

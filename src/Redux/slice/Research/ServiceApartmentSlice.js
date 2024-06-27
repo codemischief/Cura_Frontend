@@ -62,6 +62,9 @@ export const serviceapartment = createSlice({
     setFormSubmissionStatus: (state, { payload }) => {
       state.formSubmissionStatus = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -76,6 +79,7 @@ export const {
   setInitialState,
   setSorting,
   setFormSubmissionStatus,
+  resetFilters
 } = serviceapartment.actions;
 
 export const getServiceApartmentData = (payloadObj, year, month) => async (dispatch) => {

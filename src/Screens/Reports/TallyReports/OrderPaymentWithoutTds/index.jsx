@@ -7,13 +7,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import {
   downloadOrderPaymentWithoutTdsReport,
   getOrderPaymentWithoutTdsView,
   setCountPerPage,
   setInitialState,
   setPageNumber,
-  setSorting
+  setSorting,
+  resetFilters
 } from "../../../../Redux/slice/reporting/TallyReports/OrderPaymentWithoutTds/OrderPaymentWithoutTds";
 import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
@@ -45,7 +47,7 @@ const OrderPaymentWithoutTdsView = () => {
     start_date: "",
     end_date: "",
     mode: 5,
-    entity: "",
+    entity: 1,
   });
 
   const columns = useMemo(() => connectionDataColumn(), []);
@@ -332,6 +334,7 @@ const OrderPaymentWithoutTdsView = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

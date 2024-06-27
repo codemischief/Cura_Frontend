@@ -59,6 +59,9 @@ export const ServiceTaxReportSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -70,6 +73,7 @@ export const {
   setServiceTaxReportFilter,
   setInitialState,
   setSorting,
+  resetFilters
 } = ServiceTaxReportSlice.actions;
 
 export const getServiceTaxReportData = (payloadObj) => async (dispatch) => {

@@ -6,13 +6,15 @@ import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import {
   downloadServiceTaxReportData,
   getServiceTaxReportData,
   setCountPerPage,
   setPageNumber,
   setSorting,
-  setInitialState
+  setInitialState,
+  resetFilters
 } from "../../../../Redux/slice/reporting/Group12/ServiceTaxReportSlice";
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
@@ -207,6 +209,7 @@ const ServiceTaxReport = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

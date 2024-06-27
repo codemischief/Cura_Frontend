@@ -59,6 +59,7 @@ const UpdateCompanyKey = () => {
     try {
         const response = await APIService.changeCompanyKey(data)
         const res = await response.json()
+        setOpenDialog(false)
         openSuccess()
     } catch(err) {
          toast.error('Something Went Wrong! Please Try again')

@@ -284,7 +284,7 @@ const OrderReceiptList = () => {
     }
     return results
   }
-  const sendEmail = () => {
+  const sendEmail = async () => {
     if(email == "") {
       setOpenConfimation(false)
       toast.error("Email Doesn't Exist For Client")
@@ -296,7 +296,6 @@ const OrderReceiptList = () => {
       enddate: endDate ?? "2022-01-01",
       sendEmail:true,
       clientid:selectedOption.value,
-      downloadType : 'pdf',
       entityid:1,
       rows: [
         "date",
@@ -319,10 +318,16 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
     };
-    dispatch(getData(obj));
+    await dispatch(getData(obj));
     setOpenConfimation(false)
-    setShowModal(true)
+    openSuccess()
 
+  }
+  const openSuccess = () => {
+    setShowModal(true)
+    setTimeout(() => {
+     setShowModal(false)
+    },3000)
   }
   function floorDecimal(number) {
     let floorValue = Math.floor(number * 100) / 100; // Get floor value with two decimal places

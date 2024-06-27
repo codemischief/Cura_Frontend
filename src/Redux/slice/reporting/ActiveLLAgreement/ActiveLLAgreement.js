@@ -62,6 +62,9 @@ export const activeLlAgreement = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -73,6 +76,7 @@ export const {
   setActiveLlAgreementFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = activeLlAgreement.actions;
 
 export const getActiveLLAgreement =

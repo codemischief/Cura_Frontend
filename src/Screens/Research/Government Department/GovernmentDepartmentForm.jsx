@@ -23,6 +23,11 @@ const validationSchema = Yup.object().shape({
   state: Yup.string().required("Select State"),
   city: Yup.string().required("Select City"),
   departmenttype  : Yup.string().required('Select Department Type'),
+  details : Yup.string().required('Enter Details'),
+  suburb : Yup.string().required('Enter Suburb'),
+  contactname : Yup.string().required('Enter Contact Name'),
+  contactphone : Yup.string().required('Enter Contact Phone'),
+
 });
 const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
@@ -37,7 +42,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
   const { formSubmissionStatus } = useSelector((state) => state.employer);
 
   const fetchCountryData = async () => {
-    setLoading(true);
+    
     const data = {
       user_id: user.id,
       rows: ["id", "name"],
@@ -50,7 +55,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
     setCountryData(result)
-    setLoading(false); 
+  
   };
 
   const fetchCityData = async (id) => {
@@ -243,7 +248,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               )}
                             </div>
                           </div>
-                          <div className="">
+                          <div className="pt-2">
                             <div className="flex">
                               <label className="inputFieldLabel">
                                 Address Line 1
@@ -263,7 +268,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               )}
                             </div> */}
                           </div>
-                          <div className="">
+                          <div className="pt-7">
                             <div className="flex">
                               <label className="inputFieldLabel">
                                 Address Line 2
@@ -286,7 +291,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Country Name
+                                Country 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
@@ -325,7 +330,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                State Name
+                                State 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
@@ -364,7 +369,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                             </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                City Name
+                                City 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
@@ -393,10 +398,12 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                                   );
                                 })}
                             </select>
-                            <div className="inputValidationError">
-                              {/* {formErrors.city} */}
-                              {errors.city && <div>{errors.city}</div>}
-                            </div>
+                             <div className="inputValidationError">
+                              {touched.city && errors.city && (
+                                <div>{errors.city}</div>
+                              )}
+                            </div> 
+                            
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">
@@ -404,7 +411,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                             </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">Suburb</label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span>
                             </div>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -462,21 +469,29 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                             <label className="inputFieldLabel">
                               Details
                             </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
+                            <span className="requiredError">*</span>
+                            <textarea
+                              //className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue min-h-[50px] max-h-[50px]"
                               type="text"
                               name="details"
                               value={formik.values.details}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
+                            <div className="inputValidationError">
+                              {/* {formErrors.suburb} */}
+                              {touched.details && errors.details && (
+                                <div>{errors.details}</div>
+                              )}
+                            </div>
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
                             <label className="inputFieldLabel">
                               Contact Name
                             </label>
+                            <span className="requiredError">*</span>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
@@ -486,6 +501,12 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
+                             <div className="inputValidationError">
+                              {/* {formErrors.suburb} */}
+                              {touched.contactname && errors.contactname && (
+                                <div>{errors.contactname}</div>
+                              )}
+                            </div>
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
@@ -507,6 +528,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                             <label className="inputFieldLabel">
                               Contact Phone
                             </label>
+                            <span className="requiredError">*</span>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
@@ -516,6 +538,12 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
+                            <div className="inputValidationError">
+                              {/* {formErrors.suburb} */}
+                              {touched.contactphone && errors.contactphone && (
+                                <div>{errors.contactphone}</div>
+                              )}
+                            </div>
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}

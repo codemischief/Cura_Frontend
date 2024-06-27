@@ -63,6 +63,9 @@ export const orderAnalysis = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -74,6 +77,7 @@ export const {
   setFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = orderAnalysis.actions;
 
 export const getData =

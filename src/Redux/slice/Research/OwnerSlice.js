@@ -62,6 +62,9 @@ export const owner = createSlice({
     setFormSubmissionStatus: (state, { payload }) => {
       state.formSubmissionStatus = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -76,6 +79,7 @@ export const {
   setInitialState,
   setSorting,
   setFormSubmissionStatus,
+  resetFilters
 } = owner.actions;
 
 export const getOwnerData = (payloadObj, year, month) => async (dispatch) => {
@@ -181,10 +185,12 @@ export const downloadXlsEndpoint = (filename, userId ,type='excel') => async (di
         responseType: "blob",
       }
     );
+    console.log('here')
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     if(type == 'excel') {
+
       FileSaver.saveAs(blob, "OwnerData.xlsx");
     }else {
       FileSaver.saveAs(blob, "OwnerData.pdf");

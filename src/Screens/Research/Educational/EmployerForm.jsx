@@ -235,7 +235,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Type
+                                Institute Type
                               </label>
                               <span className="requiredError">*</span>
                             </div>

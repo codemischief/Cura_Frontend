@@ -41,6 +41,7 @@ import checkEditAccess from '../../../Components/common/checkRoleBase';
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
 import ClientPropertySelectNative from '../../../Components/common/select/ClientPropertySelectNative';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
+import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const ManageLLAgreement = () => {
     const {clientPropertyId} = useParams()
     const {user} = useAuth()
@@ -107,6 +108,20 @@ const ManageLLAgreement = () => {
     const [endFilterInput, setEndFilterInput] = useState("");
     const [idFilter,setIdFilter] = useState(false)
     const [idFilterInput,setIdFilterInput] = useState("")
+
+
+    const resetAllInputs = () => {
+        setClientNameFilterInput("");
+        setPropertyDescriptionFilterInput("");
+        setPropertyStatusFilterInput("");
+        setStatusFilterInput("");
+        setStartFilterInput("");
+        setEndFilterInput("");
+        setIdFilterInput("");
+      };
+
+
+
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
@@ -461,35 +476,7 @@ const ManageLLAgreement = () => {
         }
 
     }
-    useEffect(() => {
-        setHyperlinkData()
-        fetchData();
-        fetchCountryData();
-        fetchStateData(5)
-        fetchCityData("Maharashtra");
-        fetchEntitiesData();
-        fetchRoleData();
-        fetchUsersData();
-        fetchLobData();
-
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setClientNameFilter(false);
-                setPropertyDescriptionFilter(false);
-                setPropertyStatusFilter(false);
-                setStatusFilter(false);
-                setStartFilter(false);
-                setEndFilter(false);
-                setDownloadModal(false)
-                setIdFilter(false)
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+   
 
     const handleOpenEdit = (oldItem) => {
         
@@ -1333,6 +1320,36 @@ const ManageLLAgreement = () => {
             setAddTenantAddConfirmationSuccess(false)
         }, 2000)
     }
+
+    useEffect(() => {
+        setHyperlinkData()
+        fetchData();
+        fetchCountryData();
+        fetchStateData(5)
+        fetchCityData("Maharashtra");
+        fetchEntitiesData();
+        fetchRoleData();
+        fetchUsersData();
+        fetchLobData();
+
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setClientNameFilter(false);
+                setPropertyDescriptionFilter(false);
+                setPropertyStatusFilter(false);
+                setStatusFilter(false);
+                setStartFilter(false);
+                setEndFilter(false);
+                setDownloadModal(false)
+                setIdFilter(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     return (
         <div className='font-medium'>
             <Backdrop
@@ -1504,7 +1521,7 @@ const ManageLLAgreement = () => {
                             <div className='w-[35%]'>
 
                             </div>
-                            <div className='w-[45%]   p-3 '>
+                            <div className='w-[35%]   p-3 '>
                               <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type='number' value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
@@ -1518,11 +1535,14 @@ const ManageLLAgreement = () => {
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} type={filterMapState.id.filterType}/>}
                             </div>
                             
-                            {/* <div className='w-1/2  flex'>
-                                <div className='p-3'>
-
-                                </div>
-                            </div> */}
+                            <div className='w-[25%]  flex items-center'>
+                                <RefreshFilterButton
+                                 filterMapping={filterMapping}
+                                 setFilterMapState={setFilterMapState}
+                                 resetAllInputs={resetAllInputs}
+                                
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

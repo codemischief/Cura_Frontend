@@ -66,6 +66,9 @@ export const prospect = createSlice({
     setFormSubmissionStatus: (state, { payload }) => {
       state.formSubmissionStatus = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -80,6 +83,7 @@ export const {
   setInitialState,
   setSorting,
   setFormSubmissionStatus,
+  resetFilters
 } = prospect.actions;
 
 export const getPropect = (payloadObj) => async (dispatch) => {

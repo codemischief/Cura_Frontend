@@ -64,6 +64,9 @@ export const pmaSlice = createSlice({
     resetData: (state, { payload }) => {
       state.entityReceiptPaymentsData = [];
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -77,7 +80,8 @@ export const {
   setEntityReceiptPaymentsFilters,
   setInitialState,
   setSorting,
-  resetData
+  resetData,
+  resetFilters
 } = pmaSlice.actions;
 
 export const getEntityReceiptPaymentsData =

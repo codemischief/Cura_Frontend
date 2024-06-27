@@ -55,6 +55,9 @@ export const pmaSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters : (state, { payload }) => {
+      state.sorting = payload;
+    },
   },
 });
 
@@ -68,6 +71,7 @@ export const {
   setFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = pmaSlice.actions;
 
 export const getPmaBilling = (payloadObj, year, month) => async (dispatch) => {

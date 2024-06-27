@@ -59,6 +59,9 @@ export const EntityBlankReportSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -70,6 +73,7 @@ export const {
   setEntityBlankReportDataFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = EntityBlankReportSlice.actions;
 
 export const getentityBlankReportData = (payloadObj) => async (dispatch) => {

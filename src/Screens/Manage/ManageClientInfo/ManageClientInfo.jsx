@@ -295,6 +295,10 @@ const ManageClientInfo = () => {
         setPageLoading(false);
     }
     useEffect(() => {
+        fetchData()
+    },[filterMapState])
+
+    useEffect(() => {
         fetchData();
         fetchCountryData();
         fetchStateData(5);
@@ -327,7 +331,7 @@ const ManageClientInfo = () => {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-    }, [filterMapState]);
+    }, []);
 
     const handleOpenEdit = (oldItem) => {
         
@@ -661,13 +665,17 @@ const ManageClientInfo = () => {
     });
     const [formErrorsClientInfo, setFormErrorsClientInfo] = useState({});
     const validate = () => {
-        var res = true
+        let res = {
+            status: true,
+            page: 1
+        }
         if (formValues.client_info.salutation === "" || formValues.client_info.salutation === null) {
-            res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
                 salutation: "Select Saluation"
             }))
+            res.status = false
+            res.page = 1
 
         } else {
             setFormErrorsClientInfo((existing) => ({
@@ -678,11 +686,12 @@ const ManageClientInfo = () => {
 
 
         if (formValues.client_info.firstname === "" || formValues.client_info.firstname === null) {
-            res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
                 firstname: "Enter First Name"
             }))
+            res.status = false
+            res.page = 1
 
         } else {
             setFormErrorsClientInfo((existing) => ({
@@ -692,11 +701,12 @@ const ManageClientInfo = () => {
         }
 
         if (formValues.client_info.lastname === "" || formValues.client_info.lastname === null) {
-            res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
                 lastname: "Enter Last Name"
             }))
+            res.status = false
+            res.page = 1
         } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -705,11 +715,12 @@ const ManageClientInfo = () => {
         }
 
         if (formValues.client_info.clienttype === null || formValues.client_info.clienttype === "") {
-            res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
                 clienttype: "Select Client Type "
             }))
+            res.status = false
+            res.page = 1
         } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -717,11 +728,12 @@ const ManageClientInfo = () => {
             }))
         }
         if (formValues.client_info.state === "" || formValues.client_info.state == null) {
-            res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
                 state: "Select State "
             }))
+            res.status = false
+            res.page = 1
         } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -729,11 +741,12 @@ const ManageClientInfo = () => {
             }))
         }
         if (formValues.client_info.city === "" || formValues.client_info.city == null) {
-            res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
                 city: "Select City "
             }))
+            res.status = false
+            res.page = 1
         } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -741,107 +754,39 @@ const ManageClientInfo = () => {
             }))
         }
 
-        //  if(formValues.client_info.middlename == "") {
-        //     res = false
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         middlename : "Enter Middle Name"
-        //     } 
-        //     }) 
-        //  }else {
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         middlename : ""
-        //     } 
-        //     }) 
-        //  }
+        if (formValues.client_info.email1 != "" && formValues.client_info.email1 != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.client_info.email1)) {
+            // we need to set the formErrors
+            setFormErrorsClientInfo((existing) => {
+                return { ...existing, email1: "Enter a valid email address" }
+            })
+            res.status = false
+            res.page = 1
+        } else {
+            setFormErrorsClientInfo((existing) => {
+                return { ...existing, email2: "" }
+            })
+        }
 
-
-        //  if(formValues.client_info.lastname === "") {
-        //     res = false
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         lastname : "Enter Last Name"
-        //     } 
-        //     }) 
-        //  }else {
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         lastname : ""
-        //     } 
-        //     }) 
-        //  }
-        //  if(formValues.client_info.lastname == "") {
-        //     res = false
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         lastname : "Enter Last Name"
-        //     } 
-        //     }) 
-        //  }else {
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         lastname : ""
-        //     } 
-        //     }) 
-        //  }
-        //  if(formValues.client_info.clienttype === null) {
-        //     res = false
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         clienttype : "Enter Client Type"
-        //     } 
-        //     }) 
-        //  }else {
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         clienttype : ""
-        //     } 
-        //     }) 
-        //  }
-
-        //  if(formValues.client_info.state == null) {
-        //     res = false
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         state : "Enter Country Name"
-        //     } 
-        //     }) 
-        //  }else {
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         state : ""
-        //     } 
-        //     }) 
-        //  }
-
-
-        //  if(formValues.client_info.city == null) {
-        //     res = false
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         city : "Enter Country Name"
-        //     } 
-        //     }) 
-        //  }else {
-        //     setFormErrors({...formErrors,client_info : {
-        //         ...formErrors.client_info,
-        //         city : ""
-        //       } 
-        //     }) 
-        //  }
-
-
+        if (formValues.client_info.email2 != "" && formValues.client_info.email2 != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.client_info.email2)) {
+            // we need to set the formErrors
+            setFormErrorsClientInfo((existing) => {
+                return { ...existing, email2: "Enter a valid email address" }
+            })
+            res.status = false
+            res.page = 1
+        } else {
+            setFormErrorsClientInfo((existing) => {
+                return { ...existing, email2: "" }
+            })
+        }
 
         return res;
     }
     const [showAddConfirmation, setShowAddConfirmation] = useState(false);
     const handleAddClientInfo = () => {
-        
-        if (!validate()) {
-            
-            
-            setSelectedDialogue(1);
+        let temp = validate()
+        if (!temp.status) {
+            setSelectedDialogue(temp.page);
             return
         }
         setIsClientInfoDialogue(false);
@@ -1418,13 +1363,12 @@ const ManageClientInfo = () => {
                             </div>
 
                             <div className='w-1/2 p-3 flex items-center'>
-                                {/* <RefreshFilterButton
-                                    fetchData={fetchData}
+                                 <RefreshFilterButton
+                                   
                                     resetAllInputs={resetAllInputs}
                                     setFilterMapState={setFilterMapState}
                                     filterMapping={filterMapping}
-                                /> */}
-
+                                /> 
                             </div>
                         </div>
                     </div>

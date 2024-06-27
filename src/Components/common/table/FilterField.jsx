@@ -33,7 +33,6 @@ export const FilterField = (props) => {
   useEffect(() => {
     let copiedFilters = { ...filter };
     if (search && !copiedFilters.hasOwnProperty(columnfield)) {
-      console.log("when here", copiedFilters);
       setSearch("");
     }
   }, [filter]);
@@ -59,7 +58,15 @@ export const FilterField = (props) => {
         delete prevFilters[columnfield];
         onFilterChange(prevFilters);
         setSearch("");
-      } else {
+      } 
+      else if(  filters === "isNull" ||
+      filters === "isNotNull") {
+        setSearch("");
+        const prevFilters = { ...filter };
+        prevFilters[columnfield] = [filters, "", filterType[type]];
+        onFilterChange({ ...prevFilters });
+      }
+      else {
         const prevFilters = { ...filter };
         prevFilters[columnfield] = [filters, queryType, filterType[type]];
         onFilterChange({ ...prevFilters });
@@ -154,8 +161,6 @@ export const FilterField = (props) => {
     <div style={{ minWidth: "8rem", maxWidth: "8.5rem" }}>
       <div className="w-full  h-full flex justify-start  px-1">
         <div className="w-full h-[1.75rem] flex justify-start items-center bg-[#F5F5F5] rounded-md">
-          
-
           <input
             className="w-full min-w-[3rem] h-full bg-[#F5F5F5] rounded-md font-normal pl-2 outline-none"
             type={type}
@@ -165,7 +170,7 @@ export const FilterField = (props) => {
             onKeyDown={handleEnterKeyPress}
             onKeyUp={handleKeyUp}
             title={isDisabled ? "disabled" : ""}
-            />
+          />
 
           <Close
             sx={{

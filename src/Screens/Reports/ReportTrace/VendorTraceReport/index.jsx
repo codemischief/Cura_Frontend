@@ -10,6 +10,7 @@ import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../../services/API";
 import { useDispatch } from "react-redux";
 import AsyncSelect from "react-select/async";
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import {
   downloadDataXls,
   getData,
@@ -17,6 +18,7 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../../Redux/slice/reporting/VendorTraceReport";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../../Components/common/select/CustomDate";
@@ -242,6 +244,7 @@ const VendorTraceReport = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

@@ -6,7 +6,8 @@ import SimpleTableWithFooter from "../../../Components/common/table/CustomTableW
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
-import useAuth from "./../../../context/JwtContext"
+import useAuth from "./../../../context/JwtContext";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadNonPmaClientStAndRec,
   getNonPmaClientStAndRec,
@@ -15,6 +16,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetFilters
 } from "../../../Redux/slice/reporting/NonPmaClientStAndRec";
 import { useSelector } from "react-redux";
 import { formatedFilterData } from "../../../utils/filters";
@@ -192,6 +194,7 @@ const LobReceiptPayments = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

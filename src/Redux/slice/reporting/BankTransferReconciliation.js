@@ -61,6 +61,9 @@ export const pmaSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -74,6 +77,7 @@ export const {
   setBankTransferReconsiliationFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = pmaSlice.actions;
 
 export const getBankTransferReconsiliation =

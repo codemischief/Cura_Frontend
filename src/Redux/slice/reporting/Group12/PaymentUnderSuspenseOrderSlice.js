@@ -59,6 +59,9 @@ export const PaymentUnderSuspenseOrderSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -70,6 +73,7 @@ export const {
   setPaymentUnderSuspenseOrderFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = PaymentUnderSuspenseOrderSlice.actions;
 
 export const getPaymentUnderSuspenseOrder = (payloadObj) => async (dispatch) => {

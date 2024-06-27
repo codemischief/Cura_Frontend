@@ -3,6 +3,7 @@ import axios from "@/utils/axios";
 import FileSaver from "file-saver";
 import { clientReceiptFormatData, env_URL_SERVER } from "../../../../helper";
 
+
 const initialState = {
   orderPaymentB2BView: [],
   totalAmount: {},
@@ -59,6 +60,9 @@ export const orderPaymentB2B = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -72,6 +76,7 @@ export const {
   setOrderPaymentB2BViewFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = orderPaymentB2B.actions;
 
 export const getOrderPaymentB2BView = (payloadObj) => async (dispatch) => {

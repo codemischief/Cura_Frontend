@@ -43,7 +43,7 @@ import checkEditAccess from "../../../Components/common/checkRoleBase";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import OrderCustomSelectNative from "../../../Components/common/select/OrderCustomSelectNative";
 import ClientPropertySelectNative from "../../../Components/common/select/ClientPropertySelectNative";
-
+import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilterButton";
 const ManageVendorPayment = () => {
     const {orderid} = useParams()
     const {user} = useAuth()
@@ -98,7 +98,28 @@ const ManageVendorPayment = () => {
     const [paymentByFilterInput, setPaymentByFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idFilterInput, setIdFilterInput] = useState("");
-
+    const resetAllInputs = () => {
+        setVendorNameFilter(false);
+        setVendorNameFilterInput("");
+        setClientNameFilter(false);
+        setClientNameFilterInput("");
+        setOrderDescriptionFilter(false);
+        setOrderDescriptionFilterInput("");
+        setPropertyDescriptionFilter(false);
+        setPropertyDescriptionFilterInput("");
+        setAmountFilter(false);
+        setAmountFilterInput("");
+        setPaymentDateFilter(false);
+        setPaymentDateFilterInput("");
+        setModeOfPaymentFilter(false);
+        setModeOfPaymentFilterInput("");
+        setCreatedByFilter(false);
+        setCreatedByFilterInput("");
+        setPaymentByFilter(false);
+        setPaymentByFilterInput("");
+        setIdFilter(false);
+        setIdFilterInput("");
+      };
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
@@ -213,26 +234,10 @@ const ManageVendorPayment = () => {
         }
         const response = await APIService.getModesAdmin(data)
         const res = await response.json()
-        const tempArray = []
-        const len = res.data.length
-        for (var i = 0; i < len; i++) {
-            if (res.data[i][1][0] == 'Z') {
-
-            } else {
-                tempArray.push(res.data[i])
-            }
-
-        }
         
-        setModesData(tempArray)
-        // setModesData(res.data && res.data.map((item) => {
-        //     // console.log()
-        //    if(item[1].startsWith('Z')) {
-
-        //    }else {
-        //     return item
-        //    }
-        // }))
+        
+        setModesData(res.data)
+        
         
         
     }
@@ -523,34 +528,7 @@ const ManageVendorPayment = () => {
             // setFormValues(temp)
         }
     }
-    useEffect(() => {
-        setHyperLinkData()
-        fetchData();
-        // fetchUsersData();
-        fetchModesData();
-        fetchVendorData();
-        fetchUsersData();
-
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setVendorNameFilter(false);
-                setClientNameFilter(false);
-                setOrderDescriptionFilter(false);
-                setPropertyDescriptionFilter(false);
-                setAmountFilter(false);
-                setPaymentDateFilter(false);
-                setCreatedByFilter(false);
-                setModeOfPaymentFilter(false);
-                setPaymentByFilter(false);
-                setIdFilter(false);
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+    
 
 
 
@@ -1160,7 +1138,34 @@ const ManageVendorPayment = () => {
         setOrderData(temp)
     }
 
+    useEffect(() => {
+        setHyperLinkData()
+        fetchData();
+        // fetchUsersData();
+        fetchModesData();
+        fetchVendorData();
+        fetchUsersData();
 
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setVendorNameFilter(false);
+                setClientNameFilter(false);
+                setOrderDescriptionFilter(false);
+                setPropertyDescriptionFilter(false);
+                setAmountFilter(false);
+                setPaymentDateFilter(false);
+                setCreatedByFilter(false);
+                setModeOfPaymentFilter(false);
+                setPaymentByFilter(false);
+                setIdFilter(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     return (
         <div className='w-full font-medium'>
             <Backdrop
@@ -1352,7 +1357,7 @@ const ManageVendorPayment = () => {
                     </div>
                     <div className="w-[10%] flex">
 
-                        <div className='w-[65%] px-3 py-2 '>
+                        <div className='w-[55%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                 <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="number" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))}
                                     onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
@@ -1364,10 +1369,13 @@ const ManageVendorPayment = () => {
                             </div>
                             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                         </div>
-                        <div className='w-[35%]  flex'>
-                            <div className='px-3 py-5'>
-
-                            </div>
+                        <div className='w-[45%]  flex items-center'>
+                            <RefreshFilterButton
+                             filterMapping={filterMapping}
+                             setFilterMapState={setFilterMapState}
+                             resetAllInputs={resetAllInputs}
+                            
+                            />
                         </div>
                     </div>
 

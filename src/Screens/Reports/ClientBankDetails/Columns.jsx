@@ -31,14 +31,7 @@ export default function connectionDataColumn(onQuery) {
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "10.5%" },
     },
-    {
-      title: "Online Mail ID",
-      field: "onlinemailid",
-      sorting: true,
-      // cellStyle: { minWidth: "20px", },
-      filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "10.5%" },
-    },
+    
     {
       title: "Bank Name",
       field: "bankname",
@@ -89,6 +82,14 @@ export default function connectionDataColumn(onQuery) {
       // cellStyle: { minWidth: "20px", },
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon, justifyContent: "center", width : '10.5%' },
+    },
+    {
+      title: "Online Mail ID",
+      field: "onlinemailid",
+      sorting: true,
+      // cellStyle: { minWidth: "20px", },
+      filterComponent: TextFilterField,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "10.5%" },
     },
   ];
   return columns;

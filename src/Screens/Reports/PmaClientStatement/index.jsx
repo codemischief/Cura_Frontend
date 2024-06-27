@@ -10,7 +10,8 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
-import useAuth from "./../../../context/JwtContext"
+import useAuth from "./../../../context/JwtContext";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadPmaClientStatement,
   getPmaClientStatement,
@@ -19,6 +20,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetFilters
 } from "../../../Redux/slice/reporting/PmaClientStatement";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -215,6 +217,7 @@ const LobReceiptPayments = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

@@ -46,18 +46,19 @@ import DeleteButton from "../../../Components/common/buttons/deleteButton.jsx";
 import useAuth from "../../../context/JwtContext.jsx";
 import checkEditAccess from "../../../Components/common/checkRoleBase.js";
 import ClientPropertySelectNative from "../../../Components/common/select/ClientPropertySelectNative.jsx";
+import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilterButton.jsx";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 const Payments = () => {
   const { user } = useAuth()
   const dataRows = [
-   "paymentto",
-        "paymentby",
-        "amount",
-        "paidon",
-        "paymentmode",
-        "paymentfor",
-        "entity",
-        "id",
+    "paymentto",
+    "paymentby",
+    "amount",
+    "paidon",
+    "paymentmode",
+    "paymentfor",
+    "entity",
+    "id",
     // "paymentstatus",
     // "description",
     // "banktransactionid",
@@ -102,12 +103,12 @@ const Payments = () => {
     const idNameObject = {};
     items.forEach((item) => {
       idNameObject[item.id] = {
-        name : item.name,
-        username : item.username
+        name: item.name,
+        username: item.username
       }
     });
     return idNameObject;
-}
+  }
   const fetchUsersData = async () => {
     // setPageLoading(true);
     // const data = { "user_id":  user.id };
@@ -115,9 +116,9 @@ const Payments = () => {
     const response = await APIService.getUsers(data);
     const result = await response.json();
     setAllUsername(convertToIdNameObject(result.data))
-    
-      // setAllUsername(result.data);
-    
+
+    // setAllUsername(result.data);
+
   };
   const fetchEntitiesData = async () => {
     // setPageLoading(true);
@@ -161,32 +162,6 @@ const Payments = () => {
     // })
     // 
   };
-  useEffect(() => {
-    fetchData();
-    fetchUsersData();
-    fetchEntitiesData();
-    fetchPaymentFor();
-    fetchPaymentMode();
-    const handler = (e) => {
-      if (!menuRef.current.contains(e.target)) {
-        setPaymentByFilter(false);
-        setPaymentToFilter(false);
-        setAmountFilter(false);
-        setPaidOnFilter(false);
-        setPaymentModeFilter(false);
-        setPaymentForFilter(false);
-        setPaymentStatusFilter(false);
-        setEntityFilter(false);
-        setIdFilter(false);
-        setDownloadModal(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handler);
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    };
-  }, []);
 
   const [flag, setFlag] = useState(false);
 
@@ -214,7 +189,7 @@ const Payments = () => {
       }
     });
     setFilterState(tempArray);
-    
+
     const data = {
       user_id: user.id,
       rows: dataRows,
@@ -245,7 +220,7 @@ const Payments = () => {
         ]);
       }
     });
-    
+
     setCurrentPages(quantity);
     setCurrentPage((prev) => 1);
     setPageLoading(true);
@@ -278,7 +253,7 @@ const Payments = () => {
         ]);
       }
     });
-    
+
     setCurrentPage(pageNumber);
     setPageLoading(true);
     const data = {
@@ -319,19 +294,19 @@ const Payments = () => {
     if (!validate()) {
       return;
     }
-    
+
     setName1(allUsername[formValues.paymentto].name)
     setName2(allUsername[formValues.paymentby].name)
-    
 
-    
-    
 
-   
+
+
+
+
     // setPageLoading(true);
     setIsPaymentsDialogue(false);
     setOpenAddConfirmation(true);
-   
+
   };
   const addPayment = async () => {
     const data = {
@@ -374,14 +349,14 @@ const Payments = () => {
     setDeleteConfirmationModal(true);
   };
   const deletePayments = async (id) => {
-    
+
     const data = {
       user_id: user.id,
       id: Number(id),
     };
     const response = await APIService.deletePayment(data);
     const res = await response.json();
-    
+
     setDeleteConfirmationModal(false);
     if (res.result == "success") {
       openDeleteSuccess();
@@ -450,7 +425,7 @@ const Payments = () => {
   const [formErrors, setFormErrors] = useState({});
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     setFormValues({ ...formValues, [name]: value });
   };
 
@@ -727,27 +702,27 @@ const Payments = () => {
     const response = await APIService.getPayment(data);
     const temp = await response.json();
     const result = temp.data;
-    
+
     if (temp.result == "success") {
       const d = {
         filename: temp.filename,
         user_id: user.id,
       };
       APIService.download(d, temp.filename).then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              "Network response was not ok " + response.statusText
-            );
-          }
-          return response.blob();
-        })
+        if (!response.ok) {
+          throw new Error(
+            "Network response was not ok " + response.statusText
+          );
+        }
+        return response.blob();
+      })
         .then((result) => {
           if (type == "excel") {
             FileSaver.saveAs(result, "PaymentData.xlsx");
           } else if (type == "pdf") {
             FileSaver.saveAs(result, "PaymentData.pdf");
           }
-          
+
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -759,6 +734,7 @@ const Payments = () => {
       }, 1000);
     }
   };
+
   const [paymentToFilter, setPaymentToFilter] = useState(false);
   const [paymentToFilterInput, setPaymentToFilterInput] = useState("");
   const [paymentForFilter, setPaymentForFilter] = useState(false);
@@ -777,6 +753,20 @@ const Payments = () => {
   const [entityFilterInput, setEntityFilterInput] = useState("");
   const [idFilter, setIdFilter] = useState(false);
   const [idFilterInput, setIdFilterInput] = useState("");
+
+  const resetFilters = () => {
+    setPaymentToFilterInput("");
+    setPaymentForFilterInput("");
+    setAmountFilterInput("");
+    setPaymentModeFilterInput("");
+    setPaymentByFilterInput("");
+    setPaymentStatusFilterInput("");
+    setPaidOnFilterInput("");
+    setEntityFilterInput("");
+    setIdFilterInput("");
+  };
+
+
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const [filterState, setFilterState] = useState([]);
   const filterMapping = {
@@ -852,7 +842,7 @@ const Payments = () => {
     const tempArray = [];
     // we need to query thru the object
     // 
-    
+
     Object.keys(mapState).forEach((key) => {
       if (mapState[key].filterType != "") {
         if (mapState[key].filterData == "Numeric") {
@@ -872,10 +862,10 @@ const Payments = () => {
         }
       }
     });
-    
+
     setCurrentPage((prev) => 1);
     setFilterState(tempArray);
-    
+
     const data = {
       user_id: user.id,
       rows: dataRows,
@@ -924,7 +914,7 @@ const Payments = () => {
     const tempArray = [];
     // we need to query thru the object
     setSortField(field);
-    
+
     Object.keys(filterMapState).forEach((key) => {
       if (filterMapState[key].filterType != "") {
         tempArray.push([
@@ -948,7 +938,7 @@ const Payments = () => {
     };
     const response = await APIService.getPayment(data);
     const result = await response.json();
-    
+
     setExistingPayments(result.data);
     setTotalItems(result.total_count);
     setPageLoading(false);
@@ -980,6 +970,34 @@ const Payments = () => {
       }
     }
   };
+
+  useEffect(() => {
+    fetchData();
+    fetchUsersData();
+    fetchEntitiesData();
+    fetchPaymentFor();
+    fetchPaymentMode();
+    const handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        setPaymentByFilter(false);
+        setPaymentToFilter(false);
+        setAmountFilter(false);
+        setPaidOnFilter(false);
+        setPaymentModeFilter(false);
+        setPaymentForFilter(false);
+        setPaymentStatusFilter(false);
+        setEntityFilter(false);
+        setIdFilter(false);
+        setDownloadModal(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, [filterMapState]);
+
   return (
     <div className="font-medium">
       <Backdrop
@@ -1094,11 +1112,11 @@ const Payments = () => {
         </div>
 
         {/* filters */}
-        <div className="h-12 w-full bg-white">
-          <div className="flex justify-between items-center ">
-            <div className="w-[85%] flex items-center">
-              <div className="w-[5%] p-4">{/* <p>Sr. </p> */}</div>
-              <div className="w-[13%]  px-4 py-3">
+        <div className="h-12 w-full bg-white ">
+          <div className="h-full flex justify-between items-center ">
+            <div className="w-[85%] flex items-center ">
+              <div className="w-[5%]"></div>
+              <div className="w-[13%]  px-4 ">
                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                   <input
                     className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
@@ -1141,7 +1159,7 @@ const Payments = () => {
                   />
                 )}
               </div>
-              <div className="w-[13%]  px-4 py-3">
+              <div className="w-[13%]  px-4">
                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                   <input
                     className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
@@ -1184,7 +1202,7 @@ const Payments = () => {
                   />
                 )}
               </div>
-              <div className="w-[10%] px-4 py-3">
+              <div className="w-[10%] px-4 ">
                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                   <input
                     className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
@@ -1228,13 +1246,14 @@ const Payments = () => {
                   />
                 )}
               </div>
-              <div className="w-[10%]  px-4 py-3">
+              <div className="w-[10%]  px-4 ">
                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                   <input
                     className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                     value={paidOnFilterInput}
                     onChange={(e) => setPaidOnFilterInput(e.target.value)}
                     type="date"
+                    
                     onKeyDown={(event) =>
                       handleEnterToFilter(
                         event,
@@ -1272,7 +1291,7 @@ const Payments = () => {
                   />
                 )}
               </div>
-              <div className="w-[14%]  px-4 py-3">
+              <div className="w-[14%]  px-4 ">
                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
                   <input
                     className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
@@ -1315,7 +1334,7 @@ const Payments = () => {
                   />
                 )}
               </div>
-              <div className="w-[13%]  px-4 py-3">
+              <div className="w-[13%]  px-4 ">
                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                   <input
                     className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
@@ -1372,7 +1391,7 @@ const Payments = () => {
                                 </div>
                                 {paymentStatusFilter && <CharacterFilter inputVariable={paymentStatusFilterInput} setInputVariable={setPaymentStatusFilterInput} handleFilter={newHandleFilter} filterColumn='paymentstatus' menuRef={menuRef} />}
                             </div> */}
-              <div className="w-[10%]  px-4 py-3">
+              <div className="w-[10%]  px-4 ">
                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                   <input
                     className="w-[70%] bg-[#EBEBEB] rounded-xs text-xs pl-2 outline-none"
@@ -1416,8 +1435,8 @@ const Payments = () => {
                 )}
               </div>
             </div>
-            <div className="w-[15%] flex">
-              <div className="w-1/2  px-4 py-3">
+            <div className="w-[15%] flex items-center justify-center">
+              <div className="w-1/2  px-4 ">
                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                   <input
                     className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
@@ -1460,7 +1479,12 @@ const Payments = () => {
                   />
                 )}
               </div>
-              <div className="w-1/2 p-4"></div>
+              <div className="w-1/2 px-4 ">
+                <RefreshFilterButton
+                  filterMapping={filterMapping}
+                  setFilterMapState={setFilterMapState}
+                  resetAllInputs={resetFilters}
+                /> </div>
             </div>
           </div>
         </div>
@@ -1541,7 +1565,7 @@ const Payments = () => {
                 </p>
               </div>
               <div className="w-1/2 p-4">
-                <p>{canEdit? "Edit": ""}</p>
+                <p>{canEdit ? "Edit" : ""}</p>
               </div>
             </div>
           </div>
@@ -1771,37 +1795,37 @@ const Payments = () => {
                                                     ))}
                                                 </select> */}
 
-                       <ClientPropertySelectNative
-                        data={Object.keys(allUsername)}
-                        value={allUsername?.[formValues.paymentto]?.name ? allUsername?.[formValues.paymentto]?.name:null}
-                        placeholder="Select Payment To"
-                        isSticky={true}
-                        menuMaxHeight="18rem"
-                        noDataText="Select Username"
-                        headerText={{
-                            first : 'Name',
-                            second : 'Username'
-                        }}
-                        renderData={(item) => {
+                        <ClientPropertySelectNative
+                          data={Object.keys(allUsername)}
+                          value={allUsername?.[formValues.paymentto]?.name ? allUsername?.[formValues.paymentto]?.name : null}
+                          placeholder="Select Payment To"
+                          isSticky={true}
+                          menuMaxHeight="18rem"
+                          noDataText="Select Username"
+                          headerText={{
+                            first: 'Name',
+                            second: 'Username'
+                          }}
+                          renderData={(item) => {
                             return (
-                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                              <MenuItem value={item} key={item} sx={{ width: '230px', gap: '5px', fontSize: '12px' }}>
                                 <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
-                                   {allUsername[item].name}
+                                  {allUsername[item].name}
                                 </p>
                                 <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
                                   {allUsername[item].username}
                                 </p>
-                                
-                               
+
+
                               </MenuItem>
                             );
                           }}
                           onChange={(e) => {
-                            const temp = {...formValues}
-                            temp.paymentto = e.target.value 
+                            const temp = { ...formValues }
+                            temp.paymentto = e.target.value
                             setFormValues(temp)
-                            
-                           }}
+
+                          }}
                         />
                         {/* <PaymentDropDown
                           options={allUsername}
@@ -1846,37 +1870,37 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                         <ClientPropertySelectNative
-                        data={Object.keys(allUsername)}
-                        value={allUsername?.[formValues.paymentby]?.name ? allUsername?.[formValues.paymentby]?.name:null}
-                        placeholder="Select Payment By"
-                        isSticky={true}
-                        menuMaxHeight="18rem"
-                        noDataText="Select Username"
-                        headerText={{
-                            first : 'Name',
-                            second : 'Username'
-                        }}
-                        renderData={(item) => {
+                        <ClientPropertySelectNative
+                          data={Object.keys(allUsername)}
+                          value={allUsername?.[formValues.paymentby]?.name ? allUsername?.[formValues.paymentby]?.name : null}
+                          placeholder="Select Payment By"
+                          isSticky={true}
+                          menuMaxHeight="18rem"
+                          noDataText="Select Username"
+                          headerText={{
+                            first: 'Name',
+                            second: 'Username'
+                          }}
+                          renderData={(item) => {
                             return (
-                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
+                              <MenuItem value={item} key={item} sx={{ width: '230px', gap: '5px', fontSize: '12px' }}>
                                 <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
-                                   {allUsername[item].name}
+                                  {allUsername[item].name}
                                 </p>
                                 <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
                                   {allUsername[item].username}
                                 </p>
-                                
-                               
+
+
                               </MenuItem>
                             );
                           }}
                           onChange={(e) => {
-                            const temp = {...formValues}
-                            temp.paymentby = e.target.value 
+                            const temp = { ...formValues }
+                            temp.paymentby = e.target.value
                             setFormValues(temp)
-                            
-                           }}
+
+                          }}
                         />
 
                         {/* <PaymentDropDown

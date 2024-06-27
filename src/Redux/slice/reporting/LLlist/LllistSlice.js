@@ -54,13 +54,15 @@ export const LLlist = createSlice({
         sort_order: "",
       };
       state.LLlist=[]
-
     },
     setFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
       state.sorting = payload;
+    },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
     },
   },
 });
@@ -73,6 +75,7 @@ export const {
   setFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = LLlist.actions;
 
 export const getLLlist =

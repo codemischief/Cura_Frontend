@@ -11,6 +11,7 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 import useAuth from "../../../context/JwtContext";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadPmaClientStatementAll,
   getPmaClientStatementAll,
@@ -18,7 +19,8 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus
+  setStatus,
+  resetFilters
 } from "../../../Redux/slice/reporting/pmaClientStatementAll"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -257,6 +259,7 @@ const PmaInvoiceList = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

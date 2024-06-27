@@ -13,10 +13,13 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetFilters
 } from "../../../../Redux/slice/reporting/TallyReports/OrderReceiptToInvoiceServiceTax/OrderReceiptToInvoiceServiceTax";
 import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
+
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
@@ -44,8 +47,8 @@ const OrderReceiptToInvoiceServiceTax = () => {
   const [intialFields, setIntialFields] = useState({
     start_date: "",
     end_date: "",
-    mode: "",
-    entity: "",
+    mode: 5,
+    entity: 1,
   });
 
   const columns = useMemo(() => connectionDataColumn(), []);
@@ -360,6 +363,7 @@ const OrderReceiptToInvoiceServiceTax = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

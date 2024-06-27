@@ -8,6 +8,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
 import { APIService } from "../../../services/API";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   deleteAgents,
   downloadAgentDataXls,
@@ -15,6 +16,7 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../Redux/slice/Research/AgentSlice";
 
 import getColumns from "./Columns";
@@ -312,6 +314,7 @@ const ResearchAgent = () => {
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">

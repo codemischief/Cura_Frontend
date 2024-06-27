@@ -11,6 +11,7 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 import { Refresh } from "@mui/icons-material";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadActivePmaAgreement,
   getActivePmaAgreement,
@@ -19,7 +20,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
-  setActivePmaAgreementFilters,
+  resetFilters,
 } from "../../../Redux/slice/reporting/ActivePmaAgreement";
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -300,17 +301,7 @@ const PmaInvoiceList = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
-
-            {/* </div> */}
-            <div
-              className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
-              onClick={() => { }}
-            >
-              <button>
-                <p>Filters</p>
-              </button>
-              <Refresh sx={{ height: "16px", width: "16px" }} />
-            </div>
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

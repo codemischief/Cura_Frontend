@@ -574,7 +574,7 @@ const FriendsForm = ({ isOpen, handleClose, editData, openSucess }) => {
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title={`${editData?.id ? 'Save Friend' : 'Add Friend'}`}
+          title={`${editData?.id ? 'Save Friend/Relative' : 'Add Friend/Relative'}`}
           description={
             <div className="flex flex-col items-center">
               <p className="">Friend Name: {values.name}</p>

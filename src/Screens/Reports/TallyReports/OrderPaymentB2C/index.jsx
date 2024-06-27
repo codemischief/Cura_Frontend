@@ -15,6 +15,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetFilters
 } from "../../../../Redux/slice/reporting/TallyReports/OrderPaymentB2C/OrderPaymentB2C";
 import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
@@ -22,7 +23,7 @@ import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
 import useAuth from "../../../../context/JwtContext";
 import Container from "../../../../Components/common/Container";
-
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 const OrderPaymentB2CView = () => {
   const dispatch = useDispatch();
   const { user } = useAuth();
@@ -46,7 +47,7 @@ const OrderPaymentB2CView = () => {
     start_date: "",
     end_date: "",
     mode: 5,
-    entity: "",
+    entity: 1,
   });
 
   const columns = useMemo(() => connectionDataColumn(), []);
@@ -332,6 +333,7 @@ const OrderPaymentB2CView = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

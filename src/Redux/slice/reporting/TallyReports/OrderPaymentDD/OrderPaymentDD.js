@@ -62,6 +62,9 @@ export const orderPaymentDD = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -75,6 +78,7 @@ export const {
   setorderPaymentDDViewFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = orderPaymentDD.actions;
 
 export const getorderPaymentDDView =

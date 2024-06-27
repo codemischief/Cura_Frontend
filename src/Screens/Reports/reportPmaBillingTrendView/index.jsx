@@ -11,6 +11,7 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 import useAuth from "../../../context/JwtContext";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadPmaBillingTrendView,
   getPmaBillingTrendViewData,
@@ -19,7 +20,8 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
-  resetData
+  resetData,
+  resetFilters
 } from "../../../Redux/slice/reporting/pmaBillingTrendView"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -266,6 +268,7 @@ const PmaBillingTrendView = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 

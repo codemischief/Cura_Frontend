@@ -954,6 +954,7 @@ const ManageClientReceipt = () => {
             receivedDate: null,
             amountReceived: null
         })
+        setOrderData({})
         setOrFormErrors({})
         setOrModel(false);
         openCancelModal();
@@ -1063,7 +1064,18 @@ const ManageClientReceipt = () => {
         
         if(res.result == 'success') {
             openOrAddSuccess()
+            setOrFormValues({
+                client: null,
+                order: null,
+                receiptMode: 5,
+                receivedBy: user.id,
+                TDS: null,
+                receiptDescription: null,
+                receivedDate: null,
+                amountReceived: null
+            })
         }
+        setOrderData({})
         
     }
     const [showOrAddSuccess,setShowOrAddSuccess] = useState(false)
@@ -1395,14 +1407,12 @@ const ManageClientReceipt = () => {
                         </div>
 
                         <div className='w-1/2  flex items-center justify-center'>
-                            {/* <RefreshFilterButton
-
-                              fetchData={fetchData}
+                            <RefreshFilterButton
                               filterMapping={filterMapping}
                               setFilterMapState={setFilterMapState}
                               resetAllInputs={resetAllInputs}
                             
-                            /> */}
+                            />
                         </div>
                     </div>
                 </div>

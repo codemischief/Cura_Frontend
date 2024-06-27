@@ -8,6 +8,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
 import { APIService } from "../../../services/API";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   deleteGovernmentDepartment,
   downloadGovernmentDepartmentDataXls,
@@ -15,6 +16,7 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../Redux/slice/Research/GovernmentDepartmentSlice";
 
 import getColumns from "./Columns";
@@ -272,8 +274,8 @@ const ResearchGovernmentDepartment = () => {
       <div className="flex flex-col px-4 gap-[1.75rem]">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
-            heading={"Government Department"}
-            path={["Research ", "Government Department"]}
+            heading={"Government Departments"}
+            path={["Research ", "Government Departments"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <SearchBar
@@ -292,6 +294,7 @@ const ResearchGovernmentDepartment = () => {
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">

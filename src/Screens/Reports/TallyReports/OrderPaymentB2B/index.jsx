@@ -15,6 +15,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
+  resetFilters
 } from "../../../../Redux/slice/reporting/TallyReports/OrderPaymentB2B/OrderPaymentB2B";
 import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
@@ -22,7 +23,7 @@ import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
 import useAuth from "../../../../context/JwtContext";
 import Container from "../../../../Components/common/Container";
-
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 const OrderPaymentB2BView = () => {
   const dispatch = useDispatch();
   const { user } = useAuth();
@@ -39,6 +40,7 @@ const OrderPaymentB2BView = () => {
 
   const [showTable, setShowTable] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+
   const [modeData, setModeData] = useState([]);
   const [entityData, setEntityData] = useState([]);
   const [search, setSearch] = useState("");
@@ -46,7 +48,7 @@ const OrderPaymentB2BView = () => {
     start_date: "",
     end_date: "",
     mode: 5,
-    entity: "",
+    entity: 1,
   });
 
   const columns = useMemo(() => connectionDataColumn(), []);
@@ -330,6 +332,7 @@ const OrderPaymentB2BView = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

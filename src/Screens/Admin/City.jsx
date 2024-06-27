@@ -34,6 +34,7 @@ import EditButton from "../../Components/common/buttons/EditButton";
 import DeleteButton from "../../Components/common/buttons/deleteButton";
 import useAuth from "../../context/JwtContext";
 import checkEditAccess from "../../Components/common/checkRoleBase";
+import RefreshFilterButton from "../../Components/common/buttons/RefreshFilterButton";
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const City = () => {
     const menuRef = useRef();
@@ -62,6 +63,15 @@ const City = () => {
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
+
+    const resetFilters = () => {
+        setCountryFilterInput("");
+        setStateFilterInput("");
+        setCityFilterInput("");
+        setIdFilterInput("");
+    };
+
+    
     const openSuccessModal = () => {
         // set the state for true for some time
         setIsCountryDialogue(false);
@@ -174,25 +184,6 @@ const City = () => {
 
         setExistingCities(result);
     };
-    useEffect(() => {
-        fetchCityData()
-        fetchCountryData()
-
-        const handler = (e) => {
-            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
-                setCountryFilter(false);
-                setStateFilter(false);
-                setCityFilter(false);
-                setIdFilter(false);
-                setDownloadModal(false)
-            }
-        };
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
     //Validation of the form
     const initialValues = {
         country: 5,
@@ -688,6 +679,27 @@ const City = () => {
 
         }
     }
+
+    useEffect(() => {
+        fetchCityData()
+        fetchCountryData()
+
+        const handler = (e) => {
+            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                setCountryFilter(false);
+                setStateFilter(false);
+                setCityFilter(false);
+                setIdFilter(false);
+                setDownloadModal(false)
+            }
+        };
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
+
     return (
         <div className="font-medium">
             <Backdrop
@@ -863,7 +875,13 @@ const City = () => {
                                 />
                             )}
                         </div>
-                        <div className="w-1/2 p-4"></div>
+                        <div className="w-1/2 p-4">
+                        <RefreshFilterButton
+                                filterMapping={filterMapping}
+                                setFilterMapState={setFilterMapState}
+                                resetAllInputs={resetFilters}
+                            />
+                        </div>
                     </div>
                 </div>
 

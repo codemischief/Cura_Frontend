@@ -94,9 +94,7 @@ const ManageEmployees = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
-    const resetAllInputs = () => {
-        // toast.success('Filters Resetted!')
-
+    const resetFilters = () => {
         setEmployeeNameInput("")
         setEmployeeIdInput("")
         setPannoInput("")
@@ -314,37 +312,6 @@ const ManageEmployees = () => {
         setExistingEmployees(result);
         setPageLoading(false);
     }
-    useEffect(() => {
-        fetchData();
-        fetchCountryData();
-        fetchStateData(5)
-        fetchCityData("Maharashtra");
-        fetchEntitiesData();
-        fetchRoleData();
-        fetchUsersData();
-        fetchLobData();
-
-        const handler = (e) => {
-            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
-                setEmployeeNameFilter(false)
-                setEmployeeIdFilter(false)
-                setPannoFilter(false)
-                setPhoneFilter(false)
-                setEmailFilter(false)
-                setRoleFilter(false)
-                setDateOfJoiningFilter(false)
-                setLdowFilter(false)
-                setStatusFilter(false)
-                setIdFilter(false);
-                setDownloadModal(false)
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
 
     const handleOpenEdit = (oldItem) => {
         // setPageLoading(true)
@@ -1115,6 +1082,39 @@ const ManageEmployees = () => {
             }
         }
     }
+
+    useEffect(() => {
+        fetchData();
+        fetchCountryData();
+        fetchStateData(5)
+        fetchCityData("Maharashtra");
+        fetchEntitiesData();
+        fetchRoleData();
+        fetchUsersData();
+        fetchLobData();
+
+        const handler = (e) => {
+            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                setEmployeeNameFilter(false)
+                setEmployeeIdFilter(false)
+                setPannoFilter(false)
+                setPhoneFilter(false)
+                setEmailFilter(false)
+                setRoleFilter(false)
+                setDateOfJoiningFilter(false)
+                setLdowFilter(false)
+                setStatusFilter(false)
+                setIdFilter(false);
+                setDownloadModal(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
+
     return (
         <div className='font-medium'>
             <Backdrop
@@ -1328,7 +1328,11 @@ const ManageEmployees = () => {
                             </div>
 
                             <div className='w-1/2 p-3  flex items-center'>
-                               
+                               <RefreshFilterButton
+                                filterMapping={filterMapping}
+                                setFilterMapState={setFilterMapState}
+                                resetAllInputs={resetFilters}
+                            /> 
                             </div>
                         </div>
                     </div>

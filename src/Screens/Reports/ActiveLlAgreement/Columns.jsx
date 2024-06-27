@@ -57,7 +57,7 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Status",
-      // field: "status",
+      field: "status",
       sorting: true,
       render: (index, row) => {
 

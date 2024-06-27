@@ -60,6 +60,9 @@ export const vendorStatement = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -71,6 +74,7 @@ export const {
   setvendorStatementViewFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = vendorStatement.actions;
 
 export const getVendorStatementView = (payloadObj) => async (dispatch) => {

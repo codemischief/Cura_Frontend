@@ -8,6 +8,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
 import { APIService } from "../../../services/API";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   deleteBusinessGroup,
   downloadBusinessGroup,
@@ -15,6 +16,7 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../Redux/slice/Research/BusinessGroup";
 import BusinessForm from "./BusinessForm";
 import getColumns from "./Columns";
@@ -274,7 +276,7 @@ const ResearchBusinessGroup = () => {
   const openSucess = () => {
     let messageToUpdate = editData?.id
       ? "Changes Saved Successfully"
-      : "New Prospect created successfully";
+      : "New COC and Business Group created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
@@ -284,7 +286,7 @@ const ResearchBusinessGroup = () => {
   const openCancel = () => {
     let messageToUpdate = editData?.id
       ? "Process cancelled, No Changes Saved."
-      : "Process cancelled, No New Prospect Created.";
+      : "Process cancelled, No New COC and Business Group Created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
@@ -323,6 +325,7 @@ const ResearchBusinessGroup = () => {
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 export const CrossIcon = ({ onClick, bgColor = "bg-[#fff]" }) => (
   <div
-    className={`flex justify-center items-center rounded-full w-[30px] h-[30px] ${bgColor} absolute right-2`}
+    className={`flex justify-center items-center rounded-full w-[30px] h-[30px] ${bgColor} absolute right-2 cursor-pointer`}
     onClick={onClick}
   >
     <svg

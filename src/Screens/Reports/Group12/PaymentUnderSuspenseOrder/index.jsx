@@ -12,14 +12,15 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
-  setInitialState
+  setInitialState,
+  resetFilters
 } from "../../../../Redux/slice/reporting/Group12/PaymentUnderSuspenseOrderSlice";
 import connectionDataColumn from "./Columns";
 import { formatedFilterData } from "../../../../utils/filters";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import useAuth from "../../../../context/JwtContext";
 import Container from "../.././../../Components/common/Container"
-
+import RefreshReports from "../../../../Components/common/buttons/RefreshReports";
 const PaymentUnderSuspenseOrder = () => {
   const dispatch = useDispatch();
   const { user } = useAuth();
@@ -196,6 +197,7 @@ const PaymentUnderSuspenseOrder = () => {
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
             />
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
 

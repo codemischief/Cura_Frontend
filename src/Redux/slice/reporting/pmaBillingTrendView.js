@@ -64,6 +64,9 @@ export const pmaSlice = createSlice({
     resetData: (state, { payload }) => {
       state.pmaBillingTrendView = [];
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -77,7 +80,8 @@ export const {
   setPmaBillingTrendViewFilters,
   setInitialState,
   setSorting,
-  resetData
+  resetData,
+  resetFilters
 } = pmaSlice.actions;
 
 export const getPmaBillingTrendViewData =

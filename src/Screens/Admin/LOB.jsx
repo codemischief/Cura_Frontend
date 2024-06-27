@@ -34,6 +34,7 @@ import EditButton from '../../Components/common/buttons/EditButton';
 import DeleteButton from '../../Components/common/buttons/deleteButton';
 import useAuth from '../../context/JwtContext';
 import checkEditAccess from '../../Components/common/checkRoleBase';
+import RefreshFilterButton from '../../Components/common/buttons/RefreshFilterButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const LOB = () => {
     const menuRef = useRef();
@@ -53,20 +54,6 @@ const LOB = () => {
     const [sortField, setSortField] = useState("id");
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     // const [flag,setFlag] = useState(false);
-    useEffect(() => {
-        fetchData();
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setLobFilter(false);
-                setIdFilter(false);
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         setCurrentPage(pageNumber);
@@ -525,9 +512,11 @@ const LOB = () => {
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
 
-
-
-
+    const resetFilters = () => {
+        setLobFilterInput("");
+        setIdFilterInput("");
+    };
+    
 
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
@@ -559,6 +548,22 @@ const LOB = () => {
 
         }
     }
+
+    useEffect(() => {
+        fetchData();
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setLobFilter(false);
+                setIdFilter(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
+
     return (
         <div className='font-medium'>
             <Backdrop
@@ -646,7 +651,7 @@ const LOB = () => {
                             {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} filterType={filterMapState.name.filterType} />}
                         </div>
                     </div>
-                    <div className='w-1/6 px-3 py-2.5'>
+                    <div className='w-1/6 px-3 py-2.5 flex items-center justify-center'>
                         <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                             <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
 
@@ -659,7 +664,11 @@ const LOB = () => {
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' filterType={filterMapState.id.filterType} />}
                         <div className='w-1/2 p-4'>
-
+                        <RefreshFilterButton
+                                filterMapping={filterMapping}
+                                setFilterMapState={setFilterMapState}
+                                resetAllInputs={resetFilters}
+                            /> 
                         </div>
                     </div>
                 </div>

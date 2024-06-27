@@ -59,6 +59,9 @@ export const orderPaymentB2C = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -72,6 +75,7 @@ export const {
   setOrderPaymentB2CViewFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = orderPaymentB2C.actions;
 
 export const getOrderPaymentB2CView = (payloadObj) => async (dispatch) => {

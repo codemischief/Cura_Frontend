@@ -59,6 +59,9 @@ export const orderPaymentWithoutTds = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -72,6 +75,7 @@ export const {
   setOrderPaymentWithoutTdsViewFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = orderPaymentWithoutTds.actions;
 
 export const getOrderPaymentWithoutTdsView = (payloadObj) => async (dispatch) => {

@@ -8,6 +8,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
 import { APIService } from "../../../services/API";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   deleteFriends,
   downloadFriendsDataXls,
@@ -15,6 +16,7 @@ import {
   setCountPerPage,
   setPageNumber,
   setSorting,
+  resetFilters
 } from "../../../Redux/slice/Research/FriendsSlice";
 
 import getColumns from "./Columns";
@@ -283,8 +285,8 @@ const ResearchFriends = () => {
       <div className="flex flex-col px-4 gap-[1.75rem]">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
-            heading={"Friends"}
-            path={["Research ", "Friends"]}
+            heading={"Friends & Relatives"}
+            path={["Research ", "Friends & Relatives"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <SearchBar
@@ -303,6 +305,7 @@ const ResearchFriends = () => {
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
+            <RefreshReports onClick={() => dispatch(resetFilters())}/>
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">

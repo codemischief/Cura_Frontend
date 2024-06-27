@@ -39,6 +39,7 @@ import DeleteButton from "../../../Components/common/buttons/deleteButton";
 import checkEditAccess from "../../../Components/common/checkRoleBase";
 import checkDeleteAccess from "../../../Components/common/checkDeleteAccess";
 import ClientPropertySelectNative from "../../../Components/common/select/ClientPropertySelectNative";
+import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilterButton";
 const ManageBankStatement = () => {
     // we have the module here
     const { user } = useAuth()
@@ -359,32 +360,7 @@ const ManageBankStatement = () => {
         setPageLoading(false);
     }
 
-    useEffect(() => {
-        fetchUsersData()
-        fetchUserId();
-        getCRDetails();
-        getVendorAdmin();
-        fetchBankStatement();
-        // getEmployees();
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setModeFilter(false);
-                setDateFilter(false);
-                setAmountFilter(false);
-                setClientFilter(false);
-                setTypeFilter(false);
-                setParticularsFilter(false);
-                setCRFilter(false);
-                setIdFilter(false);
-
-            }
-        }
-
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+    
     //Validation of the form
     const initialValues = {
         modeofpayment: 5,
@@ -768,7 +744,16 @@ const ManageBankStatement = () => {
 
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("")
-
+    const resetAllFilters = () => {
+        setTypeFilterInput("");
+        setModeFilterInput("");
+        setDateFilterInput("");
+        setAmountFilterInput("");
+        setClientFilterInput("");
+        setParticularsFilterInput("");
+        setCRFilterInput("");
+        setIdFilterInput("");
+    };
     const filterMapping = {
         mode: {
             filterType: "",
@@ -1204,6 +1189,32 @@ const ManageBankStatement = () => {
     const fetchCrValues = () => {
         // in this we will fetch the values for Client Receipt
     }
+    useEffect(() => {
+        fetchUsersData()
+        fetchUserId();
+        getCRDetails();
+        getVendorAdmin();
+        fetchBankStatement();
+        // getEmployees();
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setModeFilter(false);
+                setDateFilter(false);
+                setAmountFilter(false);
+                setClientFilter(false);
+                setTypeFilter(false);
+                setParticularsFilter(false);
+                setCRFilter(false);
+                setIdFilter(false);
+
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, [filterMapState]);
     return (
         <div className="font-medium">
             <Backdrop
@@ -1375,8 +1386,12 @@ const ManageBankStatement = () => {
                                 </div>
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                             </div>
-                            <div className='w-1/2 p-4'>
-
+                            <div className='w-1/2 flex items-center'>
+                               <RefreshFilterButton
+                                  resetAllInputs={resetAllFilters}
+                                  filterMapping={filterMapping}
+                                  setFilterMapState={setFilterMapState}
+                               />
                             </div>
                         </div>
                     </div>

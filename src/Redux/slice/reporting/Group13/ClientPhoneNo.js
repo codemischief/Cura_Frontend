@@ -60,6 +60,9 @@ export const ClientsPhoneNoSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -71,6 +74,7 @@ export const {
   setClientPhoneNoFilter,
   setInitialState,
   setSorting,
+  resetFilters
 } = ClientsPhoneNoSlice.actions;
 
 export const getClientsPhoneNo = (payloadObj) => async (dispatch) => {

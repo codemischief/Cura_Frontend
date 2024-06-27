@@ -59,6 +59,9 @@ export const tdsPaidbyGovt = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -70,6 +73,7 @@ export const {
   setTdsPaidGovtDataFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = tdsPaidbyGovt.actions;
 
 export const getTdsPaidGovtData = (payloadObj) => async (dispatch) => {

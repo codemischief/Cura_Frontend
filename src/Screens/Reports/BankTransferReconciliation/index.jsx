@@ -10,6 +10,7 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadBankTransferReconsiliation,
   getBankTransferReconsiliation,
@@ -17,6 +18,7 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
+  resetFilters,
   setStatus
 } from "../../../Redux/slice/reporting/BankTransferReconciliation"
 import { useSelector } from "react-redux";
@@ -248,6 +250,7 @@ const PmaClientReport = () => {
                 removeSearchValue={removeSearchValue}
                 onKeyDown={handleSearchEnterKey}
               />
+              <RefreshReports onClick={() => dispatch(resetFilters())}/>
             </div>
           </div>
 
