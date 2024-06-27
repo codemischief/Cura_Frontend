@@ -31,7 +31,6 @@ export const pmaSlice = createSlice({
     setData: (state, { payload }) => {
       console.log(payload)
       const { data } = payload;
-      
       state.Data = updatedClientStatement(data.data);
       console.log(state.Data)
       state.totalCount = payload.data.total_count;
