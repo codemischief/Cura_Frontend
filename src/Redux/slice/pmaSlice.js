@@ -39,6 +39,7 @@ export const pmaSlice = createSlice({
       state.countPerPage = payload;
     },
     setInitialState: (state, { payload }) => {
+      (state.pmaBillingData = []),
       (state.filter = []),
         (state.status = ""),
         (state.filter = []),
@@ -58,8 +59,8 @@ export const pmaSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
-    resetFilters : (state, { payload }) => {
-      state.sorting = payload;
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
     },
   },
 });

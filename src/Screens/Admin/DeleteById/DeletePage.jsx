@@ -14,6 +14,7 @@ import DeleteIcon from "../../../Components/Svg/DeleteIcon"
 import CancelModel from "../../../Components/modals/CancelModel"
 import SucessfullModal from "../../../Components/modals/SucessfullModal"
 import useAuth from "../../../context/JwtContext"
+import { v4 as uuidv4 } from "uuid";
 const DeletePage = () => {
 
   const { user } = useAuth()
@@ -71,7 +72,10 @@ const DeletePage = () => {
     if(state.tablename == 'client') {
          const data = {
           user_id : user.id,
-          id : id
+          id : id,
+          "modulename" : "DeleteByID",
+          "actioname" : "DeleteById" + pagename,
+          "authorization" : uuidv4(),
          }
          const response  = await APIService.deleteFromClient(data)
          const res = await response.json()
@@ -86,7 +90,10 @@ const DeletePage = () => {
     }else if(state.tablename == 'orders') {
       const data = {
         user_id : user.id,
-        id : id
+        id : id,
+        "modulename" : "DeleteByID",
+        "actioname" : "DeleteById" + pagename,
+        "authorization" : uuidv4(),
        }
        const response  = await APIService.deleteFromOrders(data)
        const res = await response.json()
@@ -103,6 +110,9 @@ const DeletePage = () => {
       const data = {
         "user_id": user.id,
         "table_name": state.tablename,
+        "modulename" : "DeleteByID",
+        "actioname" : "DeleteById" + pagename,
+        "authorization" : uuidv4(),
         "id": id
       }
       const response = await APIService.deleteFromTable(data)

@@ -3,7 +3,7 @@ import axios from "@/utils/axios";
 import FileSaver from "file-saver";
 import {
   env_URL_SERVER,
-  sendClientStatement,
+  updatedClientStatement,
 } from "../helper";
 
 const initialState = {
@@ -31,9 +31,8 @@ export const pmaSlice = createSlice({
     setData: (state, { payload }) => {
       console.log(payload)
       const { data } = payload;
-      
-      state.Data = data.data;
-      // console.log(state.Data)
+      state.Data = updatedClientStatement(data.data);
+      console.log(state.Data)
       state.totalCount = payload.data.total_count;
       state.openingBalance = payload.data.opening_balance;
       state.closingBalance = payload.data.closing_balance;
@@ -69,6 +68,9 @@ export const pmaSlice = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    resetFilters: (state, { payload }) => {
+      state.filter = [];
+    },
   },
 });
 
@@ -82,6 +84,7 @@ export const {
   setFilters,
   setInitialState,
   setSorting,
+  resetFilters
 } = pmaSlice.actions;
 
 export const getData =

@@ -14,6 +14,7 @@ import Container from "../../../Components/common/Container";
 import { formatDate } from "../../../utils/formatDate";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
+import RefreshReports from "../../../Components/common/buttons/RefreshReports";
 import {
   downloadData,
   getData,
@@ -22,6 +23,7 @@ import {
   setSorting,
   setStatus,
   setInitialState,
+  resetFilters
 } from "../../../Redux/slice/SendClientStatement";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -31,7 +33,7 @@ import useAuth from "../../../context/JwtContext";
 // import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 const OrderReceiptList = () => {
   const dispatch = useDispatch();
-  const {user} = useAuth()
+  const { user } = useAuth()
   const {
     Data,
     status,
@@ -52,7 +54,7 @@ const OrderReceiptList = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [height, setHeight] = useState("calc(100vh - 15rem)");
-  const [openConfirmation,setOpenConfimation] = useState(false)
+  const [openConfirmation, setOpenConfimation] = useState(false)
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -82,9 +84,9 @@ const OrderReceiptList = () => {
         user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
-        sendEmail:false,
-        clientid:selectedOption.value,
-        entityid:1,
+        sendEmail: false,
+        clientid: selectedOption.value,
+        entityid: 1,
         rows: [
           "date",
           "type",
@@ -100,7 +102,7 @@ const OrderReceiptList = () => {
         pg_size: +countPerPage,
       };
       dispatch(getData(obj));
-      
+
     }
   };
 
@@ -121,8 +123,8 @@ const OrderReceiptList = () => {
     setSearchInput("");
   };
   useEffect(() => {
-      dispatch(setInitialState())
-  },[])
+    dispatch(setInitialState())
+  }, [])
   useEffect(() => {
 
     if (searchInput === "") setSearch("");
@@ -133,9 +135,9 @@ const OrderReceiptList = () => {
         user_id: user.id,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
-        sendEmail:false,
-        clientid:selectedOption.value,
-        entityid:1,
+        sendEmail: false,
+        clientid: selectedOption.value,
+        entityid: 1,
         rows: [
           "date",
           "type",
@@ -175,9 +177,9 @@ const OrderReceiptList = () => {
       user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
-      sendEmail:false,
-      clientid:selectedOption.value,
-      entityid:1,
+      sendEmail: false,
+      clientid: selectedOption.value,
+      entityid: 1,
       rows: [
         "date",
         "type",
@@ -191,7 +193,7 @@ const OrderReceiptList = () => {
         "date": "Date",
         "type": "Type",
         "description": "Description",
-        "property" : "Property",
+        "property": "Property",
         "amount": "Amount",
       },
       filters: formatedFilterData(filter),
@@ -200,16 +202,16 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
     };
-    dispatch(downloadData(obj))    
+    dispatch(downloadData(obj))
   };
   const downloadPdf = () => {
     let obj = {
       user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
-      sendEmail:false,
-      clientid:selectedOption.value,
-      entityid:1,
+      sendEmail: false,
+      clientid: selectedOption.value,
+      entityid: 1,
       rows: [
         "date",
         "type",
@@ -219,12 +221,12 @@ const OrderReceiptList = () => {
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
       downloadType: "pdf",
-      routename : "/manage/sendclientstatement",
+      routename: "/manage/sendclientstatement",
       colmap: {
         "date": "Date",
         "type": "Type",
         "description": "Description",
-        "property" : "Property",
+        "property": "Property",
         "amount": "Amount",
       },
       filters: formatedFilterData(filter),
@@ -233,10 +235,10 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : "",
     };
-    dispatch(downloadData(obj,'pdf'))
+    dispatch(downloadData(obj, 'pdf'))
   }
   const handleShow = () => {
-    if(startDate && endDate && selectedOption.value){
+    if (startDate && endDate && selectedOption.value) {
       setClientname(selectedOption.label)
       setUiStartDate(startDate)
       setuiEndDate(endDate)
@@ -252,18 +254,18 @@ const OrderReceiptList = () => {
     label: "Enter Client Name",
     value: null
   });
-  const [clientname,setClientname] = useState("")
-  const [uiStartDate,setUiStartDate] = useState("")
-  const [uiEndDate,setuiEndDate] = useState("")
+  const [clientname, setClientname] = useState("")
+  const [uiStartDate, setUiStartDate] = useState("")
+  const [uiEndDate, setuiEndDate] = useState("")
   const handleClientNameChange = (e) => {
-    
-    
+
+
 
     setSelectedOption(e)
   }
 
   const loadOptions = async (e) => {
-    
+
     if (e.length < 3) return;
     const data = {
       "user_id": user.id,
@@ -285,18 +287,18 @@ const OrderReceiptList = () => {
     return results
   }
   const sendEmail = async () => {
-    if(email == "") {
+    if (email == "") {
       setOpenConfimation(false)
       toast.error("Email Doesn't Exist For Client")
-      return 
+      return
     }
     let obj = {
       user_id: user.id,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
-      sendEmail:true,
-      clientid:selectedOption.value,
-      entityid:1,
+      sendEmail: true,
+      clientid: selectedOption.value,
+      entityid: 1,
       rows: [
         "date",
         "type",
@@ -305,12 +307,12 @@ const OrderReceiptList = () => {
         "amount",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : "",
-      colmap : {
-        "date" : "Date",
-        "type" : "Type",
-        "description" : "Description",
-        "property" : "Property",
-        "amount" : "Amount",
+      colmap: {
+        "date": "Date",
+        "type": "Type",
+        "description": "Description",
+        "property": "Property",
+        "amount": "Amount",
       },
       filters: formatedFilterData(filter),
       search_key: search,
@@ -326,23 +328,23 @@ const OrderReceiptList = () => {
   const openSuccess = () => {
     setShowModal(true)
     setTimeout(() => {
-     setShowModal(false)
-    },3000)
+      setShowModal(false)
+    }, 3000)
   }
   function floorDecimal(number) {
     let floorValue = Math.floor(number * 100) / 100; // Get floor value with two decimal places
     return floorValue.toFixed(2); // Convert to string with exactly two decimal places
   }
-  const [email,setEmail] = useState("")
+  const [email, setEmail] = useState("")
   const getClientInfo = async () => {
-      const data = {
-        user_id : user.id,
-        table_name : "get_client_info_view",
-        item_id : selectedOption.value
-      }
-      const response = await APIService.getItembyId(data)
-      const res = await response.json()
-      setEmail(res.data.email1)
+    const data = {
+      user_id: user.id,
+      table_name: "get_client_info_view",
+      item_id: selectedOption.value
+    }
+    const response = await APIService.getItembyId(data)
+    const res = await response.json()
+    setEmail(res.data.email1)
   }
   return (
     <Container>
@@ -361,15 +363,23 @@ const OrderReceiptList = () => {
               onKeyDown={handleSearchEnterKey}
             />
             {showTable && (
-              <CustomButton
-                title="Send Client Statement"
-                onClick={() => {
-                  // sendEmail()
-                  getClientInfo()
-                  setOpenConfimation(true)
-                  showTable && setOpenModal(true);
-                }}
-              />
+              <Stack
+                direction={'row'}
+                alignContent={'center'}
+                gap={"20px"}
+              >
+                <CustomButton
+                  title="Send Client Statement"
+                  onClick={() => {
+                    // sendEmail()
+                    getClientInfo()
+                    setOpenConfimation(true)
+                    showTable && setOpenModal(true);
+                  }}
+
+                />
+                <RefreshReports onClick={() => dispatch(resetFilters())} />
+              </Stack>
             )}
           </div>
         </div>
@@ -401,59 +411,59 @@ const OrderReceiptList = () => {
 
                 styles={{
                   control: (provided, state) => ({
-                      ...provided,
-                      minHeight: 23,
-                      // lineHeight: '0.8',
-                      height: '30px',
-                      width: 224,
-                      fontSize: 12,
-                      // padding: '1px'
-                      borderRadius : '2px'
+                    ...provided,
+                    minHeight: 23,
+                    // lineHeight: '0.8',
+                    height: '30px',
+                    width: 224,
+                    fontSize: 12,
+                    // padding: '1px'
+                    borderRadius: '2px'
                   }),
                   indicatorSeparator: (provided, state) => ({
-                    display : 'none'
+                    display: 'none'
                   }),
                   dropdownIndicator: (provided, state) => ({
-                      ...provided,
-                      padding: '1px',
-                      paddingRight : '2px', // Adjust padding for the dropdown indicator
-                      width: 15, // Adjust width to make it smaller
-                      height: 15, // Adjust height to make it smaller
-                      display: 'flex', // Use flex to center the icon
-                      alignItems: 'center', // Center vertically
-                      justifyContent: 'center'
-                       // adjust padding for the dropdown indicator
+                    ...provided,
+                    padding: '1px',
+                    paddingRight: '2px', // Adjust padding for the dropdown indicator
+                    width: 15, // Adjust width to make it smaller
+                    height: 15, // Adjust height to make it smaller
+                    display: 'flex', // Use flex to center the icon
+                    alignItems: 'center', // Center vertically
+                    justifyContent: 'center'
+                    // adjust padding for the dropdown indicator
                   }),
                   input: (provided, state) => ({
-                      ...provided,
-                      margin: 0, // Remove any default margin
-                      padding: 0, // Remove any default padding
-                      fontSize: 12, // Match the font size
-                      height: 'auto', // Adjust input height
-                    }),
+                    ...provided,
+                    margin: 0, // Remove any default margin
+                    padding: 0, // Remove any default padding
+                    fontSize: 12, // Match the font size
+                    height: 'auto', // Adjust input height
+                  }),
                   // options: (provided, state) => ({
                   //     ...provided,
                   //     fontSize: 10// adjust padding for the dropdown indicator
                   // }),
                   option: (provided, state) => ({
-                      ...provided,
-                      padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
-                      margin: 0, // Ensure no extra margin
-                      fontSize: 12 // Adjust font size of individual options
+                    ...provided,
+                    padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                    margin: 0, // Ensure no extra margin
+                    fontSize: 12 // Adjust font size of individual options
                   }),
                   menu: (provided, state) => ({
-                      ...provided,
-                      width: 224, // Adjust the width of the dropdown menu
-                      zIndex: 9999 // Ensure the menu appears above other elements
+                    ...provided,
+                    width: 224, // Adjust the width of the dropdown menu
+                    zIndex: 9999 // Ensure the menu appears above other elements
                   }),
                   menuList: (provided, state) => ({
-                      ...provided,
-                      padding: 0, // Adjust padding of the menu list
-                      fontSize: 12,
-                      maxHeight: 150 // Adjust font size of the menu list
+                    ...provided,
+                    padding: 0, // Adjust padding of the menu list
+                    fontSize: 12,
+                    maxHeight: 150 // Adjust font size of the menu list
                   }),
-                  
-              }}
+
+                }}
               />
             </div>
 
@@ -468,7 +478,7 @@ const OrderReceiptList = () => {
               onChange={handleDateChange}
               name="endDate"
             />
-            
+
             <Button
               variant="outlined"
               //   onClick={handleShow}
@@ -576,8 +586,8 @@ const OrderReceiptList = () => {
           message="Client Statement Sent Successfully"
         />
       )}
-      
-       {openConfirmation && (
+
+      {openConfirmation && (
         <ConfirmationModal
           open={openConfirmation}
           // loading={formSubmissionStatus === "loading"}
