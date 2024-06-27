@@ -954,6 +954,7 @@ const ManageClientReceipt = () => {
             receivedDate: null,
             amountReceived: null
         })
+        setOrderData({})
         setOrFormErrors({})
         setOrModel(false);
         openCancelModal();
@@ -1074,6 +1075,7 @@ const ManageClientReceipt = () => {
                 amountReceived: null
             })
         }
+        setOrderData({})
         
     }
     const [showOrAddSuccess,setShowOrAddSuccess] = useState(false)
