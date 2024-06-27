@@ -2509,13 +2509,19 @@ const getCompanyKey = async (data) => {
 
 const changeCompanyKey = async (data) => {
   const accessToken = getToken();
+  const modulename = 'companykey';
   const response = await fetch(`${env_URL_SERVER}changeCompanyKey`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      modulename : modulename,
+      actionname : moduleMethods.edit + modulename,
+      authorization : uuidv4()
+    }),
   });
   return handleResponse(response);
 };
