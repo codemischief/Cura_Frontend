@@ -337,7 +337,7 @@ export const navMenuConfig = [
           subheader: "Tally Report",
           items: [
             {
-              title: "Client Receipt",
+              title: "Client Receipts-BankMode",
               path: PATH_DASHBOARD.report.tally.ClientReceipt,
             },
             {
