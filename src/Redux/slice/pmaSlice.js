@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "@/utils/axios";
 import { env_URL_SERVER, updatedResponsePmaData } from "../helper";
 import FileSaver from "file-saver";
+import { v4 as uuidv4 } from "uuid";
+import { moduleMethods } from "@/utils/axios";
+const modulename = "PMABilling";
 const initialState = {
   pmaBillingData: [],
   status: "",
@@ -94,7 +97,12 @@ export const addNewInvoices = (payloadObj) => async (dispatch) => {
     dispatch(setStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}getPMABilling`,
-      payloadObj
+      {
+        ...payloadObj,
+        reqid: uuidv4(),
+        modulename,
+        actionname: moduleMethods.add + modulename,
+      },
     );
     dispatch(setStatus("success"));
     return response.data;
