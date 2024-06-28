@@ -19,7 +19,7 @@ import useAuth from "../../../context/JwtContext";
 
 const validationSchema = Yup.object().shape({
   bankname : Yup.string().required('Enter Bank Name '),
-  bankaddress : Yup.string().required('Enter Bank Address'),
+  bankaddress : Yup.string().required('Enter Branch Address'),
 
 });
 
