@@ -312,11 +312,11 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                     <div className='flex justify-center '>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className='move cursor-move'>
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]">Edit User</div>
                                     </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                         <button onClick={() => { close() }}>
                                             <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                                         </button>
