@@ -76,7 +76,7 @@ export default function connectionDataColumn(onQuery) {
       field: "monthyear",
       filterDisabled: false,
       sorting: true,
-      filterComponent: DateFilterField,
+      filterComponent: TextFilterField,
 
       cellStyle: {
         ...cellStyleCommon,
