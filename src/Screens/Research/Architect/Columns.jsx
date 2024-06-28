@@ -117,7 +117,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 6,
       title: "Society Name",
-      field: "project",
+      field: "societyname",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,

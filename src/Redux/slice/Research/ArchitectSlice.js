@@ -51,8 +51,8 @@ export const architect = createSlice({
         (state.isLoading = false),
         (state.isSuccess = false);
       state.sorting = {
-        sort_by: "",
-        sort_order: "",
+        sort_by: "id",
+        sort_order: "desc",
       };
     },
     setFilters: (state, { payload }) => {

@@ -104,7 +104,7 @@ const ArchitectForm = ({ isOpen, handleClose, editData, openSucess }) => {
       societyname : editData?.societyname ? editData.societyname : null,
       countryId: editData?.countryid ? editData.countryid: 5,
       state: editData?.state ? editData.state : "Maharashtra",
-      city: editData?.city ? editData.city : 847,
+      city: editData?.cityid ? editData.cityid : 847,
       locality : editData?.suburb ? editData.suburb : null,
       excludefrommailinglist : editData?.excludefrommailinglist ? editData.excludefrommailinglist : false
 
