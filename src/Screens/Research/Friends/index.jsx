@@ -226,7 +226,7 @@ const ResearchFriends = () => {
     setEditData({});
   };
 
-  const deleteFriends = async () => {
+  const deleteFriendFnc = async () => {
     try {
       const data = { user_id: user.id, id: isDeleteDialogue };
       await dispatch(deleteFriends(data));
@@ -341,7 +341,7 @@ const ResearchFriends = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteFriends}
+          handleDelete={deleteFriendFnc}
           deleteError={deleteError}
           text={'Friends'}
         />

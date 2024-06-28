@@ -806,7 +806,7 @@ const Locality = () => {
 
                 {/* filter component */}
                 <div className='h-12 w-full bg-white flex justify-between'>
-                    <div className='w-[85%] flex'>
+                    <div className='w-[83%] flex'>
                         <div className='w-[5%] p-4'>
                             {/* <p>Sr. </p> */}
                         </div>
@@ -871,8 +871,8 @@ const Locality = () => {
                             {localityFilter && <CharacterFilter inputVariable={localityFilterInput} setInputVariable={setLocalityFilterInput} handleFilter={newHandleFilter} filterColumn='locality' menuRef={menuRef} filterType={filterMapState.locality.filterType} />}
                         </div>
                     </div>
-                    <div className='w-1/6 py-2.5 flex items-center justify-center'>
-                        <div className='w-[40%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
+                    <div className='w-1/12 py-2.5  items-center justify-center'>
+                        <div className='w-[70%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
                             <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)}
 
                                 onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
@@ -885,14 +885,14 @@ const Locality = () => {
                             {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType} />}
-                        <div className='w-1/2 p-4'>
+                    </div>
+                        <div className='w-1/8  p-2'>
                             <RefreshFilterButton
                                 filterMapping={filterMapping}
                                 setFilterMapState={setFilterMapState}
                                 resetAllInputs={resetFilters}
                             />
                         </div>
-                    </div>
                 </div>
 
 

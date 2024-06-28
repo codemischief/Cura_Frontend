@@ -707,8 +707,8 @@ const Country = () => {
             </div>
 
           </div>
-          <div className='w-[20%] px-3 py-2.5 flex items-center justify-center'>
-            <div className='w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+          <div className='w-[10%] px-3 py-2.5  items-center'>
+            <div className='w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
               <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }}
 
                 onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
@@ -720,14 +720,15 @@ const Country = () => {
               {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
             </div>
             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
-            <div className='w-1/2 p-4'>
+          </div>
+            <div className='w-[10%] p-2'>
+
               <RefreshFilterButton
                 filterMapping={filterMapping}
                 setFilterMapState={setFilterMapState}
                 resetAllInputs={resetFilters}
               />
             </div>
-          </div>
         </div>
         <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
           <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
