@@ -651,8 +651,8 @@ const LOB = () => {
                             {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} filterType={filterMapState.name.filterType} />}
                         </div>
                     </div>
-                    <div className='w-1/6 px-3 py-2.5 flex items-center justify-center'>
-                        <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                    <div className='w-1/12 px-3 py-2.5  ml-24 items-center '>
+                        <div className='w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                             <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
 
                                 onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
@@ -663,14 +663,14 @@ const LOB = () => {
                             {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' filterType={filterMapState.id.filterType} />}
-                        <div className='w-1/2 p-4'>
+                    </div>
+                        <div className='w-[100px] p-2'>
                         <RefreshFilterButton
                                 filterMapping={filterMapping}
                                 setFilterMapState={setFilterMapState}
                                 resetAllInputs={resetFilters}
                             /> 
                         </div>
-                    </div>
                 </div>
 
                 {/* main table component */}

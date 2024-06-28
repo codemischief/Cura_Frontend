@@ -275,8 +275,8 @@ const Payments = () => {
   //Validation of the form
   const initialValues = {
     curaoffice: "",
-    paymentto: null,
-    paymentby: null,
+    paymentto: user.id,
+    paymentby: user.id,
     amount: null,
     description: null,
     paymentfor: null,
