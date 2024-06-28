@@ -131,7 +131,7 @@ const BusinessForm = ({ isOpen, handleClose, editData, openSucess }) => {
         contactname2 : values.contactname2,
         email1 : values.contactemail1,
         email2 : values.contactemail2,
-        emailid: "john.doe@example.com",
+        emailid: values.emailid,
         city : values.city,
         state : values.state,
         country : values.countryId,
