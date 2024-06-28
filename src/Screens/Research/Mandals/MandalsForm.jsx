@@ -16,6 +16,7 @@ import CustomSelectNative from "../../../Components/common/select/CustomSelectNa
 import { getCountries } from "../../../Redux/slice/commonApis";
 import useAuth from "../../../context/JwtContext";
 const validationSchema = Yup.object().shape({
+  type: Yup.string().required("Select Type"),
   countryId: Yup.string().required("Select Country"),
   state: Yup.string().required("Select State"),
   city: Yup.string().required("Select City"),
@@ -23,10 +24,10 @@ const validationSchema = Yup.object().shape({
 const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   const {user} = useAuth();
-  const { countryData } = useSelector((state) => state.commonApi);
+  // const { countryData } = useSelector((state) => state.commonApi);
   
 
-  // const [countryData,setCountryData] = useState([])
+  const [countryData,setCountryData] = useState([])
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -55,20 +56,8 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
-    const idNameObject = {};
-    result.forEach((country) => {
-      idNameObject[country.id] = country.name;
-    });
-    // setCountryData(idNameObject)
-    // setCountryData(result)
-    // setLoading(false);
-    // const resultConverted = await result?.reduce((acc, current) => {
-    //   acc[current.id] = current.name;
-    //   return acc;
-    // }, {});
+    setCountryData(result)
 
-    // setCountryData({ arr: result, obj: resultConverted });
-    
   };
   const [typeData,setTypeData] = useState([])
   const fetchTypeData = async () => {
@@ -80,7 +69,7 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
   }
   useEffect(() => {
     fetchTypeData()
-    // fetchCountryData()
+    fetchCountryData()
     if(editData?.id) {
       // then its update wala case
       fetchStateData(editData?.countryid)
@@ -263,11 +252,11 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                 })}
                             </select>
                             
-                            {/* <div className="inputValidationError">
-                              {touched.employername && errors.employername && (
-                                <div>{errors.employername}</div>
+                            <div className="inputValidationError">
+                              {touched.type && errors.type && (
+                                <div>{errors.type}</div>
                               )}
-                            </div> */}
+                            </div>
                           </div>
                           <div className="">
                             <div className="flex">
@@ -425,23 +414,32 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            <CustomSelectNative
-                              data={Object.keys(countryData)}
-                              renderData={(item) => {
-                                return (
-                                  <MenuItem value={item} key={item}>
-                                    {countryData[item]}
-                                  </MenuItem>
-                                );
-                              }}
-                              placeholder="Select Country"
-                              value={countryData[formik.values.countryId]}
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
+                              name="countryId"
+                              value={formik.values.countryId}
+                              defaultValue="Select Country"
                               onChange={handleCountrySelect}
-                            />
+                            >
+                              <option value="" className="inputFieldValue" hidden>
+                                Select Country
+                              </option>
+                              {countryData.length > 0 &&
+                                countryData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.id}
+                                      key={editData.id}
+                                    >
+                                      {editData.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
                             <div className="inputValidationError">
-                              {errors.countryId && (
-                                <div>{errors.countryId}</div>
-                              )}
+                              {/* {formErrors.state} */}
+                              {errors.countryId && <div>{errors.countryId}</div>}
                             </div>
                           </div>
                           <div className="">
@@ -449,48 +447,74 @@ const MandalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 State Name
                               </label>
-                              <span className="requiredError">*</span>
+                              <span className="requiredError">*</span> 
                             </div>
-                            <CustomSelectNative
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
                               name="state"
-                              data={stateData}
                               value={formik.values.state}
-                              placeholder={"Select State"}
-                              renderData={(item) => {
-                                return (
-                                  <MenuItem value={item[0]} key={item[0]}>
-                                    {item[0]}
-                                  </MenuItem>
-                                );
-                              }}
+                              defaultValue="Select State"
                               onChange={handleState}
-                            />
+                            >
+                              <option value="" className="inputFieldValue" hidden>
+                                Select State
+                              </option>
+                              {stateData.length > 0 &&
+                                stateData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData[0]}
+                                      key={editData[0]}
+                                    >
+                                      {editData[0]}
+                                    </option>
+                                  );
+                                })}
+                            </select>
                             <div className="inputValidationError">
+                              {/* {formErrors.state} */}
                               {errors.state && <div>{errors.state}</div>}
                             </div>
                           </div>
                           <div className="">
+                            {/* <div className="text-[13px]">
+                              City Name{" "}
+                              <label className="text-red-500">*</label>
+                            </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">
                                 City Name
                               </label>
-                              <span className="requiredError">*</span>
+                              <span className="requiredError">*</span> 
                             </div>
-                            <CustomSelectNative
+
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
                               name="city"
-                              data={cityData}
                               value={formik.values.city}
-                              placeholder="Select City"
-                              renderData={(item) => {
-                                return (
-                                  <MenuItem value={item.id} key={item.id}>
-                                    {item.city}
-                                  </MenuItem>
-                                );
-                              }}
+                              defaultValue="Select State"
                               onChange={handleChange}
-                            />
+                              onBlur={handleBlur}
+                            >
+                              <option value="" className="inputValidationError" hidden>
+                                Select City
+                              </option>
+                              {cityData.length > 0 &&
+                                cityData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.id}
+                                      key={editData.id}
+                                    >
+                                      {editData.city}
+                                    </option>
+                                  );
+                                })}
+                            </select>
                             <div className="inputValidationError">
+                              {/* {formErrors.city} */}
                               {errors.city && <div>{errors.city}</div>}
                             </div>
                           </div>

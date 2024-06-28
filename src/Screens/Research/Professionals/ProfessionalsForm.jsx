@@ -52,13 +52,9 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
-    const resultConverted = await result?.reduce((acc, current) => {
-      acc[current.id] = current.name;
-      return acc;
-    }, {});
-
+    
     setLoading(false);
-    setCountryData({ arr: result, obj: resultConverted });
+    setCountryData(result);
   };
 
   const fetchCityData = async (id) => {
@@ -189,12 +185,12 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
       setFieldValue(name, value);
     }
   };
-  const handleCountrySelect = (country) => {
-    setFieldValue("countryId", country?.id);
+  const handleCountrySelect = (e) => {
+    setFieldValue("countryId", e.target.value);
     setFieldValue("city", null);
     setFieldValue("state", null);
     setCityData([])
-    fetchStateData(country?.id);
+    fetchStateData(e.target.value);
   };
 
   const handleState = (e) => {
@@ -372,21 +368,36 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Country Name
+                                Country 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-
-                            <CustomSelect
-                              isLoading={loading}
-                              value={countryData?.obj[formik.values.countryId]}
-                              onSelect={handleCountrySelect}
-                              options={countryData?.arr}
-                            />
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
+                              name="countryId"
+                              value={formik.values.countryId}
+                              defaultValue="Select Country"
+                              onChange={handleCountrySelect}
+                            >
+                              <option value="" className="inputFieldValue" hidden>
+                                Select Country
+                              </option>
+                              {countryData.length > 0 &&
+                                countryData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.id}
+                                      key={editData.id}
+                                    >
+                                      {editData.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
                             <div className="inputValidationError">
-                              {errors.countryId && (
-                                <div>{errors.countryId}</div>
-                              )}
+                              {/* {formErrors.state} */}
+                              {errors.countryId && <div>{errors.countryId}</div>}
                             </div>
                           </div>
                           <div className="">
