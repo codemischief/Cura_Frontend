@@ -33,26 +33,26 @@ import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilterButton";
 const ManageProjectInfo = () => {
-    const {pathname} = useLocation()
-    const {user} = useAuth()
-    
+    const { pathname } = useLocation()
+    const { user } = useAuth()
+
     const dataRows = [
-        "projectname", 
-        "buildername", 
+        "projectname",
+        "buildername",
         "suburb",
-        "otherdetails", 
-        "mailgroup1", 
-        "mailgroup2", 
-        "rules", 
+        "otherdetails",
+        "mailgroup1",
+        "mailgroup2",
+        "rules",
         "tenant",
         "id",
     ]
     const menuRef = useRef();
     const navigate = useNavigate()
     // const {state} = useLocation()
-    const {builderid} = useParams()
+    const { builderid } = useParams()
 
-    const [state,setState] = useState({})
+    const [state, setState] = useState({})
     const canEdit = checkEditAccess();
     const [pageLoading, setPageLoading] = useState(false);
     const [existingProjectInfo, setExistingProjectInfo] = useState([]);
@@ -85,20 +85,20 @@ const ManageProjectInfo = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        
+
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
-                if(filterMapState[key].filterData == 'Numeric') {
+                if (filterMapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
                         Number(filterMapState[key].filterValue),
                         filterMapState[key].filterData,
                     ]);
-                }else {
+                } else {
                     tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
                 }
-                
+
             }
         })
         // setFilterState((prev) => tempArray)
@@ -113,16 +113,19 @@ const ManageProjectInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getProjectInfo(data);
-        const temp = await response.json();
-        
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingProjectInfo(result);
-        
-        setPageLoading(false);
+        try {
+            const response = await APIService.getProjectInfo(data);
+            const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingProjectInfo(result);
+            setPageLoading(false);
+        }
+        catch (err) {
+            setPageLoading(false);
+        }
+
     }
     const fetchPageData = async (pageNumber) => {
         setCurrentPage((prev) => pageNumber)
@@ -137,18 +140,24 @@ const ManageProjectInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getProjectInfo(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingProjectInfo(result);
-        setPageLoading(false);
+        try {
+            const response = await APIService.getProjectInfo(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingProjectInfo(result);
+            setPageLoading(false);
+        }
+        catch (err) {
+            setPageLoading(false);
+        }
+
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        
+
         setCurrentPages((prev) => quantity)
         setCurrentPage((prev) => 1)
         const data = {
@@ -161,25 +170,30 @@ const ManageProjectInfo = () => {
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
-        const response = await APIService.getProjectInfo(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingProjectInfo(result);
-        setPageLoading(false);
+        try {
+            const response = await APIService.getProjectInfo(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingProjectInfo(result);
+            setPageLoading(false);
+        } catch (e) {
+            setPageLoading(false);
+        }
+
     }
     
     
     
     const [formErrors, setFormErrors] = useState({});
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [deleteProjectName,setDeleteProjectName] = useState("")
+    const [deleteProjectName, setDeleteProjectName] = useState("")
     const handleDelete = (item) => {
 
         // 
-        
+
         setDeleteProjectName(item.projectname)
 
         setCurrProject((prev) => item.id)
@@ -191,12 +205,16 @@ const ManageProjectInfo = () => {
             "user_id": user.id,
             "id": id
         }
-        const response = await APIService.deleteProject(data);
-        const res = await response.json();
-        setShowDeleteModal(false);
-        if (res.result == 'success') {
-            openDeleteSuccess()
-            fetchData()
+        try {
+            const response = await APIService.deleteProject(data);
+            const res = await response.json();
+            setShowDeleteModal(false);
+            if (res.result == 'success') {
+                openDeleteSuccess()
+                fetchData()
+            }
+        } catch (er) {
+
         }
         
     }
@@ -260,7 +278,7 @@ const ManageProjectInfo = () => {
         }
         if (formValues.project_info.addressline1 == null || formValues.project_info.addressline1 == "") {
             // we need to set the formErrors
-            
+
             setFormErrors((existing) => {
                 return { ...existing, addressline1: "Enter Adress Line1" }
             })
@@ -319,7 +337,7 @@ const ManageProjectInfo = () => {
         if (formValues.project_info.city == null || formValues.project_info.city == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
-                return { ...existing, city: "Select City"}
+                return { ...existing, city: "Select City" }
             })
             res.status = false
             res.page = 1
@@ -341,15 +359,15 @@ const ManageProjectInfo = () => {
                 return { ...existing, mailgroup2: "" }
             })
         }
-      
+
         return res
     }
     const handleAddProjectInfo = () => {
-        
+
         let temp = validate()
         if (!temp.status) {
-            
-            
+
+
             setSelectedDialogue(temp.page)
             return;
         }
@@ -359,15 +377,15 @@ const ManageProjectInfo = () => {
     }
     const arrayHelper = (arr) => {
         const temp = []
-        for(var i=0;i <arr.length ; i++) {
-            
+        for (var i = 0; i < arr.length; i++) {
+
             let flag = false;
             Object.keys(arr[i]).forEach(key => {
                 if(arr[i][key] != null && arr[i][key] != "") {
                     flag = true
                 }
             })
-            if(flag) temp.push(arr[i])
+            if (flag) temp.push(arr[i])
         }
     return temp
 }
@@ -445,6 +463,7 @@ const addProjectInfo = async () => {
             openAddSuccess();
             
         }
+
     }
     // validate form and to throw Error message
     const [isStateDialogue, setIsStateDialogue] = React.useState(false);
@@ -462,7 +481,7 @@ const addProjectInfo = async () => {
         setFormErrors({});
     }
     const handlePageChange = (event, value) => {
-        
+
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -476,108 +495,150 @@ const addProjectInfo = async () => {
         setDownloadModal(false);
     }
     const handleDownload = async (type) => {
-        // setBackDropLoading(true)
-        setDownloadModal(false)
-        setPageLoading(true)
-        const data = {
-            "user_id": user.id,
-            "rows": ["projectname","buildername","suburb","otherdetails","mailgroup1","mailgroup2","rules","tenant"
-            ],
-            "filters": stateArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput,
-            "downloadType": type,
-            "routename" : "/manage/manageprojectinfo",
-            "colmap": {
-                "projectname": "Project Name",
-                "buildername" : "Builder Name",
-                "suburb" : "Suburb",
-                "otherdetails" : "Other Details/Issues",
-                "mailgroup1" : "Mailgroup",
-                "mailgroup2" : "Subscribed Mail",
-                "rules" : "Rules",
-                "tenant": "Tenant",
-                "id" : "ID"
-            }
-        };
-        const response = await APIService.getProjectInfo(data)
-        const temp = await response.json();
-        const result = temp.data;
-        
-        if (temp.result == 'success') {
-            const d = {
-                "filename": temp.filename,
-                "user_id": user.id
-            }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-            .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
-                })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'ProjectData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'ProjectData.pdf');
-                    }
-                    
-                    
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-                
-                setTimeout(() => {
-                    // setBackDropLoading(false)
-                    setPageLoading(false)
-                }, 1000)
-            }
-        }
-        const handleSort = async (field) => {
-            setPageLoading(true);
-            setSortField((prev) => field)
-            setFlag((prev) => !prev);
+        try{
+            setDownloadModal(false)
+            setPageLoading(true)
             const data = {
                 "user_id": user.id,
-                "rows": dataRows,
-                "filters": stateArray,
-                "sort_by": [sortField],
-                "order": !flag ? "asc" : "desc",
-                "pg_no": Number(currentPage),
-                "pg_size": Number(currentPages),
-                "search_key": searchInput
-            }
-            const response = await APIService.getProjectInfo(data)
-            const res = await response.json();
-            setExistingProjectInfo(res.data)
-            setPageLoading(false)
-        }
-        const handleSearch = async () => {
-            // 
-            setPageLoading(true);
-            setIsSearchOn(true);
-            setCurrentPage((prev) => 1)
-            const data = {
-                "user_id": user.id,
-                "rows": dataRows,
+                "rows": ["projectname","buildername","suburb","otherdetails","mailgroup1","mailgroup2","rules","tenant"
+                ],
                 "filters": stateArray,
                 "sort_by": [sortField],
                 "order": flag ? "asc" : "desc",
-                "pg_no": 1,
-                "pg_size": Number(currentPages),
-                "search_key": searchInput
+                "pg_no": 0,
+                "pg_size": 0,
+                "search_key": searchInput,
+                "downloadType": type,
+                "routename" : "/manage/manageprojectinfo",
+                "colmap": {
+                    "projectname": "Project Name",
+                    "buildername" : "Builder Name",
+                    "suburb" : "Suburb",
+                    "otherdetails" : "Other Details/Issues",
+                    "mailgroup1" : "Mailgroup",
+                    "mailgroup2" : "Subscribed Mail",
+                    "rules" : "Rules",
+                    "tenant": "Tenant",
+                    "id" : "ID"
+                }
             };
+            const response = await APIService.getProjectInfo(data)
+            const temp = await response.json();
+            const result = temp.data;
+            
+            if (temp.result == 'success') {
+                const d = {
+                    "filename": temp.filename,
+                    "user_id": user.id
+                }
+                fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                    method: 'POST', // or the appropriate HTTP method
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d) // Convert the object to a JSON string
+                })
+                .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.blob();
+                    })
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'ProjectData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'ProjectData.pdf');
+                        }
+                        
+                        
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                    
+                    setTimeout(() => {
+                        // setBackDropLoading(false)
+                        setPageLoading(false)
+                    }, 1000)
+                }
+        }catch(e){
+            setPageLoading(false)
+        }
+        // setBackDropLoading(true)
+      
+        }
+
+        const handleSort = async (field) => {
+            try{
+                setPageLoading(true);
+                setSortField((prev) => field)
+                setFlag((prev) => !prev);
+                const data = {
+                    "user_id": user.id,
+                    "rows": dataRows,
+                    "filters": stateArray,
+                    "sort_by": [sortField],
+                    "order": !flag ? "asc" : "desc",
+                    "pg_no": Number(currentPage),
+                    "pg_size": Number(currentPages),
+                    "search_key": searchInput
+                }
+                const response = await APIService.getProjectInfo(data)
+                const res = await response.json();
+                setExistingProjectInfo(res.data)
+                setPageLoading(false)
+            }catch(e){
+                setPageLoading(false)
+                
+            }
+         
+        }
+        
+        const handleSearch = async () => {
+            try{
+                setPageLoading(true);
+                setIsSearchOn(true);
+                setCurrentPage((prev) => 1)
+                const data = {
+                    "user_id": user.id,
+                    "rows": dataRows,
+                    "filters": stateArray,
+                    "sort_by": [sortField],
+                    "order": flag ? "asc" : "desc",
+                    "pg_no": 1,
+                    "pg_size": Number(currentPages),
+                    "search_key": searchInput
+                };
+                const response = await APIService.getProjectInfo(data);
+                const temp = await response.json();
+                const result = temp.data;
+                const t = temp.total_count;
+                setTotalItems(t);
+                setExistingProjectInfo(result);
+                setPageLoading(false);
+            }catch(e){
+                setPageLoading(false);
+
+            }
+           
+        }
+        const handleCloseSearch = async () => {
+            try{
+                setIsSearchOn(false)
+                setPageLoading(true)
+                setSearchInput("")
+                setCurrentPage((prev) => 1)
+                const data = {
+                    "user_id": user.id,
+                    "rows": dataRows,
+                    "filters": stateArray,
+                    "sort_by": [sortField],
+                    "order": flag ? "asc" : "desc",
+                    "pg_no": 1,
+                    "pg_size": Number(currentPages),
+                    "search_key": ""
+                };
             const response = await APIService.getProjectInfo(data);
             const temp = await response.json();
             const result = temp.data;
@@ -585,30 +646,13 @@ const addProjectInfo = async () => {
             setTotalItems(t);
             setExistingProjectInfo(result);
             setPageLoading(false);
-        }
-        const handleCloseSearch = async () => {
-            setIsSearchOn(false)
-            setPageLoading(true)
-            setSearchInput("")
-            setCurrentPage((prev) => 1)
-            const data = {
-                "user_id": user.id,
-                "rows": dataRows,
-                "filters": stateArray,
-                "sort_by": [sortField],
-                "order": flag ? "asc" : "desc",
-                "pg_no": 1,
-                "pg_size": Number(currentPages),
-                "search_key": ""
-            };
-        const response = await APIService.getProjectInfo(data);
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingProjectInfo(result);
-        setPageLoading(false);
+            }catch(e){
+            setPageLoading(false);
+
+            }
+           
     }
+
     const [isEditDialogue, setIsEditDialogue] = useState(false)
     const [showAddSuccess, setShowAddSuccess] = useState(false)
     const openAddSuccess = () => {
@@ -693,35 +737,52 @@ const addProjectInfo = async () => {
     const [builderNameData, setBuilderNameData] = useState([])
     const [projectTypeData, setProjectTypeData] = useState([])
     const [projectLegalData, setProjectLegalData] = useState([])
+
     const getBuildersData = async () => {
-        const data = {
-            "user_id": user.id
+        try{
+            const data = {
+                "user_id": user.id
+            }
+            const response = await APIService.getBuildersAdmin(data);
+            const res = await response.json();
+    
+            setBuilderNameData(res.data)
+        }catch(e){
+            console.log(e);
         }
-        const response = await APIService.getBuildersAdmin(data);
-        const res = await response.json();
-        
-        setBuilderNameData(res.data)
+       
     }
+
     const getProjectTypeData = async () => {
-        const data = {
-            "user_id": user.id
+        try{
+            const data = {
+                "user_id": user.id
+            }
+            const response = await APIService.getProjectTypeAdmin(data)
+            const res = await response.json();
+    
+            setProjectTypeData(res.data)
+        }catch(e){
+            console.log(e);
         }
-        const response = await APIService.getProjectTypeAdmin(data)
-        const res = await response.json();
-        
-        setProjectTypeData(res.data)
+       
     }
     const getProjectLegalData = async () => {
-        const data = {
-            "user_id": user.id
+        try{
+            const data = {
+                "user_id": user.id
+            }
+            const response = await APIService.getProjectLegalStatusAdmin(data)
+            const res = await response.json();
+    
+            setProjectLegalData(res.data)
+        }catch(e){
+            console.log(e);
         }
-        const response = await APIService.getProjectLegalStatusAdmin(data)
-        const res = await response.json();
-        
-        setProjectLegalData(res.data)
+       
     }
-    
-    
+
+
     const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
     const [showCancelModel, setShowCancelModel] = useState(false);
     const openAddCancelModal = () => {
@@ -755,8 +816,8 @@ const addProjectInfo = async () => {
     const [subscribedEmailFilterInput, setSubscribedEmailFilterInput] = useState("");
     const [rulesFilter, setRulesFilter] = useState(false);
     const [rulesFilterInput, setRulesFilterInput] = useState("");
-    const [tenantFilter,setTenantFilter] = useState(false)
-    const [tenantFilterInput,setTenantFilterInput] = useState("")
+    const [tenantFilter, setTenantFilter] = useState(false)
+    const [tenantFilterInput, setTenantFilterInput] = useState("")
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
     const resetFilters = () => {
@@ -813,7 +874,7 @@ const addProjectInfo = async () => {
             filterData: "String",
             filterInput: ""
         },
-        tenant : {
+        tenant: {
             filterType: "",
             filterValue: null,
             filterData: "String",
@@ -825,7 +886,7 @@ const addProjectInfo = async () => {
             filterData: "Numeric",
             filterInput: ""
         },
-        builderid : {
+        builderid: {
             filterType: builderid ? "equalTo" : "",
             filterValue: builderid,
             filterData: "Numeric",
@@ -836,10 +897,6 @@ const addProjectInfo = async () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
     
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        
-        
-        
-        
         var existing = filterMapState;
         existing = {
             ...existing, [columnName]: {
@@ -875,10 +932,10 @@ const addProjectInfo = async () => {
         setIdFilter(false)
         // we need to query thru the object
         // 
-        
+
         Object.keys(mapState).forEach(key => {
-            
-            if(mapState[key].filterData == 'Numeric') {
+
+            if (mapState[key].filterData == 'Numeric') {
                 tempArray.push([
                     key,
                     mapState[key].filterType,
@@ -887,7 +944,7 @@ const addProjectInfo = async () => {
                 ]);
             }
             if (mapState[key].filterType != "") {
-                if(mapState[key].filterData == 'Numeric') {
+                if (mapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         mapState[key].filterType,
@@ -916,14 +973,19 @@ const addProjectInfo = async () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getProjectInfo(data);
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingProjectInfo(result);
-        
-        setPageLoading(false);
+        try {
+            const response = await APIService.getProjectInfo(data);
+
+            const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingProjectInfo(result);
+            setPageLoading(false);
+        } catch (err) {
+            setPageLoading(false);
+        }
+
     }
     
     
@@ -931,9 +993,9 @@ const addProjectInfo = async () => {
     const fetchHyperLinkData = async () => {
         if(builderid != null) {
             const data = {
-                user_id : user.id,
-                table_name : "get_builder_view",
-                item_id : builderid
+                user_id: user.id,
+                table_name: "get_builder_view",
+                item_id: builderid
             }
             const response = await APIService.getItembyId(data)
             const res = await response.json()
@@ -957,12 +1019,12 @@ const addProjectInfo = async () => {
     }
     const [currProject, setCurrProject] = useState(0);
     const handleEdit = (id) => {
-        
+
         setCurrProject((prev) => id)
         setIsEditDialogue(true)
     }
     const [showEditSuccess, setShowEditSuccess] = useState(false);
-    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false)
     const openEditSuccess = () => {
         setIsEditDialogue(false)
         setShowEditSuccess(true)
@@ -987,7 +1049,7 @@ const addProjectInfo = async () => {
             handleSearch()
         }
     }
-    const handleEnterToFilter = (event,inputVariable,
+    const handleEnterToFilter = (event, inputVariable,
         setInputVariable,
         type,
         columnName) => {
@@ -1039,27 +1101,27 @@ const addProjectInfo = async () => {
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
-                onClick={() => {}}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
             {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} showCancel={openCancelModal} state={state} />}
-            {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} showCancel={openCancelModal} projectName={deleteProjectName}/>}
+            {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} showCancel={openCancelModal} projectName={deleteProjectName} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Project Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Project Deleted Successfully" />}
-            {showAddConfirmation && <SaveConfirmationProjectInfo currProject={currProject} handleClose={() => setShowAddConfirmation(false)} addProject={addProjectInfo} showCancel={openAddCancelModal} setDefault={initials}/>}
+            {showAddConfirmation && <SaveConfirmationProjectInfo currProject={currProject} handleClose={() => setShowAddConfirmation(false)} addProject={addProjectInfo} showCancel={openAddCancelModal} setDefault={initials} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new project created." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
-            
+
             <div className='h-[calc(100vh_-_123px)] w-full px-10'>
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
-                           <button onClick={() => navigate(-1)}><img className='w-5 h-5 ' src={backLink} /></button> 
+                            <button onClick={() => navigate(-1)}><img className='w-5 h-5 ' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
@@ -1069,7 +1131,7 @@ const addProjectInfo = async () => {
                     </div>
                     <div className='flex space-x-2 items-center'>
 
-                    <div className='flex bg-[#EBEBEB]'>
+                        <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
                                 className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
@@ -1109,122 +1171,122 @@ const addProjectInfo = async () => {
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={projectNameFilterInput} onChange={(e) => setProjectNameFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,projectNameFilterInput,
-                                        setProjectNameFilterInput,
-                                        'contains',
-                                        'projectname')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={projectNameFilterInput} onChange={(e) => setProjectNameFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, projectNameFilterInput,
+                                            setProjectNameFilterInput,
+                                            'contains',
+                                            'projectname')}
                                     />
-                                    {filterMapState.projectname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setProjectNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setProjectNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.projectname.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setProjectNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setProjectNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='w-[30%] px-1 py-2' onClick={() => { setProjectNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
                                 {projectNameFilter && <CharacterFilter inputVariable={projectNameFilterInput} setInputVariable={setProjectNameFilterInput} handleFilter={newHandleFilter} filterColumn="projectname" menuRef={menuRef} filterType={filterMapState.projectname.filterType} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={builderNameFilterInput} onChange={(e) => setBuilderNameFilterInput(e.target.value)} 
-                                    
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,builderNameFilterInput,
-                                        setBuilderNameFilterInput,
-                                        'contains',
-                                        'buildername')}
-                                    
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={builderNameFilterInput} onChange={(e) => setBuilderNameFilterInput(e.target.value)}
+
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, builderNameFilterInput,
+                                            setBuilderNameFilterInput,
+                                            'contains',
+                                            'buildername')}
+
+
                                     />
-                                    {filterMapState.buildername.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setBuilderNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setBuilderNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.buildername.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setBuilderNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setBuilderNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='w-[30%] px-1 py-2' onClick={() => { setBuilderNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {builderNameFilter && <CharacterFilter inputVariable={builderNameFilterInput} setInputVariable={setBuilderNameFilterInput} handleFilter={newHandleFilter} filterColumn="buildername" menuRef={menuRef} filterType={filterMapState.buildername.filterType}/>}
+                                {builderNameFilter && <CharacterFilter inputVariable={builderNameFilterInput} setInputVariable={setBuilderNameFilterInput} handleFilter={newHandleFilter} filterColumn="buildername" menuRef={menuRef} filterType={filterMapState.buildername.filterType} />}
                             </div>
                             <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={suburbFilterInput} onChange={(e) => setSuburbFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,suburbFilterInput,
-                                        setSuburbFilterInput,
-                                        'contains',
-                                        'suburb')}
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={suburbFilterInput} onChange={(e) => setSuburbFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, suburbFilterInput,
+                                            setSuburbFilterInput,
+                                            'contains',
+                                            'suburb')}
+
                                     />
-                                    {filterMapState.suburb.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setSuburbFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setSuburbFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.suburb.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setSuburbFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setSuburbFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='w-[30%] px-1 py-2'  onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn="suburb" menuRef={menuRef} filterType={filterMapState.suburb.filterType}/>}
+                                {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn="suburb" menuRef={menuRef} filterType={filterMapState.suburb.filterType} />}
                             </div>
                             <div className='w-[15%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={otherDetailsFilterInput} onChange={(e) => setOtherDetailsFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,otherDetailsFilterInput,
-                                        setOtherDetailsFilterInput,
-                                        'contains',
-                                        'otherdetails')}
-                                    
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={otherDetailsFilterInput} onChange={(e) => setOtherDetailsFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, otherDetailsFilterInput,
+                                            setOtherDetailsFilterInput,
+                                            'contains',
+                                            'otherdetails')}
+
                                     />
-                                    {filterMapState.otherdetails.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setOtherDetailsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setOtherDetailsFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.otherdetails.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setOtherDetailsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setOtherDetailsFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='w-[25%] px-1 py-2' onClick={() => { setOtherDetailsFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
                                 {otherDetailsFilter && <CharacterFilter inputVariable={otherDetailsFilterInput} setInputVariable={setOtherDetailsFilterInput} handleFilter={newHandleFilter} filterColumn="otherdetails" menuRef={menuRef} filterType={filterMapState.otherdetails.filterType} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5 ml-[-1px]'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={mailGroupFilterInput} onChange={(e) => setMailGroupFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,mailGroupFilterInput,
-                                        setMailGroupFilterInput,
-                                        'contains',
-                                        'mailgroup1')}
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={mailGroupFilterInput} onChange={(e) => setMailGroupFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, mailGroupFilterInput,
+                                            setMailGroupFilterInput,
+                                            'contains',
+                                            'mailgroup1')}
+
                                     />
-                                    {filterMapState.mailgroup1.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setMailGroupFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setMailGroupFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.mailgroup1.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setMailGroupFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setMailGroupFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='w-[30%] px-1 py-2' onClick={() => { setMailGroupFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {mailGroupFilter && <CharacterFilter inputVariable={mailGroupFilterInput} setInputVariable={setMailGroupFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup1" menuRef={menuRef} filterType={filterMapState.mailgroup1.filterType}/>}
+                                {mailGroupFilter && <CharacterFilter inputVariable={mailGroupFilterInput} setInputVariable={setMailGroupFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup1" menuRef={menuRef} filterType={filterMapState.mailgroup1.filterType} />}
                             </div>
                             <div className='w-[14%] px-3 py-2.5 '>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={subscribedEmailFilterInput} onChange={(e) => setSubscribedEmailFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,subscribedEmailFilterInput,
-                                        setSubscribedEmailFilterInput,
-                                        'contains',
-                                        'mailgroup2')}
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={subscribedEmailFilterInput} onChange={(e) => setSubscribedEmailFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, subscribedEmailFilterInput,
+                                            setSubscribedEmailFilterInput,
+                                            'contains',
+                                            'mailgroup2')}
+
                                     />
-                                     {filterMapState.mailgroup2.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setSubscribedEmailFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setSubscribedEmailFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.mailgroup2.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setSubscribedEmailFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setSubscribedEmailFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='w-[30%] px-1 py-2' onClick={() => { setSubscribedEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
                                 {subscribedEmailFilter && <CharacterFilter inputVariable={subscribedEmailFilterInput} setInputVariable={setSubscribedEmailFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup2" menuRef={menuRef} filterType={filterMapState.mailgroup2.filterType} />}
                             </div>
                             <div className='w-[10%] px-3 py-2.5 ml-[-2px]'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={rulesFilterInput} onChange={(e) => setRulesFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,rulesFilterInput,
-                                        setRulesFilterInput,
-                                        'contains',
-                                        'rules')}
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={rulesFilterInput} onChange={(e) => setRulesFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, rulesFilterInput,
+                                            setRulesFilterInput,
+                                            'contains',
+                                            'rules')}
+
                                     />
-                                    {filterMapState.rules.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setRulesFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setRulesFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.rules.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setRulesFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setRulesFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='w-[30%] px-1 py-2'onClick={() => { setRulesFilter((prev) => !prev) }} ><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {rulesFilter && <CharacterFilter inputVariable={rulesFilterInput} setInputVariable={setRulesFilterInput} handleFilter={newHandleFilter} filterColumn="rules" menuRef={menuRef} filterType={filterMapState.rules.filterType}/>}
+                                {rulesFilter && <CharacterFilter inputVariable={rulesFilterInput} setInputVariable={setRulesFilterInput} handleFilter={newHandleFilter} filterColumn="rules" menuRef={menuRef} filterType={filterMapState.rules.filterType} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={tenantFilterInput} onChange={(e) => setTenantFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,tenantFilterInput,
-                                        setTenantFilterInput,
-                                        'contains',
-                                        'tenant')}
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={tenantFilterInput} onChange={(e) => setTenantFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, tenantFilterInput,
+                                            setTenantFilterInput,
+                                            'contains',
+                                            'tenant')}
+
                                     />
-                                    {filterMapState.tenant.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTenantFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTenantFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
-                                    
+                                    {filterMapState.tenant.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setTenantFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setTenantFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+
                                 </div>
                                 {tenantFilter && <CharacterFilter filterColumn='tenant' inputVariable={tenantFilterInput} setInputVariable={setTenantFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.tenant.filterType} />}
                             </div>
@@ -1232,14 +1294,14 @@ const addProjectInfo = async () => {
                         <div className="w-[12%] px-2 py-2.5 flex">
                             <div className='w-[65%]  '>
                                 <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none"  value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
-                                        setIdFilterInput,
-                                        'equalTo',
-                                        'id')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                            setIdFilterInput,
+                                            'equalTo',
+                                            'id')}
                                     />
-                                    {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.id.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='w-[30%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
@@ -1383,12 +1445,12 @@ const addProjectInfo = async () => {
                                     </div>
                                     <div className='w-1/2 flex overflow-hidden items-center px-3 justify-around '>
                                         <EditButton
-                                           handleEdit={handleEdit}
-                                           rowData={item.id}
+                                            handleEdit={handleEdit}
+                                            rowData={item.id}
                                         />
                                         <DeleteButton
-                                           handleDelete={handleDelete}
-                                           rowData={item}
+                                            handleDelete={handleDelete}
+                                            rowData={item}
                                         />
                                     </div>
                                 </div>
@@ -1419,7 +1481,7 @@ const addProjectInfo = async () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                
+
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -1478,49 +1540,49 @@ const addProjectInfo = async () => {
                 <>
                     <div className='flex justify-center'>
                         <Draggable handle='div.move'>
-                        <div className="w-[1100px] h-auto  bg-white rounded-lg">
-                            <div className='move cursor-move'>
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                                    <div className="mr-[410px] ml-[410px]">
-                                        <div className="text-[16px]">New project</div>
+                            <div className="w-[1100px] h-auto  bg-white rounded-lg">
+                                <div className='move cursor-move'>
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                        <div className="mr-[410px] ml-[410px]">
+                                            <div className="text-[16px]">New project</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2 absolute right-2">
+                                            <button onClick={handleClose}><img className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
+                                        </div>
                                     </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2 absolute right-2">
-                                        <button onClick={handleClose}><img className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
+                                </div>
+                                <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
+                                    <div className={`${selectedDialogue == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`} >
+                                        <button onClick={selectFirst}><div>Project Information</div></button>
+                                    </div>
+                                    <div className={`${selectedDialogue == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
+                                        <button onClick={selectSecond}><div>Project Details</div></button>
+                                    </div>
+                                    <div className={`${selectedDialogue == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
+                                        <button onClick={selectThird}><div>Bank details</div></button>
+                                    </div>
+                                    <div className={`${selectedDialogue == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
+                                        <button onClick={selectFourth}><div>Contacts</div></button>
+                                    </div>
+                                    <div className={`${selectedDialogue == 5 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
+                                        <button onClick={selectFifth}><div>Photos</div></button>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
-                                <div className={`${selectedDialogue == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`} >
-                                    <button onClick={selectFirst}><div>Project Information</div></button>
-                                </div>
-                                <div className={`${selectedDialogue == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
-                                    <button onClick={selectSecond}><div>Project Details</div></button>
-                                </div>
-                                <div className={`${selectedDialogue == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
-                                    <button onClick={selectThird}><div>Bank details</div></button>
-                                </div>
-                                <div className={`${selectedDialogue == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
-                                    <button onClick={selectFourth}><div>Contacts</div></button>
-                                </div>
-                                <div className={`${selectedDialogue == 5 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
-                                    <button onClick={selectFifth}><div>Photos</div></button>
-                                </div>
-                            </div>
-                           
 
 
 
-                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} state={state}/>}
-                            {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors} />}
-                            {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
-                            {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues} />}
-                            {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues} />}
-                            <div className="my-2 flex justify-center items-center gap-[10px] mt-[20px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddProjectInfo} >Add</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+
+                                {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} state={state} />}
+                                {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors} />}
+                                {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
+                                {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues} />}
+                                {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues} />}
+                                <div className="my-2 flex justify-center items-center gap-[10px] mt-[20px]">
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddProjectInfo} >Add</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                                </div>
+
                             </div>
-                            
-                        </div>
                         </Draggable>
                     </div>
                 </>

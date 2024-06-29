@@ -1,19 +1,16 @@
-import { CircularProgress, Modal, Pagination , LinearProgress, Backdrop , MenuItem} from "@mui/material";
+/* eslint-disable no-empty */
+import { CircularProgress, Modal, Pagination, LinearProgress, Backdrop, MenuItem } from "@mui/material";
 import React, { useEffect, useState, useRef } from 'react';
-import { Link , useLocation, useNavigate} from "react-router-dom";
-import Navbar from "../../../Components/Navabar/Navbar";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import FailureModal from '../../../Components/modals/FailureModal';
 import AsyncSelect from "react-select/async"
 import backLink from "../../../assets/back.png";
 import Cross from "../../../assets/cross.png";
 import downloadIcon from "../../../assets/download.png";
-import Edit from "../../../assets/edit.png";
 import refreshIcon from "../../../assets/refresh.png";
 import searchIcon from "../../../assets/searchIcon.png";
-import Trash from "../../../assets/trash.png";
 import { APIService } from '../../../services/API';
 import Delete from './Delete';
-import Add from "./../../../assets/add.png";
 import EditManageStatement from "./EditManagePayments";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
@@ -27,7 +24,6 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from "react-draggable";
-import DropDown from "../../../Components/Dropdown/Dropdown";
 import { formatDate } from "../../../utils/formatDate";
 import AddButton from "../../../Components/common/CustomButton";
 // import DayJS from 'react-dayjs';
@@ -43,7 +39,7 @@ import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilte
 const ManageBankStatement = () => {
     // we have the module here
     const { user } = useAuth()
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     const navigate = useNavigate()
     const dataRows = [
         "mode",
@@ -68,7 +64,6 @@ const ManageBankStatement = () => {
     const [deleted, setDeleted] = useState(false);
     const [userId, setUserId] = useState(user.id);
     const crdr = ["CR", "DR"];
-    const [order, setOrder] = useState("asc");
     const [vendorList, setVendorList] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [currentPages, setCurrentPages] = useState(15);
@@ -76,45 +71,43 @@ const ManageBankStatement = () => {
     const [downloadModal, setDownloadModal] = useState(false);
     const [clientName, setClientName] = useState("");
     const [showCreditReceipt, setCreditReceipt] = useState(false);
-    const [employees, setEmployees] = useState([]);
     const [mode, setMode] = useState([])
     const [entity, setEntity] = useState([])
     const [howReceived, setHowReceived] = useState([])
-    const [client, setClient] = useState([])
     const [successMessage, setSuccessMessage] = useState("")
     const [searchQuery, setSearchQuery] = useState("");
-    const [modeEdit, setModeEdit] = useState(Number)
-    const [receivedBy, setRecievedBy] = useState(Number);
-    const [vendorId, setVendorId] = useState(Number);
-    const [filterArray, setFilterArray] = useState([["modeofpayment", "contains", ""], ["date", "contains", ""], ["crdr", "contains", ""], ["amount", "contains", ""], ["particulars", "contains", ""], ["clientid", "contains", ""]]);
     const [sortField, setSortField] = useState("id");
-    const [isSearchOn, setIsSearchOn] = useState(false);
 
     // const [selectedBuilder,setSelectedBuilder] = useState();
     function convertToIdNameObject(items) {
         const idNameObject = {};
         items.forEach((item) => {
-          idNameObject[item.id] = {
-            name : item.name,
-            username : item.username
-          }
+            idNameObject[item.id] = {
+                name: item.name,
+                username: item.username
+            }
         });
         return idNameObject;
     }
-    const [existingUsers,setExistingUsers] = useState([])
+    const [existingUsers, setExistingUsers] = useState([])
     const fetchUsersData = async () => {
-        const data = {
-        "user_id" : user.id
+        try {
+            const data = {
+                "user_id": user.id
+            }
+            const response = await APIService.getUsers(data)
+            const res = await response.json()
+
+            setExistingUsers(convertToIdNameObject(res.data))
+        } catch (e) {
+
         }
-        const response = await APIService.getUsers(data)
-        const res = await response.json()
-        
-        setExistingUsers(convertToIdNameObject(res.data))
-        
+
+
     }
-   
-    
-    
+
+
+
 
 
     const getCRDetails = async () => {
@@ -124,10 +117,10 @@ const ManageBankStatement = () => {
         const mode1 = await APIService.getModesAdmin(data);
         const howReceived1 = await APIService.getHowReceivedAdmin(data);
         const entity1 = await APIService.getEntityAdmin(data);
-        
+
         setEntity((await entity1.json()).data)
         setHowReceived((await howReceived1.json()).data)
-        
+
         setMode((await mode1.json()).data)
 
     }
@@ -136,10 +129,15 @@ const ManageBankStatement = () => {
         setUserId(response)
     }
     const getVendorAdmin = async () => {
-        const data = { "user_id": userId || user.id }
-        const response = await APIService.getVendorAdmin(data);
-        const result = (await response.json()).data;
-        setVendorList(result)
+        try {
+            const data = { "user_id": userId || user.id }
+            const response = await APIService.getVendorAdmin(data);
+            const result = (await response.json()).data;
+            setVendorList(result)
+        } catch (e) {
+
+        }
+
     }
 
     const openConfirmModal = () => {
@@ -179,185 +177,215 @@ const ManageBankStatement = () => {
             setShowFailure(false)
         }, 4000);
     }
-    const [amountData,setAmountData] = useState(0);
+    const [amountData, setAmountData] = useState(0);
     const fetchBankStatement = async () => {
-        setPageLoading(true);
-        setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        // 
-        
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+        try {
+            setPageLoading(true);
+            const tempArray = [];
+            // we need to query thru the object
+            // 
+
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+            })
+            setFilterState((prev) => tempArray);
+            setCurrentPage((prev) => 1)
+            setCurrentPages((prev) => 15)
+            const data = {
+                "user_id": userId || user.id,
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": searchQuery
             }
-        })
-        setFilterState((prev) => tempArray);
-        setCurrentPage((prev) => 1)
-        setCurrentPages((prev) => 15)
-        const data = {
-            "user_id": userId || user.id,
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": searchQuery 
+            const response = await APIService.getBankStatement(data);
+            const temp = await response.json();
+
+            const t = temp.total_count;
+            setAmountData(temp.total_amount)
+            const curr = [...modeFooter]
+            curr[5].modeamount = temp.total_amount
+            setModeFooter(curr)
+            const result = temp.data;
+            // setAmountData(result.total_amount)
+            setTotalItems(t);
+            setPageLoading(false);
+            setExistingStatement(result);
         }
-        const response = await APIService.getBankStatement(data);
-        const temp = await response.json();
-         
-        const t = temp.total_count;
-        setAmountData(temp.total_amount)
-        const curr = [...modeFooter]
-        curr[5].modeamount = temp.total_amount
-        setModeFooter(curr)
-         const result = temp.data;
-        // setAmountData(result.total_amount)
-        setTotalItems(t);
-        setPageLoading(false);
-        setExistingStatement(result);
+        catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
 
     const deleteStatement = async (item) => {
-        
+
         setShowDelete(true);
         setCurrentStatementId(item);
         setDeleted(true);
     }
 
     const addBankStatement = async () => {
-        // 
-        // setVendorId((formValues.vendor).split(",", 1)[0]);
-        // setModeEdit((formValues.modeofpayment).split(",", 1)[0])
-        // 
-        
-        const data = {
-            "user_id": user.id,
-            "modeofpayment": formValues.modeofpayment,
-            "date": formValues.date,
-            "amount":formValues.amount,
-            "particulars": formValues.particulars,
-            "crdr": formValues.crdr,
-            "vendorid": formValues.vendor,
-            'howreceived' : formValues.how
-            // "createdby": userId || user.id
+        try {
+            const data = {
+                "user_id": user.id,
+                "modeofpayment": formValues.modeofpayment,
+                "date": formValues.date,
+                "amount": formValues.amount,
+                "particulars": formValues.particulars,
+                "crdr": formValues.crdr,
+                "vendorid": formValues.vendor,
+                'howreceived': formValues.how
+                // "createdby": userId || user.id
+            }
+
+            const response = await APIService.addBankStatement(data);
+            const res = await response.json()
+            if (res.result == 'success') {
+                setIsLoading(false);
+                openConfirmModal();
+            } else {
+                setIsLoading(false);
+                openFailureModal();
+            }
+            setFormValues(initialValues)
+            fetchBankStatement();
+        } catch (e) {
+            setIsLoading(false);
+
         }
 
-        const response = await APIService.addBankStatement(data);
-        const res = await response.json()
-        if (res.result == 'success') {
-            setIsLoading(false);
-            openConfirmModal();
-        } else {
-            setIsLoading(false);
-            openFailureModal();
-        }
-        setFormValues(initialValues)
-        fetchBankStatement();
     }
     const addCreditRecipt = async () => {
-        if(!crValidate()) {
-            return ;
-        }
-        const data = {
-            "user_id": user.id,
-            "receivedby": crFormValues.receivedBy,
-            "paymentmode": crFormValues.receiptMode,
-            "recddate": crFormValues.receivedDate,
-            "entityid": 1,
-            "amount": crFormValues.amountReceived,
-            "howreceivedid": crFormValues.howReceived,
-            "clientid": crFormValues.client,
-            "receiptdesc": crFormValues.receiptDescription,
-            "serviceamount": crFormValues.serviceAmount,
-            "reimbursementamount": crFormValues.reimbursementAmount,
-            "tds": crFormValues.TDS,
-            "banktransactionid" : statementIdForClientReceipt,
-            
-            "officeid" : 2
-        }
-        setClientName(formValues.client);
-        const response = await APIService.addClientReceipt(data);
-        
-        if (response.ok) {
-            initials()
-            openConfirmModal();
-        } else {
+        try {
+            if (!crValidate()) {
+                return;
+            }
+            const data = {
+                "user_id": user.id,
+                "receivedby": crFormValues.receivedBy,
+                "paymentmode": crFormValues.receiptMode,
+                "recddate": crFormValues.receivedDate,
+                "entityid": 1,
+                "amount": crFormValues.amountReceived,
+                "howreceivedid": crFormValues.howReceived,
+                "clientid": crFormValues.client,
+                "receiptdesc": crFormValues.receiptDescription,
+                "serviceamount": crFormValues.serviceAmount,
+                "reimbursementamount": crFormValues.reimbursementAmount,
+                "tds": crFormValues.TDS,
+                "banktransactionid": statementIdForClientReceipt,
 
+                "officeid": 2
+            }
+            setClientName(formValues.client);
+            const response = await APIService.addClientReceipt(data);
+
+            if (response.ok) {
+                initials()
+                openConfirmModal();
+            } else {
+                openFailureModal();
+            }
+            fetchBankStatement();
+            setCreditReceipt(false)
+        } catch (e) {
             openFailureModal();
+            fetchBankStatement();
+            setCreditReceipt(false)
+
         }
-        fetchBankStatement();
-        setCreditReceipt(false)
+
     }
     const fetchPageData = async (pageNumber) => {
-        setPageLoading(true);
-        setCurrentPage((prev) => pageNumber);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": searchQuery
-        };
-        const response = await APIService.getBankStatement(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingStatement(result);
-        setPageLoading(false);
+        try {
+            setPageLoading(true);
+            setCurrentPage((prev) => pageNumber);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(pageNumber),
+                "pg_size": Number(currentPages),
+                "search_key": searchQuery
+            };
+            const response = await APIService.getBankStatement(data)
+            const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingStatement(result);
+            setPageLoading(false);
+        } catch (e) {
+            setPageLoading(false);
+        }
+
     }
     const fetchQuantityData = async (number) => {
-        setPageLoading(true);
-        setCurrentPages((prev) => number);
-        setCurrentPage((prev) => 1);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(number),
-            "search_key": searchQuery 
-        };
-        const response = await APIService.getBankStatement(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingStatement(result);
-        setPageLoading(false);
+        try {
+            setPageLoading(true);
+            setCurrentPages((prev) => number);
+            setCurrentPage((prev) => 1);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(number),
+                "search_key": searchQuery
+            };
+            const response = await APIService.getBankStatement(data)
+            const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingStatement(result);
+            setPageLoading(false);
+        } catch (e) {
+            setPageLoading(false)
+        }
+
     }
     const handleSort = async (field) => {
-        setPageLoading(true);
-        setSortField(field);
-        setFlag((prev) => {
-            return !prev;
-        })
-        const data = {
-            "user_id": userId || user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [field],
-            "order": !flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": searchQuery 
-        };
-        const response = await APIService.getBankStatement(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingStatement(result);
+        try {
+            setPageLoading(true);
+            setSortField(field);
+            setFlag((prev) => {
+                return !prev;
+            })
+            const data = {
+                "user_id": userId || user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [field],
+                "order": !flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": searchQuery
+            };
+            const response = await APIService.getBankStatement(data)
+            const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingStatement(result);
 
-        setPageLoading(false);
+            setPageLoading(false);
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
 
     
@@ -399,13 +427,13 @@ const ManageBankStatement = () => {
     };
     const [crValues, setCrValues] = useState(initialValues);
     const handleCR = (e) => {
-        
+
         // e.preventDefault();
         // if(!validateCR()) {
         //     return ;
         // }
-        if(!crValidate()) {
-            return ;
+        if (!crValidate()) {
+            return;
         }
         // if()
 
@@ -435,7 +463,7 @@ const ManageBankStatement = () => {
                 return { ...existing, particulars: "" }
             })
         }
-        
+
         // );
         if (!formValues.amount) {
             setFormErrors((existing) => {
@@ -491,7 +519,7 @@ const ManageBankStatement = () => {
                 return { ...existing, employee: "" }
             })
         }
-        
+
         if (!formValues.amount) {
             setFormErrors((existing) => {
                 return { ...existing, amount: "Enter Amount" }
@@ -585,121 +613,140 @@ const ManageBankStatement = () => {
         await fetchBankStatement();
     }
     const handleDownload = async (type) => {
-        setDownloadModal(false)
-        setPageLoading(true)
-        const data = {
-            "user_id": user.id,
-            "rows": [
-                "mode" ,
-                "date",
-                "crdr"  ,
-                "amount" ,
-                "particulars" , 
-                "clientname" , 
-                "id",
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchQuery,
-            "downloadType": type,
-            "routename" : pathname,
-            "colmap" : {
-                "mode" : "Mode",
-                "date" : "Date",
-                "crdr"  : "Type",
-                "amount" : "Amount",
-                "particulars" : "Particulars", 
-                "clientname" : "Client Name", 
-                "id" : "ID"
-            }
-        };
-        const response = await APIService.getBankStatement(data)
-        const temp = await response.json();
-        const result = temp.data;
-        
-        if (temp.result == 'success') {
-            const d = {
-                "filename": temp.filename,
-                "user_id": user.id
-            }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
-                })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'BankStatementData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'BankStatementData.pdf');
-                    }
+        try {
+            setDownloadModal(false)
+            setPageLoading(true)
+            const data = {
+                "user_id": user.id,
+                "rows": [
+                    "mode",
+                    "date",
+                    "crdr",
+                    "amount",
+                    "particulars",
+                    "clientname",
+                    "id",
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 0,
+                "pg_size": 0,
+                "search_key": searchQuery,
+                "downloadType": type,
+                "routename": pathname,
+                "colmap": {
+                    "mode": "Mode",
+                    "date": "Date",
+                    "crdr": "Type",
+                    "amount": "Amount",
+                    "particulars": "Particulars",
+                    "clientname": "Client Name",
+                    "id": "ID"
+                }
+            };
+            const response = await APIService.getBankStatement(data)
+            const temp = await response.json();
+            const result = temp.data;
 
-                    
+            if (temp.result == 'success') {
+                const d = {
+                    "filename": temp.filename,
+                    "user_id": user.id
+                }
+                fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                    method: 'POST', // or the appropriate HTTP method
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d) // Convert the object to a JSON string
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.blob();
+                    })
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'BankStatementData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'BankStatementData.pdf');
+                        }
 
-            setTimeout(() => {
-                // setBackDropLoading(false)
-                setPageLoading(false)
-            }, 1000)
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                setTimeout(() => {
+                    // setBackDropLoading(false)
+                    setPageLoading(false)
+                }, 1000)
+            }
+        } catch (e) {
+            setPageLoading(false)
+
         }
+
     }
+
+
     const [flag, setFlag] = useState(false);
     const handleSearch = async () => {
-        setPageLoading(true);
-        setCurrentPage((prev) => 1);
-        const data = {
-            "user_id": userId || user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchQuery
-        };
-        const response = await APIService.getBankStatement(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingStatement(result);
-        setPageLoading(false);
+        try {
+            setPageLoading(true);
+            setCurrentPage((prev) => 1);
+            const data = {
+                "user_id": userId || user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchQuery
+            };
+            const response = await APIService.getBankStatement(data)
+            const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingStatement(result);
+            setPageLoading(false);
+        } catch (e) {
+            setPageLoading(false);
 
+        }
 
     }
+
     const handleCloseSearch = async () => {
-        setPageLoading(true);
-        setSearchQuery("");
-        setCurrentPage(1);
-        const data = {
-            "user_id": userId || user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
+        try {
+            setPageLoading(true);
+            setSearchQuery("");
+            setCurrentPage(1);
+            const data = {
+                "user_id": userId || user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": ""
+            }
+            const response = await APIService.getBankStatement(data);
+            const result = await response.json();
+            setExistingStatement(result.data);
+            setTotalItems(result.total_count);
+            setPageLoading(false);
+        } catch (e) {
+            setPageLoading(false);
+
         }
-        const response = await APIService.getBankStatement(data);
-        const result = await response.json();
-        setExistingStatement(result.data);
-        setTotalItems(result.total_count);
-        setPageLoading(false);
+
     }
 
     const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
@@ -720,7 +767,7 @@ const ManageBankStatement = () => {
             setShowCancelModel(false)
         }, 2000)
     }
-    
+
     const [typeFilter, setTypeFilter] = useState(false);
     const [typeFilterInput, setTypeFilterInput] = useState("");
 
@@ -802,45 +849,52 @@ const ManageBankStatement = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
-        setPageLoading(true);
-        setModeFilter(false);
-        setDateFilter(false);
-        setAmountFilter(false);
-        setClientFilter(false);
-        setTypeFilter(false);
-        setParticularsFilter(false);
-        setCRFilter(false);
-        setIdFilter(false);
+        try {
+            setPageLoading(true);
+            setModeFilter(false);
+            setDateFilter(false);
+            setAmountFilter(false);
+            setClientFilter(false);
+            setTypeFilter(false);
+            setParticularsFilter(false);
+            setCRFilter(false);
+            setIdFilter(false);
 
-        const tempArray = [];
-        // we need to query thru the object
-        // 
-        setFilterMapState((prev) => mapState)
-        
-        Object.keys(mapState).forEach(key => {
-            if (mapState[key].filterType != "") {
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
-            }
-        })
-        setFilterState(tempArray);
-        setCurrentPage(1);
-        
-        
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchQuery
-        };
-        const response = await APIService.getBankStatement(data);
-        const result = await response.json();
-        setExistingStatement(result.data);
-        setTotalItems(result.total_count);
-        setPageLoading(false);
+            const tempArray = [];
+            // we need to query thru the object
+            // 
+            setFilterMapState((prev) => mapState)
+
+            Object.keys(mapState).forEach(key => {
+                if (mapState[key].filterType != "") {
+                    tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                }
+            })
+            setFilterState(tempArray);
+            setCurrentPage(1);
+
+
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchQuery
+            };
+            const response = await APIService.getBankStatement(data);
+            const result = await response.json();
+            setExistingStatement(result.data);
+            setTotalItems(result.total_count);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
 
@@ -862,26 +916,7 @@ const ManageBankStatement = () => {
         fetchFiltered(existing);
     }
 
-    const handleExcelDownload = async () => {
-        const data = {
-            "user_id": user.id,
-            "rows": ["modeofpayment", "date", "crdr", "amount", "particulars", "clientid", "id"],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchQuery
-        };
-        const response = await APIService.getBankStatement(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "bankStatement.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
-    }
+ 
 
     const openDownload = () => {
         setDownloadModal((prev) => !prev);
@@ -891,10 +926,8 @@ const ManageBankStatement = () => {
         setCurrentPage(value)
         fetchPageData(value);
     }
-    // const [currentStatementId,setCurrentStatementId] = useState(-1);
-    const [statementIdForClientReceipt,setStatementIdForClientReceipt] = useState(-1);
-    const [currentMode, setCurrentMode] = useState("")
-    const [crFormValues,setCrFormValues] = useState({
+    const [statementIdForClientReceipt, setStatementIdForClientReceipt] = useState(-1);
+    const [crFormValues, setCrFormValues] = useState({
         receivedDate: null,
         receivedBy: user.id,
         receiptMode: 5,
@@ -908,35 +941,38 @@ const ManageBankStatement = () => {
     })
     const openCreditRecipt = async (item) => {
         setStatementIdForClientReceipt((prev) => item.id)
-        
-        const data = {
-            user_id : user.id,
-            table_name : "get_bankst_view",
-            item_id : item.id
-        }
-        const response = await APIService.getItembyId(data)
-        const res = await response.json()
-        
-        
-        const temp = {...crFormValues}
-        temp.receiptMode = res.data.modeofpayment
-        temp.receivedDate = res.data.date 
-        temp.amountReceived = res.data.amount 
-        temp.serviceAmount = res.data.amount
-        temp.howReceived = res.data.receivedhow
-        setCrFormValues(temp)
-        const initialValues = {
-            modeofpayment: res.data.modeofpayment,
-            particulars: res.data.particulars,
-            amount: res.data.amount,
-            vendor: res.data.vendor,
-            date: res.data.date,
-            crdr: res.data.crdr,
-            how: res.data.receivedhow,
-        };
-        setFormValues(initialValues);
+        try{
+            const data = {
+                user_id: user.id,
+                table_name: "get_bankst_view",
+                item_id: item.id
+            }
+            const response = await APIService.getItembyId(data)
+            const res = await response.json()
+    
+    
+            const temp = { ...crFormValues }
+            temp.receiptMode = res.data.modeofpayment
+            temp.receivedDate = res.data.date
+            temp.amountReceived = res.data.amount
+            temp.serviceAmount = res.data.amount
+            temp.howReceived = res.data.receivedhow
+            setCrFormValues(temp)
+            const initialValues = {
+                modeofpayment: res.data.modeofpayment,
+                particulars: res.data.particulars,
+                amount: res.data.amount,
+                vendor: res.data.vendor,
+                date: res.data.date,
+                crdr: res.data.crdr,
+                how: res.data.receivedhow,
+            };
+            setFormValues(initialValues);
+            setCreditReceipt(true);
+        }catch(e){
 
-        setCreditReceipt(true);
+        }
+    
 
     }
     const handleCloseCR = () => {
@@ -955,8 +991,8 @@ const ManageBankStatement = () => {
             receiptDescription: null,
         })
         setCrSelectedOption({
-            'label' : 'Select Client',
-            'value' : null
+            'label': 'Select Client',
+            'value': null
         })
 
         setCreditReceipt(false);
@@ -973,10 +1009,10 @@ const ManageBankStatement = () => {
 
 
 
-    const [crFormErrors,setCrFormErrors] = useState({})
+    const [crFormErrors, setCrFormErrors] = useState({})
     const crValidate = () => {
         var res = true;
-        
+
         if (!crFormValues.client) {
             setCrFormErrors((existing) => {
                 return { ...existing, client: "Select Client" }
@@ -1007,12 +1043,12 @@ const ManageBankStatement = () => {
                 return { ...existing, howReceived: "" }
             })
         }
-        if(!crFormValues.amountReceived) {
+        if (!crFormValues.amountReceived) {
             setCrFormErrors((existing) => {
                 return { ...existing, amountReceived: "Enter Amount Received" }
             })
             res = false;
-        }else {
+        } else {
             setCrFormErrors((existing) => {
                 return { ...existing, amountReceived: "" }
             })
@@ -1071,21 +1107,21 @@ const ManageBankStatement = () => {
         value: null
     });
     const [query, setQuery] = useState('')
-    const [crSelectedOption,setCrSelectedOption] = useState({
-        'label' : 'Select Client',
-        'value' : null
+    const [crSelectedOption, setCrSelectedOption] = useState({
+        'label': 'Select Client',
+        'value': null
     })
     const handleCrClientNameChange = (e) => {
-        
-        
+
+
         const existing = { ...crFormValues }
         existing.client = e.value
         setCrFormValues(existing)
         setCrSelectedOption(e)
     }
     const handleClientNameChange = (e) => {
-        
-        
+
+
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -1097,7 +1133,7 @@ const ManageBankStatement = () => {
         //    temp.tenantof = e.value
         //    existing.client_info = temp;
         setFormValues(existing)
-        
+
         setSelectedOption(e)
     }
     const loadOptions = async (e) => {
@@ -1152,39 +1188,39 @@ const ManageBankStatement = () => {
 
         }
     }
-    const [modeFooter,setModeFooter] = useState([
-         {
-            modename : "Z-ADSK-BOM",
-            modeamount : 0.00
-         },
-         {
-            modename : "Z-ADSK-AXIS",
-            modeamount : 0.00
-         },
-         {
-            modename : "Z-PRIME-ADSK",
-            modeamount : 0.00
-         },
-         {
-            modename : "Z-PRIME-HDFC",
-            modeamount : 0.00
-         },
-         {
-            modename : "Z-DAP-BOM",
-            modeamount : 0.00
-         },
-         {
-            modename : "DAP-ICICI-42",
-            modeamount : 0.00
-         },
-         {
-            modename : "DAP-ICICI-53",
-            modeamount : 0.00
-         },
-         {
-            modename : "DAP-ICICI-65-S",
-            modeamount : 0.00
-         }
+    const [modeFooter, setModeFooter] = useState([
+        {
+            modename: "Z-ADSK-BOM",
+            modeamount: 0.00
+        },
+        {
+            modename: "Z-ADSK-AXIS",
+            modeamount: 0.00
+        },
+        {
+            modename: "Z-PRIME-ADSK",
+            modeamount: 0.00
+        },
+        {
+            modename: "Z-PRIME-HDFC",
+            modeamount: 0.00
+        },
+        {
+            modename: "Z-DAP-BOM",
+            modeamount: 0.00
+        },
+        {
+            modename: "DAP-ICICI-42",
+            modeamount: 0.00
+        },
+        {
+            modename: "DAP-ICICI-53",
+            modeamount: 0.00
+        },
+        {
+            modename: "DAP-ICICI-65-S",
+            modeamount: 0.00
+        }
     ])
     const fetchCrValues = () => {
         // in this we will fetch the values for Client Receipt
@@ -1220,10 +1256,10 @@ const ManageBankStatement = () => {
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
-                onClick={() => {}}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
             <SucessfullModal isOpen={showSucess} message={successMessage} />
@@ -1284,42 +1320,42 @@ const ManageBankStatement = () => {
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)} 
-                                    onKeyDown={(event) => handleEnterToFilter(event,modeFilterInput,
-                                        setModeFilterInput,
-                                        'contains',
-                                        'mode')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, modeFilterInput,
+                                            setModeFilterInput,
+                                            'contains',
+                                            'mode')}
                                     />
-                                    {}
-                                    {}
-                                    {filterMapState.mode.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setModeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
-                                    
+                                    { }
+                                    { }
+                                    {filterMapState.mode.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setModeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+
                                 </div>
-                                {modeFilter && <CharacterFilter inputVariable={modeFilterInput} setInputVariable={setModeFilterInput} handleFilter={newHandleFilter} filterColumn='mode' menuRef={menuRef} filterType={filterMapState.mode.filterType}/>}
+                                {modeFilter && <CharacterFilter inputVariable={modeFilterInput} setInputVariable={setModeFilterInput} handleFilter={newHandleFilter} filterColumn='mode' menuRef={menuRef} filterType={filterMapState.mode.filterType} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                                     <input className="w-[70%] rounded-[5px] bg-[#EBEBEB] text-[11px] pl-2 outline-none" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)}
-                                    type="date"
-                                    onKeyDown={(event) => handleEnterToFilter(event,dateFilterInput,
-                                        setDateFilterInput,
-                                        'equalTo',
-                                        'date')}
-                                     />
-                                      {filterMapState.date.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                        type="date"
+                                        onKeyDown={(event) => handleEnterToFilter(event, dateFilterInput,
+                                            setDateFilterInput,
+                                            'equalTo',
+                                            'date')}
+                                    />
+                                    {filterMapState.date.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
                                 {dateFilter && <DateFilter inputVariable={dateFilterInput} setInputVariable={setDateFilterInput} handleFilter={newHandleFilter} columnName='date' menuRef={menuRef} filterType={filterMapState.date.filterType} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={typeFilterInput} onChange={(e) => setTypeFilterInput(e.target.value)} 
-                                    onKeyDown={(event) => handleEnterToFilter(event,typeFilterInput,
-                                        setTypeFilterInput,
-                                        'contains',
-                                        'crdr')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={typeFilterInput} onChange={(e) => setTypeFilterInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, typeFilterInput,
+                                            setTypeFilterInput,
+                                            'contains',
+                                            'crdr')}
                                     />
-                                    {filterMapState.crdr.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.crdr.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
                                 {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='crdr' menuRef={menuRef} filterType={filterMapState.crdr.filterType} />}
@@ -1327,41 +1363,41 @@ const ManageBankStatement = () => {
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="number" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}
-                                    onKeyDown={(event) => handleEnterToFilter(event,amountFilterInput,
-                                        setAmountFilterInput,
-                                        'equalTo',
-                                        'amount')}
-                                     />
-                                     {filterMapState.amount.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                        onKeyDown={(event) => handleEnterToFilter(event, amountFilterInput,
+                                            setAmountFilterInput,
+                                            'equalTo',
+                                            'amount')}
+                                    />
+                                    {filterMapState.amount.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} filterType={filterMapState.amount.filterType}/>}
+                                {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} filterType={filterMapState.amount.filterType} />}
                             </div>
                             <div className='w-[30%] px-4 py-2.5'>
                                 <div className='w-[29%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)}
-                                    onKeyDown={(event) => handleEnterToFilter(event,particularsFilterInput,
-                                        setParticularsFilterInput,
-                                        'contains',
-                                        'particulars')}
-                                     />
-                                     {filterMapState.particulars.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setParticularsFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                        onKeyDown={(event) => handleEnterToFilter(event, particularsFilterInput,
+                                            setParticularsFilterInput,
+                                            'contains',
+                                            'particulars')}
+                                    />
+                                    {filterMapState.particulars.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setParticularsFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
                                 {particularsFilter && <CharacterFilter inputVariable={particularsFilterInput} setInputVariable={setParticularsFilterInput} handleFilter={newHandleFilter} filterColumn='particulars' menuRef={menuRef} filterType={filterMapState.particulars.filterType} />}
                             </div>
                             <div className='w-[20%] px-4 py-2.5'>
                                 <div className='w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)} 
-                                    onKeyDown={(event) => handleEnterToFilter(event,clientFilterInput,
-                                        setClientFilterInput,
-                                        'contains',
-                                        'clientname')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, clientFilterInput,
+                                            setClientFilterInput,
+                                            'contains',
+                                            'clientname')}
                                     />
-                                     {filterMapState.clientname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.clientname.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setClientFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {clientFilter && <CharacterFilter inputVariable={clientFilterInput} setInputVariable={setClientFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType}/>}
+                                {clientFilter && <CharacterFilter inputVariable={clientFilterInput} setInputVariable={setClientFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType} />}
                             </div>
                             <div className='w-[12%] px-4 py-2.5'>
                                 {/* <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
@@ -1375,16 +1411,16 @@ const ManageBankStatement = () => {
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  px-4 py-2.5'>
                                 <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none text-[11px]" type="number" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} 
-                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
-                                        setIdFilterInput,
-                                        'equalTo',
-                                        'id')}
+                                    <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none text-[11px]" type="number" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }}
+                                        onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                            setIdFilterInput,
+                                            'equalTo',
+                                            'id')}
                                     />
-                                    {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
-                                    
+                                    {filterMapState.id.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+
                                 </div>
-                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
                             <div className='w-1/2 flex items-center'>
                                <RefreshFilterButton
@@ -1432,7 +1468,7 @@ const ManageBankStatement = () => {
                                 <p>ID <button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-1/2 0 p-4'>
-                                <p>{canEdit ? "Edit": ""}</p>
+                                <p>{canEdit ? "Edit" : ""}</p>
                             </div>
                         </div>
                     </div>
@@ -1440,10 +1476,10 @@ const ManageBankStatement = () => {
 
 
                     <div className='w-full h-[calc(100vh_-_20rem)] overflow-auto'>
-                        
+
                         {!pageLoading && existingStatement && existingStatement.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
-                                        <h1 className='ml-10'>No Records To Show</h1>
-                            </div>}
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingStatement && existingStatement.map((item, index) => {
                             return <div className='w-full   flex justify-between border-gray-400 border-b-[1px] font-medium'>
                                 <div className='w-[85%] text-[11px] min-h-0  flex'>
@@ -1478,7 +1514,7 @@ const ManageBankStatement = () => {
                                         <p>{item.particulars}</p>
                                     </div>
                                     <div className='w-[20%] break-all px-5 py-4  '>
-                                       <p> {item.clientname}</p>
+                                        <p> {item.clientname}</p>
                                         {/* <p>{item.clientid}</p> */}
                                         {/* {client && client.map(ele => (
                                             (item.clientid === ele[0]) ?
@@ -1497,8 +1533,8 @@ const ManageBankStatement = () => {
                                     </div>
                                     <div className='w-1/2 p-4 flex justify-center gap-2 items-center'>
                                         <EditButton
-                                          handleEdit={editStatement}
-                                          rowData={item}
+                                            handleEdit={editStatement}
+                                            rowData={item}
                                         />
                                         <DeleteButton
                                             handleDelete={deleteStatement}
@@ -1514,47 +1550,47 @@ const ManageBankStatement = () => {
                         {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} showCancel={openCancelModal} />}
                     </div>
-                       {canDelete && 
+                    {canDelete &&
                         <div className="h-[2rem] w-full bg-[#F0F6FF] flex">
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4 border-[1px] border-gray-300'>
-                                    
+
                                 </div>
                                 <div className='w-[10%]  p-4 '>
-                                    
+
                                 </div>
                                 <div className='w-[10%]  p-4 border-[1px] border-gray-300'>
-                                    
+
                                 </div>
                                 <div className='w-[10%]  p-4 '>
-                                    
+
                                 </div>
                                 <div className='w-[10%]  p-1 border-[1px] border-gray-300 flex items-center justify-center'>
                                     Total : {amountData}
                                 </div>
                                 <div className='w-[30%]  p-4 '>
-                                    
+
                                 </div>
                                 <div className='w-[20%] p-4 border-[1px] border-gray-300 '>
-                                   
+
                                 </div>
 
                                 <div className='w-[12%] p-4  '>
-                                    
+
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
                                 <div className='w-1/2  p-4 border-[1px] border-gray-300'>
-                                    
+
                                 </div>
                                 <div className='w-1/2 0 p-4 '>
-                                    
+
                                 </div>
                             </div>
                         </div>}
                 </div>
             </div>
-            
+
 
             <div className='w-full h-12 flex justify-between px-6 font-medium'>
                 {/* footer component */}
@@ -1623,27 +1659,27 @@ const ManageBankStatement = () => {
                 </div>
             </div>
             <div className="px-6">
-               {canDelete && 
-               <div className="bg-[#F5F5F5] w-full h-[120px] flex justify-around mt-6">
-                   {/* <div className="h-[3rem] w-full bg-green-400 flex justify-between"> */}
-                            {
-                                modeFooter.map((item) => {
-                                    return <div className="flex flex-col items-center justify-center">
-                                               <h1 className="font-semibold">{item.modename}</h1>
-                                               <p className="self-start text-xs text-gray-500">{item.modeamount.toFixed(2)}</p>
-                                          </div>
-                                })
-                            }
+                {canDelete &&
+                    <div className="bg-[#F5F5F5] w-full h-[120px] flex justify-around mt-6">
+                        {/* <div className="h-[3rem] w-full bg-green-400 flex justify-between"> */}
+                        {
+                            modeFooter.map((item) => {
+                                return <div className="flex flex-col items-center justify-center">
+                                    <h1 className="font-semibold">{item.modename}</h1>
+                                    <p className="self-start text-xs text-gray-500">{item.modeamount.toFixed(2)}</p>
+                                </div>
+                            })
+                        }
                         {/* </div> */}
-               </div>}
+                    </div>}
             </div>
-             
+
 
             <Modal open={isManageStatementDialogue}
                 fullWidth={true}
-                maxWidth={'md'} 
+                maxWidth={'md'}
                 className="flex justify-center items-center"
-                >
+            >
                 <>
                     <Draggable handle="div.move">
                         <div className='flex justify-center items-center '>
@@ -1658,86 +1694,86 @@ const ManageBankStatement = () => {
                                         </div>
                                     </div>
                                 </div>
-                                
-                                    <div className="w-full mt-[5px] ">
-                                        <div className="flex gap-[48px] justify-center ">
-                                            <div className=" space-y-[20px] py-[20px] px-[10px]">
-                                                <div className="">
-                                                    <div className="text-[13px]">Mode<label className="text-red-500">*</label></div>
-                                                    <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm " name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
-                                                        <option value="none" hidden >Select Mode</option>
-                                                        {mode && mode.map(item => (
-                                                            <option key={item[0]} value={item[0]}>
-                                                                {item[1]}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                    <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[13px]">Particulars<label className="text-red-500">*</label></div>
-                                                    {/* <input className="w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
-                                                    <input className=" text-[11px] pl-4 break-all w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange}  />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.particulars}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[13px]">Amount<label className="text-red-500">*</label></div>
-                                                    <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="number" name="amount" value={formValues.amount} onChange={handleChange}  />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.amount}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[13px]">Vendor</div>
-                                                    <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                                        <option value="" hidden>Select Vendor </option>
-                                                        {vendorList && vendorList.map(item => (
-                                                            <option value={item[0]}>
-                                                                {item[1]}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                    
-                                                </div>
+
+                                <div className="w-full mt-[5px] ">
+                                    <div className="flex gap-[48px] justify-center ">
+                                        <div className=" space-y-[20px] py-[20px] px-[10px]">
+                                            <div className="">
+                                                <div className="text-[13px]">Mode<label className="text-red-500">*</label></div>
+                                                <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm " name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
+                                                    <option value="none" hidden >Select Mode</option>
+                                                    {mode && mode.map(item => (
+                                                        <option key={item[0]} value={item[0]}>
+                                                            {item[1]}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div>
                                             </div>
-                                            <div className="space-y-[20px] py-[20px] px-[10px]">
-                                                <div className="">
-                                                    <div className="text-[13px]">Date <label className="text-red-500">*</label></div>
-                                                    <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange}  />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.date}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[13px]">CR/DR <label className="text-red-500">*</label></div>
-                                                    <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="crdr" value={formValues.crdr} onChange={handleChange} >
-                                                        <option hidden>Select CR/DR</option>
-                                                        {crdr && crdr.map(item => (
-                                                            <option value={item}>
-                                                                {item}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                    <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.crdr}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[13px]">How Received(CR)?</div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
-                                                        <option hidden>Select how Received</option>
-                                                        {howReceived && howReceived.map(item => (
-                                                            <option value={item[0]}>
-                                                                {item[1]}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Particulars<label className="text-red-500">*</label></div>
+                                                {/* <input className="w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
+                                                <input className=" text-[11px] pl-4 break-all w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] absolute">{formErrors.particulars}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Amount<label className="text-red-500">*</label></div>
+                                                <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="number" name="amount" value={formValues.amount} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] absolute">{formErrors.amount}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Vendor</div>
+                                                <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                                    <option value="" hidden>Select Vendor </option>
+                                                    {vendorList && vendorList.map(item => (
+                                                        <option value={item[0]}>
+                                                            {item[1]}
+                                                        </option>
+                                                    ))}
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div className="space-y-[20px] py-[20px] px-[10px]">
+                                            <div className="">
+                                                <div className="text-[13px]">Date <label className="text-red-500">*</label></div>
+                                                <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] absolute">{formErrors.date}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">CR/DR <label className="text-red-500">*</label></div>
+                                                <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="crdr" value={formValues.crdr} onChange={handleChange} >
+                                                    <option hidden>Select CR/DR</option>
+                                                    {crdr && crdr.map(item => (
+                                                        <option value={item}>
+                                                            {item}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.crdr}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">How Received(CR)?</div>
+                                                <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
+                                                    <option hidden>Select how Received</option>
+                                                    {howReceived && howReceived.map(item => (
+                                                        <option value={item[0]}>
+                                                            {item[1]}
+                                                        </option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div className="my-10 flex justify-center items-center gap-[10px]">
+                                <div className="my-10 flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleSubmit} >Add</button>
-                                        <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                                        {isLoading && <CircularProgress />}
-                                    </div>
-                               
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleSubmit} >Add</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                                    {isLoading && <CircularProgress />}
+                                </div>
+
                             </div>
                         </div>
                     </Draggable>
@@ -1765,16 +1801,16 @@ const ManageBankStatement = () => {
                                     </div>
                                 </div>
                                 {/* <form onSubmit={handleCR} > */}
-                                    <div className="w-full mt-[5px] ">
-                                        <div className="flex gap-[48px] justify-center items-center">
-                                            <div className=" space-y-4 py-[5px] px-[5px]">
-                                                <div className="">
-                                                    <div className="text-[14px]">Cura Office<label className="text-red-500">*</label></div>
-                                                    <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Pune" value="Pune" disabled />
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[14px]">Received By<label className="text-red-500">*</label></div>
-                                                    {/* <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} required >
+                                <div className="w-full mt-[5px] ">
+                                    <div className="flex gap-[48px] justify-center items-center">
+                                        <div className=" space-y-4 py-[5px] px-[5px]">
+                                            <div className="">
+                                                <div className="text-[14px]">Cura Office<label className="text-red-500">*</label></div>
+                                                <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Pune" value="Pune" disabled />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[14px]">Received By<label className="text-red-500">*</label></div>
+                                                {/* <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} required >
                                                         <option >Select Employee</option>
                                                         {existingUsers && existingUsers.map(item => (
                                                             <option key={item} value={item.id}>
@@ -1782,149 +1818,149 @@ const ManageBankStatement = () => {
                                                             </option>
                                                         ))}
                                                     </select> */}
-                                                    
-                                                    <ClientPropertySelectNative
-                        data={Object.keys(existingUsers)}
-                        value={existingUsers?.[crFormValues.receivedBy]?.name ? existingUsers?.[crFormValues.receivedBy]?.name:null}
-                        placeholder="Select Payment By"
-                        isSticky={true}
-                        menuMaxHeight="18rem"
-                        noDataText="Select Username"
-                        headerText={{
-                            first : 'Name',
-                            second : 'Username'
-                        }}
-                        renderData={(item) => {
-                            return (
-                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
-                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
-                                   {existingUsers[item].name}
-                                </p>
-                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
-                                  {existingUsers[item].username}
-                                </p>
-                                
-                               
-                              </MenuItem>
-                            );
-                          }}
-                          onChange={(e) => {
-                            const temp = {...crFormValues}
-                            temp.receivedBy = e.target.value 
-                            setCrFormValues(temp)
-                            
-                           }}
-                        />
-                                                    {/* <DropDown options={existingUsers} initialValue="Select Received By" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={(e) => handleCrChange(e)} formValueName="receivedBy" value={crFormValues.receivedBy} idName="id"/> */}
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.receivedBy}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="receiptMode" value={crFormValues.receiptMode} onChange={handleCrChange} required>
-                                                        <option value="" hidden> Select Mode</option>
-                                                        {mode && mode.map(item => (
-                                                            <option key={item} value={item[0]}>
-                                                                {item[1]}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.modeofpayment}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[14px]">Received Date<label className="text-red-500">*</label></div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="receivedDate" value={crFormValues.receivedDate} onChange={handleCrChange} disabled />
 
-                                                    <div className="text-[12px] text-[#CD0000] absolute">{crFormErrors.receivedDate}</div>
-                                                </div>
-                                                
-                                                <div className="">
-                                                    <div className="text-[14px]">Amount Received<label className="text-red-500">*</label></div>
-                                                    <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amountReceived" value={crFormValues.amountReceived} onChange={handleCrChange} required />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.amountReceived}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[14px]">How Received?<label className="text-red-500">*</label></div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="howReceived" value={crFormValues.howReceived} onChange={handleCrChange} required>
-                                                        <option hidden>Select How Received</option>
-                                                        {howReceived && howReceived.map(item => (
-                                                            <option key={item} value={item[0]}>
-                                                                {item[1]}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.howReceived}</div>
-                                                </div>
+                                                <ClientPropertySelectNative
+                                                    data={Object.keys(existingUsers)}
+                                                    value={existingUsers?.[crFormValues.receivedBy]?.name ? existingUsers?.[crFormValues.receivedBy]?.name : null}
+                                                    placeholder="Select Payment By"
+                                                    isSticky={true}
+                                                    menuMaxHeight="18rem"
+                                                    noDataText="Select Username"
+                                                    headerText={{
+                                                        first: 'Name',
+                                                        second: 'Username'
+                                                    }}
+                                                    renderData={(item) => {
+                                                        return (
+                                                            <MenuItem value={item} key={item} sx={{ width: '230px', gap: '5px', fontSize: '12px' }}>
+                                                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                                    {existingUsers[item].name}
+                                                                </p>
+                                                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                                    {existingUsers[item].username}
+                                                                </p>
+
+
+                                                            </MenuItem>
+                                                        );
+                                                    }}
+                                                    onChange={(e) => {
+                                                        const temp = { ...crFormValues }
+                                                        temp.receivedBy = e.target.value
+                                                        setCrFormValues(temp)
+
+                                                    }}
+                                                />
+                                                {/* <DropDown options={existingUsers} initialValue="Select Received By" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={(e) => handleCrChange(e)} formValueName="receivedBy" value={crFormValues.receivedBy} idName="id"/> */}
+                                                <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.receivedBy}</div>
                                             </div>
-                                            <div className=" space-y-4 py-[20px] px-[10px] mt-[-55px]">
+                                            <div className="">
+                                                <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
+                                                <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="receiptMode" value={crFormValues.receiptMode} onChange={handleCrChange} required>
+                                                    <option value="" hidden> Select Mode</option>
+                                                    {mode && mode.map(item => (
+                                                        <option key={item} value={item[0]}>
+                                                            {item[1]}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[10px] text-[#CD0000] absolute">{formErrors.modeofpayment}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[14px]">Received Date<label className="text-red-500">*</label></div>
+                                                <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="receivedDate" value={crFormValues.receivedDate} onChange={handleCrChange} disabled />
 
-                                                <div className="">
-                                                    <div className="text-[14px]">Client <label className="text-red-500">*</label></div>
-                                                    <AsyncSelect
-                                                        onChange={handleCrClientNameChange}
-                                                        value={crSelectedOption}
-                                                        loadOptions={loadOptions}
-                                                        cacheOptions
-                                                        defaultOptions
-                                                        onInputChange={(value) => setQuery(value)}
+                                                <div className="text-[12px] text-[#CD0000] absolute">{crFormErrors.receivedDate}</div>
+                                            </div>
 
-                                                        styles={{
-                                                            control: (provided, state) => ({
-                                                                ...provided,
-                                                                minHeight: 23,
-                                                                // lineHeight: '0.8',
-                                                                height: '20px',
-                                                                width: 230,
-                                                                fontSize: 12,
-                                                                // padding: '1px'
-                                                                borderRadius : '2px'
-                                                            }),
-                                                            indicatorSeparator: (provided, state) => ({
-                                                              display : 'none'
-                                                            }),
-                                                            dropdownIndicator: (provided, state) => ({
-                                                                ...provided,
-                                                                padding: '1px',
-                                                                paddingRight : '2px', // Adjust padding for the dropdown indicator
-                                                                width: 15, // Adjust width to make it smaller
-                                                                height: 15, // Adjust height to make it smaller
-                                                                display: 'flex', // Use flex to center the icon
-                                                                alignItems: 'center', // Center vertically
-                                                                justifyContent: 'center'
-                                                                 // adjust padding for the dropdown indicator
-                                                            }),
-                                                            input: (provided, state) => ({
-                                                                ...provided,
-                                                                margin: 0, // Remove any default margin
-                                                                padding: 0, // Remove any default padding
-                                                                fontSize: 12, // Match the font size
-                                                                height: 'auto', // Adjust input height
-                                                              }),
-                                                            // options: (provided, state) => ({
-                                                            //     ...provided,
-                                                            //     fontSize: 10// adjust padding for the dropdown indicator
-                                                            // }),
-                                                            option: (provided, state) => ({
-                                                                ...provided,
-                                                                padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
-                                                                margin: 0, // Ensure no extra margin
-                                                                fontSize: 12 // Adjust font size of individual options
-                                                            }),
-                                                            menu: (provided, state) => ({
-                                                                ...provided,
-                                                                width: 230, // Adjust the width of the dropdown menu
-                                                                zIndex: 9999 // Ensure the menu appears above other elements
-                                                            }),
-                                                            menuList: (provided, state) => ({
-                                                                ...provided,
-                                                                padding: 0, // Adjust padding of the menu list
-                                                                fontSize: 12,
-                                                                maxHeight: 150 // Adjust font size of the menu list
-                                                            }),
-                                                            
-                                                        }}
-                                                    
-                                                    />
-                                                    {/* <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="client" value={formValues.client} onChange={handleChange} required >
+                                            <div className="">
+                                                <div className="text-[14px]">Amount Received<label className="text-red-500">*</label></div>
+                                                <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amountReceived" value={crFormValues.amountReceived} onChange={handleCrChange} required />
+                                                <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.amountReceived}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[14px]">How Received?<label className="text-red-500">*</label></div>
+                                                <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="howReceived" value={crFormValues.howReceived} onChange={handleCrChange} required>
+                                                    <option hidden>Select How Received</option>
+                                                    {howReceived && howReceived.map(item => (
+                                                        <option key={item} value={item[0]}>
+                                                            {item[1]}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.howReceived}</div>
+                                            </div>
+                                        </div>
+                                        <div className=" space-y-4 py-[20px] px-[10px] mt-[-55px]">
+
+                                            <div className="">
+                                                <div className="text-[14px]">Client <label className="text-red-500">*</label></div>
+                                                <AsyncSelect
+                                                    onChange={handleCrClientNameChange}
+                                                    value={crSelectedOption}
+                                                    loadOptions={loadOptions}
+                                                    cacheOptions
+                                                    defaultOptions
+                                                    onInputChange={(value) => setQuery(value)}
+
+                                                    styles={{
+                                                        control: (provided, state) => ({
+                                                            ...provided,
+                                                            minHeight: 23,
+                                                            // lineHeight: '0.8',
+                                                            height: '20px',
+                                                            width: 230,
+                                                            fontSize: 12,
+                                                            // padding: '1px'
+                                                            borderRadius: '2px'
+                                                        }),
+                                                        indicatorSeparator: (provided, state) => ({
+                                                            display: 'none'
+                                                        }),
+                                                        dropdownIndicator: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '1px',
+                                                            paddingRight: '2px', // Adjust padding for the dropdown indicator
+                                                            width: 15, // Adjust width to make it smaller
+                                                            height: 15, // Adjust height to make it smaller
+                                                            display: 'flex', // Use flex to center the icon
+                                                            alignItems: 'center', // Center vertically
+                                                            justifyContent: 'center'
+                                                            // adjust padding for the dropdown indicator
+                                                        }),
+                                                        input: (provided, state) => ({
+                                                            ...provided,
+                                                            margin: 0, // Remove any default margin
+                                                            padding: 0, // Remove any default padding
+                                                            fontSize: 12, // Match the font size
+                                                            height: 'auto', // Adjust input height
+                                                        }),
+                                                        // options: (provided, state) => ({
+                                                        //     ...provided,
+                                                        //     fontSize: 10// adjust padding for the dropdown indicator
+                                                        // }),
+                                                        option: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                                                            margin: 0, // Ensure no extra margin
+                                                            fontSize: 12 // Adjust font size of individual options
+                                                        }),
+                                                        menu: (provided, state) => ({
+                                                            ...provided,
+                                                            width: 230, // Adjust the width of the dropdown menu
+                                                            zIndex: 9999 // Ensure the menu appears above other elements
+                                                        }),
+                                                        menuList: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: 0, // Adjust padding of the menu list
+                                                            fontSize: 12,
+                                                            maxHeight: 150 // Adjust font size of the menu list
+                                                        }),
+
+                                                    }}
+
+                                                />
+                                                {/* <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="client" value={formValues.client} onChange={handleChange} required >
                                                 <option >Select Client</option>
                                                 {client && client.map(item => (
                                                     <option key={item[0]} value={item[0]}>
@@ -1932,47 +1968,47 @@ const ManageBankStatement = () => {
                                                     </option>
                                                 ))}
                                             </select> */}
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.client}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[14px]">Receipt Description</div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="receiptDescription" value={crFormValues.receiptDescription} onChange={handleCrChange} />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.desc}</div>
-                                                </div>
-                                                {/* <div className="">
+                                                <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.client}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[14px]">Receipt Description</div>
+                                                <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="receiptDescription" value={crFormValues.receiptDescription} onChange={handleCrChange} />
+                                                <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.desc}</div>
+                                            </div>
+                                            {/* <div className="">
                                                     <div className="text-[14px]">Pending Amount </div>
                                                     <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="pending" value={formValues.pending} onChange={handleChange} disabled />
                                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.pending}</div>
                                                 </div> */}
-                                                <div className="">
-                                                    <div className="text-[14px]">Service Amount</div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="serviceAmount" value={crFormValues.serviceAmount} onChange={handleCrChange} />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.serviceAmount}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[14px]">Reimbursement Amount </div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="reimbursementAmount" value={crFormValues.reimbursementAmount} onChange={handleCrChange} />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.reimbAmount}</div>
-                                                </div>
-                                                <div className="">
-                                                    <div className="text-[14px]">TDS </div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={crFormValues.TDS} onChange={handleCrChange} />
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.TDS}</div>
-                                                </div>
-
-
-
-
+                                            <div className="">
+                                                <div className="text-[14px]">Service Amount</div>
+                                                <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="serviceAmount" value={crFormValues.serviceAmount} onChange={handleCrChange} />
+                                                <div className="text-[10px] text-[#CD0000] absolute">{formErrors.serviceAmount}</div>
                                             </div>
+                                            <div className="">
+                                                <div className="text-[14px]">Reimbursement Amount </div>
+                                                <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="reimbursementAmount" value={crFormValues.reimbursementAmount} onChange={handleCrChange} />
+                                                <div className="text-[10px] text-[#CD0000] absolute">{formErrors.reimbAmount}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[14px]">TDS </div>
+                                                <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={crFormValues.TDS} onChange={handleCrChange} />
+                                                <div className="text-[10px] text-[#CD0000] absolute">{formErrors.TDS}</div>
+                                            </div>
+
+
+
+
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div className="mt-[10px] flex justify-center items-center gap-[10px]">
+                                <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addCreditRecipt}>Add</button>
-                                        <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseCR}>Cancel</button>
-                                        {isLoading && <CircularProgress />}
-                                    </div>
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addCreditRecipt}>Add</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseCR}>Cancel</button>
+                                    {isLoading && <CircularProgress />}
+                                </div>
                                 {/* </form> */}
                             </div>
                         </div>
@@ -1986,28 +2022,28 @@ const ManageBankStatement = () => {
             <Modal open={isConfirmManageStatementDialogue} >
                 <>
                     {/* <Draggable> */}
-                        <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48 relative' >
-                            <div className="h-[40px]  flex justify-center items-center">
-                                <div className="w-[150px] mt-10 w-full text-center">
-                                    <div className="text-[24px]">Save Bank Statement</div>
-                                    <hr class="w-60 h-1 mx-auto  bg-gray-100"></hr>
-                                </div>
+                    <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48 relative' >
+                        <div className="h-[40px]  flex justify-center items-center">
+                            <div className="w-[150px] mt-10 w-full text-center">
+                                <div className="text-[24px]">Save Bank Statement</div>
+                                <hr class="w-60 h-1 mx-auto  bg-gray-100"></hr>
+                            </div>
 
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
-                                    <img onClick={handleCloseForConfirm} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
-                                </div>
-                            </div>
-                            <div className="mt-8 w-full text-center">
-                                {/* <div className="text-[14px]">Client:{clientName}</div> */}
-                            </div>
-                            <div className="mt-14 w-full text-center ">
-                                <p className="text-[14px]">Are you sure you want to Add new Bank statement</p>
-                            </div>
-                            <div className="my-10 flex justify-center items-center gap-[10px]">
-                                <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={addBankStatement}>Add</button>
-                                <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseForConfirm}>Cancel</button>
+                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                <img onClick={handleCloseForConfirm} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                             </div>
                         </div>
+                        <div className="mt-8 w-full text-center">
+                            {/* <div className="text-[14px]">Client:{clientName}</div> */}
+                        </div>
+                        <div className="mt-14 w-full text-center ">
+                            <p className="text-[14px]">Are you sure you want to Add new Bank statement</p>
+                        </div>
+                        <div className="my-10 flex justify-center items-center gap-[10px]">
+                            <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={addBankStatement}>Add</button>
+                            <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseForConfirm}>Cancel</button>
+                        </div>
+                    </div>
                     {/* </Draggable> */}
                 </>
             </Modal>
