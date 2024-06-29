@@ -10,7 +10,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
-  // server: { port: "1776" },
+  server: { port: "1776" },
   optimizeDeps: {
     exclude: ["js-big-decimal"],
   },

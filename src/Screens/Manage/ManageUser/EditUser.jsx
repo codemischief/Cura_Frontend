@@ -8,9 +8,9 @@ import bcrypt from 'bcryptjs';
 import EyeHide from "./../../../assets/eyeHide.png";
 import useAuth from '../../../context/JwtContext';
 
-const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSuccess, showCancel , openFailureModal , setErrorMessage }) => {
+const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB, showSuccess, showCancel, openFailureModal, setErrorMessage }) => {
     const { user } = useAuth()
-    const [pass , setPass] = useState("");
+    const [pass, setPass] = useState("");
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -41,34 +41,39 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
     // const [tallyLedgerData,setTallyLedgerData] = useState([])
     // const [allCity,setAllCity] = useState([])
     const fetchInitialData = async () => {
-        
+
         const data = {
             "user_id": user.id,
             "item_id": currUser,
             "table_name": "get_users_view"
         }
-        const response = await APIService.getItembyId(data)
-        const res = await response.json()
-        
-        const existing = { ...formValues }
-        existing.nameOfTheUser = res.data.fullname
-        existing.userName = res.data.username
-        setPass(res.data.password) 
-        // existing.confirmPassword = res.data.password
-        existing.lob = res.data.lobid
-        existing.email1 = res.data.email1
-        existing.email2 = res.data.email2
-        existing.workPhone = res.data.workphone
-        existing.homePhone = res.data.homephone
-        existing.addressLine1 = res.data.addressline1
-        existing.addressLine2 = res.data.addressline2
-        existing.effectiveDate = res.data.effectivedate ?  res.data.effectivedate.split('T')[0] : ""
-        existing.role = res.data.roleid
-        existing.city = res.data.cityid
-        existing.suburb = res.data.suburb
-        existing.zipCode = res.data.zip
-        existing.status = res.data.status
-        setFormValues(existing)
+        try {
+
+            const response = await APIService.getItembyId(data)
+            const res = await response.json()
+
+            const existing = { ...formValues }
+            existing.nameOfTheUser = res.data.fullname
+            existing.userName = res.data.username
+            setPass(res.data.password)
+            // existing.confirmPassword = res.data.password
+            existing.lob = res.data.lobid
+            existing.email1 = res.data.email1
+            existing.email2 = res.data.email2
+            existing.workPhone = res.data.workphone
+            existing.homePhone = res.data.homephone
+            existing.addressLine1 = res.data.addressline1
+            existing.addressLine2 = res.data.addressline2
+            existing.effectiveDate = res.data.effectivedate ? res.data.effectivedate.split('T')[0] : ""
+            existing.role = res.data.roleid
+            existing.city = res.data.cityid
+            existing.suburb = res.data.suburb
+            existing.zipCode = res.data.zip
+            existing.status = res.data.status
+            setFormValues(existing)
+        } catch (err){
+
+        }
         
     }
     useEffect(() => {
@@ -195,8 +200,8 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                 return { ...existing, zipCode: "" }
             })
         }
-        if(formValues.password && formValues.confirmPassword && formValues.password!==formValues.confirmPassword){
-            
+        if (formValues.password && formValues.confirmPassword && formValues.password !== formValues.confirmPassword) {
+
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "Password does not match" }
             })
@@ -204,16 +209,16 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         }
 
         if (formValues.email2 != "" && formValues.email2 != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email2)) {
-                // we need to set the formErrors
-                setFormErrors((existing) => {
-                    return { ...existing, email2: "Enter a valid email address" }
-                })
-                res = false
-            } else {
-                setFormErrors((existing) => {
-                    return { ...existing, email2: "" }
-                })
-            }
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, email2: "Enter a valid email address" }
+            })
+            res = false
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, email2: "" }
+            })
+        }
 
         return res;
     }
@@ -222,7 +227,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         if (!validate()) {
             return;
         }
- 
+
         let arr = (formValues.nameOfTheUser).split(" ");
         let firstName = arr[0];
         let lastName = "";
@@ -235,10 +240,10 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         }
         const data = {
             "user_id": user.id,
-            "id" : currUser,
+            "id": currUser,
             "username": formValues.userName,
             "roleid": Number(formValues.role),
-            "password": formValues.password ? btoa(formValues.password) :null,
+            "password": formValues.password ? btoa(formValues.password) : null,
             "officeid": 2,
             "lobid": Number(formValues.lob),
             "usercode": "code",
@@ -259,16 +264,21 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             "zip": formValues.zipCode,
             "entityid": 1
         }
-        const response = await APIService.editUser(data)
-        const res = await response.json()
-        if (res.result == 'success') {
-            //  we need to open edit Modal
-            showSuccess()
-        }else {
+        try{
+
+            const response = await APIService.editUser(data)
+            const res = await response.json()
+            if (res.result == 'success') {
+                //  we need to open edit Modal
+                showSuccess()
+        } else {
             handleClose()
             openFailureModal();
             setErrorMessage(res.message)
         }
+    } catch (err){
+        
+    }
     }
 
     const close = () => {
@@ -341,27 +351,27 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                             <div className="m-0 p-0 relative">
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type1} name="password" value={formValues.password} onChange={handleChange} />
                                                 {openEyeIconPass &&
-                                                        <span className="w-4 h-4 absolute right-1 top-2">
-                                                            <img
-                                                                className='cursor-pointer'
-                                                                onClick={passwordToggle}
-                                                                src={eyeIcon}
-                                                                alt="eye-icon"
-                                                            />
-                                                        </span>
-                                                    }
-                                                    {!openEyeIconPass &&
-                                                        <span className="w-4 h-4 absolute right-1 top-1.5">
-                                                            <img
-                                                                className='cursor-pointer'
-                                                                onClick={passwordToggle}
-                                                                src={EyeHide}
-                                                                alt="eye-icon"
-                                                            />
-                                                        </span>
-                                                    }
+                                                    <span className="w-4 h-4 absolute right-1 top-2">
+                                                        <img
+                                                            className='cursor-pointer'
+                                                            onClick={passwordToggle}
+                                                            src={eyeIcon}
+                                                            alt="eye-icon"
+                                                        />
+                                                    </span>
+                                                }
+                                                {!openEyeIconPass &&
+                                                    <span className="w-4 h-4 absolute right-1 top-1.5">
+                                                        <img
+                                                            className='cursor-pointer'
+                                                            onClick={passwordToggle}
+                                                            src={EyeHide}
+                                                            alt="eye-icon"
+                                                        />
+                                                    </span>
+                                                }
                                             </div>
-                                            
+
                                         </div>
                                         <div className="">
                                             <div className="text-sm">LOB <label className="text-red-500">*</label></div>
@@ -371,7 +381,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                                 defaultValue="Select lob"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    
+
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, lob: e.target.value }
                                                         return newData;
@@ -418,25 +428,25 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                             <div className="m-0 p-0 relative">
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type2} name="confirmPassword" value={formValues.confirmPassword} onChange={handleChange} />
                                                 {openEyeIconCon &&
-                                                        <span className="w-4 h-4 absolute right-1 top-2">
-                                                            <img
-                                                                className='cursor-pointer'
-                                                                onClick={confirmPasswordToggle}
-                                                                src={eyeIcon}
-                                                                alt="eye-icon"
-                                                            />
-                                                        </span>
-                                                    }
-                                                    {!openEyeIconCon &&
-                                                        <span className="w-4 h-4 absolute right-1 top-1.5">
-                                                            <img
-                                                                className='cursor-pointer'
-                                                                onClick={confirmPasswordToggle}
-                                                                src={EyeHide}
-                                                                alt="eye-icon"
-                                                            />
-                                                        </span>
-                                                    }
+                                                    <span className="w-4 h-4 absolute right-1 top-2">
+                                                        <img
+                                                            className='cursor-pointer'
+                                                            onClick={confirmPasswordToggle}
+                                                            src={eyeIcon}
+                                                            alt="eye-icon"
+                                                        />
+                                                    </span>
+                                                }
+                                                {!openEyeIconCon &&
+                                                    <span className="w-4 h-4 absolute right-1 top-1.5">
+                                                        <img
+                                                            className='cursor-pointer'
+                                                            onClick={confirmPasswordToggle}
+                                                            src={EyeHide}
+                                                            alt="eye-icon"
+                                                        />
+                                                    </span>
+                                                }
                                             </div>
                                             <div className="text-[9px] text-[#CD0000] absolute">{formErrors.confirmPassword}</div>
                                         </div>
@@ -448,7 +458,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                                 defaultValue="Select Role"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    
+
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, role: e.target.value }
                                                         return newData;
