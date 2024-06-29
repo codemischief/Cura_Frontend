@@ -109,37 +109,43 @@ const ManageEmployees = () => {
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchCountryData = async () => {
-        setPageLoading(true);
+        // setPageLoading(true);
         // const data = { "user_id":  user.id };
         const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
-        const result = (await response.json()).data;
-        setAllCountry(result)
+        try{
+            const response = await APIService.getCountries(data)
+            const result = (await response.json()).data;
+            setAllCountry(result)
+        }catch (err){
+
+        }
     }
     const fetchStateData = async (id) => {
         
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllState(result)
+        try{
+
+            const response = await APIService.getState(data);
+            const result = (await response.json()).data;
+            
+            if (Array.isArray(result)) {
+                setAllState(result)
+            }
+        } catch (err){
+
         }
     }
     const fetchCityData = async (id) => {
         const data = { "user_id": user.id, "state_name": id };
-        const response = await APIService.getCities(data);
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllCity(result)
-            // if (result.length > 0) {
-            //     // setFormValues((existing) => {
-            //     //     const newData = { ...existing, city: result[0].id }
-            //     //     return newData;
-            //     // })
-            // }
+        try{
+            const response = await APIService.getCities(data);
+            const result = (await response.json()).data;
+            if (Array.isArray(result)) {
+                setAllCity(result)
+            }
+        } catch (err){
+
         }
     }
     function convertToIdNameObject(items) {
@@ -153,40 +159,49 @@ const ManageEmployees = () => {
         return idNameObject;
     }
     const fetchUsersData = async () => {
-        setPageLoading(true);
+        // setPageLoading(true);
         // const data = { "user_id":  user.id };
         const data = { "user_id": user.id };
-        const response = await APIService.getUsers(data)
-        const result = (await response.json());
+        try{
 
-
+            const response = await APIService.getUsers(data)
+            const result = (await response.json());
             setAllUsername(convertToIdNameObject(result.data));
+        } catch (err){
+
+        }
         
     }
 
     const fetchRoleData = async () => {
-        setPageLoading(true);
+        // setPageLoading(true);
         // const data = { "user_id":  user.id };
         const data = { "user_id": user.id };
-        const response = await APIService.getRoles(data)
-        const result = (await response.json());
-        
+        try{
 
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
+            const response = await APIService.getRoles(data)
+            const result = (await response.json());
+            if (Array.isArray(result.data)) {
+                setAllRoles(result.data);
+            }
+        }
+        catch (err){
+
         }
     }
 
     const fetchEntitiesData = async () => {
-        setPageLoading(true);
+        // setPageLoading(true);
         // const data = { "user_id":  user.id };
         const data = { "user_id": user.id };
-        const response = await APIService.getEntityAdmin(data)
-        const result = (await response.json());
-        
-
-        if (Array.isArray(result.data)) {
-            setAllEntites(result.data);
+        try{
+            const response = await APIService.getEntityAdmin(data)
+            const result = (await response.json());
+            if (Array.isArray(result.data)) {
+                setAllEntites(result.data);
+            }
+        } catch (err){
+            
         }
     }
 

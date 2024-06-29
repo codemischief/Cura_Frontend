@@ -48,7 +48,7 @@ const ManageUser = () => {
     const { user } = useAuth()
     const menuRef = useRef();
     const navigate = useNavigate();
-    const {pathname} = useLocation();
+    const { pathname } = useLocation();
     const canEdit = checkEditAccess();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -96,13 +96,12 @@ const ManageUser = () => {
         setStatusFilterInput("");
         setIdFilterInput("");
     };
-    
 
-    
+
+
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchLobData = async () => {
-        setPageLoading(true);
         const data = {
             "user_id": user.id,
             "rows": ["id", "name"],
@@ -112,12 +111,14 @@ const ManageUser = () => {
             "pg_no": 0,
             "pg_size": 0
         };
-        const response = await APIService.getLob(data);
-        const result = (await response.json());
-        
+        try {
+            const response = await APIService.getLob(data);
+            const result = (await response.json());
+            if (Array.isArray(result.data)) {
+                setAllLOB(result.data);
+            }
+        } catch (err) {
 
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
         }
     }
 
@@ -152,8 +153,8 @@ const ManageUser = () => {
     const [query, setQuery] = useState('')
 
     const handleClientNameChange = (e) => {
-        
-        
+
+
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -167,34 +168,30 @@ const ManageUser = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        
+
         setSelectedOption(e)
     }
 
     const [orders, setOrders] = useState([]);
     const getOrdersByClientId = async (id) => {
-        if(id == null) return 
-        
+        if (id == null) return
+
         const data = {
             "user_id": user.id,
             "client_id": id
         }
-        const response = await APIService.getOrdersByClientId(data)
-        const res = await response.json()
-        
-        setOrders(res.data)
+        try {
+            const response = await APIService.getOrdersByClientId(data)
+            const res = await response.json()
+            setOrders(res.data)
+        }
+        catch (err) {
 
-        // if(res.data.length >= 1) {
-        //    const existing = {...formValues}
-        //    existing.order = res.data[0].id
-        //    
-        //    setFormValues(existing)
-
-        // } 
+        }
     }
 
     const loadOptions = async (e) => {
-        
+
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,
@@ -202,18 +199,23 @@ const ManageUser = () => {
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated(data)
-        const res = await response.json()
-        const results = res.data.map(e => {
-            return {
-                label: e[1],
-                value: e[0]
+        try {
+
+            const response = await APIService.getClientAdminPaginated(data)
+            const res = await response.json()
+            const results = res.data.map(e => {
+                return {
+                    label: e[1],
+                    value: e[0]
+                }
+            })
+            if (results === 'No Result Found') {
+                return []
             }
-        })
-        if (results === 'No Result Found') {
-            return []
+            return results
+        } catch (err) {
+
         }
-        return results
     }
 
     const getVendorCategoryAdmin = async () => {
@@ -221,22 +223,28 @@ const ManageUser = () => {
             "user_id": user.id,
             "order": "asc"
         }
-        const response = await APIService.getVendorCategoryAdmin(data);
-        const res = await response.json()
-        
-        setAllCategory(res.data)
+        try{
+            const response = await APIService.getVendorCategoryAdmin(data);
+            const res = await response.json()
+            setAllCategory(res.data)
+        } catch (err){
+
+        }
     }
 
     const fetchRoleData = async () => {
-        setPageLoading(true);
+        // setPageLoading(true);
         // const data = { "user_id":  user.id };
         const data = { "user_id": user.id };
-        const response = await APIService.getRoles(data)
-        const result = (await response.json());
-        
+        try{
 
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
+            const response = await APIService.getRoles(data)
+            const result = (await response.json());
+            if (Array.isArray(result.data)) {
+                setAllRoles(result.data);
+            }
+        } catch (err){
+
         }
     }
 
@@ -248,7 +256,7 @@ const ManageUser = () => {
         const tempArray = [];
         // we need to query thru the object
         // 
-        
+
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
@@ -275,15 +283,20 @@ const ManageUser = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getUser(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingUser(result);
-        setBackDropLoading(false)
-        setPageLoading(false);
+        try {
+
+            const response = await APIService.getUser(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingUser(result);
+            setBackDropLoading(false)
+            setPageLoading(false);
+        } catch (err) {
+            setPageLoading(false);
+        }
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
@@ -306,19 +319,24 @@ const ManageUser = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getUser(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingUser(result);
-        setPageLoading(false);
+        try {
+
+            const response = await APIService.getUser(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingUser(result);
+            setPageLoading(false);
+        } catch (err) {
+            setPageLoading(false);
+        }
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         setCurrentPage((prev) => 1)
-        
+
         const data = {
             "user_id": user.id,
             "rows": [
@@ -335,14 +353,19 @@ const ManageUser = () => {
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
-        const response = await APIService.getUser(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingUser(result);
-        setPageLoading(false);
+        try {
+
+            const response = await APIService.getUser(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingUser(result);
+            setPageLoading(false);
+        } catch (err) {
+            setPageLoading(false);
+        }
     }
     const [editId, setEditId] = useState(0);
     const handleEdit = (id) => {
@@ -350,7 +373,7 @@ const ManageUser = () => {
         setIsEditDialogue(true)
     }
     const handleOpenEdit = (oldItem) => {
-        
+
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -369,9 +392,9 @@ const ManageUser = () => {
         setFormErrors({});
     }
     const handleAddUser = () => {
-        
+
         if (!validate()) {
-            
+
             return;
         }
         setIsUserDialogue(false);
@@ -418,22 +441,27 @@ const ManageUser = () => {
             "zip": formValues.zipCode,
             "entityid": 1
         }
-        const response = await APIService.addUser(data);
+        try {
 
-        const result = (await response.json())
+            const response = await APIService.addUser(data);
 
-        setOpenAddConfirmation(false);
-        
-        if (result.result == "success") {
-            setFormValues(initialValues);
-            openAddSuccess();
-        } else {
-            openFailureModal();
-            setErrorMessage(result.message)
+            const result = (await response.json())
+
+            setOpenAddConfirmation(false);
+
+            if (result.result == "success") {
+                setFormValues(initialValues);
+                openAddSuccess();
+            } else {
+                openFailureModal();
+                setErrorMessage(result.message)
+            }
+        } catch (err) {
+
         }
 
-        
-        
+
+
     }
 
     const initialValues = {
@@ -552,20 +580,20 @@ const ManageUser = () => {
             })
         }
         if (!formValues.confirmPassword) {
-            
+
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "Enter Confirm Password" }
             })
             res = false;
         } else if (formValues.password && formValues.confirmPassword && formValues.password !== formValues.confirmPassword) {
-            
+
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "Password does not match" }
             })
             res = false;
         }
         else {
-            
+
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "" }
             })
@@ -620,7 +648,7 @@ const ManageUser = () => {
                 return { ...existing, zipCode: "" }
             })
         }
-             
+
         if (formValues.email2 != "" && formValues.email2 != null && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email2)) {
             // we need to set the formErrors
             setFormErrors((existing) => {
@@ -647,12 +675,16 @@ const ManageUser = () => {
             "user_id": user.id,
             "id": id
         }
-        const response = await APIService.deleteUser(data);
-        showDeleteConfirmation(false);
-        openDeleteSuccess();
+        try {
+            const response = await APIService.deleteUser(data);
+            showDeleteConfirmation(false);
+            openDeleteSuccess();
+        } catch (err) {
+
+        }
     }
     const handlePageChange = (event, value) => {
-        
+
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -686,52 +718,56 @@ const ManageUser = () => {
             "pg_size": 0,
             "search_key": searchInput,
             "downloadType": type,
-            "routename" : pathname,
-            "colmap" : {
-                "fullname" : "Name",
-                "username" : "Username",
-                "role_name" : "Role",
-                "statusmap" : "Status",
-                "id" : "ID"
+            "routename": pathname,
+            "colmap": {
+                "fullname": "Name",
+                "username": "Username",
+                "role_name": "Role",
+                "statusmap": "Status",
+                "id": "ID"
             }
         };
-        const response = await APIService.getUser(data)
-        const temp = await response.json();
-        const result = temp.data;
-        
-        if (temp.result == "success") {
-            const d = {
-              filename: temp.filename,
-              user_id: user.id,
-            };
-            APIService.download(d, temp.filename).then((response) => {
-                if (!response.ok) {
-                  throw new Error(
-                    "Network response was not ok " + response.statusText
-                  );
-                }
-                return response.blob();
-              })
-              .then((result) => {
-                if (type == "excel") {
-                  FileSaver.saveAs(result, "UserData.xlsx");
-                } else if (type == "pdf") {
-                  FileSaver.saveAs(result, "UserData.pdf");
-                }
-                
-              })
-              .catch((error) => {
-                console.error("Error:", error);
-              });
-      
-            setTimeout(() => {
-              // setBackDropLoading(false)
-              setPageLoading(false);
-            }, 1000);
-          }
+        try {
+
+            const response = await APIService.getUser(data)
+            const temp = await response.json();
+            const result = temp.data;
+
+            if (temp.result == "success") {
+                const d = {
+                    filename: temp.filename,
+                    user_id: user.id,
+                };
+                APIService.download(d, temp.filename).then((response) => {
+                    if (!response.ok) {
+                        throw new Error(
+                            "Network response was not ok " + response.statusText
+                        );
+                    }
+                    return response.blob();
+                })
+                    .then((result) => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, "UserData.xlsx");
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, "UserData.pdf");
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+
+                setTimeout(() => {
+                    // setBackDropLoading(false)
+                    setPageLoading(false);
+                }, 1000);
+            }
+        } catch (err) {
+            setPageLoading(false);
+        }
     }
     const handleSearch = async () => {
-        // 
         setPageLoading(true);
         setIsSearchOn(true);
         setCurrentPage((prev) => 1);
@@ -751,14 +787,19 @@ const ManageUser = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getUser(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingUser(result);
-        setPageLoading(false);
+        try {
+
+            const response = await APIService.getUser(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingUser(result);
+            setPageLoading(false);
+        } catch (err) {
+            setPageLoading(false);
+        }
     }
     const handleCloseSearch = async () => {
         setIsSearchOn(false);
@@ -781,14 +822,19 @@ const ManageUser = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getUser(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingUser(result);
-        setPageLoading(false);
+        try {
+
+            const response = await APIService.getUser(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingUser(result);
+            setPageLoading(false);
+        } catch (err) {
+            setPageLoading(false);
+        }
     }
     const openAddSuccess = () => {
         // (false);
@@ -884,7 +930,7 @@ const ManageUser = () => {
         setIdFilter(false)
         // we need to query thru the object
         // 
-        
+
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
@@ -910,40 +956,45 @@ const ManageUser = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getUser(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingUser(result);
-        setPageLoading(false);
+        try {
+
+            const response = await APIService.getUser(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingUser(result);
+            setPageLoading(false);
+        } catch (err) {
+            setPageLoading(false);
+        }
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
 
-        
-        
-        
-        
-        
-        
-        
-            var existing = filterMapState;
-            existing = {
-                ...existing, [columnName]: {
-                    ...existing[columnName],
-                    filterType: type == 'noFilter' ? "" : type
-                }
-            }
-            existing = {
-                ...existing, [columnName]: {
-                    ...existing[columnName],
-                    filterValue: type == 'noFilter' ? "" : inputVariable
-                }
-            }
 
-            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
-        
+
+
+
+
+
+
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+
+        if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
+
 
         fetchFiltered(existing);
     }
@@ -969,32 +1020,33 @@ const ManageUser = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
         // setFlag((prev) => !prev);
-        const response = await APIService.getUser(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingUser(result);
-        setPageLoading(false);
+        try {
+
+            const response = await APIService.getUser(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingUser(result);
+            setPageLoading(false);
+        } catch (err) {
+            setPageLoading(false);
+        }
     }
 
-
-    //    const [allCity,setAllCity] = useState([]);
-    // we need to fetch the city data
     const fetchCityData = async (id) => {
         const data = { "user_id": user.id, "state_name": id };
-        const response = await APIService.getCities(data);
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllCity(result)
-            // if (result.length > 0) {
-            //     // setFormValues((existing) => {
-            //     //     const newData = { ...existing, city: result[0].id }
-            //     //     return newData;
-            //     // })
-            // }
+        try {
+
+            const response = await APIService.getCities(data);
+            const result = (await response.json()).data;
+
+            if (Array.isArray(result)) {
+                setAllCity(result)
+            }
+        } catch (err) {
+
         }
     }
     const [tallyLedgerData, setTallyLedgerData] = useState([])
@@ -1002,10 +1054,15 @@ const ManageUser = () => {
         const data = {
             "user_id": user.id
         }
-        const response = await APIService.getTallyLedgerAdmin(data);
-        const res = await response.json()
-        
-        setTallyLedgerData(res.data)
+        try {
+
+            const response = await APIService.getTallyLedgerAdmin(data);
+            const res = await response.json()
+
+            setTallyLedgerData(res.data)
+        } catch (err) {
+
+        }
     }
 
     function handleKeyDown(event) {
@@ -1017,14 +1074,14 @@ const ManageUser = () => {
         setInputVariable,
         type,
         columnName) => {
-        
+
         if (event.keyCode === 13) {
             // if its empty then we remove that 
             // const temp = {...filterMapState};
             // temp[columnName].type = "".
             // setFilterMapState(temp)
             if (inputVariable == "") {
-                
+
                 const temp = { ...filterMapState }
                 temp[columnName].filterType = ""
                 // temp[key].filterValue
@@ -1236,11 +1293,11 @@ const ManageUser = () => {
                             </div>
 
                             <div className='w-[35%]  flex '>
-                            <RefreshFilterButton
-                                filterMapping={filterMapping}
-                                setFilterMapState={setFilterMapState}
-                                resetAllInputs={resetFilters}
-                            /> 
+                                <RefreshFilterButton
+                                    filterMapping={filterMapping}
+                                    setFilterMapState={setFilterMapState}
+                                    resetAllInputs={resetFilters}
+                                />
                             </div>
                         </div>
                     </div>
@@ -1283,7 +1340,7 @@ const ManageUser = () => {
                             </div>
                             <div className='w-[35%]  flex'>
                                 <div className='px-3 py-3.5'>
-                                    <p>{canEdit ? "Edit": ""}</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>
@@ -1337,15 +1394,15 @@ const ManageUser = () => {
                                     <div className='w-[30%]  flex'>
                                         <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-5'>
-                                            <EditButton
-                                             rowData={item.id}
-                                             handleEdit={handleEdit}
-                                            />
-                                            <DeleteButton
-                                              
-                                              handleDelete={handleDelete}
-                                              rowData={item}
-                                            />
+                                                <EditButton
+                                                    rowData={item.id}
+                                                    handleEdit={handleEdit}
+                                                />
+                                                <DeleteButton
+
+                                                    handleDelete={handleDelete}
+                                                    rowData={item}
+                                                />
                                                 {/* <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
                                                 <button onClick={() => handleDelete(item.id, item.fullname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
                                             </div>
@@ -1379,7 +1436,7 @@ const ManageUser = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                
+
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -1498,7 +1555,7 @@ const ManageUser = () => {
                                                     defaultValue="Select lob"
                                                     onChange={e => {
                                                         // fetchCityData(e.target.value);
-                                                        
+
                                                         setFormValues((existing) => {
                                                             const newData = { ...existing, lob: e.target.value }
                                                             return newData;
@@ -1575,7 +1632,7 @@ const ManageUser = () => {
                                                     defaultValue="Select Role"
                                                     onChange={e => {
                                                         // fetchCityData(e.target.value);
-                                                        
+
                                                         setFormValues((existing) => {
                                                             const newData = { ...existing, role: e.target.value }
                                                             return newData;
