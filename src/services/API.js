@@ -2245,7 +2245,7 @@ const download = async (data, filename) => {
   return handleResponse(response);
 };
 
-const logOut = async () => {
+const logOut = async (user_id) => {
   const refreshToken = localStorage.getItem("refreshToken")
   const userId = JSON.parse(localStorage.getItem("user"))?.id;
 
@@ -2255,7 +2255,7 @@ const logOut = async () => {
       "Content-Type": "application/json",
       "RefreshToken": refreshToken,
     },
-    body: JSON.stringify({ "user_id": userId })
+    body: JSON.stringify({ "user_id": user_id ? user_id : userId })
 
   });
   return response
