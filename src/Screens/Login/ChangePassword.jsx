@@ -54,7 +54,7 @@ const ChangePassword = () => {
   });
 
   const handleNavigate = async()=>{
-    const res = await APIService.logOut()
+    const res = await APIService.logOut(user.id)
     setBackToLogin(false);
     navigate("/login");
     setAccessToken(null)

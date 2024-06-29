@@ -245,7 +245,7 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    const response = await APIService.logOut();
+    const response = await APIService.logOut(state.user.id);
     setIsModalOpen(false);
     clearInterval(countdownRef.current);
     setSession(null);

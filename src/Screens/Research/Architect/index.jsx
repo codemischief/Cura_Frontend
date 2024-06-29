@@ -180,6 +180,7 @@ const ResearchArchitect = () => {
         "city" : "City",
         "emailid" : "Email ID",
         "phoneno" : "Phone Number",
+        "project" : "Project",
         "societyname" : "Society Name",
         "id" : "ID"
       },
@@ -214,6 +215,7 @@ const ResearchArchitect = () => {
         "city" : "City",
         "emailid" : "Email ID",
         "phoneno" : "Phone Number",
+        "project" : "Project",
         "societyname" : "Society Name",
         "id" : "ID"
       },
