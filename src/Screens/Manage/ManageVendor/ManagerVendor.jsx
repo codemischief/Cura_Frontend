@@ -42,10 +42,10 @@ import checkEditAccess from '../../../Components/common/checkRoleBase';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
 const ManageVendor = () => {
-    const {user} = useAuth()
-    const {pathname} = useLocation()
+    const { user } = useAuth()
+    const { pathname } = useLocation()
     const canEdit = checkEditAccess();
-    
+
     const dataRows = [
         "vendorname",
         "tdssection",
@@ -130,7 +130,7 @@ const ManageVendor = () => {
         setCategoryFilterInput("");
         setCityFilterInput("");
         setIdFilterInput("");
-      };
+    };
     // const [filterArray,setFilterArray] = useState([]);
 
     const [typeOfOrganization, setTypeOfOrganization] = useState([
@@ -164,8 +164,8 @@ const ManageVendor = () => {
     const [query, setQuery] = useState('')
 
     const handleClientNameChange = (e) => {
-        
-        
+
+
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -179,22 +179,27 @@ const ManageVendor = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        
+
         setSelectedOption(e)
     }
 
     const [orders, setOrders] = useState([]);
     const getOrdersByClientId = async (id) => {
-        if(id == null) return 
-        
-        const data = {
-            "user_id": user.id,
-            "client_id": id
+        try {
+            if (id == null) return
+
+            const data = {
+                "user_id": user.id,
+                "client_id": id
+            }
+            const response = await APIService.getOrdersByClientId(data)
+            const res = await response.json()
+
+            setOrders(res.data)
+
+        } catch (e) {
+
         }
-        const response = await APIService.getOrdersByClientId(data)
-        const res = await response.json()
-        
-        setOrders(res.data)
 
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
@@ -206,7 +211,7 @@ const ManageVendor = () => {
     }
 
     const loadOptions = async (e) => {
-        
+
         if (e.length < 3) return;
         const data = {
             "user_id": user.id,
@@ -229,14 +234,19 @@ const ManageVendor = () => {
     }
 
     const getVendorCategoryAdmin = async () => {
-        const data = {
-            "user_id": user.id,
-            "order": "asc"
+        try {
+            const data = {
+                "user_id": user.id,
+                "order": "asc"
+            }
+            const response = await APIService.getVendorCategoryAdmin(data);
+            const res = await response.json()
+
+            setAllCategory(res.data)
+        } catch (e) {
+
         }
-        const response = await APIService.getVendorCategoryAdmin(data);
-        const res = await response.json()
-        
-        setAllCategory(res.data)
+
     }
 
     const [sortField, setSortField] = useState("id")
@@ -274,68 +284,88 @@ const ManageVendor = () => {
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
         };
-        const response = await APIService.getVendors(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendors(result);
-        setPageLoading(false);
+        try {
+            const response = await APIService.getVendors(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendors(result);
+            setPageLoading(false);
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const fetchPageData = async (pageNumber) => {
-        setPageLoading(true);
-        setCurrentPage((prev) => pageNumber)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getVendors(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendors(result);
-        setPageLoading(false);
+        try {
+            setPageLoading(true);
+            setCurrentPage((prev) => pageNumber)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(pageNumber),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getVendors(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendors(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const fetchQuantityData = async (quantity) => {
-        setPageLoading(true);
-        setCurrentPage((prev) => 1)
-        
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(quantity),
-            "search_key": searchInput
-        };
-        const response = await APIService.getVendors(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendors(result);
-        setPageLoading(false);
+        try {
+            setPageLoading(true);
+            setCurrentPage((prev) => 1)
+
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(quantity),
+                "search_key": searchInput
+            };
+            const response = await APIService.getVendors(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendors(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
-    
+
     const [invoiceId, setInvoiceId] = useState(0);
     const handleEdit = (id) => {
         setInvoiceId((prev) => id)
         setIsEditDialogue(true)
     }
     const handleOpenEdit = (oldItem) => {
-        
+
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -354,9 +384,9 @@ const ManageVendor = () => {
         setFormErrors({});
     }
     const handleAddVendor = () => {
-        
+
         if (!validate()) {
-            
+
             return;
         }
         setIsVendorDialogue(false);
@@ -364,51 +394,56 @@ const ManageVendor = () => {
 
     }
     const addVendor = async () => {
-        const data = {
-            "user_id": user.id,
-            "vendorname": formValues.vendorName,
-            "addressline1": formValues.addressLine1,
-            "addressline2": formValues.addressLine2,
-            "suburb": formValues.suburb,
-            "city": Number(formValues.city),
-            "state": "Maharashtra",
-            "country": 5,
-            "type": formValues.typeOfOrganization,
-            "details": formValues.details,
-            "category": Number(formValues.category),
-            "phone1": formValues.phone,
-            "email": formValues.email,
-            "ownerinfo": formValues.ownerDetails,
-            "panno": formValues.pan,
-            "tanno": formValues.tan,
-            "gstservicetaxno": formValues.gstin,
-            "tdssection": formValues.tdsSection,
-            "bankname": formValues.bankName,
-            "bankbranch": formValues.bankBranch,
-            "bankcity": formValues.bankBranchCity,
-            "bankacctholdername": formValues.accountHolderName,
-            "bankacctno": formValues.accountNumber,
-            "bankifsccode": formValues.ifscCode,
-            "bankaccttype": formValues.accountType,
-            "companydeductee": true,
-            "tallyledgerid": formValues.tallyLedger
-        }
-        const response = await APIService.addVendors(data);
-        const result = (await response.json())
-        setOpenAddConfirmation(false);
-        
-        setIsVendorDialogue(false);
-        if (result.result == "success") {
-            setFormValues(initialValues);
-            openAddSuccess();
-        } else {
+        try {
+            const data = {
+                "user_id": user.id,
+                "vendorname": formValues.vendorName,
+                "addressline1": formValues.addressLine1,
+                "addressline2": formValues.addressLine2,
+                "suburb": formValues.suburb,
+                "city": Number(formValues.city),
+                "state": "Maharashtra",
+                "country": 5,
+                "type": formValues.typeOfOrganization,
+                "details": formValues.details,
+                "category": Number(formValues.category),
+                "phone1": formValues.phone,
+                "email": formValues.email,
+                "ownerinfo": formValues.ownerDetails,
+                "panno": formValues.pan,
+                "tanno": formValues.tan,
+                "gstservicetaxno": formValues.gstin,
+                "tdssection": formValues.tdsSection,
+                "bankname": formValues.bankName,
+                "bankbranch": formValues.bankBranch,
+                "bankcity": formValues.bankBranchCity,
+                "bankacctholdername": formValues.accountHolderName,
+                "bankacctno": formValues.accountNumber,
+                "bankifsccode": formValues.ifscCode,
+                "bankaccttype": formValues.accountType,
+                "companydeductee": true,
+                "tallyledgerid": formValues.tallyLedger
+            }
+            const response = await APIService.addVendors(data);
+            const result = (await response.json())
+            setOpenAddConfirmation(false);
+
+            setIsVendorDialogue(false);
+            if (result.result == "success") {
+                setFormValues(initialValues);
+                openAddSuccess();
+            } else {
+                setFormValues(initialValues);
+                openFailureModal();
+                setErrorMessage(result.message)
+            }
+
+
+        } catch (e) {
             setFormValues(initialValues);
             openFailureModal();
-            setErrorMessage(result.message)
+            setErrorMessage(e.message)
         }
-
-        
-        
     }
 
     const initialValues = {
@@ -510,17 +545,21 @@ const ManageVendor = () => {
         showDeleteConfirmation(true);
     }
     const deleteVendor = async (id) => {
-        const data = {
-            "user_id": user.id,
-            "id": id
-        }
-        const response = await APIService.deleteVendors(data);
-        showDeleteConfirmation(false);
+        try {
+            const data = {
+                "user_id": user.id,
+                "id": id
+            }
+            const response = await APIService.deleteVendors(data);
+            showDeleteConfirmation(false);
 
-        openDeleteSuccess();
+            openDeleteSuccess();
+        } catch (e) {
+        }
+
     }
     const handlePageChange = (event, value) => {
-        
+
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -534,118 +573,136 @@ const ManageVendor = () => {
         setDownloadModal(false);
     }
     const handleDownload = async (type) => {
-        setDownloadModal(false)
-        setPageLoading(true)
-        const data = {
-            "user_id": user.id,
-            "rows": [
-                "vendorname",
-                "tdssection",
-                "tallyledger",
-                "category",
-                "city",
-                "id",
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput,
-            "downloadType": type,
-            "routename" : "/manage/managevendor",
-            "colmap": {
-                "vendorname": "Vendor Name",
-                "tdssection": "TDS Section",
-                "tallyledger": "TallyLedger",
-                "category": "Category",
-                "city": "City",
-                "id": "ID"
-            }
-        };
-        const response = await APIService.getVendors(data);
-        const temp = await response.json();
-        if (temp.result == 'success') {
-            const d = {
-                "filename": temp.filename,
-                "user_id": user.id
-            }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
+        try {
+            setDownloadModal(false)
+            setPageLoading(true)
+            const data = {
+                "user_id": user.id,
+                "rows": [
+                    "vendorname",
+                    "tdssection",
+                    "tallyledger",
+                    "category",
+                    "city",
+                    "id",
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 0,
+                "pg_size": 0,
+                "search_key": searchInput,
+                "downloadType": type,
+                "routename": "/manage/managevendor",
+                "colmap": {
+                    "vendorname": "Vendor Name",
+                    "tdssection": "TDS Section",
+                    "tallyledger": "TallyLedger",
+                    "category": "Category",
+                    "city": "City",
+                    "id": "ID"
+                }
+            };
+            const response = await APIService.getVendors(data);
+            const temp = await response.json();
+            if (temp.result == 'success') {
+                const d = {
+                    "filename": temp.filename,
+                    "user_id": user.id
+                }
+                fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                    method: 'POST', // or the appropriate HTTP method
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d) // Convert the object to a JSON string
                 })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'VendorData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'VendorData.pdf');
-                    }
-                    
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            setTimeout(() => {
-                setPageLoading(false)
-            }, 1000)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.blob();
+                    })
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'VendorData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'VendorData.pdf');
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                setTimeout(() => {
+                    setPageLoading(false)
+                }, 1000)
+            }
+        } catch (e) {
+            setPageLoading(false)
         }
+
     }
     const handleSearch = async () => {
-        // 
-        setPageLoading(true);
-        setIsSearchOn(true);
-        setCurrentPage((prev) => 1);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getVendors(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendors(result);
-        setPageLoading(false);
+        try {
+            setPageLoading(true);
+            setIsSearchOn(true);
+            setCurrentPage((prev) => 1);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getVendors(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendors(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const handleCloseSearch = async () => {
-        setIsSearchOn(false);
-        setPageLoading(true);
-        setSearchInput("");
-        setCurrentPage(1);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
-        };
-        const response = await APIService.getVendors(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendors(result);
-        setPageLoading(false);
+        try {
+            setIsSearchOn(false);
+            setPageLoading(true);
+            setSearchInput("");
+            setCurrentPage(1);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": ""
+            };
+            const response = await APIService.getVendors(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendors(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setIsSearchOn(false);
+
+        }
+
     }
     const openAddSuccess = () => {
         // (false);
@@ -738,6 +795,7 @@ const ManageVendor = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
+
         setFilterMapState(mapState)
         const tempArray = [];
         setVendorNameFilter(false)
@@ -768,32 +826,39 @@ const ManageVendor = () => {
 
             }
         })
-        setCurrentPage(() => 1)
-        setFilterState(tempArray)
-        setPageLoading(true);
-        const data = {
-            "user_id": user.id,
-            "rows":dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getVendors(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendors(result);
-        setPageLoading(false);
+        try {
+            setCurrentPage(() => 1)
+            setFilterState(tempArray)
+            setPageLoading(true);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": isSearchOn ? searchInput : ""
+            };
+            const response = await APIService.getVendors(data);
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendors(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        
-        
-        
+
+
+
 
         var existing = filterMapState;
         existing = {
@@ -815,7 +880,8 @@ const ManageVendor = () => {
         fetchFiltered(existing);
     }
     const handleSort = async (field) => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         // we need to query thru the object
         setSortField(field)
         setFlag((prev) => !prev);
@@ -833,21 +899,27 @@ const ManageVendor = () => {
         const response = await APIService.getVendors(data);
         const temp = await response.json();
         const result = temp.data;
-        
+
         const t = temp.total_count;
         setTotalItems(t);
         setExistingVendors(result);
         setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(true);
+        }
+        
     }
 
 
     //    const [allCity,setAllCity] = useState([]);
     // we need to fetch the city data
     const fetchCityData = async (id) => {
-        const data = { "user_id": user.id, "state_name": id };
+        try{
+            const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        
+
         if (Array.isArray(result)) {
             setAllCity(result)
             // if (result.length > 0) {
@@ -857,16 +929,24 @@ const ManageVendor = () => {
             //     // })
             // }
         }
+        }catch(e){
+
+        }
     }
     const [tallyLedgerData, setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
-        const data = {
-            "user_id": user.id
+        try{
+            const data = {
+                "user_id": user.id
+            }
+            const response = await APIService.getTallyLedgerAdmin(data);
+            const res = await response.json()
+    
+            setTallyLedgerData(res.data)
+        }catch(e){
+  
         }
-        const response = await APIService.getTallyLedgerAdmin(data);
-        const res = await response.json()
         
-        setTallyLedgerData(res.data)
     }
 
     function handleKeyDown(event) {
@@ -1081,9 +1161,9 @@ const ManageVendor = () => {
                             </div>
                             <div className='w-[35%]  flex items-center'>
                                 <RefreshFilterButton
-                                 filterMapping={filterMapping}
-                                 setFilterMapState={setFilterMapState}
-                                 resetAllInputs={resetAllInputs}
+                                    filterMapping={filterMapping}
+                                    setFilterMapState={setFilterMapState}
+                                    resetAllInputs={resetAllInputs}
                                 />
                             </div>
                         </div>
@@ -1191,12 +1271,12 @@ const ManageVendor = () => {
                                         <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-3'>
                                                 <EditButton
-                                                   handleEdit={handleEdit}
-                                                   rowData={item.id}
+                                                    handleEdit={handleEdit}
+                                                    rowData={item.id}
                                                 />
                                                 <DeleteButton
-                                                   handleDelete={handleDelete}
-                                                   rowData={item}
+                                                    handleDelete={handleDelete}
+                                                    rowData={item}
                                                 />
                                                 {/* <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
                                                 <button onClick={() => handleDelete(item.id, item.vendorname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
@@ -1231,7 +1311,7 @@ const ManageVendor = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                
+
 
                                 fetchQuantityData(e.target.value)
                             }}

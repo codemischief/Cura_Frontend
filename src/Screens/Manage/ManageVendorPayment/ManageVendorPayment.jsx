@@ -137,106 +137,29 @@ const ManageVendorPayment = () => {
         "createdbyname",
         "id",
     ]
-    const fetchCountryData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
-    }
-    const fetchStateData = async (id) => {
-        
-        const data = { "user_id": user.id, "country_id": id };
-        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllState(result)
-        }
-    }
-    const fetchCityData = async (id) => {
-        const data = { "user_id": user.id, "state_name": id };
-        const response = await APIService.getCities(data);
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllCity(result)
-            // if (result.length > 0) {
-            //     // setFormValues((existing) => {
-            //     //     const newData = { ...existing, city: result[0].id }
-            //     //     return newData;
-            //     // })
-            // }
-        }
-    }
 
-    const fetchRoleData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = { "user_id": user.id };
-        const response = await APIService.getRoles(data)
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, role: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
-        }
-    }
 
-    const fetchEntitiesData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = { "user_id": user.id };
-        const response = await APIService.getEntityAdmin(data)
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, entity: result.data[0][0] }
-        })
-        if (Array.isArray(result.data)) {
-            setAllEntites(result.data);
-        }
-    }
 
-    const fetchLobData = async () => {
-        setPageLoading(true);
-        const data = {
-            "user_id": user.id,
-            "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getLob(data);
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, lob: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
-        }
-    }
+
+
+
 
     const [modesData, setModesData] = useState([]);
     const fetchModesData = async () => {
-        const data = {
-            "user_id": user.id
+        try{
+            const data = {
+                "user_id": user.id
+            }
+            const response = await APIService.getModesAdmin(data)
+            const res = await response.json()
+            
+            
+            setModesData(res.data)
+
+        }catch(e){
+
         }
-        const response = await APIService.getModesAdmin(data)
-        const res = await response.json()
-        
-        
-        setModesData(res.data)
+       
         
         
         
@@ -254,140 +177,180 @@ const ManageVendorPayment = () => {
         return idNameObject;
     }
     const fetchUsersData = async () => {
-        const data = {
-            "user_id": user.id
+        try{
+
+            const data = {
+                "user_id": user.id
+            }
+            const response = await APIService.getUsers(data)
+            const res = await response.json()
+            // const existing = { ...formValues }
+            // existing.receivedBy = res.data[0].id,
+            //     
+            // setFormValues(existing)
+            setUsersData(helperUser(res.data))
+        }catch(e){
+
         }
-        const response = await APIService.getUsers(data)
-        const res = await response.json()
-        // const existing = { ...formValues }
-        // existing.receivedBy = res.data[0].id,
-        //     
-        // setFormValues(existing)
-        setUsersData(helperUser(res.data))
+      
     }
 
     const [vendorData, setVendorData] = useState([])
     const fetchVendorData = async () => {
-        const data = { "user_id": user.id }
-        const response = await APIService.getVendorAdmin(data)
-        const res = await response.json()
-        
-        setVendorData(res.data)
+        try{
+            const data = { "user_id": user.id }
+            const response = await APIService.getVendorAdmin(data)
+            const res = await response.json()
+            
+            setVendorData(res.data)
+
+        }catch(e){
+            console.log(e);
+        }
+       
     }
 
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const [existingVendorPayment, setExistingVendorPayment] = useState([]);
     const fetchData = async () => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
 
-        const tempArray = [];
-        // we need to query thru the object
-        // 
-        Object.keys(filterMapState).forEach((key) => {
-            if (filterMapState[key].filterType != "") {
-                if (filterMapState[key].filterData == 'Numeric') {
-                    tempArray.push([
-                        key,
-                        filterMapState[key].filterType,
-                        Number(filterMapState[key].filterValue),
-                        filterMapState[key].filterData,
-                    ]);
-                } else {
-                    tempArray.push([
-                        key,
-                        filterMapState[key].filterType,
-                        filterMapState[key].filterValue,
-                        filterMapState[key].filterData,
-                    ]);
+            const tempArray = [];
+            // we need to query thru the object
+            // 
+            Object.keys(filterMapState).forEach((key) => {
+                if (filterMapState[key].filterType != "") {
+                    if (filterMapState[key].filterData == 'Numeric') {
+                        tempArray.push([
+                            key,
+                            filterMapState[key].filterType,
+                            Number(filterMapState[key].filterValue),
+                            filterMapState[key].filterData,
+                        ]);
+                    } else {
+                        tempArray.push([
+                            key,
+                            filterMapState[key].filterType,
+                            filterMapState[key].filterValue,
+                            filterMapState[key].filterData,
+                        ]);
+                    }
                 }
+            });
+            // setCurrentPage((prev) => 1)
+            setFilterState((prev) => tempArray)
+            setCurrentPage((prev) => 1)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
             }
-        });
-        // setCurrentPage((prev) => 1)
-        setFilterState((prev) => tempArray)
-        setCurrentPage((prev) => 1)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
+                ;
+            const response = await APIService.getVendorPayment(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorPayment(result);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+
         }
-            ;
-        const response = await APIService.getVendorPayment(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorPayment(result);
-        setPageLoading(false);
+       
     }
     const fetchPageData = async (pageNumber) => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         
-        setCurrentPage(() => pageNumber)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
+            setCurrentPage(() => pageNumber)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(pageNumber),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            }
+            const response = await APIService.getVendorPayment(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorPayment(result);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+
         }
-        const response = await APIService.getVendorPayment(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorPayment(result);
-        setPageLoading(false);
+      
     }
     const fetchQuantityData = async (quantity) => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
+
         
-        setCurrentPage((prev) => 1);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(quantity),
-            "search_key": searchInput
+            setCurrentPage((prev) => 1);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(quantity),
+                "search_key": searchInput
+            }
+                ;
+            const response = await APIService.getVendorPayment(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorPayment(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+
         }
-            ;
-        const response = await APIService.getVendorPayment(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorPayment(result);
-        setPageLoading(false);
+       
     }
     const [clientPropertyData, setClientPropertyData] = useState([]);
-    const getClientPropertyByClientId = async (id) => {
-        const data = {
-            "user_id": user.id,
-            "client_id": id
-        }
 
-        const response = await APIService.getClientPropertyByClientId(data)
-        const res = await response.json()
-        
-        setClientPropertyData(res.data)
+    const getClientPropertyByClientId = async (id) => {
+        try{
+            const data = {
+                "user_id": user.id,
+                "client_id": id
+            }
+    
+            const response = await APIService.getClientPropertyByClientId(data)
+            const res = await response.json()
+            
+            setClientPropertyData(res.data)
+        }catch(e){
+
+        }
+      
     }
     const [orders, setOrders] = useState([]);
     
     const getOrdersByClientId = async (id) => {
+    
         if(id == null) return
         
         const data = {
@@ -431,6 +394,7 @@ const ManageVendorPayment = () => {
         // "orderid": 34,
         // "entityid": 1,
         // "officeid": 1
+   
         const response = await APIService.addVendorPayment(data)
         const res = await response.json()
         
@@ -677,6 +641,7 @@ const ManageVendorPayment = () => {
         setDownloadModal(false);
     }
     const handleDownload = async (type) => {
+
         setPageLoading(true);
         const data = {
             "user_id": user.id,
@@ -713,90 +678,108 @@ const ManageVendorPayment = () => {
             "pg_size": 0,
             "search_key": searchInput
         };
-        const response = await APIService.getVendorPayment(data);
-        const temp = await response.json();
-        if (temp.result == 'success') {
-            const d = {
-                "filename": temp.filename,
-                "user_id": user.id
+        try{
+            const response = await APIService.getVendorPayment(data);
+            const temp = await response.json();
+            if (temp.result == 'success') {
+                const d = {
+                    "filename": temp.filename,
+                    "user_id": user.id
+                }
+                fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                    method: 'POST', // or the appropriate HTTP method
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d) // Convert the object to a JSON string
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.blob();
+                    })
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'VendorPaymentData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'VendorPaymentData.pdf');
+                        }
+                        
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                setTimeout(() => {
+                    setPageLoading(false)
+                }, 1000)
             }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
-                })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'VendorPaymentData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'VendorPaymentData.pdf');
-                    }
-                    
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            setTimeout(() => {
-                setPageLoading(false)
-            }, 1000)
+
+        }catch(e){
+            setPageLoading(false)
+            
         }
+       
     }
     const handleSearch = async () => {
-        // 
-        setPageLoading(true);
-        setCurrentPage((prev) => 1)
-        // setCurrentPages(15);
-        setIsSearchOn(true);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getVendorPayment(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorPayment(result);
-        setPageLoading(false);
+        try{
+            setPageLoading(true);
+            setCurrentPage((prev) => 1)
+            // setCurrentPages(15);
+            setIsSearchOn(true);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getVendorPayment(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorPayment(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+
+        }
+      
     }
     const handleCloseSearch = async () => {
-        setIsSearchOn(false);
-        setPageLoading(true);
-        setSearchInput("");
-        setCurrentPage((prev) => 1)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
-        };
-        const response = await APIService.getVendorPayment(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorPayment(result);
-        setPageLoading(false);
+        try{
+            setIsSearchOn(false);
+            setPageLoading(true);
+            setSearchInput("");
+            setCurrentPage((prev) => 1)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": ""
+            };
+            const response = await APIService.getVendorPayment(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorPayment(result);
+            setPageLoading(false);
+        }catch(e){
+
+            setPageLoading(false);
+        }
+
     }
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [currVendorInvoice, setCurrVendorInvoice] = useState("");
@@ -805,16 +788,21 @@ const ManageVendorPayment = () => {
         setShowDeleteModal(true)
     }
     const deleteVendorPayment = async (id) => {
-        const data = {
-            "user_id": user.id,
-            "id": id
+        try{
+            const data = {
+                "user_id": user.id,
+                "id": id
+            }
+            const response = await APIService.deleteVendorPayment(data)
+            const res = await response.json()
+            if (res.result == 'success') {
+                setShowDeleteModal(false);
+                openDeleteSuccess()
+            }
+        }catch(e){
+            console.log(e);
         }
-        const response = await APIService.deleteVendorPayment(data)
-        const res = await response.json()
-        if (res.result == 'success') {
-            setShowDeleteModal(false);
-            openDeleteSuccess()
-        }
+      
     }
     const openAddSuccess = () => {
         // (false);
@@ -1046,14 +1034,21 @@ const ManageVendorPayment = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getVendorPayment(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorPayment(result);
-        setPageLoading(false);
+        try{
+            const response = await APIService.getVendorPayment(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorPayment(result);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+
+        }
+       
     }
 
 
@@ -1070,25 +1065,31 @@ const ManageVendorPayment = () => {
             }
         })
         setFlag((prev) => !prev)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [field],
-            "order": !flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        // setFlag((prev) => !prev);
-        const response = await APIService.getVendorPayment(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorPayment(result);
-        setPageLoading(false);
+        try{
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [field],
+                "order": !flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": isSearchOn ? searchInput : ""
+            };
+            // setFlag((prev) => !prev);
+            const response = await APIService.getVendorPayment(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorPayment(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+
+        }
+       
     }
 
     function handleKeyDown(event) {
@@ -1126,16 +1127,21 @@ const ManageVendorPayment = () => {
         orderstatus: ""
     })
     const getOrderData = async (id) => {
-        const data = {
-            "user_id": user.id,
-            "orderid": id
+        try{
+            const data = {
+                "user_id": user.id,
+                "orderid": id
+            }
+            const response = await APIService.getOrderPending(data)
+            const res = await response.json()
+            const temp = { ...orderData }
+            temp.orderdate = res.data.orderdate
+            temp.orderstatus = res.data.orderstatus
+            setOrderData(temp)
+        }catch(e){
+          console.log(e);
         }
-        const response = await APIService.getOrderPending(data)
-        const res = await response.json()
-        const temp = { ...orderData }
-        temp.orderdate = res.data.orderdate
-        temp.orderstatus = res.data.orderstatus
-        setOrderData(temp)
+       
     }
 
     useEffect(() => {

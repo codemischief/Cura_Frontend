@@ -453,17 +453,23 @@ const addProjectInfo = async () => {
         "project_contacts": arrayHelper(formValues.project_contacts),
             "project_photos": arrayHelper(formValues.project_photos)
         }
-        
-        const response = await APIService.addProject(data)
-        const res = await response.json()
-        if (res.result == 'success') {
-            setShowAddConfirmation(false);
-            setIsStateDialogue(false)
-            setFormValues(initialValues);
-            openAddSuccess();
+        try{
+            const response = await APIService.addProject(data)
+            const res = await response.json()
+            if (res.result == 'success') {
+                setShowAddConfirmation(false);
+                setIsStateDialogue(false)
+                setFormValues(initialValues);
+                openAddSuccess();
+                
+            }
+    
+
+        }catch(e){
             
         }
-
+        
+       
     }
     // validate form and to throw Error message
     const [isStateDialogue, setIsStateDialogue] = React.useState(false);

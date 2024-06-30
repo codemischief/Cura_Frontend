@@ -127,122 +127,26 @@ const ManageVendorInvoice = () => {
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
 
-    const fetchCountryData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
-    }
-    const fetchStateData = async (id) => {
-        
-        const data = { "user_id": user.id, "country_id": id };
-        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllState(result)
-        }
-    }
-    const fetchCityData = async (id) => {
-        const data = { "user_id": user.id, "state_name": id };
-        const response = await APIService.getCities(data);
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllCity(result)
-        }
-    }
-
-    const fetchRoleData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = { "user_id": user.id };
-        const response = await APIService.getRoles(data)
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, role: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
-        }
-    }
-
-    const fetchEntitiesData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = { "user_id": user.id };
-        const response = await APIService.getEntityAdmin(data)
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, entity: result.data[0][0] }
-        })
-        if (Array.isArray(result.data)) {
-            setAllEntites(result.data);
-        }
-    }
-
-    const fetchLobData = async () => {
-        setPageLoading(true);
-        const data = {
-            "user_id": user.id,
-            "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getLob(data);
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, lob: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
-        }
-    }
 
     const [modesData, setModesData] = useState([]);
-    const fetchModesData = async () => {
-        const data = {
-            "user_id": user.id
-        }
-        const response = await APIService.getModesAdmin(data)
-        const res = await response.json()
-        setModesData(res.data)
-        
-    }
+
 
     const [usersData, setUsersData] = useState([]);
-    const fetchUsersData = async () => {
-        const data = {
-            "user_id": user.id
-        }
-        const response = await APIService.getUsers(data)
-        const res = await response.json()
-        const existing = { ...formValues }
-        existing.receivedBy = res.data[0].id,
-            
-        setFormValues(existing)
-        setUsersData(res.data)
-    }
+
 
     const [vendorData, setVendorData] = useState([])
     const fetchVendorData = async () => {
-        const data = { "user_id": user.id }
-        const response = await APIService.getVendorAdmin(data)
-        const res = await response.json()
-        
-        setVendorData(res.data)
+        try{
+            const data = { "user_id": user.id }
+            const response = await APIService.getVendorAdmin(data)
+            const res = await response.json()
+            
+            setVendorData(res.data)
+
+        }catch(e){
+
+        }
+      
     }
 
     const [sortField, setSortField] = useState("id")
@@ -282,8 +186,8 @@ const ManageVendorInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         }
-            ;
-        const response = await APIService.getVendorsInvoice(data);
+        try{
+            const response = await APIService.getVendorsInvoice(data);
         const temp = await response.json();
         const result = temp.data;
         
@@ -291,64 +195,90 @@ const ManageVendorInvoice = () => {
         setTotalItems(t);
         setExistingVendorInvoice(result);
         setPageLoading(false);
+
+        }catch(e){
+        setPageLoading(false);
+
+        }
+        
     }
     const fetchPageData = async (pageNumber) => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         
-        setCurrentPage(() => pageNumber)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
+            setCurrentPage(() => pageNumber)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(pageNumber),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            }
+            const response = await APIService.getVendorsInvoice(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorInvoice(result);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+
         }
-        const response = await APIService.getVendorsInvoice(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorInvoice(result);
-        setPageLoading(false);
+       
     }
     const fetchQuantityData = async (quantity) => {
-        setPageLoading(true);
+        try{
+
+            setPageLoading(true);
         
-        setCurrentPage((prev) => 1);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(quantity),
-            "search_key": searchInput
-        };
-        const response = await APIService.getVendorsInvoice(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorInvoice(result);
-        setPageLoading(false);
+            setCurrentPage((prev) => 1);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(quantity),
+                "search_key": searchInput
+            };
+            const response = await APIService.getVendorsInvoice(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorInvoice(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+
+        }
+       
     }
     const [clientPropertyData, setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {
-        const data = {
-            "user_id": user.id,
-            "client_id": id
-        }
+        try{
+            const data = {
+                "user_id": user.id,
+                "client_id": id
+            }
+    
+            const response = await APIService.getClientPropertyByClientId(data)
+            const res = await response.json()
+            
+            setClientPropertyData(res.data)
 
-        const response = await APIService.getClientPropertyByClientId(data)
-        const res = await response.json()
-        
-        setClientPropertyData(res.data)
+        }catch(e){
+
+        }
+       
     }
     const [orders, setOrders] = useState([]);
     function convertToIdNameObject(items) {
@@ -359,15 +289,21 @@ const ManageVendorInvoice = () => {
         return idNameObject;
     }
     const getOrdersByClientId = async (id) => {
-        if(id == null) return 
-        const data = {
-            "user_id": user.id,
-            "client_id": id
+        try{
+            if(id == null) return 
+            const data = {
+                "user_id": user.id,
+                "client_id": id
+            }
+            const response = await APIService.getOrdersByClientId(data)
+            const res = await response.json()
+            
+            setOrders(convertToIdNameObject(res.data))
+
+        }catch(e){
+
         }
-        const response = await APIService.getOrdersByClientId(data)
-        const res = await response.json()
-        
-        setOrders(convertToIdNameObject(res.data))
+       
     }
     const addVendorInvoice = async () => {
 
@@ -388,6 +324,7 @@ const ManageVendorInvoice = () => {
             "entityid": 1,
             "officeid": 2
         }
+        
         const response = await APIService.addVendorsInvoice(data)
         const res = await response.json()
         
@@ -529,103 +466,113 @@ const ManageVendorInvoice = () => {
         setDownloadModal(false);
     }
     const handleDownload = async (type) => {
-        setDownloadModal(false)
-        setPageLoading(true)
-        const data = {
-            "user_id": user.id,
-            "rows": [
-                "vendorname",
-                "clientname",
-                "briefdescription",
-                "invoiceamount",
-                "invoicedate",
-                "entity",
-                "createdbyname",
-                "amount",
-                "estimatedate",
-                "id",
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput,
-            "downloadType": type,
-            "routename" : '/manage/managevendorinvoice',
-            "colmap": {
-                "vendorname": "Vendor Name",
-                "clientname": "Client Name",
-                "briefdescription": "Order Description",
-                "invoiceamount": "Invoice Amount",
-                "invoicedate": "Invoice Date",
-                "entity": "Entity",
-                "createdbyname": "Created By",
-                "amount": "Estimate Amount",
-                "estimatedate": "Estimate Date",
-                "id": "ID"
-            }
-        };
-        const response = await APIService.getVendorsInvoice(data);
-        const temp = await response.json();
-        if (temp.result == 'success') {
-            const d = {
-                "filename": temp.filename,
-                "user_id": user.id
-            }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
+        try{
+            setDownloadModal(false)
+            setPageLoading(true)
+            const data = {
+                "user_id": user.id,
+                "rows": [
+                    "vendorname",
+                    "clientname",
+                    "briefdescription",
+                    "invoiceamount",
+                    "invoicedate",
+                    "entity",
+                    "createdbyname",
+                    "amount",
+                    "estimatedate",
+                    "id",
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 0,
+                "pg_size": 0,
+                "search_key": searchInput,
+                "downloadType": type,
+                "routename" : '/manage/managevendorinvoice',
+                "colmap": {
+                    "vendorname": "Vendor Name",
+                    "clientname": "Client Name",
+                    "briefdescription": "Order Description",
+                    "invoiceamount": "Invoice Amount",
+                    "invoicedate": "Invoice Date",
+                    "entity": "Entity",
+                    "createdbyname": "Created By",
+                    "amount": "Estimate Amount",
+                    "estimatedate": "Estimate Date",
+                    "id": "ID"
+                }
+            };
+            const response = await APIService.getVendorsInvoice(data);
+            const temp = await response.json();
+            if (temp.result == 'success') {
+                const d = {
+                    "filename": temp.filename,
+                    "user_id": user.id
+                }
+                fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                    method: 'POST', // or the appropriate HTTP method
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d) // Convert the object to a JSON string
                 })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'VendorInvoiceData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'VendorInvoiceData.pdf');
-                    }
-                    
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            setTimeout(() => {
-                setPageLoading(false)
-            }, 1000)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.blob();
+                    })
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'VendorInvoiceData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'VendorInvoiceData.pdf');
+                        }
+                        
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                setTimeout(() => {
+                    setPageLoading(false)
+                }, 1000)
+            }
+        }catch(e){
+            setPageLoading(false)
         }
+       
     }
     const handleSearch = async () => {
-        // 
-        setPageLoading(true);
-        setCurrentPage((prev) => 1)
-        // setCurrentPages(15);
-        setIsSearchOn(true);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getVendorsInvoice(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorInvoice(result);
-        setPageLoading(false);
+        try{
+            setPageLoading(true);
+            setCurrentPage((prev) => 1)
+            // setCurrentPages(15);
+            setIsSearchOn(true);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getVendorsInvoice(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorInvoice(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+
+        }
+       
     }
     const handleCloseSearch = async () => {
         setIsSearchOn(false);
@@ -642,7 +589,8 @@ const ManageVendorInvoice = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getVendorsInvoice(data);
+        try{
+            const response = await APIService.getVendorsInvoice(data);
         const temp = await response.json();
         const result = temp.data;
         
@@ -650,6 +598,12 @@ const ManageVendorInvoice = () => {
         setTotalItems(t);
         setExistingVendorInvoice(result);
         setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+
+        }
+        
     }
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [currVendorInvoice, setCurrVendorInvoice] = useState("");
@@ -658,16 +612,22 @@ const ManageVendorInvoice = () => {
         setShowDeleteModal(true)
     }
     const deleteVendorInvoice = async (id) => {
-        const data = {
-            "user_id": user.id,
-            "id": id
+        try{
+            const data = {
+                "user_id": user.id,
+                "id": id
+            }
+            const response = await APIService.deleteVendorsInvoice(data)
+            const res = await response.json()
+            if (res.result == 'success') {
+                setShowDeleteModal(false);
+                openDeleteSuccess()
+            }
+
+        }catch(e){
+           
         }
-        const response = await APIService.deleteVendorsInvoice(data)
-        const res = await response.json()
-        if (res.result == 'success') {
-            setShowDeleteModal(false);
-            openDeleteSuccess()
-        }
+      
     }
     const openAddSuccess = () => {
         // (false);
@@ -895,7 +855,8 @@ const ManageVendorInvoice = () => {
 
             }
         })
-        setCurrentPage((prev) => 1)
+        try{
+            setCurrentPage((prev) => 1)
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
@@ -916,6 +877,12 @@ const ManageVendorInvoice = () => {
         setTotalItems(t);
         setExistingVendorInvoice(result);
         setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+
+        }
+        
     }
 
 
@@ -936,14 +903,20 @@ const ManageVendorInvoice = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
         // setFlag((prev) => !prev);
-        const response = await APIService.getVendorsInvoice(data);
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingVendorInvoice(result);
-        setPageLoading(false);
+        try{
+            const response = await APIService.getVendorsInvoice(data);
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingVendorInvoice(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+
+        }
+       
     }
     const [orderText, setOrderText] = useState("Select Order");
     function handleKeyDown(event) {
@@ -1202,7 +1175,7 @@ const ManageVendorInvoice = () => {
                             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                         </div>
                         <div className='w-[45%]  flex items-center'>
-                            \<RefreshFilterButton
+                        <RefreshFilterButton
                               filterMapping={filterMapping}
                               setFilterMapState={setFilterMapState}
                               resetAllInputs={resetAllInputs}

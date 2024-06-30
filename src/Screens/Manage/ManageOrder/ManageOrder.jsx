@@ -36,27 +36,27 @@ import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilte
 const ManageOrder = () => {
     // we have the module here
     const datarows = [
-                "clientname",
-                "clientid",
-                "ownername",
-                "briefdescription",
-                "clientproperty",
-                "servicename",
-                "orderstatus",
-                "earlieststartdate",
-                "expectedcompletiondate",
-                "orderdate",
-                "ageing",
-                "createdbyname",
-                "id",
+        "clientname",
+        "clientid",
+        "ownername",
+        "briefdescription",
+        "clientproperty",
+        "servicename",
+        "orderstatus",
+        "earlieststartdate",
+        "expectedcompletiondate",
+        "orderdate",
+        "ageing",
+        "createdbyname",
+        "id",
 
     ]
     const menuRef = useRef();
     const navigate = useNavigate()
-    const {user} = useAuth()
-    const [state,setState] = useState({})
-    const {pathname} = useLocation()
-    const {clientid} = useParams()
+    const { user } = useAuth()
+    const [state, setState] = useState({})
+    const { pathname } = useLocation()
+    const { clientid } = useParams()
     const canEdit = checkEditAccess();
     console.log(pathname)
     console.log(state)
@@ -71,7 +71,7 @@ const ManageOrder = () => {
     const [isSearchOn, setIsSearchOn] = useState(false);
     const [stateArray, setStateArray] = useState([]);
     const [sortField, setSortField] = useState("id");
-    const [submit,setSubmit] = useState(false)
+    const [submit, setSubmit] = useState(false)
     const handlePageChange = (event, value) => {
 
         setCurrentPage(value)
@@ -81,7 +81,7 @@ const ManageOrder = () => {
     const [flag, setFlag] = useState(false)
 
     const fetchData = async () => {
-        try{
+        try {
             const tempArray = [];
             // we need to query thru the object
             // console.log(filterMapState);
@@ -117,7 +117,7 @@ const ManageOrder = () => {
                 "search_key": searchInput
             }
                 ;
-            const response = await APIService.getOrder({...data,user_id : user.id});
+            const response = await APIService.getOrder({ ...data, user_id: user.id });
             const temp = await response.json();
             const result = temp.data;
             console.log(result);
@@ -126,136 +126,136 @@ const ManageOrder = () => {
             setExistingOrder(result);
             setPageLoading(false);
 
-        }catch(e){
+        } catch (e) {
             setPageLoading(false);
         }
 
-       
+
     }
     const fetchPageData = async (pageNumber) => {
-        try{
+        try {
             setPageLoading(true);
-        setCurrentPage(pageNumber)
-        const data = {
-            "rows": datarows,
-            "filters": stateArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        }
-        const response = await APIService.getOrder({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result);
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrder(result);
-        setPageLoading(false);
+            setCurrentPage(pageNumber)
+            const data = {
+                "rows": datarows,
+                "filters": stateArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(pageNumber),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            }
+            const response = await APIService.getOrder({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+            console.log(result);
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrder(result);
+            setPageLoading(false);
 
-        }catch(e){
-        setPageLoading(false);
-           
+        } catch (e) {
+            setPageLoading(false);
+
         }
-        
+
     }
     const fetchQuantityData = async (quantity) => {
-        try{
+        try {
             setPageLoading(true);
-        setCurrentPage((prev) => 1)
-        const data = {
-            "rows": datarows,
-            "filters": stateArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(quantity),
-            "search_key": searchInput
-        }
-            ;
-        const response = await APIService.getOrder({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result);
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrder(result);
-        setPageLoading(false);
+            setCurrentPage((prev) => 1)
+            const data = {
+                "rows": datarows,
+                "filters": stateArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(quantity),
+                "search_key": searchInput
+            }
+                ;
+            const response = await APIService.getOrder({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+            console.log(result);
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrder(result);
+            setPageLoading(false);
 
-        }catch(e){
-        setPageLoading(false);
-          
+        } catch (e) {
+            setPageLoading(false);
+
         }
-        
+
     }
     function propertyHelper(items) {
         const idNameObject = {};
         items.forEach((item) => {
-          idNameObject[item.id] = {
-            buildername : item.buildername,
-            propertyname : item.propertyname
-          }
+            idNameObject[item.id] = {
+                buildername: item.buildername,
+                propertyname: item.propertyname
+            }
         });
         return idNameObject;
     }
     const getClientPropertyByClientId = async (id) => {
-        try{
+        try {
             const data = {
                 "client_id": id
             }
-            const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
+            const response = await APIService.getClientPropertyByClientId({ ...data, user_id: user.id })
             const res = await response.json()
 
             setClientPropertyData(propertyHelper(res.data))
 
-        }catch(e){
+        } catch (e) {
             console.log(e);
 
         }
-       
+
     }
     const fetchHyperLinkData = async () => {
-        try{
-            if(clientid != null) {
+        try {
+            if (clientid != null) {
                 const data = {
-                    user_id : user.id,
-                    table_name : 'get_client_info_view',
-                    item_id : clientid
+                    user_id: user.id,
+                    table_name: 'get_client_info_view',
+                    item_id: clientid
                 }
                 const response = await APIService.getItembyId(data)
                 const res = await response.json()
                 console.log(res.data)
                 setState(prev => ({
-                    clientid : clientid,
-                    clientname : res.data.clientname,
-                    hyperlinked : true
+                    clientid: clientid,
+                    clientname: res.data.clientname,
+                    hyperlinked: true
                 }))
                 setFormValues(prevFormValues => ({
                     ...prevFormValues,
                     order_info: {
-                      ...prevFormValues.order_info,
-                      clientname: res.data.clientname,
-                      clientid: clientid,
-                      
+                        ...prevFormValues.order_info,
+                        clientname: res.data.clientname,
+                        clientid: clientid,
+
                     }
-                  }))
-                  getClientPropertyByClientId(clientid)
+                }))
+                getClientPropertyByClientId(clientid)
                 // const temp = {...formValues}
                 // const ex = temp.order_info 
                 // ex.clientname = state?.clientname 
                 // ex.clientid = state?.clientid 
                 // temp.order_info = ex 
                 // setFormValues(temp)
-               }
+            }
 
-        }catch(e){
+        } catch (e) {
             console.log(e);
-            
+
         }
-  
-    }    
-   
+
+    }
+
     const initialValues = {
         "order_info": {
             "clientid": clientid,
@@ -287,7 +287,7 @@ const ManageOrder = () => {
     }
     const [formErrors, setFormErrors] = useState({});
     const validate = () => {
-        
+
         var res = true
         if (formValues.order_info.owner === "" || formValues.order_info.owner === null) {
             res = false
@@ -378,64 +378,68 @@ const ManageOrder = () => {
     }
     const arrayHelper = (arr) => {
         const temp = []
-        for(var i=0;i <arr.length ; i++) {
-            
+        for (var i = 0; i < arr.length; i++) {
+
             let flag = false;
             Object.keys(arr[i]).forEach(key => {
-               if(arr[i][key] != null && arr[i][key] != "") {
-                flag = true
-               }
+                if (arr[i][key] != null && arr[i][key] != "") {
+                    flag = true
+                }
             })
-            if(flag) temp.push(arr[i])
+            if (flag) temp.push(arr[i])
         }
         return temp
     }
     const addOrder = async () => {
-       
-        setSubmit(true)
-        
-        const data = {
-            "order_info": {
-                "clientid": Number(formValues.order_info.clientid),
-                "briefdescription": formValues.order_info.briefdescription,
-                "orderdate": formValues.order_info.orderdate,
-                "earlieststartdate": formValues.order_info.earlieststartdate,
-                "expectedcompletiondate": formValues.order_info.expectedcompletiondate,
-                "actualcompletiondate": formValues.order_info.actualcompletiondate,
-                "owner": Number(formValues.order_info.owner),
-                "comments": formValues.order_info.comments,
-                "additionalcomments": formValues.order_info.additionalcomments,
-                "status": Number(formValues.order_info.status),
-                "service": Number(formValues.order_info.service),
-                "clientpropertyid": formValues.order_info.clientpropertyid ? Number(formValues.order_info.clientpropertyid) : formValues.order_info.clientpropertyid,
-                "vendorid": formValues.order_info.vendorid ? Number(formValues.order_info.vendorid) : formValues.order_info.vendorid,
-                "assignedtooffice": 2,
-                "entityid": 1,
-                "tallyledgerid": formValues.order_info.tallyledgerid ? Number(formValues.order_info.tallyledgerid) : formValues.order_info.tallyledgerid
-            },
-            "order_photos": arrayHelper(formValues.order_photos)
-        }
-        const response = await APIService.addOrder({...data,user_id : user.id});
-        const res = await response.json();
-        if (res.result == 'success') {
-            
-            const d = {
-                "user_id" : user.id,
-                "orderid": res.data['inserted data'],
-                "statusid": Number(formValues.order_info.status)
+        try {
+            setSubmit(true)
+
+            const data = {
+                "order_info": {
+                    "clientid": Number(formValues.order_info.clientid),
+                    "briefdescription": formValues.order_info.briefdescription,
+                    "orderdate": formValues.order_info.orderdate,
+                    "earlieststartdate": formValues.order_info.earlieststartdate,
+                    "expectedcompletiondate": formValues.order_info.expectedcompletiondate,
+                    "actualcompletiondate": formValues.order_info.actualcompletiondate,
+                    "owner": Number(formValues.order_info.owner),
+                    "comments": formValues.order_info.comments,
+                    "additionalcomments": formValues.order_info.additionalcomments,
+                    "status": Number(formValues.order_info.status),
+                    "service": Number(formValues.order_info.service),
+                    "clientpropertyid": formValues.order_info.clientpropertyid ? Number(formValues.order_info.clientpropertyid) : formValues.order_info.clientpropertyid,
+                    "vendorid": formValues.order_info.vendorid ? Number(formValues.order_info.vendorid) : formValues.order_info.vendorid,
+                    "assignedtooffice": 2,
+                    "entityid": 1,
+                    "tallyledgerid": formValues.order_info.tallyledgerid ? Number(formValues.order_info.tallyledgerid) : formValues.order_info.tallyledgerid
+                },
+                "order_photos": arrayHelper(formValues.order_photos)
             }
-            const statusresponse = await APIService.addOrderStatusChange(d);
-            const statusres = await statusresponse.json();
-            // we need to open add success
-            setShowAddConfirmation(false);
-            
-            openAddSuccess();
-            initials()
-            setSubmit(false)
-        } else {
-            // we need to open failure modal
+            const response = await APIService.addOrder({ ...data, user_id: user.id });
+            const res = await response.json();
+            if (res.result == 'success') {
+
+                const d = {
+                    "user_id": user.id,
+                    "orderid": res.data['inserted data'],
+                    "statusid": Number(formValues.order_info.status)
+                }
+                const statusresponse = await APIService.addOrderStatusChange(d);
+                const statusres = await statusresponse.json();
+                // we need to open add success
+                setShowAddConfirmation(false);
+
+                openAddSuccess();
+                initials()
+                setSubmit(false)
+            } else {
+                // we need to open failure modal
+
+            }
+        } catch (e) {
 
         }
+
         // we get the success prompt
 
     }
@@ -453,139 +457,164 @@ const ManageOrder = () => {
         setShowDeleteModal(true)
     }
     const deleteOrder = async (id) => {
-        const data = {
-            "order_id": id
+        try {
+            const data = {
+                "order_id": id
+            }
+            const response = await APIService.deleteOrders({ ...data, user_id: user.id })
+            const res = await response.json()
+            if (res.result == 'success') {
+                setShowDeleteModal(false)
+                openDeleteSuccess();
+            }
+        } catch (e) {
+
         }
-        const response = await APIService.deleteOrders({...data,user_id : user.id})
-        const res = await response.json()
-        if (res.result == 'success') {
-            setShowDeleteModal(false)
-            openDeleteSuccess();
-        }
+
     }
 
     const [backDropLoading, setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
-        setBackDropLoading(true);
-        console.log('ugm')
-        const data = {
-            "rows": [
-                "clientname",
-                "ownername",
-                "briefdescription",
-                "clientproperty",
-                "servicename",
-                "orderstatus",
-                "earlieststartdate",
-                "expectedcompletiondate",
-                "orderdate",
-                "ageing",
-                "createdbyname",
-                "id",
-            ],
-            "filters": stateArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput,
-            "downloadType": type,
-            "routename" : '/manage/manageOrder',
-            "colmap": {
-                "clientname": "Client Name",
-                "ownername": "Assigned To",
-                "briefdescription": "Order Description",
-                "clientproperty": "Property Description",
-                "servicename": "Service",
-                "orderstatus": "Order Status",
-                "earlieststartdate": "Start Date",
-                "expectedcompletiondate": "Completion Date",
-                "orderdate": "Order Date",
-                "ageing": "Ageing",
-                "createdbyname": "Created By",
-                "id": "ID",
-            }
-        }
+        try {
+            setBackDropLoading(true);
 
-        const response = await APIService.getOrder({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        if (temp.result == "success") {
-            const d = {
-                "filename": temp.filename,
-                "user_id": user.id
+            const data = {
+                "rows": [
+                    "clientname",
+                    "ownername",
+                    "briefdescription",
+                    "clientproperty",
+                    "servicename",
+                    "orderstatus",
+                    "earlieststartdate",
+                    "expectedcompletiondate",
+                    "orderdate",
+                    "ageing",
+                    "createdbyname",
+                    "id",
+                ],
+                "filters": stateArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 0,
+                "pg_size": 0,
+                "search_key": searchInput,
+                "downloadType": type,
+                "routename": '/manage/manageOrder',
+                "colmap": {
+                    "clientname": "Client Name",
+                    "ownername": "Assigned To",
+                    "briefdescription": "Order Description",
+                    "clientproperty": "Property Description",
+                    "servicename": "Service",
+                    "orderstatus": "Order Status",
+                    "earlieststartdate": "Start Date",
+                    "expectedcompletiondate": "Completion Date",
+                    "orderdate": "Order Date",
+                    "ageing": "Ageing",
+                    "createdbyname": "Created By",
+                    "id": "ID",
+                }
             }
-            APIService.download(d,temp.filename).then(response => {
+
+            const response = await APIService.getOrder({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+            if (temp.result == "success") {
+                const d = {
+                    "filename": temp.filename,
+                    "user_id": user.id
+                }
+                APIService.download(d, temp.filename).then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
                     return response.blob();
                 })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'OrderData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'OrderData.pdf');
-                    }
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'OrderData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'OrderData.pdf');
+                        }
 
-                    console.log('Success:', result);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                        console.log('Success:', result);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
 
-            setTimeout(() => {
-                setBackDropLoading(false)
-            }, 1000)
+                setTimeout(() => {
+                    setBackDropLoading(false)
+                }, 1000)
+            }
+
+        } catch (e) {
+            setBackDropLoading(false)
         }
+
     }
 
     const handleSearch = async () => {
         // console.log("clicked")
-        setPageLoading(true);
-        setCurrentPage(1);
-        setIsSearchOn(true);
-        const data = {
-            "rows": datarows,
-            "filters": stateArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getOrder({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result);
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrder(result);
-        setPageLoading(false);
+        try {
+            setPageLoading(true);
+            setCurrentPage(1);
+            setIsSearchOn(true);
+            const data = {
+                "rows": datarows,
+                "filters": stateArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getOrder({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+            console.log(result);
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrder(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const handleCloseSearch = async () => {
-        setIsSearchOn(false);
-        setPageLoading(true);
-        setCurrentPage(1);
-        setSearchInput("");
-        const data = {
-            
-            "rows": datarows,
-            "filters": stateArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
-        };
-        const response = await APIService.getOrder({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result);
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrder(result);
-        setPageLoading(false);
+        try {
+            setIsSearchOn(false);
+            setPageLoading(true);
+            setCurrentPage(1);
+            setSearchInput("");
+            const data = {
+
+                "rows": datarows,
+                "filters": stateArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": ""
+            };
+            const response = await APIService.getOrder({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+            console.log(result);
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrder(result);
+            setPageLoading(false);
+
+        } catch (e) {
+
+            setPageLoading(false);
+        }
+
     }
 
     // const [sortField, setSortField] = useState("id");
@@ -602,7 +631,7 @@ const ManageOrder = () => {
         setAgingFilterInput("");
         setCreatedByFilterInput("");
         setIdFilterInput("");
-      }; 
+    };
     const [clientNameFilter, setClientNameFilter] = useState(false);
     const [clientNameFilterInput, setClientNameFilterInput] = useState("");
     const [assignedToFilter, setAssignedToFilter] = useState(false);
@@ -737,55 +766,63 @@ const ManageOrder = () => {
     }
 
     const fetchFiltered = async (mapState) => {
-        setFilterMapState(mapState)
-        setClientNameFilter(false);
-                setAssignedToFilter(false);
-                setOrderDescriptionFilter(false);
-                setPropertyDescriptionFilter(false);
-                setServiceFilter(false);
-                setOrderStatusFilter(false);
-                setStartDateFilter(false);
-                setCompletionDateFilter(false);
-                setOrderDateFilter(false);
-                setAgingFilter(false);
-                setCreatedByFilter(false);
-                setIdFilter(false);
-        const tempArray = [];
-        // we need to query thru the object
-        // console.log(filterMapState);
-        console.log(filterMapState)
-        Object.keys(mapState).forEach(key => {
-            if (mapState[key].filterType != "") {
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
-            }
-        })
-        setStateArray(tempArray)
-        setCurrentPage((prev) => 1)
-        setPageLoading(true);
-        const data = {
-            
-            "rows": datarows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getOrder({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result);
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrder(result);
-        setPageLoading(false);
+        try {
+            setFilterMapState(mapState)
+            setClientNameFilter(false);
+            setAssignedToFilter(false);
+            setOrderDescriptionFilter(false);
+            setPropertyDescriptionFilter(false);
+            setServiceFilter(false);
+            setOrderStatusFilter(false);
+            setStartDateFilter(false);
+            setCompletionDateFilter(false);
+            setOrderDateFilter(false);
+            setAgingFilter(false);
+            setCreatedByFilter(false);
+            setIdFilter(false);
+            const tempArray = [];
+            // we need to query thru the object
+            // console.log(filterMapState);
+            console.log(filterMapState)
+            Object.keys(mapState).forEach(key => {
+                if (mapState[key].filterType != "") {
+                    tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                }
+            })
+            setStateArray(tempArray)
+            setCurrentPage((prev) => 1)
+            setPageLoading(true);
+            const data = {
+
+                "rows": datarows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getOrder({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+            console.log(result);
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrder(result);
+            setPageLoading(false);
+
+        } catch (e) {
+
+            setPageLoading(false);
+        }
+
     }
 
 
 
     const handleSort = async (field) => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
         setSortField(field)
@@ -797,7 +834,7 @@ const ManageOrder = () => {
         })
         setFlag((prev) => !prev);
         const data = {
-            
+
             "rows": datarows,
             "filters": tempArray,
             "sort_by": [field],
@@ -807,7 +844,7 @@ const ManageOrder = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
 
-        const response = await APIService.getOrder({...data,user_id : user.id});
+        const response = await APIService.getOrder({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -815,6 +852,12 @@ const ManageOrder = () => {
         setTotalItems(t);
         setExistingOrder(result);
         setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+
+        }
+        
     }
 
     const openDownload = () => {
@@ -850,7 +893,7 @@ const ManageOrder = () => {
     const initials = () => {
         setOrderText('Select Client Property')
         setFormValues(initialValues);
-        if(!clientid ) {
+        if (!clientid) {
 
             setClientPropertyData([])
         }
@@ -901,57 +944,87 @@ const ManageOrder = () => {
     const [usersData, setUsersData] = useState({})
 
     const fetchUsersData = async () => {
-        const data = {
-            "user_id": user.id
+        try{
+            const data = {
+                "user_id": user.id
+            }
+            const response = await APIService.getUsers({ ...data, user_id: user.id })
+            const res = await response.json()
+            setUsersData(() => {
+                const idNameObject = {};
+                res.data.forEach((item) => {
+                    idNameObject[item.id] = {
+                        name: item.name,
+                        username: item.username
+                    }
+                });
+                return idNameObject;
+            })
+
+        }catch(e){
+            console.log(e);
         }
-        const response = await APIService.getUsers({...data,user_id : user.id})
-        const res = await response.json()
-        setUsersData(() => {
-            const idNameObject = {};
-            res.data.forEach((item) => {
-              idNameObject[item.id] = {
-                name : item.name,
-                username : item.username
-              }
-            });
-            return idNameObject;
-        })
+       
         // setUsersData(res.data);
     }
 
     const [orderStatusData, setOrderStatusData] = useState([])
     const fetchOrderStatusData = async () => {
-        const data = { "user_id": user.id }
-        const response = await APIService.getOrderStatusAdmin({...data,user_id : user.id})
-        const res = await response.json()
-        console.log(res)
-        setOrderStatusData(res.data)
+        try{
+            const data = { "user_id": user.id }
+            const response = await APIService.getOrderStatusAdmin({ ...data, user_id: user.id })
+            const res = await response.json()
+            console.log(res)
+            setOrderStatusData(res.data)
+
+        }catch(e){
+            
+        }
+     
     }
     const [clientPropertyData, setClientPropertyData] = useState([])
-    
+
     const [serviceData, setServiceData] = useState([])
     const fetchServiceData = async () => {
-        const data = { "user_id": user.id }
-        const response = await APIService.getServiceAdmin({...data,user_id : user.id})
+        try{
+
+            const data = { "user_id": user.id }
+        const response = await APIService.getServiceAdmin({ ...data, user_id: user.id })
         const res = await response.json()
         console.log(res)
         setServiceData(res.data)
+        }catch(e){
+
+        }
+        
     }
     const [vendorData, setVendorData] = useState([])
     const fetchVendorData = async () => {
-        const data = { "user_id": user.id }
-        const response = await APIService.getVendorAdmin({...data,user_id : user.id})
-        const res = await response.json()
-        console.log(res)
-        setVendorData(res.data)
+        try{
+            const data = { "user_id": user.id }
+            const response = await APIService.getVendorAdmin({ ...data, user_id: user.id })
+            const res = await response.json()
+            console.log(res)
+            setVendorData(res.data)
+
+        }catch(e){
+           
+        }
+       
     }
     const [tallyLedgerData, setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
-        const data = { "user_id": user.id }
-        const response = await APIService.getTallyLedgerAdmin({...data,user_id : user.id})
-        const res = await response.json()
-        console.log(res)
-        setTallyLedgerData(res.data)
+        try{
+
+            const data = { "user_id": user.id }
+            const response = await APIService.getTallyLedgerAdmin({ ...data, user_id: user.id })
+            const res = await response.json()
+            console.log(res)
+            setTallyLedgerData(res.data)
+        }catch(e){
+
+        }
+       
     }
 
 
@@ -1005,10 +1078,10 @@ const ManageOrder = () => {
             }
         }
     }
-    const [orderText,setOrderText] = useState('Select Client Property')
+    const [orderText, setOrderText] = useState('Select Client Property')
     useEffect(() => {
         fetchHyperLinkData()
-        
+
         fetchData();
         fetchUsersData()
         fetchOrderStatusData()
@@ -1338,12 +1411,12 @@ const ManageOrder = () => {
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
                             <div className='w-[110px] px-4  py-2.5'>
-                               <RefreshFilterButton
-                               
-                                resetAllInputs={resetAllInputs}
-                                setFilterMapState={setFilterMapState}
-                                filterMapping={filterMapping}
-                               />
+                                <RefreshFilterButton
+
+                                    resetAllInputs={resetAllInputs}
+                                    setFilterMapState={setFilterMapState}
+                                    filterMapping={filterMapping}
+                                />
                             </div>
                         </div>
                         {/* pending space here */}
@@ -1469,10 +1542,10 @@ const ManageOrder = () => {
                                         </Link>
                                         <Link to={`/manage/manageclientinfo/orders/showall/${item.id}`} >
 
-                                        
-                                        <div className='w-[100px] p-4 text-blue-500 cursor-pointer'>
-                                            <p>Show All</p>
-                                        </div>
+
+                                            <div className='w-[100px] p-4 text-blue-500 cursor-pointer'>
+                                                <p>Show All</p>
+                                            </div>
                                         </Link>
                                         <div className='w-[110px] p-4'>
                                             <p>{item.id}</p>
@@ -1480,12 +1553,12 @@ const ManageOrder = () => {
                                         <div className='w-[110px] p-4'>
                                             <div className='flex space-x-3'>
                                                 <EditButton
-                                                   handleEdit={handleEdit}
-                                                   rowData={item.id}
+                                                    handleEdit={handleEdit}
+                                                    rowData={item.id}
                                                 />
                                                 <DeleteButton
-                                                  handleDelete={handleDelete}
-                                                  rowData={item.id}
+                                                    handleDelete={handleDelete}
+                                                    rowData={item.id}
                                                 />
                                                 {/* <button onClick={() => handleEdit(item.id)}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
                                                 <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button> */}
@@ -1604,7 +1677,7 @@ const ManageOrder = () => {
                                     <div>Order Status history</div>
                                 </div>
                             </div>
-                            {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} propertyData={clientPropertyData} setPropertyData={setClientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} hyperlinkstate={state} orderText={orderText} setOrderText={setOrderText}/>}
+                            {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} propertyData={clientPropertyData} setPropertyData={setClientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} hyperlinkstate={state} orderText={orderText} setOrderText={setOrderText} />}
                             {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 3 && <OrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">

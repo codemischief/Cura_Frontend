@@ -1,39 +1,29 @@
 import React from 'react';
-import { Outlet, Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
-import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, duration, CircularProgress, Backdrop , MenuItem, Tooltip} from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
+import { Modal, Pagination, CircularProgress, Backdrop, MenuItem, Tooltip } from "@mui/material";
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
-import Edit from "../../../assets/edit.png"
-import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
-import DateIcon from "../../../assets/dateFilter.png"
-import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import CancelModel from './../../../Components/modals/CancelModel';
-import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
 import DeleteOrderReceipt from './DeleteOrderReceipt';
 import SaveConfirmationOrderReceipt from './SaveConfirmationOrderReceipt';
 // import EditPmaAgreement from './EditPmaAgreement';
-import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditOrderReceipt from './EditOrderReceipt';
 import Draggable from 'react-draggable';
-import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
 import { formatDate } from '../../../utils/formatDate';
 import ActiveFilter from "../../../assets/active_filter.png";
@@ -45,31 +35,25 @@ import checkEditAccess from '../../../Components/common/checkRoleBase';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageOrderReceipt = () => {
-    const {user} = useAuth()
-    const {orderid} = useParams()
+    const { user } = useAuth()
+    const { orderid } = useParams()
     const menuRef = useRef();
-    const {pathname} = useLocation();
-    const [state,setState] = useState({})
+    const { pathname } = useLocation();
+    const [state, setState] = useState({})
     const canEdit = checkEditAccess();
-    
+
     const navigate = useNavigate();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
-    const [existingEmployees, setExistingEmployees] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [downloadModal, setDownloadModal] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [isSearchOn, setIsSearchOn] = useState(false);
-    const [allCountry, setAllCountry] = useState([]);
-    const [allState, setAllState] = useState([]);
-    const [allCity, setAllCity] = useState([]);
-    const [allUsername, setAllUsername] = useState([]);
     const [allRoles, setAllRoles] = useState([]);
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
-    const [currCountry, setCurrCountry] = useState(-1);
     const [isOrderReceiptDialogue, SetIsOrderReceiptDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
@@ -104,7 +88,7 @@ const ManageOrderReceipt = () => {
         setReceivedByFilterInput("");
         setCreatedByFilterInput("");
         setIdFilterInput("");
-      };
+    };
 
 
 
@@ -112,343 +96,360 @@ const ManageOrderReceipt = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
-    // const [filterArray,setFilterArray] = useState([]);
 
-    const fetchCountryData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = {  "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries({...data,user_id : user.id})
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
-    }
-    const fetchStateData = async (id) => {
-        
-        const data = {  "country_id": id };
-        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState({...data,user_id : user.id});
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllState(result)
-        }
-    }
-    const fetchCityData = async (id) => {
-        const data = {  "state_name": id };
-        const response = await APIService.getCities({...data,user_id : user.id});
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllCity(result)
-            // if (result.length > 0) {
-            //     // setFormValues((existing) => {
-            //     //     const newData = { ...existing, city: result[0].id }
-            //     //     return newData;
-            //     // })
-            // }
-        }
-    }
+
+
 
     const fetchRoleData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = {  };
-        const response = await APIService.getRoles({...data,user_id : user.id})
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, role: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
+        try {
+
+            setPageLoading(true);
+            // const data = { "user_id":  user.id };
+            const data = {};
+            const response = await APIService.getRoles({ ...data, user_id: user.id })
+            const result = (await response.json());
+
+            setFormValues((existing) => {
+                return { ...existing, role: result.data[0].id }
+            })
+            if (Array.isArray(result.data)) {
+                setAllRoles(result.data);
+            }
+        } catch (e) {
+            setPageLoading(false);
+
         }
+
     }
 
     const fetchEntitiesData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = {  };
-        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, entity: result.data[0][0] }
-        })
-        if (Array.isArray(result.data)) {
-            setAllEntites(result.data);
+        try {
+            setPageLoading(true);
+            // const data = { "user_id":  user.id };
+            const data = {};
+            const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
+            const result = (await response.json());
+
+            setFormValues((existing) => {
+                return { ...existing, entity: result.data[0][0] }
+            })
+            if (Array.isArray(result.data)) {
+                setAllEntites(result.data);
+            }
+
+        } catch (e) {
+            setPageLoading(false);
         }
+
     }
 
     const fetchLobData = async () => {
-        setPageLoading(true);
-        const data = {
-            
-            "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getLob({...data,user_id : user.id});
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, lob: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
+        try {
+            setPageLoading(true);
+            const data = {
+
+                "rows": ["id", "name", "lob_head", "company"],
+                "filters": [],
+                "sort_by": [],
+                "order": "asc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages)
+            };
+            const response = await APIService.getLob({ ...data, user_id: user.id });
+            const result = (await response.json());
+
+            setFormValues((existing) => {
+                return { ...existing, lob: result.data[0].id }
+            })
+            if (Array.isArray(result.data)) {
+                setAllLOB(result.data);
+            }
+
+        } catch (e) {
+            setPageLoading(false);
+
         }
+
     }
 
     const [modesData, setModesData] = useState([]);
     const fetchModesData = async () => {
-        const data = {
-            
+        try {
+            const data = {
+
+            }
+            const response = await APIService.getModesAdmin({ ...data, user_id: user.id })
+            const res = await response.json()
+            setModesData(res.data)
+        } catch (e) {
+
         }
-        const response = await APIService.getModesAdmin({...data,user_id : user.id})
-        const res = await response.json()
-        setModesData(res.data)
-        
+
+
     }
 
     const [usersData, setUsersData] = useState([]);
     const fetchUsersData = async () => {
-        const data = {
-            
+        try {
+
+            const data = {
+
+            }
+            const response = await APIService.getUsers({ ...data, user_id: user.id })
+            const res = await response.json()
+            const existing = { ...formValues }
+            existing.receivedBy = res.data[0].id,
+
+                setUsersData(res.data)
+        } catch (e) {
+
         }
-        const response = await APIService.getUsers({...data,user_id : user.id})
-        const res = await response.json()
-        const existing = { ...formValues }
-        existing.receivedBy = res.data[0].id,
-            
-        setUsersData(res.data)
+
     }
 
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const [existingOrderReceipt, setExistingOrderReceipt] = useState([]);
     const fetchData = async () => {
-        
-        const tempArray = [];
-        // we need to query thru the object
-        
-        Object.keys(filterMapState).forEach((key) => {
-            if (filterMapState[key].filterType != "") {
-                if (filterMapState[key].filterData == 'Numeric') {
-                    tempArray.push([
-                        key,
-                        filterMapState[key].filterType,
-                        Number(filterMapState[key].filterValue),
-                        filterMapState[key].filterData,
-                    ]);
-                } else {
-                    tempArray.push([
-                        key,
-                        filterMapState[key].filterType,
-                        filterMapState[key].filterValue,
-                        filterMapState[key].filterData,
-                    ]);
+        try {
+            const tempArray = [];
+            // we need to query thru the object
+
+            Object.keys(filterMapState).forEach((key) => {
+                if (filterMapState[key].filterType != "") {
+                    if (filterMapState[key].filterData == 'Numeric') {
+                        tempArray.push([
+                            key,
+                            filterMapState[key].filterType,
+                            Number(filterMapState[key].filterValue),
+                            filterMapState[key].filterData,
+                        ]);
+                    } else {
+                        tempArray.push([
+                            key,
+                            filterMapState[key].filterType,
+                            filterMapState[key].filterValue,
+                            filterMapState[key].filterData,
+                        ]);
+                    }
                 }
+            });
+            setFilterState((prev) => tempArray)
+            setPageLoading(true);
+            setCurrentPage((prev) => 1)
+            const data = {
+
+                "rows": [
+                    "id",
+                    "receivedby",
+                    "receivedbyname",
+                    "amount",
+                    "tds",
+                    "recddate",
+                    "paymentmode",
+                    "paymentmodename",
+                    "orderid",
+                    "briefdescription",
+                    "dated",
+                    "createdby",
+                    "isdeleted",
+                    "createdon",
+                    "entityid",
+                    "entity",
+                    "officeid",
+                    "office",
+                    "clientname",
+                    "clientid",
+                    "createdbyname",
+                    "clientproperty",
+                    "clientpropertyid"
+                ],
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
             }
-        });
-        setFilterState((prev) => tempArray)
-        setPageLoading(true);
-        setCurrentPage((prev) => 1)
-        const data = {
-            
-            "rows": [
-                "id",
-                "receivedby",
-                "receivedbyname",
-                "amount",
-                "tds",
-                "recddate",
-                "paymentmode",
-                "paymentmodename",
-                "orderid",
-                "briefdescription",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "clientname",
-                "clientid",
-                "createdbyname",
-                "clientproperty",
-                "clientpropertyid"
-            ],
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        }
-            ;
-        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrderReceipt(result);
-        setPageLoading(false);
-    }
-    const fetchPageData = async (pageNumber) => {
-        setPageLoading(true);
-        
-        setCurrentPage(() => pageNumber)
-        const data = {
-            
-            "rows": [
-                "id",
-                "receivedby",
-                "receivedbyname",
-                "amount",
-                "tds",
-                "recddate",
-                "paymentmode",
-                "paymentmodename",
-                "orderid",
-                "briefdescription",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "clientname",
-                "clientid",
-                "createdbyname",
-                "clientproperty",
-                "clientpropertyid"
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        }
-        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrderReceipt(result);
-        setPageLoading(false);
-    }
-    const fetchQuantityData = async (quantity) => {
-        setPageLoading(true);
-        
-        const data = {
-            
-            "rows": [
-                "id",
-                "receivedby",
-                "receivedbyname",
-                "amount",
-                "tds",
-                "recddate",
-                "paymentmode",
-                "paymentmodename",
-                "orderid",
-                "briefdescription",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "clientname",
-                "clientid",
-                "createdbyname",
-                "clientproperty",
-                "clientpropertyid"
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(quantity),
-            "search_key": searchInput
-        }
-            ;
-        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrderReceipt(result);
-        setPageLoading(false);
-    }
-    const [clientPropertyData, setClientPropertyData] = useState([]);
-    const getClientPropertyByClientId = async (id) => {
-        const data = {
-            
-            "client_id": id
+                ;
+            const response = await APIService.getOrderReceipt({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrderReceipt(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
         }
 
-        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
-        const res = await response.json()
-        
-        setClientPropertyData(res.data)
-        //    if(res.data.length >= 1) {
-        //     const existing = {...formValues}
-        //     existing.clientProperty = res.data[0].id
-        //     
-        //     setFormValues(existing)
-        //  } 
+    }
+    const fetchPageData = async (pageNumber) => {
+        try {
+            setPageLoading(true);
+
+            setCurrentPage(() => pageNumber)
+            const data = {
+
+                "rows": [
+                    "id",
+                    "receivedby",
+                    "receivedbyname",
+                    "amount",
+                    "tds",
+                    "recddate",
+                    "paymentmode",
+                    "paymentmodename",
+                    "orderid",
+                    "briefdescription",
+                    "dated",
+                    "createdby",
+                    "isdeleted",
+                    "createdon",
+                    "entityid",
+                    "entity",
+                    "officeid",
+                    "office",
+                    "clientname",
+                    "clientid",
+                    "createdbyname",
+                    "clientproperty",
+                    "clientpropertyid"
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(pageNumber),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            }
+            const response = await APIService.getOrderReceipt({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrderReceipt(result);
+            setPageLoading(false);
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
+    }
+    const fetchQuantityData = async (quantity) => {
+        try {
+            setPageLoading(true);
+
+            const data = {
+
+                "rows": [
+                    "id",
+                    "receivedby",
+                    "receivedbyname",
+                    "amount",
+                    "tds",
+                    "recddate",
+                    "paymentmode",
+                    "paymentmodename",
+                    "orderid",
+                    "briefdescription",
+                    "dated",
+                    "createdby",
+                    "isdeleted",
+                    "createdon",
+                    "entityid",
+                    "entity",
+                    "officeid",
+                    "office",
+                    "clientname",
+                    "clientid",
+                    "createdbyname",
+                    "clientproperty",
+                    "clientpropertyid"
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(quantity),
+                "search_key": searchInput
+            }
+                ;
+            const response = await APIService.getOrderReceipt({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrderReceipt(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
+    }
+    const [clientPropertyData, setClientPropertyData] = useState([]);
+
+    const getClientPropertyByClientId = async (id) => {
+        try {
+            const data = {
+
+                "client_id": id
+            }
+
+            const response = await APIService.getClientPropertyByClientId({ ...data, user_id: user.id })
+            const res = await response.json()
+
+            setClientPropertyData(res.data)
+            //    if(res.data.length >= 1) {
+            //     const existing = {...formValues}
+            //     existing.clientProperty = res.data[0].id
+            //     
+            //     setFormValues(existing)
+            //  } 
+
+        } catch (e) {
+
+        }
+
     }
     const [orders, setOrders] = useState([]);
     function convertToIdNameObject(items) {
         const idNameObject = {};
         items.forEach((item) => {
-          idNameObject[item.id] = item.ordername;
+            idNameObject[item.id] = item.ordername;
         });
         return idNameObject;
     }
     const getOrdersByClientId = async (id) => {
-        if(id == null) return 
-        
-        const data = {
-            "client_id": id
+        try {
+            if (id == null) return
+
+            const data = {
+                "client_id": id
+            }
+            const response = await APIService.getOrdersByClientId({ ...data, user_id: user.id })
+            const res = await response.json()
+
+            setOrders(convertToIdNameObject(res.data))
+
+        } catch (e) {
+            console.log(e);
         }
-        const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
-        const res = await response.json()
-        
-        setOrders(convertToIdNameObject(res.data))
-
-        // if(res.data.length >= 1) {
-        //    const existing = {...formValues}
-        //    existing.order = res.data[0].id
-        //    
-        //    setFormValues(existing)
-
-        // } 
     }
     const addOrderReceipt = async () => {
-
         const data = {
-            
+
             "clientid": Number(formValues.client),
             "receivedby": Number(formValues.receivedBy),
             "amount": Number(formValues.amountReceived),
-            "tds": formValues.TDS ? Number(formValues.TDS): null,
+            "tds": formValues.TDS ? Number(formValues.TDS) : null,
             "recddate": formValues.receivedDate,
             "paymentmode": Number(formValues.receiptMode),
             "orderid": Number(formValues.order),
@@ -465,10 +466,8 @@ const ManageOrderReceipt = () => {
         // "orderid": 34,
         // "entityid": 1,
         // "officeid": 1
-        const response = await APIService.addOrderReceipt({...data,user_id : user.id})
+        const response = await APIService.addOrderReceipt({ ...data, user_id: user.id })
         const res = await response.json()
-        
-
         setOpenAddConfirmation(false);
         SetIsOrderReceiptDialogue(false);
         if (res.result == "success") {
@@ -483,9 +482,9 @@ const ManageOrderReceipt = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const handleEdit = (id) => {
         // we need to open the edit modal
-        
+
         setCurrOrderReceipt((prev) => id)
-        
+
         setShowEditModal(true);
     }
     const initialValues = {
@@ -500,31 +499,31 @@ const ManageOrderReceipt = () => {
     };
     const [formValues, setFormValues] = useState(initialValues);
     const setHyperlinkData = async () => {
-        if(orderid != null) {
-                const data = {
-                    user_id : user.id,
-                    table_name : "get_orders_view",
-                    item_id : orderid 
-                }
-                const response = await APIService.getItembyId(data)
-                const res = await response.json()
-                const v = {...selectedOption}
-                v.label = res.data.clientname 
-                v.value = res.data.clientid
-                setSelectedOption(v)
-                setState(prevState => ({
-                    ...prevState,
-                    hyperlinked: true,
-                    clientname: res.data.clientname,
-                    clientid: res.data.clientid,
-                    orderid: orderid,
-                    orderdescription : res.data.briefdescription
-                  }));
-                setFormValues(prevFormValues => ({
-                    ...prevFormValues,
-                    client: res.data.clientid,
-                    order: orderid
-                }));
+        if (orderid != null) {
+            const data = {
+                user_id: user.id,
+                table_name: "get_orders_view",
+                item_id: orderid
+            }
+            const response = await APIService.getItembyId(data)
+            const res = await response.json()
+            const v = { ...selectedOption }
+            v.label = res.data.clientname
+            v.value = res.data.clientid
+            setSelectedOption(v)
+            setState(prevState => ({
+                ...prevState,
+                hyperlinked: true,
+                clientname: res.data.clientname,
+                clientid: res.data.clientid,
+                orderid: orderid,
+                orderdescription: res.data.briefdescription
+            }));
+            setFormValues(prevFormValues => ({
+                ...prevFormValues,
+                client: res.data.clientid,
+                order: orderid
+            }));
         }
         // if(state != null) {
         //     const v = {...selectedOption}
@@ -538,10 +537,10 @@ const ManageOrderReceipt = () => {
         //     getOrderData(state.orderid)
         // }
     }
-   
+
 
     const handleOpenEdit = (oldItem) => {
-        
+
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -559,7 +558,7 @@ const ManageOrderReceipt = () => {
         setHyperlinkData()
         setFormValues(initialValues);
         setFormErrors({});
-        setSelectedOption({label : 'Select Client' , value : null})
+        setSelectedOption({ label: 'Select Client', value: null })
     }
 
     // harcoded dropdown
@@ -569,9 +568,9 @@ const ManageOrderReceipt = () => {
 
 
     const handleAddClientReceipt = () => {
-        
+
         if (!validate()) {
-            
+
             return;
         }
         SetIsOrderReceiptDialogue(false);
@@ -659,16 +658,16 @@ const ManageOrderReceipt = () => {
 
     const deleteEmployee = async (id) => {
         const data = {
-            
+
             "id": id
         }
-        const response = await APIService.deleteEmployee({...data,user_id : user.id});
+        const response = await APIService.deleteEmployee({ ...data, user_id: user.id });
         showDeleteConfirmation(false);
 
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
-        
+
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -682,175 +681,194 @@ const ManageOrderReceipt = () => {
         setDownloadModal(false);
     }
     const handleDownload = async (type) => {
-        setPageLoading(true);
-        const data = {
-            
-            "rows": [
-                "clientname",
-                "briefdescription",
-                "clientproperty",
-                "amount",
-                "recddate",
-                "paymentmodename",
-                "receivedbyname",
-                "createdbyname",
-                "id",
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput,
-            "downloadType": type,
-            "routename" : "/manage/manageorderreceipt",
-            "colmap": {
-                "clientname": "Client Name",
-                "briefdescription": "Order Description",
-                "clientproperty": "Property",
-                "amount": "Amount",
-                "recddate": "Received Date",
-                "paymentmodename": "Receipt Mode",
-                "receivedbyname": "Received By",
-                "createdbyname": "Created By",
-                "id": "ID"
-            }
-        };
-        const response = await APIService.getOrderReceipt({...data,user_id : user.id})
-        const temp = await response.json();
-        const result = temp.data;
-        
-        if (temp.result == 'success') {
-            const d = {
-                "filename": temp.filename,
-                "user_id" : user.id
-            }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
-                })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'OrderReceiptData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'OrderReceiptData.pdf');
-                    }
-                    
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+        try {
+            setPageLoading(true);
+            const data = {
 
-            setTimeout(() => {
-                setPageLoading(false)
-            }, 1000)
+                "rows": [
+                    "clientname",
+                    "briefdescription",
+                    "clientproperty",
+                    "amount",
+                    "recddate",
+                    "paymentmodename",
+                    "receivedbyname",
+                    "createdbyname",
+                    "id",
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 0,
+                "pg_size": 0,
+                "search_key": searchInput,
+                "downloadType": type,
+                "routename": "/manage/manageorderreceipt",
+                "colmap": {
+                    "clientname": "Client Name",
+                    "briefdescription": "Order Description",
+                    "clientproperty": "Property",
+                    "amount": "Amount",
+                    "recddate": "Received Date",
+                    "paymentmodename": "Receipt Mode",
+                    "receivedbyname": "Received By",
+                    "createdbyname": "Created By",
+                    "id": "ID"
+                }
+            };
+            const response = await APIService.getOrderReceipt({ ...data, user_id: user.id })
+            const temp = await response.json();
+            const result = temp.data;
+
+            if (temp.result == 'success') {
+                const d = {
+                    "filename": temp.filename,
+                    "user_id": user.id
+                }
+                fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.blob();
+                    })
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'OrderReceiptData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'OrderReceiptData.pdf');
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                setTimeout(() => {
+                    setPageLoading(false)
+                }, 1000)
+            }
+
+        } catch (e) {
+            setPageLoading(false)
         }
+
     }
     const handleSearch = async () => {
-        // 
-        setPageLoading(true);
-        setCurrentPage((prev) => 1)
-        // setCurrentPages(15);
-        setIsSearchOn(true);
-        const data = {
-            
-            "rows": [
-                "id",
-                "receivedby",
-                "receivedbyname",
-                "amount",
-                "tds",
-                "recddate",
-                "paymentmode",
-                "paymentmodename",
-                "orderid",
-                "briefdescription",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "clientname",
-                "clientid",
-                "createdbyname",
-                "clientproperty",
-                "clientpropertyid"
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrderReceipt(result);
-        setPageLoading(false);
+        try {
+            setPageLoading(true);
+            setCurrentPage((prev) => 1)
+            // setCurrentPages(15);
+            setIsSearchOn(true);
+            const data = {
+
+                "rows": [
+                    "id",
+                    "receivedby",
+                    "receivedbyname",
+                    "amount",
+                    "tds",
+                    "recddate",
+                    "paymentmode",
+                    "paymentmodename",
+                    "orderid",
+                    "briefdescription",
+                    "dated",
+                    "createdby",
+                    "isdeleted",
+                    "createdon",
+                    "entityid",
+                    "entity",
+                    "officeid",
+                    "office",
+                    "clientname",
+                    "clientid",
+                    "createdbyname",
+                    "clientproperty",
+                    "clientpropertyid"
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getOrderReceipt({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrderReceipt(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const handleCloseSearch = async () => {
-        setIsSearchOn(false);
-        setPageLoading(true);
-        setSearchInput("");
-        setCurrentPage((prev) => 1)
-        const data = {
-            
-            "rows": [
-                "id",
-                "receivedby",
-                "receivedbyname",
-                "amount",
-                "tds",
-                "recddate",
-                "paymentmode",
-                "paymentmodename",
-                "orderid",
-                "briefdescription",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "clientname",
-                "clientid",
-                "createdbyname",
-                "clientproperty",
-                "clientpropertyid"
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
-        };
-        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrderReceipt(result);
-        setPageLoading(false);
+        try {
+            setIsSearchOn(false);
+            setPageLoading(true);
+            setSearchInput("");
+            setCurrentPage((prev) => 1)
+            const data = {
+
+                "rows": [
+                    "id",
+                    "receivedby",
+                    "receivedbyname",
+                    "amount",
+                    "tds",
+                    "recddate",
+                    "paymentmode",
+                    "paymentmodename",
+                    "orderid",
+                    "briefdescription",
+                    "dated",
+                    "createdby",
+                    "isdeleted",
+                    "createdon",
+                    "entityid",
+                    "entity",
+                    "officeid",
+                    "office",
+                    "clientname",
+                    "clientid",
+                    "createdbyname",
+                    "clientproperty",
+                    "clientpropertyid"
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": ""
+            };
+            const response = await APIService.getOrderReceipt({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrderReceipt(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [currOrderReceipt, setCurrOrderReceipt] = useState("");
@@ -859,16 +877,21 @@ const ManageOrderReceipt = () => {
         setShowDeleteModal(true)
     }
     const deletePma = async (id) => {
-        const data = {
-            
-            "id": id
+        try {
+            const data = {
+
+                "id": id
+            }
+            const response = await APIService.deleteOrderReceipt({ ...data, user_id: user.id })
+            const res = await response.json()
+            if (res.result == 'success') {
+                setShowDeleteModal(false);
+                openDeleteSuccess()
+            }
+        } catch (e) {
+
         }
-        const response = await APIService.deleteOrderReceipt({...data,user_id : user.id})
-        const res = await response.json()
-        if (res.result == 'success') {
-            setShowDeleteModal(false);
-            openDeleteSuccess()
-        }
+
     }
     const openAddSuccess = () => {
         // (false);
@@ -928,8 +951,8 @@ const ManageOrderReceipt = () => {
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
-        
-        
+
+
         //  setFormValues({...formValues,client_property : {
         //   ...formValues.client_property,
         //   clientid : e.value
@@ -944,20 +967,20 @@ const ManageOrderReceipt = () => {
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-        
+
         setSelectedOption(e)
     }
 
     const loadOptions = async (e) => {
-        
+
         if (e.length < 3) return;
         const data = {
-            
+
             "pg_no": 0,
             "pg_size": 0,
             "search_key": e
         }
-        const response = await APIService.getClientAdminPaginated({...data,user_id : user.id})
+        const response = await APIService.getClientAdminPaginated({ ...data, user_id: user.id })
         const res = await response.json()
         const results = res.data.map(e => {
             return {
@@ -1036,9 +1059,9 @@ const ManageOrderReceipt = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        
-        
-        
+
+
+
 
         var existing = filterMapState;
         existing = {
@@ -1056,11 +1079,12 @@ const ManageOrderReceipt = () => {
 
         if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
 
-        
+
         fetchFiltered(existing);
     }
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
+
         setFilterMapState(mapState)
         setClientNameFilter(false);
         setPropertyFilter(false);
@@ -1074,7 +1098,7 @@ const ManageOrderReceipt = () => {
         const tempArray = [];
         // we need to query thru the object
         // 
-        
+
         Object.keys(mapState).forEach((key) => {
             if (mapState[key].filterType != "") {
                 if (mapState[key].filterData == 'Numeric') {
@@ -1098,7 +1122,7 @@ const ManageOrderReceipt = () => {
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
-            
+
             "rows": [
                 "id",
                 "receivedby",
@@ -1131,14 +1155,21 @@ const ManageOrderReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrderReceipt(result);
-        setPageLoading(false);
+        try {
+            const response = await APIService.getOrderReceipt({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrderReceipt(result);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
 
 
@@ -1148,10 +1179,10 @@ const ManageOrderReceipt = () => {
 
         // we need to query thru the object
         setSortField(field)
-        
+
         setFlag((prev) => !prev)
         const data = {
-            
+
             "rows": [
                 "id",
                 "receivedby",
@@ -1185,14 +1216,21 @@ const ManageOrderReceipt = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
         // setFlag((prev) => !prev);
-        const response = await APIService.getOrderReceipt({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrderReceipt(result);
-        setPageLoading(false);
+        try {
+
+            const response = await APIService.getOrderReceipt({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrderReceipt(result);
+            setPageLoading(false);
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const [orderData, setOrderData] = useState({
         pendingamount: null,
@@ -1200,17 +1238,21 @@ const ManageOrderReceipt = () => {
         orderstatus: null
     })
     const getOrderData = async (id) => {
-        
-        const data = {  "orderid": Number(id) }
-        const response = await APIService.getOrderPending({...data,user_id : user.id})
-        const res = await response.json()
-        
-        const temp = { ...orderData }
-        temp.pendingamount = res.data.pending
-        temp.orderdate = res.data.orderdate
-        temp.orderstatus = res.data.orderstatus
-        setOrderData(temp)
-    
+        try {
+            const data = { "orderid": Number(id) }
+            const response = await APIService.getOrderPending({ ...data, user_id: user.id })
+            const res = await response.json()
+
+            const temp = { ...orderData }
+            temp.pendingamount = res.data.pending
+            temp.orderdate = res.data.orderdate
+            temp.orderstatus = res.data.orderstatus
+            setOrderData(temp)
+        } catch (e) {
+
+        }
+
+
     }
     const [orderText, setOrderText] = useState("Select Order")
 
@@ -1246,7 +1288,7 @@ const ManageOrderReceipt = () => {
         }
     }
     useEffect(() => {
-        
+
         setHyperlinkData()
         fetchData();
         fetchEntitiesData();
@@ -1503,9 +1545,9 @@ const ManageOrderReceipt = () => {
                         </div>
                         <div className='w-[45%]  flex items-center'>
                             <RefreshFilterButton
-                             filterMapping={filterMapping}
-                             setFilterMapState={setFilterMapState}
-                             resetAllInputs={resetAllInputs}
+                                filterMapping={filterMapping}
+                                setFilterMapState={setFilterMapState}
+                                resetAllInputs={resetAllInputs}
                             />
                         </div>
                     </div>
@@ -1602,7 +1644,7 @@ const ManageOrderReceipt = () => {
                                 <div className="w-[90%] flex">
                                     <div className='w-[4%] flex'>
                                         <div className='px-3 py-5'>
-                                            {}
+                                            { }
                                             {/* { * currentPages)} */}
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
@@ -1657,14 +1699,14 @@ const ManageOrderReceipt = () => {
                                     <div className='w-1/2 py-5 flex ml-4'>
                                         <div className='flex space-x-2'>
                                             <EditButton
-                                               handleEdit={handleEdit}
-                                               rowData={item.id}
+                                                handleEdit={handleEdit}
+                                                rowData={item.id}
                                             />
                                             <DeleteButton
-                                               handleDelete={handleDelete}
-                                               rowData={item.id}
+                                                handleDelete={handleDelete}
+                                                rowData={item.id}
                                             />
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -1701,7 +1743,7 @@ const ManageOrderReceipt = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                
+
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -1783,76 +1825,76 @@ const ManageOrderReceipt = () => {
                                             <div className="text-[13px] mb-0.5">
                                                 Client <label className="text-red-500">*</label>
                                             </div>
-                                            {}
+                                            { }
                                             {state?.hyperlinked ?
                                                 <Tooltip title={state.clientname} arrow>
-                                                       <div className="w-56 h-5 border-[1px] px-3 border-[#C6C6C6] rounded-sm  text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" >{state.clientname}</div>
+                                                    <div className="w-56 h-5 border-[1px] px-3 border-[#C6C6C6] rounded-sm  text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" >{state.clientname}</div>
                                                 </Tooltip>
-                                                  :
-                                            <AsyncSelect
-                                                onChange={handleClientNameChange}
-                                                value={selectedOption}
-                                                loadOptions={loadOptions}
-                                                cacheOptions
-                                                defaultOptions
-                                                onInputChange={(value) => setQuery(value)}
+                                                :
+                                                <AsyncSelect
+                                                    onChange={handleClientNameChange}
+                                                    value={selectedOption}
+                                                    loadOptions={loadOptions}
+                                                    cacheOptions
+                                                    defaultOptions
+                                                    onInputChange={(value) => setQuery(value)}
 
-                                                styles={{
-                                                    control: (provided, state) => ({
-                                                        ...provided,
-                                                        minHeight: 23,
-                                                        // lineHeight: '0.8',
-                                                        height: '20px',
-                                                        width: 224,
-                                                        fontSize: 12,
-                                                        // padding: '1px'
-                                                        borderRadius : '2px'
-                                                    }),
-                                                    indicatorSeparator: (provided, state) => ({
-                                                      display : 'none'
-                                                    }),
-                                                    dropdownIndicator: (provided, state) => ({
-                                                        ...provided,
-                                                        padding: '1px',
-                                                        paddingRight : '2px', // Adjust padding for the dropdown indicator
-                                                        width: 15, // Adjust width to make it smaller
-                                                        height: 15, // Adjust height to make it smaller
-                                                        display: 'flex', // Use flex to center the icon
-                                                        alignItems: 'center', // Center vertically
-                                                        justifyContent: 'center'
-                                                         // adjust padding for the dropdown indicator
-                                                    }),
-                                                    input: (provided, state) => ({
-                                                        ...provided,
-                                                        margin: 0, // Remove any default margin
-                                                        padding: 0, // Remove any default padding
-                                                        fontSize: 12, // Match the font size
-                                                        height: 'auto', // Adjust input height
-                                                      }),
-                                                    // options: (provided, state) => ({
-                                                    //     ...provided,
-                                                    //     fontSize: 10// adjust padding for the dropdown indicator
-                                                    // }),
-                                                    option: (provided, state) => ({
-                                                        ...provided,
-                                                        padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
-                                                        margin: 0, // Ensure no extra margin
-                                                        fontSize: 12 // Adjust font size of individual options
-                                                    }),
-                                                    menu: (provided, state) => ({
-                                                        ...provided,
-                                                        width: 224, // Adjust the width of the dropdown menu
-                                                        zIndex: 9999 // Ensure the menu appears above other elements
-                                                    }),
-                                                    menuList: (provided, state) => ({
-                                                        ...provided,
-                                                        padding: 0, // Adjust padding of the menu list
-                                                        fontSize: 12,
-                                                        maxHeight: 150 // Adjust font size of the menu list
-                                                    }),
-                                                    
-                                                }}
-                                            />}
+                                                    styles={{
+                                                        control: (provided, state) => ({
+                                                            ...provided,
+                                                            minHeight: 23,
+                                                            // lineHeight: '0.8',
+                                                            height: '20px',
+                                                            width: 224,
+                                                            fontSize: 12,
+                                                            // padding: '1px'
+                                                            borderRadius: '2px'
+                                                        }),
+                                                        indicatorSeparator: (provided, state) => ({
+                                                            display: 'none'
+                                                        }),
+                                                        dropdownIndicator: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '1px',
+                                                            paddingRight: '2px', // Adjust padding for the dropdown indicator
+                                                            width: 15, // Adjust width to make it smaller
+                                                            height: 15, // Adjust height to make it smaller
+                                                            display: 'flex', // Use flex to center the icon
+                                                            alignItems: 'center', // Center vertically
+                                                            justifyContent: 'center'
+                                                            // adjust padding for the dropdown indicator
+                                                        }),
+                                                        input: (provided, state) => ({
+                                                            ...provided,
+                                                            margin: 0, // Remove any default margin
+                                                            padding: 0, // Remove any default padding
+                                                            fontSize: 12, // Match the font size
+                                                            height: 'auto', // Adjust input height
+                                                        }),
+                                                        // options: (provided, state) => ({
+                                                        //     ...provided,
+                                                        //     fontSize: 10// adjust padding for the dropdown indicator
+                                                        // }),
+                                                        option: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                                                            margin: 0, // Ensure no extra margin
+                                                            fontSize: 12 // Adjust font size of individual options
+                                                        }),
+                                                        menu: (provided, state) => ({
+                                                            ...provided,
+                                                            width: 224, // Adjust the width of the dropdown menu
+                                                            zIndex: 9999 // Ensure the menu appears above other elements
+                                                        }),
+                                                        menuList: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: 0, // Adjust padding of the menu list
+                                                            fontSize: 12,
+                                                            maxHeight: 150 // Adjust font size of the menu list
+                                                        }),
+
+                                                    }}
+                                                />}
                                             <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.client}</div>
                                         </div>
                                         <div className="">
@@ -1927,40 +1969,40 @@ const ManageOrderReceipt = () => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                        
-                                           {state?.hyperlinked ?<Tooltip title={state.orderdescription}>
-                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.orderdescription}</div> 
-                                           </Tooltip>  : <OrderCustomSelectNative
-                                           data={Object.keys(orders)}
-                                           value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
-                                           placeholder="Select Orders"
-                                           isSticky={true}
-                                           headerText={{
-                                            first : 'Order Description',
-                                            second : 'ID',
-                                          }}
-                                          renderData={(item) => {
-                                            return (
-                                              <MenuItem value={item} key={item} sx={{ width : '224px', gap : '5px', fontSize : '12px'}}>
-                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
-                                                   {orders[item]}
-                                                </p>
-                                                <p className='w-[20%]'>
-                                                    {item}
-                                                </p>
-                                                
-                                               
-                                              </MenuItem>
-                                            );
-                                          }}
-                                          onChange={(e) => {
-                                            getOrderData(e.target.value)
-                                            setFormValues({ ...formValues, order: e.target.value })
-                                           }}
-                                           
-                                        
-                                        />
-                                             }
+
+                                            {state?.hyperlinked ? <Tooltip title={state.orderdescription}>
+                                                <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5] whitespace-nowrap overflow-hidden text-ellipsis" type="text" name="curaoffice" >{state.orderdescription}</div>
+                                            </Tooltip> : <OrderCustomSelectNative
+                                                data={Object.keys(orders)}
+                                                value={orders?.[formValues.order] ? orders?.[formValues.order] : null}
+                                                placeholder="Select Orders"
+                                                isSticky={true}
+                                                headerText={{
+                                                    first: 'Order Description',
+                                                    second: 'ID',
+                                                }}
+                                                renderData={(item) => {
+                                                    return (
+                                                        <MenuItem value={item} key={item} sx={{ width: '224px', gap: '5px', fontSize: '12px' }}>
+                                                            <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                                {orders[item]}
+                                                            </p>
+                                                            <p className='w-[20%]'>
+                                                                {item}
+                                                            </p>
+
+
+                                                        </MenuItem>
+                                                    );
+                                                }}
+                                                onChange={(e) => {
+                                                    getOrderData(e.target.value)
+                                                    setFormValues({ ...formValues, order: e.target.value })
+                                                }}
+
+
+                                            />
+                                            }
                                             <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.order}</div>
                                         </div>
                                         <div className="">
