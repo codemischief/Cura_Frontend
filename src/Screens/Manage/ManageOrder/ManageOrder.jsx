@@ -81,53 +81,60 @@ const ManageOrder = () => {
     const [flag, setFlag] = useState(false)
 
     const fetchData = async () => {
-        console.log('ugm')
-        const tempArray = [];
-        // we need to query thru the object
-        // console.log(filterMapState);
-        // console.log(filterMapState)
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+        try{
+            const tempArray = [];
+            // we need to query thru the object
+            // console.log(filterMapState);
+            // console.log(filterMapState)
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+            })
+            setStateArray(tempArray)
+            setPageLoading(true);
+            const data = {
+                "rows": [
+                    "clientname",
+                    "clientid",
+                    "ownername",
+                    "briefdescription",
+                    "clientproperty",
+                    "servicename",
+                    "orderstatus",
+                    "earlieststartdate",
+                    "expectedcompletiondate",
+                    "orderdate",
+                    "ageing",
+                    "createdbyname",
+                    "id"
+                ],
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
             }
-        })
-        setStateArray(tempArray)
-        setPageLoading(true);
-        const data = {
-            "rows": [
-                "clientname",
-                "clientid",
-                "ownername",
-                "briefdescription",
-                "clientproperty",
-                "servicename",
-                "orderstatus",
-                "earlieststartdate",
-                "expectedcompletiondate",
-                "orderdate",
-                "ageing",
-                "createdbyname",
-                "id"
-            ],
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
+                ;
+            const response = await APIService.getOrder({...data,user_id : user.id});
+            const temp = await response.json();
+            const result = temp.data;
+            console.log(result);
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingOrder(result);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
         }
-            ;
-        const response = await APIService.getOrder({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result);
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingOrder(result);
-        setPageLoading(false);
+
+       
     }
     const fetchPageData = async (pageNumber) => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         setCurrentPage(pageNumber)
         const data = {
             "rows": datarows,
@@ -146,9 +153,16 @@ const ManageOrder = () => {
         setTotalItems(t);
         setExistingOrder(result);
         setPageLoading(false);
+
+        }catch(e){
+        setPageLoading(false);
+           
+        }
+        
     }
     const fetchQuantityData = async (quantity) => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         setCurrentPage((prev) => 1)
         const data = {
             "rows": datarows,
@@ -168,6 +182,12 @@ const ManageOrder = () => {
         setTotalItems(t);
         setExistingOrder(result);
         setPageLoading(false);
+
+        }catch(e){
+        setPageLoading(false);
+          
+        }
+        
     }
     function propertyHelper(items) {
         const idNameObject = {};
@@ -180,46 +200,60 @@ const ManageOrder = () => {
         return idNameObject;
     }
     const getClientPropertyByClientId = async (id) => {
-        const data = {
-            "client_id": id
+        try{
+            const data = {
+                "client_id": id
+            }
+            const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
+            const res = await response.json()
+
+            setClientPropertyData(propertyHelper(res.data))
+
+        }catch(e){
+            console.log(e);
+
         }
-        const response = await APIService.getClientPropertyByClientId({...data,user_id : user.id})
-        const res = await response.json()
-        console.log(res.data)
-        setClientPropertyData(propertyHelper(res.data))
+       
     }
     const fetchHyperLinkData = async () => {
-       if(clientid != null) {
-        const data = {
-            user_id : user.id,
-            table_name : 'get_client_info_view',
-            item_id : clientid
+        try{
+            if(clientid != null) {
+                const data = {
+                    user_id : user.id,
+                    table_name : 'get_client_info_view',
+                    item_id : clientid
+                }
+                const response = await APIService.getItembyId(data)
+                const res = await response.json()
+                console.log(res.data)
+                setState(prev => ({
+                    clientid : clientid,
+                    clientname : res.data.clientname,
+                    hyperlinked : true
+                }))
+                setFormValues(prevFormValues => ({
+                    ...prevFormValues,
+                    order_info: {
+                      ...prevFormValues.order_info,
+                      clientname: res.data.clientname,
+                      clientid: clientid,
+                      
+                    }
+                  }))
+                  getClientPropertyByClientId(clientid)
+                // const temp = {...formValues}
+                // const ex = temp.order_info 
+                // ex.clientname = state?.clientname 
+                // ex.clientid = state?.clientid 
+                // temp.order_info = ex 
+                // setFormValues(temp)
+               }
+
+        }catch(e){
+            console.log(e);
+            
         }
-        const response = await APIService.getItembyId(data)
-        const res = await response.json()
-        console.log(res.data)
-        setState(prev => ({
-            clientid : clientid,
-            clientname : res.data.clientname,
-            hyperlinked : true
-        }))
-        setFormValues(prevFormValues => ({
-            ...prevFormValues,
-            order_info: {
-              ...prevFormValues.order_info,
-              clientname: res.data.clientname,
-              clientid: clientid,
-              
-            }
-          }))
-          getClientPropertyByClientId(clientid)
-        // const temp = {...formValues}
-        // const ex = temp.order_info 
-        // ex.clientname = state?.clientname 
-        // ex.clientid = state?.clientid 
-        // temp.order_info = ex 
-        // setFormValues(temp)
-       }
+  
     }    
    
     const initialValues = {
@@ -253,7 +287,7 @@ const ManageOrder = () => {
     }
     const [formErrors, setFormErrors] = useState({});
     const validate = () => {
-        console.log(formValues)
+        
         var res = true
         if (formValues.order_info.owner === "" || formValues.order_info.owner === null) {
             res = false
@@ -357,9 +391,9 @@ const ManageOrder = () => {
         return temp
     }
     const addOrder = async () => {
-        console.log('clicked')
+       
         setSubmit(true)
-        console.log(formValues)
+        
         const data = {
             "order_info": {
                 "clientid": Number(formValues.order_info.clientid),

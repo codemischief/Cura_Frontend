@@ -32,17 +32,17 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import FileSaver from "file-saver";
 import RefreshFilterButton from "../../../Components/common/buttons/RefreshFilterButton";
 const ManageBuilder = () => {
-    
+
     const dataRows = [
         "buildername",
         "country",
-        "city", 
+        "city",
         "suburb",
         "id",
     ]
-        
-    const {user} = useAuth()
-    const {pathname} = useLocation()
+
+    const { user } = useAuth()
+    const { pathname } = useLocation()
     const menuRef = useRef();
     const navigate = useNavigate();
     const canEdit = checkEditAccess();
@@ -86,6 +86,7 @@ const ManageBuilder = () => {
     }
 
     const fetchBuilderData = async () => {
+
         setPageLoading(true);
         const tempArray = [];
         Object.keys(filterMapState).forEach((key) => {
@@ -110,171 +111,219 @@ const ManageBuilder = () => {
         });
         setFilterState((prev) => tempArray)
         try {
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
             const response = await APIService.getNewBuilderInfo(data)
             const res = await response.json()
-            
+
             const result = res.data.builder_info;
             setTotalItems(res.total_count);
-            
-            
+
+
             setPageLoading(false);
             setExistingBuilders(result);
-        }catch(err) {
+        } catch (err) {
             handleError(err)
             setPageLoading(false);
             toast('Something Went Wrong, Please Refresh!')
         }
-        
-        
+
+
     }
     const fetchPageData = async (page) => {
-        setPageLoading(true);
-        setCurrentPage(page)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(page),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getNewBuilderInfo(data)
-        const res = await response.json()
-        
-        const result = res.data.builder_info;
-        setTotalItems(res.total_count);
-        
-        setPageLoading(false);
-        // 
-        setExistingBuilders(result);
+        try {
+
+            setPageLoading(true);
+            setCurrentPage(page)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(page),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getNewBuilderInfo(data)
+            const res = await response.json()
+
+            const result = res.data.builder_info;
+            setTotalItems(res.total_count);
+
+            setPageLoading(false);
+            // 
+            setExistingBuilders(result);
+
+        }
+        catch (e) {
+            setPageLoading(false);
+
+        }
+
+
     }
     const fetchQuantityData = async (quantity) => {
-        setPageLoading(true);
-        setCurrentPages(quantity);
-        setCurrentPage((prev) => 1);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": "desc",
-            "pg_no": 1,
-            "pg_size": Number(quantity),
-            "search_key": searchInput
-        };
-        const response = await APIService.getNewBuilderInfo(data)
-        const res = await response.json()
-        
-        const result = res.data.builder_info;
-        setTotalItems(res.total_count);
-        
-        setPageLoading(false);
-        // 
-        setExistingBuilders(result);
+        try {
+            setPageLoading(true);
+            setCurrentPages(quantity);
+            setCurrentPage((prev) => 1);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": "desc",
+                "pg_no": 1,
+                "pg_size": Number(quantity),
+                "search_key": searchInput
+            };
+            const response = await APIService.getNewBuilderInfo(data)
+            const res = await response.json()
+
+            const result = res.data.builder_info;
+            setTotalItems(res.total_count);
+
+            setPageLoading(false);
+            // 
+            setExistingBuilders(result);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
 
     const fetchCountryData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
-        const result = (await response.json()).data;
-        setAllCountry(result)
+        try {
+            setPageLoading(true);
+            // const data = { "user_id":  user.id };
+            const data = { "user_id": user.id, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+            const response = await APIService.getCountries(data)
+            const result = (await response.json()).data;
+            setAllCountry(result)
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
 
     const fetchStateData = async (e) => {
+        try {
+            const data = { "user_id": user.id, "country_id": e };
+            const response = await APIService.getState(data);
+            const result = (await response.json()).data;
+            // 
+            if (Array.isArray(result)) {
+                setAllState(result)
+            }
+        } catch (e) {
 
-        const data = { "user_id": user.id, "country_id": e };
-        const response = await APIService.getState(data);
-        const result = (await response.json()).data;
-        // 
-        if (Array.isArray(result)) {
-            setAllState(result)
         }
+
     }
 
     const fetchCityData = async (d) => {
-        const data = { "user_id": user.id, "state_name": d };
-        const response = await APIService.getCities(data);
-        const result = (await response.json()).data;
-        if (Array.isArray(result)) {
-            setAllCity(result)
+        try {
+            const data = { "user_id": user.id, "state_name": d };
+            const response = await APIService.getCities(data);
+            const result = (await response.json()).data;
+            if (Array.isArray(result)) {
+                setAllCity(result)
+            }
+
+        } catch (e) {
+
         }
+
     }
 
     const handleSearch = async () => {
-        setPageLoading(true);
-        setIsSearchOn(true);
-        setCurrentPage(1)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getNewBuilderInfo(data)
-        const res = await response.json()
-        
-        const result = res.data.builder_info;
-        setTotalItems(res.total_count);
-        
-        setPageLoading(false);
-        // 
-        setExistingBuilders(result);
+        try {
+            setPageLoading(true);
+            setIsSearchOn(true);
+            setCurrentPage(1)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getNewBuilderInfo(data)
+            const res = await response.json()
+
+            const result = res.data.builder_info;
+            setTotalItems(res.total_count);
+
+            setPageLoading(false);
+            // 
+            setExistingBuilders(result);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
 
     const handleCloseSearch = async () => {
-        setPageLoading(true);
-        setSearchInput("");
-        setIsSearchOn(false);
-        setCurrentPage(1);
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
-        };
-        const response = await APIService.getNewBuilderInfo(data)
-        const res = await response.json()
-        
-        const result = res.data.builder_info;
-        setTotalItems(res.total_count);
-        
-        setPageLoading(false);
-        // 
-        setExistingBuilders(result);
+        try {
+            setPageLoading(true);
+            setSearchInput("");
+            setIsSearchOn(false);
+            setCurrentPage(1);
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": ""
+            };
+            const response = await APIService.getNewBuilderInfo(data)
+            const res = await response.json()
+
+            const result = res.data.builder_info;
+            setTotalItems(res.total_count);
+
+            setPageLoading(false);
+            // 
+            setExistingBuilders(result);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
-    
+
     const deleteBuilder = async (item) => {
         setShowDelete(true);
         setCurrentBuilderId(item.id);
         setCurrentBuilder(item.buildername)
-        
+
         setDeleted(true);
     }
     const [errorMessage, setErrorMessage] = useState("");
     const handleAddBuilder = async () => {
-        
+
         setCurrentBuilder(formValues.builderName)
         setIsManageBuidlerDialogue(false)
 
@@ -282,36 +331,44 @@ const ManageBuilder = () => {
 
     }
     const addNewBuilder = async () => {
-        const data = {
-            "user_id": user.id,
-            "buildername": formValues.builderName,
-            "phone1": formValues.phone1,
-            "phone2": formValues.phone2,
-            "email1": formValues.email1,
-            "email2": formValues.email2,
-            "addressline1": formValues.address1,
-            "addressline2": formValues.address2,
-            "suburb": formValues.suburb,
-            "city": Number(formValues.city),
-            "state": formValues.state,
-            "country": formValues.country,
-            "zip": formValues.zip,
-            "website": formValues.website,
-            "comments": formValues.comment,
-        };
-        const response = await APIService.addNewBuilder(data);
-        const res = await response.json();
-        setAddConfirmation(false);
-        if (res.result == "success") {
+        try {
+            const data = {
+                "user_id": user.id,
+                "buildername": formValues.builderName,
+                "phone1": formValues.phone1,
+                "phone2": formValues.phone2,
+                "email1": formValues.email1,
+                "email2": formValues.email2,
+                "addressline1": formValues.address1,
+                "addressline2": formValues.address2,
+                "suburb": formValues.suburb,
+                "city": Number(formValues.city),
+                "state": formValues.state,
+                "country": formValues.country,
+                "zip": formValues.zip,
+                "website": formValues.website,
+                "comments": formValues.comment,
+            };
+            const response = await APIService.addNewBuilder(data);
+            const res = await response.json();
+            setAddConfirmation(false);
+            if (res.result == "success") {
+                setIsLoading(false);
+                setFormValues(initialValues);
+                openSuccessModal();
+            } else {
+                setIsLoading(false);
+                setErrorMessage(res.message)
+                openFailureModal();
+            }
+            fetchBuilderData();
+
+        } catch (e) {
             setIsLoading(false);
-            setFormValues(initialValues);
-            openSuccessModal();
-        } else {
-            setIsLoading(false);
-            setErrorMessage(res.message)
+            // setErrorMessage(res.message)
             openFailureModal();
         }
-        fetchBuilderData();
+
     }
 
     //Validation of the form
@@ -344,7 +401,7 @@ const ManageBuilder = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues)); // validate form and set error message
-        
+
         if (!formValues.builderName || formValues.builderName == "") {
             return
         }
@@ -436,69 +493,76 @@ const ManageBuilder = () => {
         setDownloadModal(true);
     }
     const handleDownload = async (type) => {
-        // setBackDropLoading(true)
-        setDownloadModal(false)
-        setPageLoading(true)
-        const data = {
-            "user_id": user.id,
-            
-            "rows": ["buildername", "country", "city", "suburb", "id"],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput,
-            "downloadType": type,
-            "routename" : pathname,
-            "colmap": {
-                "buildername": "Builder Name",
-                "country": "Country",
-                "city": "City",
-                "suburb": "Suburb",
-                "id": "ID"
-            }
-        };
-        const response = await APIService.getNewBuilderInfo(data)
-        const temp = await response.json();
-        const result = temp.data;
-        
-        if (temp.result == 'success') {
-            const d = {
-                "filename": temp.filename,
-                "user_id": user.id
-            }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
-                })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'BuilderData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'BuilderData.pdf');
-                    }
+        try {
+            setDownloadModal(false)
+            setPageLoading(true)
+            const data = {
+                "user_id": user.id,
 
-                    
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                "rows": ["buildername", "country", "city", "suburb", "id"],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 0,
+                "pg_size": 0,
+                "search_key": searchInput,
+                "downloadType": type,
+                "routename": pathname,
+                "colmap": {
+                    "buildername": "Builder Name",
+                    "country": "Country",
+                    "city": "City",
+                    "suburb": "Suburb",
+                    "id": "ID"
+                }
+            };
+            const response = await APIService.getNewBuilderInfo(data)
+            const temp = await response.json();
+            const result = temp.data;
 
-            setTimeout(() => {
-                // setBackDropLoading(false)
-                setPageLoading(false)
-            }, 1000)
+            if (temp.result == 'success') {
+                const d = {
+                    "filename": temp.filename,
+                    "user_id": user.id
+                }
+                fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                    method: 'POST', // or the appropriate HTTP method
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(d) // Convert the object to a JSON string
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.blob();
+                    })
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'BuilderData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'BuilderData.pdf');
+                        }
+
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                setTimeout(() => {
+                    // setBackDropLoading(false)
+                    setPageLoading(false)
+                }, 1000)
+            }
+
+        } catch (e) {
+            setPageLoading(false)
+
         }
+        // setBackDropLoading(true)
+
     }
     const handlePageChange = (event, value) => {
         setCurrentPage(value)
@@ -511,7 +575,6 @@ const ManageBuilder = () => {
         setTimeout(function () {
             setShowDeleteSuccess(false);
         }, 2000)
-        fetchData();
     }
 
     const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
@@ -589,58 +652,65 @@ const ManageBuilder = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
-        setPageLoading(true);
-        setBuilderFilter(false);
-        setCountryFilter(false);
-        setCityFilter(false);
-        setSuburbFilter(false);
-        setIdFilter(false);
-        const tempArray = [];
-        // we need to query thru the object
-        // 
-        setFilterMapState(mapState)
-        
-        Object.keys(mapState).forEach(key => {
-            if (mapState[key].filterType != "") {
-                if (mapState[key].filterData == 'Numeric') {
-                    tempArray.push([
-                        key,
-                        mapState[key].filterType,
-                        Number(mapState[key].filterValue),
-                        mapState[key].filterData,
-                    ]);
-                } else {
-                    tempArray.push([
-                        key,
-                        mapState[key].filterType,
-                        mapState[key].filterValue,
-                        mapState[key].filterData,
-                    ]);
-                }
+        try {
+            setPageLoading(true);
+            setBuilderFilter(false);
+            setCountryFilter(false);
+            setCityFilter(false);
+            setSuburbFilter(false);
+            setIdFilter(false);
+            const tempArray = [];
+            // we need to query thru the object
+            // 
+            setFilterMapState(mapState)
 
-            }
-        })
-        setFilterState(tempArray)
-        setCurrentPage((prev) => 1)
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getNewBuilderInfo(data)
-        const res = await response.json()
-        
-        const result = res.data.builder_info;
-        setTotalItems(res.total_count);
-        
-        setPageLoading(false);
-        // 
-        setExistingBuilders(result);
+            Object.keys(mapState).forEach(key => {
+                if (mapState[key].filterType != "") {
+                    if (mapState[key].filterData == 'Numeric') {
+                        tempArray.push([
+                            key,
+                            mapState[key].filterType,
+                            Number(mapState[key].filterValue),
+                            mapState[key].filterData,
+                        ]);
+                    } else {
+                        tempArray.push([
+                            key,
+                            mapState[key].filterType,
+                            mapState[key].filterValue,
+                            mapState[key].filterData,
+                        ]);
+                    }
+
+                }
+            })
+            setFilterState(tempArray)
+            setCurrentPage((prev) => 1)
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getNewBuilderInfo(data)
+            const res = await response.json()
+
+            const result = res.data.builder_info;
+            setTotalItems(res.total_count);
+
+            setPageLoading(false);
+            // 
+            setExistingBuilders(result);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
 
@@ -661,42 +731,49 @@ const ManageBuilder = () => {
 
         fetchFiltered(existing);
     }
-    
+
     const [flag, setFlag] = useState(false)
-    
+
     const handleSort = async (field) => {
-        setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        setSortField(field)
-        setFlag((prev) => {
-            return !prev
-        })
-        
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        const data = {
-            "user_id": user.id,
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [field],
-            "order": !flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getNewBuilderInfo(data)
-        const res = await response.json()
-        
-        const result = res.data.builder_info;
-        setTotalItems(res.total_count);
-        
-        setPageLoading(false);
-        // 
-        setExistingBuilders(result);
+        try{
+            setPageLoading(true);
+            const tempArray = [];
+            // we need to query thru the object
+            setSortField(field)
+            setFlag((prev) => {
+                return !prev
+            })
+    
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+            })
+            const data = {
+                "user_id": user.id,
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [field],
+                "order": !flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": isSearchOn ? searchInput : ""
+            };
+            const response = await APIService.getNewBuilderInfo(data)
+            const res = await response.json()
+    
+            const result = res.data.builder_info;
+            setTotalItems(res.total_count);
+    
+            setPageLoading(false);
+            // 
+            setExistingBuilders(result);
+
+        }catch(e){
+            setPageLoading(false);
+           
+        }
+       
 
     }
 
@@ -739,7 +816,7 @@ const ManageBuilder = () => {
 
         }
     }
-    
+
     useEffect(() => {
         // fetchUserId();
         fetchBuilderData();
@@ -837,7 +914,7 @@ const ManageBuilder = () => {
                                         'buildername')}
 
                                 />
-                                {}
+                                { }
                                 {filterMapState.buildername.filterType == "" ? <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {builderFilter && <CharacterFilter inputVariable={builderFilterInput} setInputVariable={setBuilderFilterInput} handleFilter={newHandleFilter} filterColumn='buildername' menuRef={menuRef} filterType={filterMapState.buildername.filterType} />}
@@ -905,9 +982,9 @@ const ManageBuilder = () => {
 
                         <div className='w-1/2 p-4'>
                             <RefreshFilterButton
-                              filterMapping={filterMapping}
-                               resetAllInputs={resetInputStates}
-                               setFilterMapState={setFilterMapState}
+                                filterMapping={filterMapping}
+                                resetAllInputs={resetInputStates}
+                                setFilterMapState={setFilterMapState}
                             />
                         </div>
                     </div>
@@ -956,13 +1033,13 @@ const ManageBuilder = () => {
                         {/* {pageLoading && <div className='ml-11 mt-9'>
                             <CircularProgress />
                         </div>} */}
-                        {}
-                        {}
-                        {}
+                        { }
+                        { }
+                        { }
                         {!pageLoading && existingBuilders && existingBuilders.length == 0 &&
-                         <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
-                            <h1 className='ml-10'>No Records To Show</h1>
-                        </div>}
+                            <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingBuilders && existingBuilders.map((item, index) => {
                             return <div className='w-full h-10  flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className='w-[85%] flex items-center'>
@@ -985,8 +1062,8 @@ const ManageBuilder = () => {
                                         <Link to={`contacts/${item.id}`}><p>Contacts</p></Link>
                                     </div>
                                     <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                    {/* admin/managebuilder/projects/:buildername */}
-                                    
+                                        {/* admin/managebuilder/projects/:buildername */}
+
                                         <Link to={`/manage/managebuilder/manageproject/${item.id}`} >
                                             Projects
                                         </Link>
@@ -998,9 +1075,9 @@ const ManageBuilder = () => {
                                         <p>{item.id}</p>
                                     </div>
                                     <div className='w-1/2 flex justify-center items-center gap-2 ml-0.5'>
-                                        <EditButton handleEdit={editBuilder} rowData={item}/>
-                                        <DeleteButton handleDelete={deleteBuilder} rowData={item}/>
-                        
+                                        <EditButton handleEdit={editBuilder} rowData={item} />
+                                        <DeleteButton handleDelete={deleteBuilder} rowData={item} />
+
                                     </div>
                                 </div>
                             </div>
@@ -1033,7 +1110,7 @@ const ManageBuilder = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 // setCurrentPages(e.target.value);
-                                
+
                                 fetchQuantityData(e.target.value);
                                 // fetchPageCountryData(e.target.value)
                             }}
@@ -1191,7 +1268,7 @@ const ManageBuilder = () => {
                                                         const existing = { ...formValues }
                                                         existing.state = e.target.value
                                                         existing.city = null
-                                                        
+
                                                         setFormValues(existing)
                                                     }}
                                                 >
@@ -1212,7 +1289,7 @@ const ManageBuilder = () => {
                                                     defaultValue="Select City"
                                                     onChange={e => {
                                                         // fetchCityData(e.target.value);
-                                                        
+
                                                         setFormValues((existing) => {
                                                             const newData = { ...existing, city: e.target.value }
                                                             return newData;

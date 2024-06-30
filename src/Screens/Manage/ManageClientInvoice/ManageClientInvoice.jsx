@@ -1,29 +1,22 @@
 import React from 'react';
-import { Outlet, Link , useNavigate, useLocation, useParams} from "react-router-dom";
+import { useNavigate, useLocation, useParams} from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
-import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress , Backdrop, CircularProgress, MenuItem, Tooltip} from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
+import { Modal, Pagination , Backdrop, CircularProgress, MenuItem, Tooltip} from "@mui/material";
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
-import Edit from "../../../assets/edit.png"
-import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
-import Add from "../../../assets/add.png";
 import EditClientInvoice from './EditClientInvoice';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import CancelModel from './../../../Components/modals/CancelModel';
 import SaveConfirmationClientInvoice from './SaveConfirmationClientInvoice';
 import FailureModal from '../../../Components/modals/FailureModal';
 import DeleteClientInvoiceModal from './DeleteClientInvoiceModal';
-import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
@@ -31,8 +24,6 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../../assets/active_filter.png"
-// import DropDown from '../../../Components/Dropdown/Dropdown';
-import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
 import AddButton from '../../../Components/common/CustomButton';
 import RefreshFilterButton from '../../../Components/common/buttons/RefreshFilterButton';
@@ -40,8 +31,8 @@ import EditButton from '../../../Components/common/buttons/EditButton';
 import DeleteButton from '../../../Components/common/buttons/deleteButton';
 import useAuth from '../../../context/JwtContext';
 import checkEditAccess from '../../../Components/common/checkRoleBase';
-import CustomSelectNative from '../../../Components/common/select/CustomSelectNative';
 import OrderCustomSelectNative from '../../../Components/common/select/OrderCustomSelectNative';
+
 const ManageClientInvoice = () => {
     const {pathname} = useLocation()
     const [state,setState] = useState({})
@@ -168,24 +159,30 @@ const ManageClientInvoice = () => {
     }
     const [orders, setOrders] = useState({});
     const getOrdersByClientId = async (id) => {
-        if(id == null) return 
+        try{
+            if(id == null) return 
         
-        const data = {
-            "client_id": id
+            const data = {
+                "client_id": id
+            }
+            const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
+            const res = await response.json()
+            
+            
+            setOrders(convertToIdNameObject(res.data))
+            // setOrders(res.data)
+    
+            // if(res.data.length >= 1) {
+            //    const existing = {...formValues}
+            //    existing.order = res.data[0].id
+            //    
+            //    setFormValues(existing)
+    
+
+        }catch(e){
+            console.log(e);
         }
-        const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
-        const res = await response.json()
-        
-        
-        setOrders(convertToIdNameObject(res.data))
-        // setOrders(res.data)
-
-        // if(res.data.length >= 1) {
-        //    const existing = {...formValues}
-        //    existing.order = res.data[0].id
-        //    
-        //    setFormValues(existing)
-
+       
         // } 
     }
 
@@ -214,101 +211,112 @@ const ManageClientInvoice = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        
-        // const tempArray = [];
-        // // we need to query thru the object
-        // 
-        // Object.keys(filterMapState).forEach(key => {
-        //     if (filterMapState[key].filterType != "") {
-        //         tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-        //     }
-        // })
-        const tempArray = [];
-        // we need to query thru the object
-        
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        setFilterState((prev) => tempArray)
-        setPageLoading(true);
-        const data = {
+        try{
+            const tempArray = [];
+            // we need to query thru the object
+            
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+            })
+            setFilterState((prev) => tempArray)
+            setPageLoading(true);
+            const data = {
+    
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+            };
+            const response = await APIService.getClientInvoice({...data, user_id : user.id});
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInvoice(result);
+            setPageLoading(false);
 
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-        };
-        const response = await APIService.getClientInvoice({...data, user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInvoice(result);
-        setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+            
+        }
+       
     }
     const fetchPageData = async (pageNumber) => {
-        setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
+        try{
+            setPageLoading(true);
+            const tempArray = [];
+            // we need to query thru the object
+            
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+            })
+            setCurrentPage((prev) => pageNumber)
+            const data = {
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(pageNumber),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getClientInvoice({...data, user_id : user.id});
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInvoice(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+               
+        }
         
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        setCurrentPage((prev) => pageNumber)
-        const data = {
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientInvoice({...data, user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInvoice(result);
-        setPageLoading(false);
     }
     const fetchQuantityData = async (quantity) => {
-        setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        setCurrentPage((prev) => 1)
-        
-        const data = {
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(quantity),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getClientInvoice({...data, user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInvoice(result);
-        setPageLoading(false);
+        try{
+
+            setPageLoading(true);
+            const tempArray = [];
+            // we need to query thru the object
+            
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+            })
+            setCurrentPage((prev) => 1)
+            
+            const data = {
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(quantity),
+                "search_key": isSearchOn ? searchInput : ""
+            };
+            const response = await APIService.getClientInvoice({...data, user_id : user.id});
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInvoice(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+            
+        }
+       
     }
     const setHyperLinkData = async () => {
         if(orderid != null) {
@@ -317,26 +325,31 @@ const ManageClientInvoice = () => {
                 table_name : "get_orders_view",
                 item_id : orderid 
             }
-            const response = await APIService.getItembyId(data)
-            const res = await response.json()
-            setState(prevState => ({
-                ...prevState,
-                hyperlinked: true,
-                clientname: res.data.clientname,
-                clientid: res.data.clientid,
-                orderid: orderid,
-                orderdescription : res.data.briefdescription
-            }));
-            setFormValues(prevFormValues => ({
-                ...prevFormValues,
-                client: res.data.clientid,
-                order: orderid
-            }));
-            setSelectedOption(prev => ({
-                ...prev,
-                label : res.data.clientname,
-                value : res.data.clientid
-            }))
+            try{
+                const response = await APIService.getItembyId(data)
+                const res = await response.json()
+                setState(prevState => ({
+                    ...prevState,
+                    hyperlinked: true,
+                    clientname: res.data.clientname,
+                    clientid: res.data.clientid,
+                    orderid: orderid,
+                    orderdescription : res.data.briefdescription
+                }));
+                setFormValues(prevFormValues => ({
+                    ...prevFormValues,
+                    client: res.data.clientid,
+                    order: orderid
+                }));
+                setSelectedOption(prev => ({
+                    ...prev,
+                    label : res.data.clientname,
+                    value : res.data.clientid
+                }))
+
+            }catch(e){
+              console.log(e);
+            }
         }
         // if(state != null) {
         //     const v = {...selectedOption}
@@ -349,6 +362,7 @@ const ManageClientInvoice = () => {
         //     setFormValues(temp)
         // }
     }
+
     const [invoiceId, setInvoiceId] = useState(0);
     const handleEdit = (id) => {
         setInvoiceId(id)
@@ -396,7 +410,7 @@ const ManageClientInvoice = () => {
 
     }
     const addClientInvoice = async () => {
-        // 
+      
         
         if (!validate()) {
             
@@ -416,26 +430,30 @@ const ManageClientInvoice = () => {
             "tax": formValues.gst ? Number(formValues.gst) : formValues.gst,
             "entity": 1
         }
-        const response = await APIService.addClientInvoice({...data, user_id : user.id});
+        try{
+            const response = await APIService.addClientInvoice({...data, user_id : user.id});
 
-        const result = (await response.json())
+            const result = (await response.json())
+    
+            setOpenAddConfirmation(false);
+            
+            setIsClientInvoiceDialogue(false);
+            if (result.result == "success") {
+                setFormValues(initialValues);
+                openAddSuccess();
+                setSelectedOption({
+                    label : 'Select Client',
+                    value : null
+                })
+            } else {
+                openFailureModal();
+                setErrorMessage(result.message)
+            }
 
-        setOpenAddConfirmation(false);
-        
-        setIsClientInvoiceDialogue(false);
-        if (result.result == "success") {
-            setFormValues(initialValues);
-            openAddSuccess();
-            setSelectedOption({
-                label : 'Select Client',
-                value : null
-            })
-        } else {
+        }catch(e){
             openFailureModal();
-            setErrorMessage(result.message)
+            setErrorMessage(e?.message)
         }
-
-        
         
     }
 
@@ -501,13 +519,19 @@ const ManageClientInvoice = () => {
         showDeleteConfirmation(true);
     }
     const deleteClientInvoice = async (id) => {
-        const data = {
-            "id": id
-        }
-        const response = await APIService.deleteClientInvoice({...data, user_id : user.id});
-        showDeleteConfirmation(false);
+        try{
 
-        openDeleteSuccess();
+            const data = {
+                "id": id
+            }
+            const response = await APIService.deleteClientInvoice({...data, user_id : user.id});
+            showDeleteConfirmation(false);
+    
+            openDeleteSuccess();
+        }catch(e){
+            console.log(e);
+        }
+       
     }
     const handlePageChange = (event, value) => {
         
@@ -524,126 +548,135 @@ const ManageClientInvoice = () => {
         setDownloadModal(false);
     }
     const handleDownload = async (type) => {
-        // setBackDropLoading(true)
-        setDownloadModal(false)
-        setPageLoading(true);
-        const data = {
-            "rows": [
-                "clientname",
-                "quotedescription",
-                "ordername",
-                "invoiceamount",
-                "invoicedate",
-                "entityname",
-                "createdbyname",
-                "id",
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "downloadType" : type,
-            "search_key": searchInput,
-            "routename" : '/manage/manageclientinvoice',
-            "colmap" : {
-                "clientname" : "Client Name",
-                "quotedescription" : "Quote/Invoice Description",
-                "ordername" : "Order Description",
-                "invoiceamount" : "Invoice Amount",
-                "invoicedate" : "Invoice Date",
-                "entityname" : "Entity",
-                "createdbyname" : "Created By",
-                "id" : "ID",
-            }
-        };
-        const response = await APIService.getClientInvoice({...data, user_id : user.id})
-        const temp = await response.json();
-        const result = temp.data;
-        
-        if(temp.result == 'success') {
-            const d = {
-                "filename" : temp.filename,
-                "user_id" : user.id
-            }
-            // fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
-                //     method: 'POST', // or the appropriate HTTP method
-                //     headers: {
-                    //         'Content-Type': 'application/json'
-                    //     },
-                    //     body: JSON.stringify(d) // Convert the object to a JSON string
-                    // })
-            APIService.download(d,temp.filename)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
+        try{
+            setDownloadModal(false)
+            setPageLoading(true);
+            const data = {
+                "rows": [
+                    "clientname",
+                    "quotedescription",
+                    "ordername",
+                    "invoiceamount",
+                    "invoicedate",
+                    "entityname",
+                    "createdbyname",
+                    "id",
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 0,
+                "pg_size": 0,
+                "downloadType" : type,
+                "search_key": searchInput,
+                "routename" : '/manage/manageclientinvoice',
+                "colmap" : {
+                    "clientname" : "Client Name",
+                    "quotedescription" : "Quote/Invoice Description",
+                    "ordername" : "Order Description",
+                    "invoiceamount" : "Invoice Amount",
+                    "invoicedate" : "Invoice Date",
+                    "entityname" : "Entity",
+                    "createdbyname" : "Created By",
+                    "id" : "ID",
                 }
-                return response.blob();
-            })
-            .then(result => {
-                if(type == "excel") {
-                    FileSaver.saveAs(result, 'ClientInvoiceData.xlsx');
-                }else if(type == "pdf") {
-                    FileSaver.saveAs(result, 'ClientInvoiceData.pdf');
+            };
+            const response = await APIService.getClientInvoice({...data, user_id : user.id})
+            const temp = await response.json();            
+            if(temp.result == 'success') {
+                const d = {
+                    "filename" : temp.filename,
+                    "user_id" : user.id
                 }
+                APIService.download(d,temp.filename)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if(type == "excel") {
+                        FileSaver.saveAs(result, 'ClientInvoiceData.xlsx');
+                    }else if(type == "pdf") {
+                        FileSaver.saveAs(result, 'ClientInvoiceData.pdf');
+                    }
+                    
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
                 
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
-            setTimeout(() => {
-                // setBackDropLoading(false)
-                setPageLoading(false)
-            },1000) 
+                setTimeout(() => {
+                    // setBackDropLoading(false)
+                    setPageLoading(false)
+                },1000) 
+            }
+
+        }catch(e){
+            setPageLoading(false)
         }
+        // setBackDropLoading(true)
+       
     }
 
     const handleSearch = async () => {
-        // 
-        setPageLoading(true);
-        setIsSearchOn(true);
-        setCurrentPage((prev) => 1);
-        const data = {
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientInvoice({...data, user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInvoice(result);
-        setPageLoading(false);
+        try{
+            setPageLoading(true);
+            setIsSearchOn(true);
+            setCurrentPage((prev) => 1);
+            const data = {
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getClientInvoice({...data, user_id : user.id});
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInvoice(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+
+        }
+      
     }
     const handleCloseSearch = async () => {
-        setIsSearchOn(false);
-        setPageLoading(true);
-        setSearchInput("");
-        setCurrentPage(1);
-        const data = {
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
-        };
-        const response = await APIService.getClientInvoice({...data, user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInvoice(result);
-        setPageLoading(false);
+        try{
+            setIsSearchOn(false);
+            setPageLoading(true);
+            setSearchInput("");
+            setCurrentPage(1);
+            const data = {
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": ""
+            };
+            const response = await APIService.getClientInvoice({...data, user_id : user.id});
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInvoice(result);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+               
+        }
+     
     }
     const openAddSuccess = () => {
         // (false);
@@ -765,52 +798,55 @@ const ManageClientInvoice = () => {
     const [filterMapState, setFilterMapState] = useState(filterMapping);
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
-        setFilterMapState(mapState)
-        setClientNameFilter(false)
-        setOrderDescriptionFilter(false)
-        setEstimateAmountFilter(false)
-        setEstimateDateFilter(false)
-        setInvoiceDateFilter(false)
-        setInvoiceAmountFilter(false)
-        setEntityFilter(false)
-        setCreatedByFilter(false)
-        setIdFilter(false)
-        const tempArray = [];
-        // we need to query thru the object
-        // 
-        
-        Object.keys(mapState).forEach(key => {
-            if (mapState[key].filterType != "") {
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
-            }
-        })
-        setCurrentPage(() => 1)
+        try{
+            setFilterMapState(mapState)
+            setClientNameFilter(false)
+            setOrderDescriptionFilter(false)
+            setEstimateAmountFilter(false)
+            setEstimateDateFilter(false)
+            setInvoiceDateFilter(false)
+            setInvoiceAmountFilter(false)
+            setEntityFilter(false)
+            setCreatedByFilter(false)
+            setIdFilter(false)
+            const tempArray = [];
+            // we need to query thru the object
+            // 
+            
+            Object.keys(mapState).forEach(key => {
+                if (mapState[key].filterType != "") {
+                    tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                }
+            })
+            setCurrentPage(() => 1)
+    
+            setFilterState(tempArray)
+            setPageLoading(true);
+            const data = {
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": isSearchOn ? searchInput : ""
+            };
+            const response = await APIService.getClientInvoice({...data, user_id : user.id});
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInvoice(result);
+            setPageLoading(false);
 
-        setFilterState(tempArray)
-        setPageLoading(true);
-        const data = {
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getClientInvoice({...data, user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInvoice(result);
-        setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+           
+        }
+      
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
-        
-        
-        
-
         var existing = filterMapState;
         existing = {
             ...existing, [columnName]: {
@@ -831,35 +867,41 @@ const ManageClientInvoice = () => {
         fetchFiltered(existing);
     }
     const handleSort = async (field) => {
-        setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        setSortField(field)
+        try{
+            setPageLoading(true);
+            const tempArray = [];
+            // we need to query thru the object
+            setSortField(field)
+            
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+            })
+            setFlag((prev) => !prev);
+            const data = {
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [field],
+                "order": !flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": isSearchOn ? searchInput : ""
+            };
+            // setFlag((prev) => !prev);
+            const response = await APIService.getClientInvoice({...data, user_id : user.id});
+            const temp = await response.json();
+            const result = temp.data;
+            
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInvoice(result);
+            setPageLoading(false);
+        }catch(e){
+            setPageLoading(false);
+
+        }
         
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        setFlag((prev) => !prev);
-        const data = {
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [field],
-            "order": !flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        // setFlag((prev) => !prev);
-        const response = await APIService.getClientInvoice({...data, user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInvoice(result);
-        setPageLoading(false);
     }
     function handleKeyDown(event) {
         if (event.keyCode === 13) {

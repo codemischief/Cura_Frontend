@@ -45,11 +45,11 @@ const ManageClientProperty = () => {
     const { user } = useAuth()
     const menuRef = useRef();
     const canEdit = checkEditAccess();
-    const {  pathname } = useLocation()
-    const [state,setState] = useState({})
-    const {clientid} = useParams()
-    
-    
+    const { pathname } = useLocation()
+    const [state, setState] = useState({})
+    const { clientid } = useParams()
+
+
     // we have the module here
     const navigate = useNavigate()
     const [pageLoading, setPageLoading] = useState(false);
@@ -160,302 +160,390 @@ const ManageClientProperty = () => {
         setIdFilterInput("");
     };
     const fetchCountryData = async () => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries({...data,user_id : user.id})
+        const response = await APIService.getCountries({ ...data, user_id: user.id })
         const result = (await response.json()).data;
-        
+
         setAllCountry(result);
+
+        }catch(e){
+            setPageLoading(false);
+           
+        }
+        
     }
     const fetchClientTypeData = async () => {
-        const data = {
-            
+        try{
+            const data = {
+
+            }
+            const response = await APIService.getClientTypeAdmin({ ...data, user_id: user.id });
+            const res = await response.json()
+    
+            setClientTypeData(res.data)
+
+        }catch(e){
+           console.log(e);
         }
-        const response = await APIService.getClientTypeAdmin({...data,user_id : user.id});
-        const res = await response.json()
-        
-        setClientTypeData(res.data)
+       
 
     }
     const fetchStateData = async (id) => {
-        
-        const data = {  "country_id": id };
+         try{
+            const data = { "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState({...data,user_id : user.id});
+        const response = await APIService.getState({ ...data, user_id: user.id });
         const result = (await response.json()).data;
-        
+
         if (Array.isArray(result)) {
             setAllState(result)
         }
+         }catch(e){
+            console.log(e);
+         }
+      
     }
     const fetchCityData = async (id) => {
-        const data = {  "state_name": id };
-        const response = await APIService.getCities({...data,user_id : user.id});
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllCity(result)
-            // if (result.length > 0) {
-            //     setFormValues((existing) => {
-            //         const newData = { ...existing, city: result[0].id }
-            //         return newData;
-            //     })
-            // }
+        try{
+            const data = { "state_name": id };
+            const response = await APIService.getCities({ ...data, user_id: user.id });
+            const result = (await response.json()).data;
+    
+            if (Array.isArray(result)) {
+                setAllCity(result)
+                // if (result.length > 0) {
+                //     setFormValues((existing) => {
+                //         const newData = { ...existing, city: result[0].id }
+                //         return newData;
+                //     })
+                // }
+            }
+
+        }catch(e){
+           console.log(e);
         }
+      
     }
     const fetchUsersData = async () => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         // const data = { "user_id":  user.id };
-        const data = {  };
-        const response = await APIService.getUsers({...data,user_id : user.id})
+        const data = {};
+        const response = await APIService.getUsers({ ...data, user_id: user.id })
         const result = (await response.json());
 
-        
-        
+
+
         // setFormValues((existing) => {
         //     return { ...existing, userName: result.data[0].id }
         // })
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
+
+        }catch(e){
+             console.log(e);
+        }
+        
     }
 
     const fetchRoleData = async () => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         // const data = { "user_id":  user.id };
-        const data = {  };
-        const response = await APIService.getRoles({...data,user_id : user.id})
+        const data = {};
+        const response = await APIService.getRoles({ ...data, user_id: user.id })
         const result = (await response.json());
-        
+
         // setFormValues((existing) => {
         //     return { ...existing, role: result.data[0].id }
         // })
         if (Array.isArray(result.data)) {
             setAllRoles(result.data);
         }
+
+        }catch(e){
+            setPageLoading(false);
+            
+        }
+        
     }
 
     const fetchEntitiesData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = {  };
-        const response = await APIService.getEntityAdmin({...data,user_id : user.id})
-        const result = (await response.json());
-        
-        // setFormValues((existing) => {
-        //     return { ...existing, entity: result.data[0][0] }
-        // })
-        if (Array.isArray(result.data)) {
-            setAllEntites(result.data);
+        try{
+            setPageLoading(true);
+            // const data = { "user_id":  user.id };
+            const data = {};
+            const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
+            const result = (await response.json());
+            setPageLoading(false);
+            // setFormValues((existing) => {
+            //     return { ...existing, entity: result.data[0][0] }
+            // })
+            if (Array.isArray(result.data)) {
+                setAllEntites(result.data);
+            }
+
+        }catch(e){
+            setPageLoading(false);
+            
         }
+       
     }
 
     const fetchLobData = async () => {
-        setPageLoading(true);
-        const data = {
+        try{
+            setPageLoading(true);
+            const data = {
+    
+                "rows": ["id", "name", "lob_head", "company"],
+                "filters": [],
+                "sort_by": [],
+                "order": "asc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages)
+            };
+            const response = await APIService.getLob({ ...data, user_id: user.id });
+            const result = (await response.json());
+            setPageLoading(false);
             
-            "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getLob({...data,user_id : user.id});
-        const result = (await response.json());
-        
-        // setFormValues((existing) => {
-        //     return { ...existing, lob: result.data[0].id }
-        // })
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
-        }
+            // setFormValues((existing) => {
+            //     return { ...existing, lob: result.data[0].id }
+            // })
+            if (Array.isArray(result.data)) {
+                setAllLOB(result.data);
+            }
+
+        }catch(e){
+            setPageLoading(false);
+             
+        } 
+       
     }
     const [existingSociety, setExistingSociety] = useState([]);
     function propertyHelper(items) {
         const idNameObject = {};
         items.forEach((item) => {
-          idNameObject[item.projectid] = {
-            buildername : item.buildername,
-            projectname : item.projectname
-          }
+            idNameObject[item.projectid] = {
+                buildername: item.buildername,
+                projectname: item.projectname
+            }
         });
         return idNameObject;
     }
     const getBuildersAndProjectsList = async () => {
-        const data = {  };
-        const response = await APIService.getBuildersAndProjectsList({...data,user_id : user.id});
-        const res = await response.json();
-        
-        setExistingSociety(
-            propertyHelper(res.data)
-        );
+        try{
+            const data = {};
+            const response = await APIService.getBuildersAndProjectsList({ ...data, user_id: user.id });
+            const res = await response.json();
+    
+            setExistingSociety(
+                propertyHelper(res.data)
+            );
+
+        }catch(e){
+             console.log(e);
+        }
+       
     }
     const [propertyStatus, setPropertyStatus] = useState([]);
     const fetchPropertyStatus = async () => {
-        const data = { };
-        const response = await APIService.getPropertyStatusAdmin({...data,user_id : user.id});
+        const data = {};
+        const response = await APIService.getPropertyStatusAdmin({ ...data, user_id: user.id });
         const res = await response.json();
-        
+
         setPropertyStatus(res);
     }
     const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
     const fetchLevelOfFurnishing = async () => {
-        const data = {  }
-        const response = await APIService.getLevelOfFurnishingAdmin({...data,user_id : user.id});
-        const res = await response.json()
-        
-        setLevelOfFurnishing(res);
+        try{
+            const data = {}
+            const response = await APIService.getLevelOfFurnishingAdmin({ ...data, user_id: user.id });
+            const res = await response.json()
+            setLevelOfFurnishing(res);
+
+        }catch{
+        }
+       
     }
     const [propertyType, setPropertyType] = useState([]);
     const fetchPropertyType = async () => {
-        const data = {  }
-        const response = await APIService.getPropertyType({...data,user_id : user.id})
+        try{
+            const data = {}
+        const response = await APIService.getPropertyType({ ...data, user_id: user.id })
         const res = await response.json();
-        
+
         setPropertyType(res);
+        }catch(e){
+
+        }
+        
     }
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        // 
-        const tempArray = [];
-        // we need to query thru the object
-        
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                if(filterMapState[key].filterData == 'Numeric') {
-                    tempArray.push([
-                        key,
-                        filterMapState[key].filterType,
-                        filterMapState[key].filterValue,
-                        filterMapState[key].filterData,
-                    ]);
-                }else {
-                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+        try{
+            const tempArray = [];
+            // we need to query thru the object
+    
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    if (filterMapState[key].filterData == 'Numeric') {
+                        tempArray.push([
+                            key,
+                            filterMapState[key].filterType,
+                            filterMapState[key].filterValue,
+                            filterMapState[key].filterData,
+                        ]);
+                    } else {
+                        tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                    }
+    
                 }
-                
-            }
-        })
-        console.log(tempArray)
-        setFilterState((prev) => tempArray)
-        setCurrentPage((prev) => 1)
-        setPageLoading(true);
-        const data = {
-            
-            "rows": datarows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientProperty({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientProperty(result.client_info);
-        setPageLoading(false);
+            })
+            console.log(tempArray)
+            setFilterState((prev) => tempArray)
+            setCurrentPage((prev) => 1)
+            setPageLoading(true);
+            const data = {
+    
+                "rows": datarows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getClientProperty({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+    
+    
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientProperty(result.client_info);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+              console.log(e);
+        }
+       
     }
     const fetchPageData = async (page) => {
-        setPageLoading(true);
-        setCurrentPage(() => page);
-        const data = {
-            
-            "rows": datarows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(page),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientProperty({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        // setExistingClientProperty([1,2,3,4]);
-        setExistingClientProperty(result.client_info);
-        setPageLoading(false);
+        try{
+            setPageLoading(true);
+            setCurrentPage(() => page);
+            const data = {
+    
+                "rows": datarows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(page),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getClientProperty({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+    
+    
+            const t = temp.total_count;
+            setTotalItems(t);
+            // setExistingClientProperty([1,2,3,4]);
+            setExistingClientProperty(result.client_info);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+          
+        }
+       
     }
 
     const fetchQuantityData = async (quantity) => {
-        setPageLoading(true);
-        setCurrentPages(quantity);
-        setCurrentPage((prev) => 1)
-        const data = {
-            
-            "rows": datarows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(quantity),
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientProperty({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientProperty(result.client_info);
-        setPageLoading(false);
-    }
-    const setHyperLinkData = async () => {
-        if(clientid != null) {
+        try{
+            setPageLoading(true);
+            setCurrentPages(quantity);
+            setCurrentPage((prev) => 1)
             const data = {
-                user_id : user.id,
-                table_name : 'get_client_info_view',
-                item_id : clientid
+    
+                "rows": datarows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(quantity),
+                "search_key": searchInput
+            };
+            const response = await APIService.getClientProperty({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+    
+    
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientProperty(result.client_info);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+           
+        }
+      
+    }
+
+    const setHyperLinkData = async () => {
+        try{
+            if (clientid != null) {
+                const data = {
+                    user_id: user.id,
+                    table_name: 'get_client_info_view',
+                    item_id: clientid
+                }
+    
+                const response = await APIService.getItembyId(data)
+                const res = await response.json()
+    
+                setState(prev => ({
+                    ...prev,
+                    clientid: clientid,
+                    clientname: res.data.clientname,
+                    hyperlinked: true
+                }))
+                setCurrClientName(res.data.clientname)
+                setClientNameText(state.clientname)
+                setFormValues({
+                    ...formValues,
+                    client_property: {
+                        ...formValues.client_property,
+                        clientid: state.clientid
+                    }
+                })
+                // setFormValues()
+                // const temp = {...formValues}
+                // const ex = temp.client_property
+                // ex.clientid = state.clientid
+                // temp.client_property = ex 
+                // setFormValues(temp);
+                // 
             }
 
-            const response = await APIService.getItembyId(data)
-            const res = await response.json()
-            
-            setState(prev => ({
-                ...prev,
-                clientid : clientid,
-                clientname : res.data.clientname,
-                hyperlinked : true
-            }))
-            setCurrClientName(res.data.clientname)
-            setClientNameText(state.clientname)
-            setFormValues({
-                ...formValues,
-                client_property: {
-                    ...formValues.client_property,
-                    clientid: state.clientid
-                }
-            })
-            // setFormValues()
-            // const temp = {...formValues}
-            // const ex = temp.client_property
-            // ex.clientid = state.clientid
-            // temp.client_property = ex 
-            // setFormValues(temp);
-            // 
+        }catch(e){
+           
         }
+       
     }
     useEffect(() => {
-       setHyperLinkData()
-       fetchData()
-    },[filterMapState])
+        setHyperLinkData()
+        fetchData()
+    }, [filterMapState])
     useEffect(() => {
-        
-        
-
-            setHyperLinkData()
-        
-        
+        setHyperLinkData()
         fetchData();
         fetchStateData(5);
 
@@ -490,8 +578,8 @@ const ManageClientProperty = () => {
     }, []);
 
     const handleOpenEdit = (oldItem) => {
-        
-        
+
+
         setCurrItem(oldItem)
         setIsEditDialogue(true);
 
@@ -513,7 +601,7 @@ const ManageClientProperty = () => {
         setFormErrors({});
     }
 
-    
+
 
     const [selectedDialog, setSelectedDialogue] = useState(1);
 
@@ -533,7 +621,7 @@ const ManageClientProperty = () => {
         setSelectedDialogue(4);
     }
     const [clientData, setClientData] = useState([]);
-    
+
     // 
     const initialValues = {
         "client_property": {
@@ -569,7 +657,7 @@ const ManageClientProperty = () => {
             "indexiicollected": false
         },
         "client_property_photos": [
-            
+
         ],
         "client_property_owner": {
             "owner1name": null,
@@ -632,7 +720,7 @@ const ManageClientProperty = () => {
 
     // validate form and to throw Error message
     const validate = () => {
-        
+
         var res = true;
         if (formValues.client_property.clientid == null || formValues.client_property.clientid == "") {
             setFormErrors((existing) => {
@@ -664,7 +752,7 @@ const ManageClientProperty = () => {
                 return { ...existing, propertydescription: "" }
             })
         }
-        
+
         if (!formValues.client_property.projectid) {
             setFormErrors((existing) => {
                 return { ...existing, projectid: "Enter Project Name" }
@@ -675,7 +763,7 @@ const ManageClientProperty = () => {
             setFormErrors((existing) => {
                 return { ...existing, projectid: "" }
             })
-            
+
         }
         if (!formValues.client_property.status) {
             setFormErrors((existing) => {
@@ -733,7 +821,7 @@ const ManageClientProperty = () => {
 
 
     const handlePageChange = (event, value) => {
-        
+
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -748,77 +836,84 @@ const ManageClientProperty = () => {
     }
     const handleDownload = async (type) => {
         // setBackDropLoading(true)
-        setDownloadModal(false)
-        setPageLoading(true);
-        const data = {
-            
-            "rows": [
-                "client",
-                "suburb",
-                "city",
-                "propertytype",
-                "status",
-                "description",
-                "project",
-                "id",
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput,
-            "routename" : '/manage/manageclientproperty',
-            "downloadType" : type,
-            "colmap" : {
-                "client" : "Client Name",
-                "suburb" : "Property Suburb",
-                "city" : "Property City",
-                "propertytype" : "Property Type",
-                "status" : "Property Status",
-                "description" : "Property Description",
-                "project" : "Society/Property Name",
-                "id" : "ID",
-            }
-        };
-        const response = await APIService.getClientProperty({...data,user_id : user.id})
-        const temp = await response.json();
-        const result = temp.data;
-        
-        if(temp.result == 'success') {
-            const d = {
-                "filename" : temp.filename,
-                "user_id" : user.id
-            }
-           
-            APIService.download(d,temp.filename).then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
+        try{
+            setDownloadModal(false)
+            setPageLoading(true);
+            const data = {
+    
+                "rows": [
+                    "client",
+                    "suburb",
+                    "city",
+                    "propertytype",
+                    "status",
+                    "description",
+                    "project",
+                    "id",
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 0,
+                "pg_size": 0,
+                "search_key": searchInput,
+                "routename": '/manage/manageclientproperty',
+                "downloadType": type,
+                "colmap": {
+                    "client": "Client Name",
+                    "suburb": "Property Suburb",
+                    "city": "Property City",
+                    "propertytype": "Property Type",
+                    "status": "Property Status",
+                    "description": "Property Description",
+                    "project": "Society/Property Name",
+                    "id": "ID",
                 }
-                return response.blob();
-            })
-            .then(result => {
-                if(type == "excel") {
-                    FileSaver.saveAs(result, 'ClientPropertyData.xlsx');
-                }else if(type == "pdf") {
-                    FileSaver.saveAs(result, 'ClientPropertyData.pdf');
+            };
+            const response = await APIService.getClientProperty({ ...data, user_id: user.id })
+            const temp = await response.json();
+            const result = temp.data;
+    
+            if (temp.result == 'success') {
+                const d = {
+                    "filename": temp.filename,
+                    "user_id": user.id
                 }
-                
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
-            setTimeout(() => {
-                // setBackDropLoading(false)
-                setPageLoading(false)
-            },1000) 
+    
+                APIService.download(d, temp.filename).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'ClientPropertyData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'ClientPropertyData.pdf');
+                        }
+    
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+    
+                setTimeout(() => {
+                    // setBackDropLoading(false)
+                    setPageLoading(false)
+                }, 1000)
+            }
+
+        }catch(e){
+            setPageLoading(false)
+
         }
+      
     }
-   
+
     const handleSearch = async () => {
-        // 
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         setCurrentPage((prev) => 1)
         const data = {
             "rows": datarows,
@@ -829,18 +924,25 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getClientProperty({...data,user_id : user.id});
+        const response = await APIService.getClientProperty({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
-        
-        
+
+
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientProperty(result.client_info);
         setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+            
+        }
+        
     }
     const handleCloseSearch = async () => {
-        setPageLoading(true);
+        try{
+            setPageLoading(true);
         setSearchInput("");
         setCurrentPage((prev) => 1)
         const data = {
@@ -852,15 +954,21 @@ const ManageClientProperty = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getClientProperty({...data,user_id : user.id});
+        const response = await APIService.getClientProperty({ ...data, user_id: user.id });
         const temp = await response.json();
         const result = temp.data;
-        
-        
+
+
         const t = temp.total_count;
         setTotalItems(t);
         setExistingClientProperty(result.client_info);
         setPageLoading(false);
+
+        }catch(e){
+        setPageLoading(false);
+              
+        }
+        
     }
     const openAddSuccess = () => {
         // (false);
@@ -889,11 +997,11 @@ const ManageClientProperty = () => {
     }
     const [currClientName, setCurrClientName] = useState("")
     const handleAddClientProperty = () => {
-        
+
         // setIsClientInfoDialogue(false);
         if (!validate()) {
             setSelectedDialogue(1)
-            
+
             return;
         }
         setIsClientPropertyDialogue(false);
@@ -902,15 +1010,15 @@ const ManageClientProperty = () => {
     }
     const arrayHelper = (arr) => {
         const temp = []
-        for(var i=0;i <arr.length ; i++) {
-            
+        for (var i = 0; i < arr.length; i++) {
+
             let flag = false;
             Object.keys(arr[i]).forEach(key => {
-               if(arr[i][key] != null && arr[i][key] != "") {
-                flag = true
-               }
+                if (arr[i][key] != null && arr[i][key] != "") {
+                    flag = true
+                }
             })
-            if(flag) temp.push(arr[i])
+            if (flag) temp.push(arr[i])
         }
         return temp
     }
@@ -989,37 +1097,44 @@ const ManageClientProperty = () => {
                 "scancopy": formValues.client_property_poa.scancopy
             }
         }
+        try {
+            const response = await APIService.addClientProperty({ ...data, user_id: user.id })
+            const res = await (response.json())
 
-        
+            if (res.result == "success") {
+                // we need to open the succcess modal
+                showAddConfirmation(false);
+                openAddSuccess();
+            }
 
-        
-        const response = await APIService.addClientProperty({...data,user_id : user.id})
-        const res = await (response.json())
-        
-        if (res.result == "success") {
-            // we need to open the succcess modal
-            showAddConfirmation(false);
-            openAddSuccess();
+        } catch (e) {
+            console.log(e);
         }
+
     }
-    const [currPropertyName,setCurrPropertyName] = useState("")
+    const [currPropertyName, setCurrPropertyName] = useState("")
     const handleDelete = (item) => {
         setCurrItem(item.id)
         setCurrPropertyName(item.project)
         setShowDeleteModal(true);
     }
     const deleteClientProperty = async (id) => {
-        const data = {
-            "id": id
+        try{
+            const data = {
+                "id": id
+            }
+            const response = await APIService.deleteClientProperty({ ...data, user_id: user.id })
+            const res = await response.json()
+    
+            if (res.result == 'success') {
+                setShowDeleteModal(false)
+                openDeleteSuccess();
+            }
+            fetchData();
+
+        }catch(e){
         }
-        const response = await APIService.deleteClientProperty({...data,user_id : user.id})
-        const res = await response.json()
         
-        if (res.result == 'success') {
-            setShowDeleteModal(false)
-            openDeleteSuccess();
-        }
-        fetchData();
     }
     // const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -1063,129 +1178,143 @@ const ManageClientProperty = () => {
                 filterValue: type == 'noFilter' ? "" : inputVariable
             }
         }
-        
+
         if (type === 'noFilter') setInputVariable("");
 
         fetchFiltered(existing);
     }
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
-        setPageLoading(true);
-        setClientNameFilter(false);
-                setPropertySuburbFilter(false);
-                setPropertyCityFilter(false);
-                setPropertyTypeFilter(false);
-                setPropertyStatusFilter(false);
-                setPropertyDescriptionFilter(false);
-                setPorjectNameFilter(false);
-                setIdFilter(false);
-        const tempArray = [];
-        // we need to query thru the object
-        // 
-        setFilterMapState(mapState)
-        
-        Object.keys(mapState).forEach(key => {
-            if (mapState[key].filterType != "") {
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+        try{
+            setPageLoading(true);
+            setClientNameFilter(false);
+            setPropertySuburbFilter(false);
+            setPropertyCityFilter(false);
+            setPropertyTypeFilter(false);
+            setPropertyStatusFilter(false);
+            setPropertyDescriptionFilter(false);
+            setPorjectNameFilter(false);
+            setIdFilter(false);
+            const tempArray = [];
+            // we need to query thru the object
+            // 
+            setFilterMapState(mapState)
+    
+            Object.keys(mapState).forEach(key => {
+                if (mapState[key].filterType != "") {
+                    tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                }
+            })
+            setFilterState((prev) => tempArray)
+    
+    
+            setCurrentPage((prev) => 1)
+            const data = {
+                "rows": datarows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
             }
-        })
-        setFilterState((prev) => tempArray)
-        
-        
-        setCurrentPage((prev) => 1)
-        const data = {
-            "rows": datarows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
+            const response = await APIService.getClientProperty({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+    
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientProperty(result.client_info);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+               
         }
-        const response = await APIService.getClientProperty({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientProperty(result.client_info);
-        setPageLoading(false);
+       
     }
 
     const handleSort = async (field) => {
-        setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        setSortField(field)
-        
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        setFlag((prev) => !prev)
-        const data = {
-            "rows": datarows,
-            "filters": filterState,
-            "sort_by": [field],
-            "order": !flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        // setFlag((prev) => !prev);
-        const response = await APIService.getClientProperty({...data,user_id : user.id});
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientProperty(result.client_info);
-        setPageLoading(false);
-    }
+        try{
+            setPageLoading(true);
+            const tempArray = [];
+            // we need to query thru the object
+            setSortField(field)
     
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+            })
+            setFlag((prev) => !prev)
+            const data = {
+                "rows": datarows,
+                "filters": filterState,
+                "sort_by": [field],
+                "order": !flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            // setFlag((prev) => !prev);
+            const response = await APIService.getClientProperty({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+    
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientProperty(result.client_info);
+            setPageLoading(false);
+
+        }catch(e){
+            setPageLoading(false);
+            
+        }
+       
+    }
+
 
 
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
-          handleSearch()
+            handleSearch()
         }
     }
-    const handleEnterToFilter = (event,inputVariable,
+    const handleEnterToFilter = (event, inputVariable,
         setInputVariable,
         type,
         columnName) => {
-            if (event.keyCode === 13) {
-                    // if its empty then we remove that 
-                    // const temp = {...filterMapState};
-                    // temp[columnName].type = "".
-                    // setFilterMapState(temp)
-                    
-                    if(inputVariable == "") {
-                        const temp = {...filterMapState}
-                        temp[columnName].filterType = ""
-                        setFilterMapState(temp)
-                        // fetchCityData()
-                        fetchData()
-                    }else {
-                        newHandleFilter(inputVariable,
-                            setInputVariable,
-                            type,
-                            columnName)
-                    }
-              }
-      }
-      const [clientNameText,setClientNameText] = useState('Select Client')
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                // fetchCityData()
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+        }
+    }
+    const [clientNameText, setClientNameText] = useState('Select Client')
     return (
         <div className="font-medium">
-            
+
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
-                onClick={() => {}}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
             {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientName={currClientName} addClientProperty={addClientProperty} showCancel={openAddCancelModal} setDefault={initials} />}
@@ -1262,49 +1391,49 @@ const ManageClientProperty = () => {
                             </div>
                             <div className='w-[12%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} 
-                                     onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
-                                        setClientNameFilterInput,
-                                        'contains',
-                                        'client')}
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, clientNameFilterInput,
+                                            setClientNameFilterInput,
+                                            'contains',
+                                            'client')}
+
                                     />
-                                    {filterMapState.client.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.client.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='client' menuRef={menuRef} filterType={filterMapState.client.filterType}/>}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='client' menuRef={menuRef} filterType={filterMapState.client.filterType} />}
                             </div>
                             <div className='w-[18%]   p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,propertyDescriptionFilterInput,
-                                        setPropertyDescriptionFilterInput,
-                                        'contains',
-                                        'description')}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, propertyDescriptionFilterInput,
+                                            setPropertyDescriptionFilterInput,
+                                            'contains',
+                                            'description')}
                                     />
 
-                                    {filterMapState.description.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.description.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} filterType={filterMapState.description.filterType}/>}
+                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} filterType={filterMapState.description.filterType} />}
                             </div>
 
-                            
+
                             <div className='w-[9%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertySuburbFilterInput} onChange={(e) => setPropertySuburbFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,propertySuburbFilterInput,
-                                        setPropertySuburbFilterInput,
-                                        'contains',
-                                        'suburb')}
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertySuburbFilterInput} onChange={(e) => setPropertySuburbFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, propertySuburbFilterInput,
+                                            setPropertySuburbFilterInput,
+                                            'contains',
+                                            'suburb')}
+
                                     />
-                                    {filterMapState.suburb.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertySuburbFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertySuburbFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.suburb.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setPropertySuburbFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setPropertySuburbFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertySuburbFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {propertySuburbFilter && <CharacterFilter inputVariable={propertySuburbFilterInput} setInputVariable={setPropertySuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} filterType={filterMapState.suburb.filterType}/>}
+                                {propertySuburbFilter && <CharacterFilter inputVariable={propertySuburbFilterInput} setInputVariable={setPropertySuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} filterType={filterMapState.suburb.filterType} />}
                             </div>
 
                             {/* <div className='w-[8%]   p-3'>
@@ -1324,74 +1453,74 @@ const ManageClientProperty = () => {
 
                             <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyTypeFilterInput} onChange={(e) => setPropertyTypeFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,propertyTypeFilterInput,
-                                        setPropertyTypeFilterInput,
-                                        'contains',
-                                        'propertytype')}
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyTypeFilterInput} onChange={(e) => setPropertyTypeFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, propertyTypeFilterInput,
+                                            setPropertyTypeFilterInput,
+                                            'contains',
+                                            'propertytype')}
+
                                     />
-                                    {filterMapState.propertytype.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.propertytype.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setPropertyTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setPropertyTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyTypeFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {propertyTypeFilter && <CharacterFilter inputVariable={propertyTypeFilterInput} setInputVariable={setPropertyTypeFilterInput} handleFilter={newHandleFilter} filterColumn='propertytype' menuRef={menuRef} filterType={filterMapState.propertytype.filterType}/>}
+                                {propertyTypeFilter && <CharacterFilter inputVariable={propertyTypeFilterInput} setInputVariable={setPropertyTypeFilterInput} handleFilter={newHandleFilter} filterColumn='propertytype' menuRef={menuRef} filterType={filterMapState.propertytype.filterType} />}
                             </div>
 
                             <div className='w-[9%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,propertyStatusFilterInput,
-                                        setPropertyStatusFilterInput,
-                                        'contains',
-                                        'status')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, propertyStatusFilterInput,
+                                            setPropertyStatusFilterInput,
+                                            'contains',
+                                            'status')}
                                     />
-                                    {filterMapState.status.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.status.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyStatusFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} filterType={filterMapState.status.filterType}/>}
+                                {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} filterType={filterMapState.status.filterType} />}
                             </div>
                             <div className='w-[17%]   p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={porjectNameFilterInput} onChange={(e) => setPorjectNameFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,porjectNameFilterInput,
-                                        setPorjectNameFilterInput,
-                                        'contains',
-                                        'project')}
-                                    
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={porjectNameFilterInput} onChange={(e) => setPorjectNameFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, porjectNameFilterInput,
+                                            setPorjectNameFilterInput,
+                                            'contains',
+                                            'project')}
+
                                     />
-                                    {filterMapState.project.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPorjectNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPorjectNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.project.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setPorjectNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setPorjectNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPorjectNameFilter((prev) => !prev) }} /></button> */}
                                 </div>
                                 {porjectNameFilter && <CharacterFilter inputVariable={porjectNameFilterInput} setInputVariable={setPorjectNameFilterInput} handleFilter={newHandleFilter} filterColumn='project' menuRef={menuRef} filterType={filterMapState.project.filterType} />}
                             </div>
-                            
+
                         </div>
                         <div className="w-[15%] flex">
                             <div className='w-1/2   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" type="number" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
-                                        setIdFilterInput,
-                                        'equalTo',
-                                        'id')}
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" type="number" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                            setIdFilterInput,
+                                            'equalTo',
+                                            'id')}
                                     />
-                                    {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.id.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                     {/* <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
 
                             <div className='w-1/2  flex items-center justify-center'>
                                 <div className=''>
-                                 <RefreshFilterButton
-                                    setFilterMapState={setFilterMapState}
-                                    resetAllInputs={resetAllInputs}
-                                    filterMapping={filterMapping}
-                                   /> 
+                                    <RefreshFilterButton
+                                        setFilterMapState={setFilterMapState}
+                                        resetAllInputs={resetAllInputs}
+                                        filterMapping={filterMapping}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -1420,7 +1549,7 @@ const ManageClientProperty = () => {
                                     <p>Property Description <button onClick={() => handleSort('description')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            
+
                             <div className='w-[9%]  flex'>
                                 <div className='p-3'>
                                     <p>Property</p>
@@ -1472,7 +1601,7 @@ const ManageClientProperty = () => {
                             </div>
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>{canEdit ? "Edit" :""}</p>
+                                    <p>{canEdit ? "Edit" : ""}</p>
                                 </div>
                             </div>
                         </div>
@@ -1482,9 +1611,9 @@ const ManageClientProperty = () => {
                     {/* {pageLoading && <div className=''>
                             <LinearProgress />
                         </div>} */}
-                        {!pageLoading && existingClientProperty && existingClientProperty.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
-                            <h1 className='ml-10'>No Records To Show</h1>
-                        </div>}
+                    {!pageLoading && existingClientProperty && existingClientProperty.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                        <h1 className='ml-10'>No Records To Show</h1>
+                    </div>}
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
                         {!pageLoading && existingClientProperty && existingClientProperty.map((item, index) => {
                             return <div className='w-full h-11 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>
@@ -1505,7 +1634,7 @@ const ManageClientProperty = () => {
                                             <p>{item.description} </p>
                                         </div>
                                     </div>
-                                    
+
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='px-3'>
                                             <p>{item.suburb}</p>
@@ -1535,14 +1664,14 @@ const ManageClientProperty = () => {
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='px-1 text-[11px] text-blue-500'>
-                                        {/* /manage/manageclientproperty/pmaagreement/:propertyid */}
-                                        <Link to={`/manage/manageclientproperty/pmaagreement/${item.id}` }>PMA Agreement </Link>
+                                            {/* /manage/manageclientproperty/pmaagreement/:propertyid */}
+                                            <Link to={`/manage/manageclientproperty/pmaagreement/${item.id}`}>PMA Agreement </Link>
                                             {/* <Link to={`pmaagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id , clientid : item.clientid , clientname : item.client , description : item.description, project : item.project}}>PMA Agreement</Link> */}
                                         </div>
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='pl-1 text-[11px] text-blue-500'>
-                                        <Link to={`/manage/manageclientproperty/llagreement/${item.id}` }>L&L Agreement</Link>
+                                            <Link to={`/manage/manageclientproperty/llagreement/${item.id}`}>L&L Agreement</Link>
                                             {/* <Link to={`llagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>L&L Agreement</Link> */}
                                         </div>
                                     </div>
@@ -1555,14 +1684,14 @@ const ManageClientProperty = () => {
                                     </div>
                                     <div className='w-1/2  flex items-center px-3 space-x-2'>
                                         <EditButton
-                                          handleEdit={handleOpenEdit}
-                                          rowData={item.id}
+                                            handleEdit={handleOpenEdit}
+                                            rowData={item.id}
                                         />
                                         <DeleteButton
-                                         handleDelete={handleDelete}
-                                         rowData={item}
+                                            handleDelete={handleDelete}
+                                            rowData={item}
                                         />
-                                       
+
                                     </div>
                                 </div>
 
@@ -1595,7 +1724,7 @@ const ManageClientProperty = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                
+
 
                                 fetchQuantityData(e.target.value)
                             }}
@@ -1680,9 +1809,9 @@ const ManageClientProperty = () => {
                                 </div>
                             </div>
 
-                            {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={clientNameText} setClientNameText={setClientNameText} clientid={state?.clientid} hyperlinkState={state}/>}
+                            {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={clientNameText} setClientNameText={setClientNameText} clientid={state?.clientid} hyperlinkState={state} />}
                             {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
-                            {}
+                            { }
                             {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
 

@@ -37,7 +37,7 @@ const ManageClientInfo = () => {
 
     const { user } = useAuth()
     const canEdit = checkEditAccess();
-    
+
     const { pathname } = useLocation()
     const dataRows = [
         "clientname",
@@ -67,7 +67,7 @@ const ManageClientInfo = () => {
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
-   
+
     const [allEntities, setAllEntites] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
     const [isClientInfoDialogue, setIsClientInfoDialogue] = useState(false);
@@ -152,151 +152,201 @@ const ManageClientInfo = () => {
 
 
     const fetchCountryData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries({ ...data, user_id: user.id })
-        const result = (await response.json()).data;
-        setAllCountry(result)
+        try {
+            setPageLoading(true);
+            // const data = { "user_id":  user.id };
+            const data = { "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+            const response = await APIService.getCountries({ ...data, user_id: user.id })
+            const result = (await response.json()).data;
+            setAllCountry(result)
+
+        } catch (e) {
+            setPageLoading(false);
+        }
+
     }
     const fetchStateData = async (id) => {
-        
-        const data = { "country_id": id };
-        // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState({ ...data, user_id: user.id });
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllState(result)
+        try {
+            const data = { "country_id": id };
+            const response = await APIService.getState({ ...data, user_id: user.id });
+            const result = (await response.json()).data;
+
+            if (Array.isArray(result)) {
+                setAllState(result)
+            }
+
+        } catch (e) {
+            console.log(e);
         }
+
     }
     const fetchCityData = async (id) => {
-        const data = { "state_name": id };
-        const response = await APIService.getCities({ ...data, user_id: user.id });
-        const result = (await response.json()).data;
-        
-        if (Array.isArray(result)) {
-            setAllCity(result)
-            if (result.length > 0) {
-                setFormValues((existing) => {
-                    const newData = { ...existing, city: result[0].id }
-                    return newData;
-                })
-            }
-        }
-    }
-    
+        try {
+            const data = { "state_name": id };
+            const response = await APIService.getCities({ ...data, user_id: user.id });
+            const result = (await response.json()).data;
 
-   
+            if (Array.isArray(result)) {
+                setAllCity(result)
+                if (result.length > 0) {
+                    setFormValues((existing) => {
+                        const newData = { ...existing, city: result[0].id }
+                        return newData;
+                    })
+                }
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
+
+
+
 
     const fetchEntitiesData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  user.id };
-        const data = {};
-        const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
-        const result = (await response.json());
-        
-        setFormValues((existing) => {
-            return { ...existing, entity: result.data[0][0] }
-        })
-        if (Array.isArray(result.data)) {
-            setAllEntites(result.data);
+        try {
+
+            setPageLoading(true);
+            // const data = { "user_id":  user.id };
+            const data = {};
+            const response = await APIService.getEntityAdmin({ ...data, user_id: user.id })
+            const result = (await response.json());
+
+            setFormValues((existing) => {
+                return { ...existing, entity: result.data[0][0] }
+            })
+            if (Array.isArray(result.data)) {
+                setAllEntites(result.data);
+            }
+        } catch (e) {
+            setPageLoading(false);
+
         }
+
     }
     const fetchRelation = async () => {
-        const data = {
+        try {
+            const data = {
 
+            }
+            const response = await APIService.getRelationAdmin({ ...data, user_id: user.id })
+            const res = await response.json()
+
+            setRelationData(res.data)
+
+        } catch (e) {
+            console.log(e);
         }
-        const response = await APIService.getRelationAdmin({ ...data, user_id: user.id })
-        const res = await response.json()
-        
-        setRelationData(res.data)
+
     }
+
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        // 
-        setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        
-        
-        setFilterState((prev) => tempArray)
-        setCurrentPage((prev) => 1)
-        const data = {
+        try {
+            // 
+            setPageLoading(true);
+            const tempArray = [];
+            // we need to query thru the object
+            Object.keys(filterMapState).forEach(key => {
+                if (filterMapState[key].filterType != "") {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+            })
 
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInfo(result.client_info);
-        setPageLoading(false);
+
+            setFilterState((prev) => tempArray)
+            setCurrentPage((prev) => 1)
+            const data = {
+
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getClientInfo({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInfo(result.client_info);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const fetchPageData = async (pageNumber) => {
-        setPageLoading(true);
+        try {
+            setPageLoading(true);
 
-        setCurrentPage((prev) => pageNumber)
-        const data = {
 
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInfo(result.client_info);
-        setPageLoading(false);
+            setCurrentPage((prev) => pageNumber)
+            const data = {
+
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": Number(pageNumber),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getClientInfo({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInfo(result.client_info);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     const fetchQuantityData = async (quantity) => {
-        setPageLoading(true);
+        try {
+            setPageLoading(true);
+            setCurrentPage((prev) => 1)
+            setCurrentPages((prev) => quantity)
+            const data = {
 
-        // 
-        setCurrentPage((prev) => 1)
-        setCurrentPages((prev) => quantity)
-        const data = {
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(quantity),
+                "search_key": searchInput
+            };
+            const response = await APIService.getClientInfo({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
 
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(quantity),
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInfo(result.client_info);
-        setPageLoading(false);
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInfo(result.client_info);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     useEffect(() => {
         fetchData()
-    },[filterMapState])
+    }, [filterMapState])
 
     useEffect(() => {
         fetchData();
@@ -308,7 +358,7 @@ const ManageClientInfo = () => {
         fetchEntitiesData();
         fetchRelation();
         const handler = (e) => {
-            
+
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 // setOverAllFilter(false);
                 setTenantOfPropertyFilter(false);
@@ -334,7 +384,7 @@ const ManageClientInfo = () => {
     }, []);
 
     const handleOpenEdit = (oldItem) => {
-        
+
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -350,30 +400,42 @@ const ManageClientInfo = () => {
         openAddCancelModal();
     }
     const initials = () => {
-        
+
         setFormValues(initialValues);
         setFormErrorsClientInfo({})
         setFormErrors({});
     }
     const [clientTypeData, setClientTypeData] = useState([]);
-    const fetchClientTypeData = async () => {
-        const data = {
 
+    const fetchClientTypeData = async () => {
+        try {
+            const data = {
+            }
+            const response = await APIService.getClientTypeAdmin({ ...data, user_id: user.id });
+            const res = await response.json()
+
+            setClientTypeData(res.data)
+
+        } catch (e) {
+            console.log(e);
         }
-        const response = await APIService.getClientTypeAdmin({ ...data, user_id: user.id });
-        const res = await response.json()
-        
-        setClientTypeData(res.data)
+
 
     }
     const fetchTenentOfData = async () => {
-        const data = {
+        try {
+            const data = {
 
+            }
+            const response = await APIService.getTenantOfPropertyAdmin({ ...data, user_id: user.id })
+            const res = await response.json()
+
+            setTenentOfData(res.data)
+
+        } catch (e) {
+            console.log(e);
         }
-        const response = await APIService.getTenantOfPropertyAdmin({ ...data, user_id: user.id })
-        const res = await response.json()
-        
-        setTenentOfData(res.data)
+
     }
     const [selectedDialog, setSelectedDialogue] = useState(1);
 
@@ -481,7 +543,7 @@ const ManageClientInfo = () => {
         setFormValues({ ...formValues, [name]: value });
     };
     const handlePageChange = (event, value) => {
-        
+
         setCurrentPage(value)
         fetchPageData(value);
     }
@@ -495,155 +557,148 @@ const ManageClientInfo = () => {
         setDownloadModal(false);
     }
     const handleDownload = async (type) => {
-        // setBackDropLoading(true)
-        setDownloadModal(false)
-        setPageLoading(true);
-        const data = {
+        try {
+            setDownloadModal(false)
+            setPageLoading(true);
+            const data = {
 
-            "rows": [
-                "clientname",
-                "clienttypename",
-                "tenantofname",
-                "tenantofpropertyname",
-                "country",
-                "city",
-                "mobilephone",
-                "email1",
-                "id",
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput,
-            "downloadType": type,
-            "routename": pathname,
-            "colmap": {
-                "clientname": "Client Name",
-                "clienttypename": "Client Type",
-                "tenantofname": "Tenant Of",
-                "tenantofpropertyname": "Tenant Of Property",
-                "country": "Country",
-                "city" : "City",
-                "mobilephone": "Phone",
-                "email1": "Email",
-                "id": "ID",
-            }
-        };
-        const response = await APIService.getClientInfo({ ...data, user_id: user.id })
-        const temp = await response.json();
-        const result = temp.data;
-        
-        if (temp.result == 'success') {
-            const d = {
-                "filename": temp.filename,
+                "rows": [
+                    "clientname",
+                    "clienttypename",
+                    "tenantofname",
+                    "tenantofpropertyname",
+                    "country",
+                    "city",
+                    "mobilephone",
+                    "email1",
+                    "id",
+                ],
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 0,
+                "pg_size": 0,
+                "search_key": searchInput,
+                "downloadType": type,
+                "routename": pathname,
+                "colmap": {
+                    "clientname": "Client Name",
+                    "clienttypename": "Client Type",
+                    "tenantofname": "Tenant Of",
+                    "tenantofpropertyname": "Tenant Of Property",
+                    "country": "Country",
+                    "city": "City",
+                    "mobilephone": "Phone",
+                    "email1": "Email",
+                    "id": "ID",
+                }
+            };
+            const response = await APIService.getClientInfo({ ...data, user_id: user.id })
+            const temp = await response.json();
+            const result = temp.data;
 
-            }
-            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ ...d, user_id: user.id }) // Convert the object to a JSON string
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.blob();
+            if (temp.result == 'success') {
+                const d = {
+                    "filename": temp.filename,
+
+                }
+                fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                    method: 'POST', // or the appropriate HTTP method
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ...d, user_id: user.id }) // Convert the object to a JSON string
                 })
-                .then(result => {
-                    if (type == "excel") {
-                        FileSaver.saveAs(result, 'ClientInfoData.xlsx');
-                    } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'ClientInfoData.pdf');
-                    }
-                    
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.blob();
+                    })
+                    .then(result => {
+                        if (type == "excel") {
+                            FileSaver.saveAs(result, 'ClientInfoData.xlsx');
+                        } else if (type == "pdf") {
+                            FileSaver.saveAs(result, 'ClientInfoData.pdf');
+                        }
 
-            setTimeout(() => {
-                // setBackDropLoading(false)
-                setPageLoading(false)
-            }, 1000)
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                setTimeout(() => {
+                    // setBackDropLoading(false)
+                    setPageLoading(false)
+                }, 1000)
+            }
+
+        } catch (e) {
+            setPageLoading(false);
         }
     }
-    const handleExcelDownload = async () => {
-        const data = {
 
-            "rows": [
-                "clientname",
-                "clienttypename",
-                "tenantofname",
-                "tenantofpropertyname",
-                "country",
-                "city",
-                "mobilephone",
-                "email1",
-                "employername",
-                "id",
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput
-        };
-        // window.open("https://stackoverflow.com/questions/31079081/how-to-programmatically-navigate-using-react-router", '_blank');
-        // Navigate.call()
 
-    }
     const handleSearch = async () => {
+        try {
+            setPageLoading(true);
+            setCurrentPage(1)
+
+            setIsSearchOn(true);
+            const data = {
+
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
+            const response = await APIService.getClientInfo({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInfo(result.client_info);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+        }
         // 
-        setPageLoading(true);
-        setCurrentPage(1)
 
-        setIsSearchOn(true);
-        const data = {
-
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
-        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInfo(result.client_info);
-        setPageLoading(false);
     }
     const handleCloseSearch = async () => {
-        // setIsSearchOn(false);
-        setPageLoading(true);
-        setSearchInput("");
-        setCurrentPage((prev) => 1)
-        const data = {
+        try {
+            setPageLoading(true);
+            setSearchInput("");
+            setCurrentPage((prev) => 1)
+            const data = {
 
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInfo(result.client_info);
-        setPageLoading(false);
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages)
+            };
+            const response = await APIService.getClientInfo({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInfo(result.client_info);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+        // setIsSearchOn(false);
+
     }
     const openAddSuccess = () => {
         setShowAddSuccess(true);
@@ -804,25 +859,25 @@ const ManageClientInfo = () => {
     ]
     const arrayHelper = (arr) => {
         const temp = []
-        
-        for(var i=0;i <arr.length ; i++) {
-            
+
+        for (var i = 0; i < arr.length; i++) {
+
             let flag = false;
             Object.keys(arr[i]).forEach((key) => {
                 // 
                 // 
-               if(arr[i][key] != null && arr[i][key] != "" && arr[i][key] != '') {
-                flag = true
-               }
+                if (arr[i][key] != null && arr[i][key] != "" && arr[i][key] != '') {
+                    flag = true
+                }
             })
-            
-            if(flag) temp.push(arr[i])
+
+            if (flag) temp.push(arr[i])
         }
         return temp
     }
     const addClientInfo = async () => {
         // setButtonLoading(true);
-        
+
         const data = {
 
             "client_info": {
@@ -882,7 +937,7 @@ const ManageClientInfo = () => {
                 "poaaddressline1": formValues.client_poa.poaaddressline1,
                 "poaaddressline2": formValues.client_poa.poaaddressline2,
                 "poasuburb": formValues.client_poa.poasuburb,
-                "poacity": formValues.client_poa.poacity ,
+                "poacity": formValues.client_poa.poacity,
                 "poastate": formValues.client_poa.poastate,
                 "poacountry": formValues.client_poa.poacountry,
                 "poazip": formValues.client_poa.poazip,
@@ -898,7 +953,7 @@ const ManageClientInfo = () => {
                 "scancopy": formValues.client_poa.scancopy
             }
         };
-        
+
         const response = await APIService.addClientInfo({ ...data, user_id: user.id })
         const res = await response.json();
         setShowAddConfirmation(false)
@@ -909,26 +964,29 @@ const ManageClientInfo = () => {
             openAddSuccess();
             setFormValues(initialValues)
         } else {
-
-
         }
         setButtonLoading(false);
     }
 
     const handleDelete = async (id) => {
+        try {
+            const data = {
 
-        const data = {
+                "id": id
+            }
+            const response = await APIService.deleteClientInfo({ ...data, user_id: user.id })
+            const res = await response.json()
 
-            "id": id
+            setShowDelete(false);
+            if (res.result == 'success') {
+                openDeleteSuccess()
+            }
+            fetchData()
+
+        } catch (e) {
+            console.log(e);
         }
-        const response = await APIService.deleteClientInfo({ ...data, user_id: user.id })
-        const res = await response.json()
-        
-        setShowDelete(false);
-        if (res.result == 'success') {
-            openDeleteSuccess()
-        }
-        fetchData()
+
     }
     const openDelete = (item) => {
         setCurrItem(item)
@@ -1003,29 +1061,37 @@ const ManageClientInfo = () => {
         setEmployerInput("");
         setidFilterInput("");
     };
+
     const handleSort = async (field) => {
-        setPageLoading(true)
-        setSortField(field);
-        setFlag((prev) => !prev)
-        const data = {
+        try {
+            setPageLoading(true)
+            setSortField(field);
+            setFlag((prev) => !prev)
+            const data = {
 
-            "rows": dataRows,
-            "filters": filterState,
-            "sort_by": [field],
-            "order": !flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": searchInput
-        };
+                "rows": dataRows,
+                "filters": filterState,
+                "sort_by": [field],
+                "order": !flag ? "asc" : "desc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(currentPages),
+                "search_key": searchInput
+            };
 
-        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInfo(result.client_info);
-        setPageLoading(false);
+            const response = await APIService.getClientInfo({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInfo(result.client_info);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
 
 
@@ -1049,49 +1115,56 @@ const ManageClientInfo = () => {
     }
     const [filterState, setFilterState] = useState([])
     const fetchFiltered = async (mapState) => {
-        setTenantOfPropertyFilter(false);
-        setIdFilter(false)
-        setEmployerFilter(false);
-        setEmail1Filter(false);
-        setPhoneFilter(false)
-        setCityFilter(false)
-        setClientNameFilter(false);
-        setCountryFilter(false)
-        setClientNameFilter(false);
-        setTenantOfTypeNameFilter(false)
-        setEmployerFilter(false);
-        setClientTypeNameFilter(false)
-        setTenantOfTypeNameFilter(false)
-        setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        // 
-        setFilterMapState(mapState)
-        
-        Object.keys(mapState).forEach(key => {
-            if (mapState[key].filterType != "") {
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
-            }
-        })
-        setFilterState((prev) => tempArray)
-        setCurrentPage((prev) => 1)
-        const data = {
+        try {
+            setTenantOfPropertyFilter(false);
+            setIdFilter(false)
+            setEmployerFilter(false);
+            setEmail1Filter(false);
+            setPhoneFilter(false)
+            setCityFilter(false)
+            setClientNameFilter(false);
+            setCountryFilter(false)
+            setClientNameFilter(false);
+            setTenantOfTypeNameFilter(false)
+            setEmployerFilter(false);
+            setClientTypeNameFilter(false)
+            setTenantOfTypeNameFilter(false)
+            setPageLoading(true);
+            const tempArray = [];
+            // we need to query thru the object
+            // 
+            setFilterMapState(mapState)
 
-            "rows": dataRows,
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getClientInfo({ ...data, user_id: user.id });
-        const temp = await response.json();
-        const result = temp.data;
-        
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientInfo(result.client_info);
-        setPageLoading(false);
+            Object.keys(mapState).forEach(key => {
+                if (mapState[key].filterType != "") {
+                    tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                }
+            })
+            setFilterState((prev) => tempArray)
+            setCurrentPage((prev) => 1)
+            const data = {
+
+                "rows": dataRows,
+                "filters": tempArray,
+                "sort_by": [sortField],
+                "order": flag ? "asc" : "desc",
+                "pg_no": 1,
+                "pg_size": Number(currentPages)
+            };
+            const response = await APIService.getClientInfo({ ...data, user_id: user.id });
+            const temp = await response.json();
+            const result = temp.data;
+
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingClientInfo(result.client_info);
+            setPageLoading(false);
+
+        } catch (e) {
+            setPageLoading(false);
+
+        }
+
     }
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
@@ -1363,12 +1436,12 @@ const ManageClientInfo = () => {
                             </div>
 
                             <div className='w-1/2 p-3 flex items-center'>
-                                 <RefreshFilterButton
-                                   
+                                <RefreshFilterButton
+
                                     resetAllInputs={resetAllInputs}
                                     setFilterMapState={setFilterMapState}
                                     filterMapping={filterMapping}
-                                /> 
+                                />
                             </div>
                         </div>
                     </div>
@@ -1468,13 +1541,13 @@ const ManageClientInfo = () => {
 
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
 
-                         {!pageLoading &&
-              existingClientInfo &&
-              existingClientInfo.length == 0 && (
-                <div className="h-10 border-gray-400 border-b-[1px] flex items-center">
-                  <h1 className="ml-10">No Records To Show</h1>
-                </div>
-              )}
+                        {!pageLoading &&
+                            existingClientInfo &&
+                            existingClientInfo.length == 0 && (
+                                <div className="h-10 border-gray-400 border-b-[1px] flex items-center">
+                                    <h1 className="ml-10">No Records To Show</h1>
+                                </div>
+                            )}
                         {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingClientInfo && existingClientInfo.map((item, index) => {
                             return <div className='w-full h-12 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
@@ -1597,7 +1670,7 @@ const ManageClientInfo = () => {
                             //  defaultValue="Select State"
                             onChange={e => {
                                 setCurrentPages(e.target.value);
-                                
+
 
                                 fetchQuantityData(e.target.value)
                             }}
