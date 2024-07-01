@@ -148,7 +148,8 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
         
         const data = {
             "user_id": user.id,
-            "client_id": id
+            "client_id": id,
+            "mode":"edit"
         }
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
