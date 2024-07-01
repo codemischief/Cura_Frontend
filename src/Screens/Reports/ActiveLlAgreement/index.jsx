@@ -67,12 +67,13 @@ const ActiveLLAgreementView = () => {
         "depositamount",
         "rentamount",
       ],
-      sort_by: undefined,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : ["status"],
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: +pageNo,
       pg_size: +countPerPage,
-      order: undefined,
+      order: sorting.sort_order ? sorting.sort_order : "asc",
+
     };
     dispatch(getActiveLLAgreement(obj));
   };
@@ -119,12 +120,12 @@ const ActiveLLAgreementView = () => {
         "rentamount",
       ],
 
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : ["status"],
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: +pageNo,
       pg_size: +countPerPage,
-      order: sorting.sort_order ? sorting.sort_order : undefined,
+      order: sorting.sort_order ? sorting.sort_order : "asc",
     };
     dispatch(getActiveLLAgreement(obj));
   }, [
@@ -161,7 +162,7 @@ const ActiveLLAgreementView = () => {
       ],
 
       downloadType: "excel",
-      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : ["status"],
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
@@ -178,7 +179,7 @@ const ActiveLLAgreementView = () => {
         depositamount: "Deposit Amount",
         rentamount: "Rent Amount",
       },
-      order: sorting.sort_order ? sorting.sort_order : undefined,
+      order: sorting.sort_order ? sorting.sort_order : "asc",
     };
     dispatch(downloadActiveLLAgreementReport(obj));
   };
