@@ -174,7 +174,8 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, s
     const getOrdersByClientId = async (id) => {
         if(id == null) return 
         const data = {
-            "client_id": id
+            "client_id": id,
+            mode:'edit'
         }
         const response = await APIService.getOrdersByClientId({...data, user_id : user.id})
         const res = await response.json()

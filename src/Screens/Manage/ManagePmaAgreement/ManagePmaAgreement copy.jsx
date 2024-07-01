@@ -364,7 +364,8 @@ const ManagePmaArgreement = () => {
         
         const data = {
             
-            "client_id": id
+            "client_id": id,
+            mode:"new"
         }
         const response = await APIService.getOrdersByClientId({...data,user_id : user.id})
         const res = await response.json()
