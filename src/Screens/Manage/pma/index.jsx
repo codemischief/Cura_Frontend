@@ -4,7 +4,17 @@ import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import { addNewInvoices, getPmaBilling, setPageNumber, setCountPerPage, setSorting, downloadPmaBillingDataXls, resetFilters , setInitialState, } from "../../../Redux/slice/pmaSlice";
+import {
+  addNewInvoices,
+  getPmaBilling,
+  setPageNumber,
+  setCountPerPage,
+  setSorting,
+  downloadPmaBillingDataXls,
+  resetFilters,
+  setInitialState,
+  downloadData,
+} from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
@@ -13,7 +23,7 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../../context/JwtContext";
 import RefreshReports from "../../../Components/common/buttons/RefreshReports";
-import Container from "../../../Components/common/Container"
+import Container from "../../../Components/common/Container";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -39,9 +49,8 @@ const MONTHS = [
   "December",
 ];
 const PmaBilling = () => {
-  const { pathname } = useLocation()
-  const { user } = useAuth()
-  console.log(pathname)
+  const { pathname } = useLocation();
+  const { user } = useAuth();
   const dispatch = useDispatch();
   const {
     pmaBillingData,
@@ -71,8 +80,8 @@ const PmaBilling = () => {
   }
 
   useEffect(() => {
-    dispatch(setInitialState())
-  }, [])
+    dispatch(setInitialState());
+  }, []);
 
   useEffect(() => {
     if (selectedMonth && selectedYear) {
@@ -177,7 +186,6 @@ const PmaBilling = () => {
   };
 
   const downloadExcel = async () => {
-    console.log('hello')
     let obj = {
       user_id: user.id,
       month: +selectedMonth,
@@ -185,40 +193,64 @@ const PmaBilling = () => {
       filters: convertData(filter),
       pg_no: 0,
       insertIntoDB: false,
-      downloadType: 'excel',
-      routename: '/manage/pmaBilling',
+      downloadType: "excel",
+      routename: "/manage/pmaBilling",
       pg_size: 0,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadPmaBillingDataXls(obj))
+    dispatch(downloadPmaBillingDataXls(obj));
   };
 
+  const downloadPdf = () => {
+    let obj = {
+      user_id: user.id,
+      month: +selectedMonth,
+      year: +selectedYear,
+      filters: convertData(filter),
+      pg_no: 0,
+      insertIntoDB: false,
+      downloadType: "pdf",
+      routename: "/manage/pmaBilling",
+      pg_size: 0,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+      colmap: {
+        clientname: "clientname",
+        briefdescription: "briefdescription",
+        invoicedate: "invoicedate",
+        totalamt: "totalamt",
+        totalbaseamt: "totalbaseamt",
+        totaltaxamt:"totaltaxamt",
+        fixedamt:"fixedamt",
+        fixedtaxamt:"fixedtaxamt",
+        rentedamt:"rentedamt",
+        rentedtaxamt:"rentedtaxamt"
+      },
+   
+    };
+    dispatch(downloadData(obj, "pdf"));
+  };
   return (
     <Container>
-
       <Stack direction={"column"} paddingX={"14px"}>
-        <Stack direction={'row'} justifyContent={'space-between'}>
-
+        <Stack direction={"row"} justifyContent={"space-between"}>
           <HeaderBreadcum
             heading={"Manage PMA Billing"}
             path={["Manage", "Manage PMA Billing"]}
           />
-          <Stack
-            direction={'row'}
-            alignContent={'center'}
-            gap={"20px"}
-          >
-
+          <Stack direction={"row"} alignContent={"center"} gap={"20px"}>
             <CustomButton
               title="Add New PMA Invoice"
               onClick={() => {
-                selectedYear && selectedMonth && showTable && setOpenModal(true);
+                selectedYear &&
+                  selectedMonth &&
+                  showTable &&
+                  setOpenModal(true);
               }}
             />
             <RefreshReports onClick={() => dispatch(resetFilters())} />
           </Stack>
-
         </Stack>
         <Stack
           marginTop={"8px"}
@@ -242,7 +274,9 @@ const PmaBilling = () => {
                 value={selectedYear}
                 onChange={handleSelectYear}
               >
-                <option selected value={""} className="hidden">Select Year</option>
+                <option selected value={""} className="hidden">
+                  Select Year
+                </option>
                 {YEARS.map((item) => {
                   return (
                     <option value={item} key={item}>
@@ -263,7 +297,9 @@ const PmaBilling = () => {
                 defaultValue="Select State"
                 onChange={handleSelectMonth}
               >
-                <option selected value={""} className="hidden">Select Month</option>
+                <option selected value={""} className="hidden">
+                  Select Month
+                </option>
                 {MONTHS.map((item, index) => {
                   return (
                     <option value={index + 1} key={index}>
@@ -297,7 +333,6 @@ const PmaBilling = () => {
             >
               Show
             </Button>
-
           </Stack>
         </Stack>
 
@@ -323,6 +358,7 @@ const PmaBilling = () => {
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
             height="calc(100vh - 15rem)"
+            downloadPdf={downloadPdf}
           />
         )}
       </Stack>

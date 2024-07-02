@@ -40,7 +40,7 @@ export const pmaSlice = createSlice({
     },
     setInitialState: (state, { payload }) => {
       (state.pmaBillingData = []),
-      (state.filter = []),
+        (state.filter = []),
         (state.status = ""),
         (state.filter = []),
         (state.countPerPage = 15),
@@ -75,7 +75,7 @@ export const {
   setFilters,
   setInitialState,
   setSorting,
-  resetFilters
+  resetFilters,
 } = pmaSlice.actions;
 
 export const getPmaBilling = (payloadObj, year, month) => async (dispatch) => {
@@ -96,15 +96,12 @@ export const getPmaBilling = (payloadObj, year, month) => async (dispatch) => {
 export const addNewInvoices = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
-    const response = await axios.post(
-      `${env_URL_SERVER}getPMABilling`,
-      {
-        ...payloadObj,
-        reqid: uuidv4(),
-        modulename,
-        actionname: moduleMethods.add + modulename,
-      },
-    );
+    const response = await axios.post(`${env_URL_SERVER}getPMABilling`, {
+      ...payloadObj,
+      reqid: uuidv4(),
+      modulename,
+      actionname: moduleMethods.add + modulename,
+    });
     dispatch(setStatus("success"));
     return response.data;
   } catch (err) {
@@ -112,9 +109,7 @@ export const addNewInvoices = (payloadObj) => async (dispatch) => {
   }
 };
 
-export const handleRefresh = (payload) => async (dispatch) => {
-  
-};
+export const handleRefresh = (payload) => async (dispatch) => {};
 export const downloadPmaBillingDataXls = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
@@ -135,25 +130,52 @@ export const downloadPmaBillingDataXls = (payloadObj) => async (dispatch) => {
     dispatch(setStatus("error"));
   }
 };
-export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
-  try {
-    const response = await axios.post(
-      `${env_URL_SERVER}download/${filename}`,
-      {
-        filename: filename,
-        user_id: userId,
-      },
-      {
-        responseType: "blob",
+export const downloadXlsEndpoint =
+  (filename, userId, type = "excel") =>
+  async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${env_URL_SERVER}download/${filename}`,
+        {
+          filename: filename,
+          user_id: userId,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      if (type == "excel") {
+        FileSaver.saveAs(blob, "PmaBillingTable.xlsx");
+      } else {
+        FileSaver.saveAs(blob, "PmaBillingTable.pdf");
       }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+export const downloadData = (payloadObj, type) => async (dispatch) => {
+  try {
+    dispatch(setStatus("loading"));
+    const response = await axios.post(
+      `${env_URL_SERVER}getPMABilling`,
+      payloadObj
     );
-    const blob = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    FileSaver.saveAs(blob, "PmaBillingTable.xlsx");
-  } catch (error) {
-    console.log("error", error);
+    if ((response.data.filename, payloadObj.user_id)) {
+      await dispatch(
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id, type)
+      );
+    }
+    dispatch(setStatus("success"));
+    // return response.data;
+    // dispatch(setOrderPaymentData({ data: response.data, year, month }));
+    // dispatch(setStatus("success"));
+  } catch (err) {
+    dispatch(setStatus("error"));
   }
 };
-
 export default pmaSlice.reducer;
