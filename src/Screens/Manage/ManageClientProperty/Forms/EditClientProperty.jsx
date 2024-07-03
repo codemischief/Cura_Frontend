@@ -409,6 +409,7 @@ const EditClientProperty = (props) => {
         props.handleClose();
         props.showCancel();
     }
+
   return (
     <Modal open={true}
     fullWidth={true}
@@ -422,7 +423,7 @@ const EditClientProperty = (props) => {
 
             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                 <div className="mr-[410px] ml-[410px]">
-                    <div className="text-[16px]">Edit Client Property : </div>
+                    <div className="text-[16px]">Edit Client Property :{initialClientPropertyData?.client_property?.id} </div>
                 </div>
                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                     <button onClick={() => {close()}}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
