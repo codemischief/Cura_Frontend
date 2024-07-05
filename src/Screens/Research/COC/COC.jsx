@@ -78,7 +78,7 @@ const COC = () => {
             errors.country = "Select Country";
         }
         if (!values.groupName) {
-            errors.groupName = "Select Group Name";
+            errors.groupName = "Select Group Type ";
         }
         return errors;
     };
@@ -201,7 +201,7 @@ const COC = () => {
                                     <p>Sr. </p>
                                 </div>
                                 <div className='w-[20%]  p-4'>
-                                    <p>Group Name <span className="font-extrabold">↑↓</span></p>
+                                    <p>Group Type  <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-[20%]  p-4'>
                                     <p>Name <span className="font-extrabold">↑↓</span></p>
@@ -304,7 +304,7 @@ const COC = () => {
                                 <div className="flex gap-[48px] justify-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                            <div className="text-[14px]">Group Name<label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">Group Type <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="groupName" value={formValues.groupName} onChange={handleChange} >
                                                 {selectedGroupName.map(item => (
                                                     <option key={item} value={item}>
@@ -332,7 +332,7 @@ const COC = () => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="contactName1" value={formValues.contactName1} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Contact Person 1</div>
+                                            <div className="text-[14px]">Contact Designation 1</div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="contactPerson1" value={formValues.contactPerson1} onChange={handleChange} />
                                         </div>
                                         <div className="">
@@ -381,7 +381,7 @@ const COC = () => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="contactName2" value={formValues.contactName2} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Contact Person 2</div>
+                                            <div className="text-[14px]">Contact Designation 2</div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="contactPerson2" value={formValues.contactPerson2} onChange={handleChange} />
                                         </div>
                                         <div className="">

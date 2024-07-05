@@ -101,6 +101,36 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                 return { ...existing, order: "" }
             })
         }
+        if (!formValues.invoiceDate || formValues.invoiceDate == "") {
+            setFormErrors((existing) => {
+                return { ...existing, invoiceDate: "Select Invoice Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, invoiceDate: "" }
+            })
+        }
+        if (!formValues.invoiceAmount || formValues.invoiceAmount == "") {
+            setFormErrors((existing) => {
+                return { ...existing, invoiceAmount: "Select Invoice Amount" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, invoiceAmount: "" }
+            })
+        }
+        if (!formValues.vendor || formValues.vendor == "") {
+            setFormErrors((existing) => {
+                return { ...existing, vendor: "Select Vendor" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, vendor: "" }
+            })
+        }
 
         return res;
     }
@@ -253,19 +283,23 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                             <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                         </div>
                                         <div className="pt-0.5">
-                                            <div className="text-[13px]">Vendor</div>
+                                            <div className="text-[13px]">Vendor <label className='text-red-500'>*</label></div>
                                             <select className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                                 <option value={null} hidden> Select Vendor</option>
-                                                {vendorData.map(item => (
+                                                {vendorData?.map(item => (
                                                     <option key={item[0]} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.vendor}</div>
+
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">Invoice Amount </div>
+                                            <div className="text-[13px]">Invoice Amount <label className='text-red-500'>*</label></div>
                                             <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.invoiceAmount}</div>
+
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Estimate Date </div>
@@ -401,8 +435,10 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                             <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.order}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px] pt-[-2px]">Invoice Date </div>
+                                            <div className="text-[13px] pt-[-2px]">Invoice Date <label className="text-red-500">*</label></div>
                                             <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.invoiceDate}</div>
+
                                         </div>
                                         <div className="">
                                             <div className="text-[13px] mb-0.5">Invoice/Estimate Description </div>

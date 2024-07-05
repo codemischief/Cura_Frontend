@@ -88,7 +88,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth:"300px",
+          minWidth:"200px",
+          maxWidth:"300px"
 
       },
     },
@@ -103,8 +104,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth:"300px",
-
+         minWidth:"200px",
+          maxWidth:"300px"
       },
     },
     {
@@ -133,7 +134,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         cellStyle: {
           ...cellStyleCommon,
           justifyContent: "center",
-          minWidth:"300px",
+          minWidth:"200px",
+          maxWidth:"300px"
         },
       },
     {

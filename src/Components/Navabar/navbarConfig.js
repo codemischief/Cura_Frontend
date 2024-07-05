@@ -528,7 +528,7 @@ export const navMenuConfig = [
       [
         { subheader: "Bank and Branches", path: PATH_DASHBOARD.research.banks },
         {
-          subheader: "Business Groups",
+          subheader: "COC & Bussiness Group",
           path: PATH_DASHBOARD.research.businessgroup,
         },
         {

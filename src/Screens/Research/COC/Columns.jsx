@@ -47,7 +47,7 @@ export default function getColumns(
     {
       id: 2,
       filterComponent: TextFilterField,
-      title: "Group Name",
+      title: "Group Type ",
       field: "groupname",
       sorting: true,
       align: "left",
