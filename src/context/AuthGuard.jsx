@@ -12,26 +12,26 @@ const AuthGuard = ({ children }) => {
   }
 
   const hasAccess = (path) => {
-    if (path.includes("reports")) {
+    if (
+      path.includes("reports") &&
+      user?.allowedModules?.Reports &&
+      user?.allowedModules?.Reports?.get
+    ) {
       return true;
     }
-
     // Check if the exact path is allowed
     if (user.allowedModules[path] && user.allowedModules[path].get) {
       return true;
     }
 
     // Check for dynamic route access
-    
-    let newUrl = path?.replace(/\/\d+$/, "") + '/';
-    console.log(newUrl)
-    console.log(user)
-    return Object.keys(user.allowedModules).some(
-      (allowedPath) => {
-        
-        return path.startsWith(allowedPath) && user?.allowedModules[newUrl]?.get
-      }
-    );
+
+    let newUrl = path?.replace(/\/\d+$/, "") + "/";
+    console.log(newUrl);
+    console.log(user);
+    return Object.keys(user.allowedModules).some((allowedPath) => {
+      return path.startsWith(allowedPath) && user?.allowedModules[newUrl]?.get;
+    });
   };
 
   if (hasAccess(location.pathname)) {
