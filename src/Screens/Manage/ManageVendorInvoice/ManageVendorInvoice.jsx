@@ -491,32 +491,63 @@ const ManageVendorInvoice = () => {
   };
 
   // validate form and to throw Error message
+
   const validate = () => {
     var res = true;
 
     if (!formValues.client) {
-      setFormErrors((existing) => {
-        return { ...existing, client: "Select Client" };
-      });
-      res = false;
+        setFormErrors((existing) => {
+            return { ...existing, client: "Select Client" }
+        })
+        res = false;
     } else {
-      setFormErrors((existing) => {
-        return { ...existing, client: "" };
-      });
+        setFormErrors((existing) => {
+            return { ...existing, client: "" }
+        })
     }
     if (!formValues.order || formValues.order == "") {
-      setFormErrors((existing) => {
-        return { ...existing, order: "Select Order" };
-      });
-      res = false;
+        setFormErrors((existing) => {
+            return { ...existing, order: "Select Order" }
+        })
+        res = false;
     } else {
-      setFormErrors((existing) => {
-        return { ...existing, order: "" };
-      });
+        setFormErrors((existing) => {
+            return { ...existing, order: "" }
+        })
+    }
+    if (!formValues.vendor || formValues.vendor == "") {
+        setFormErrors((existing) => {
+            return { ...existing, vendor: "Select Vendor" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, vendor: "" }
+        })
+    }
+    if (!formValues.invoiceDate || formValues.invoiceDate == "") {
+        setFormErrors((existing) => {
+            return { ...existing, invoiceDate: "Select Invoice Date" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, invoiceDate: "" }
+        })
+    }
+    if (!formValues.invoiceAmount || formValues.invoiceAmount == "") {
+        setFormErrors((existing) => {
+            return { ...existing, invoiceAmount: "Select Invoice Amount" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, invoiceAmount: "" }
+        })
     }
 
     return res;
-  };
+}
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
     fetchPageData(value);
@@ -1885,7 +1916,7 @@ const ManageVendorInvoice = () => {
         className="flex justify-center items-center"
       >
         <div className="flex justify-center">
-          <Draggable handle="div.move">
+          
             <div className="w-[1050px] h-auto bg-white rounded-lg">
               <div className="move cursor-move">
                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
@@ -2181,7 +2212,209 @@ const ManageVendorInvoice = () => {
                 </button>
               </div>
             </div>
-          </Draggable>
+            <Modal open={isVendorInvoiceDialogue}
+                fullWidth={true}
+                maxWidth={'md'}
+                className='flex justify-center items-center'
+            >
+                <div className='flex justify-center'>
+                    <Draggable handle='div.move'>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="move cursor-move">
+
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]">New Vendor Invoice</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                        <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="h-auto w-full mt-[5px]">
+                                <div className="flex gap-[48px] justify-center ">
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
+                                            <div className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                        </div>
+                                        <div className="pt-0.5">
+                                            <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
+                                            <select className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                                <option value={null} hidden> Select Vendor</option>
+                                                {vendorData.map(item => (
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.vendor}</div>
+
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Invoice Amount <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.invoiceAmount}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Estimate Date </div>
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">VAT  </div>
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
+                                        </div>
+
+                                    </div>
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-[13px] mb-0.5">
+                                                Client <label className="text-red-500">*</label>
+                                            </div>
+                                            <AsyncSelect
+                                                onChange={handleClientNameChange}
+                                                value={selectedOption}
+                                                loadOptions={loadOptions}
+                                                cacheOptions
+                                                defaultOptions
+                                                onInputChange={(value) => setQuery(value)}
+
+                                                styles={{
+                                                    control: (provided, state) => ({
+                                                        ...provided,
+                                                        minHeight: 23,
+                                                        // lineHeight: '0.8',
+                                                        height: '20px',
+                                                        width: 224,
+                                                        fontSize: 12,
+                                                        // padding: '1px'
+                                                        borderRadius : '2px'
+                                                    }),
+                                                    indicatorSeparator: (provided, state) => ({
+                                                      display : 'none'
+                                                    }),
+                                                    dropdownIndicator: (provided, state) => ({
+                                                        ...provided,
+                                                        padding: '1px',
+                                                        paddingRight : '2px', // Adjust padding for the dropdown indicator
+                                                        width: 15, // Adjust width to make it smaller
+                                                        height: 15, // Adjust height to make it smaller
+                                                        display: 'flex', // Use flex to center the icon
+                                                        alignItems: 'center', // Center vertically
+                                                        justifyContent: 'center'
+                                                         // adjust padding for the dropdown indicator
+                                                    }),
+                                                    input: (provided, state) => ({
+                                                        ...provided,
+                                                        margin: 0, // Remove any default margin
+                                                        padding: 0, // Remove any default padding
+                                                        fontSize: 12, // Match the font size
+                                                        height: 'auto', // Adjust input height
+                                                      }),
+                                                    // options: (provided, state) => ({
+                                                    //     ...provided,
+                                                    //     fontSize: 10// adjust padding for the dropdown indicator
+                                                    // }),
+                                                    option: (provided, state) => ({
+                                                        ...provided,
+                                                        padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                                                        margin: 0, // Ensure no extra margin
+                                                        fontSize: 12 // Adjust font size of individual options
+                                                    }),
+                                                    menu: (provided, state) => ({
+                                                        ...provided,
+                                                        width: 224, // Adjust the width of the dropdown menu
+                                                        zIndex: 9999 // Ensure the menu appears above other elements
+                                                    }),
+                                                    menuList: (provided, state) => ({
+                                                        ...provided,
+                                                        padding: 0, // Adjust padding of the menu list
+                                                        fontSize: 12,
+                                                        maxHeight: 150 // Adjust font size of the menu list
+                                                    }),
+                                                    
+                                                }}
+                                            />
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.client}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Invoice Number </div>
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceNumber" value={formValues.invoiceNumber} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">GST/ST </div>
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Estimate Amount </div>
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
+                                        </div>
+                                        
+                                    </div>
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-[13px] mb-1">
+                                                Order <label className="text-red-500">*</label>
+                                            </div>
+                                           
+                                            <OrderCustomSelectNative
+                                           data={Object.keys(orders)}
+                                           value={orders?.[formValues.order] ? orders?.[formValues.order]:null}
+                                           placeholder="Select Orders"
+                                           isSticky={true}
+                                           headerText={{
+                                            first : 'Order Description',
+                                            second : 'ID',
+                                          }}
+                                          renderData={(item) => {
+                                            return (
+                                              <MenuItem value={item} key={item} sx={{ width : '224px', gap : '5px', fontSize : '12px'}}>
+                                                <p className="w-[80%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                                   {orders[item]}
+                                                </p>
+                                                <p className='w-[20%]'>
+                                                    {item}
+                                                </p>
+                                                
+                                               
+                                              </MenuItem>
+                                            );
+                                          }}
+                                          onChange={(e) => {
+                                            setFormValues({ ...formValues, order: e.target.value })
+                                           }}
+                                           
+                                        
+                                        />
+                                            {/* <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.order}</div>
+                                        </div>
+                                        <div className="pt-[-2px]">
+                                            <div className="text-[13px]">Invoice Date <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.invoiceDate}</div>
+
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px] mb-0.5">Invoice/Estimate Description </div>
+                                            <textarea className="w-56 h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
+                                        </div>
+                                        <div className="pmt-[-10px]">
+                                            <div className="text-[13px] mb-0.5">Notes </div>
+                                            <textarea className="w-56 h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="my-3 flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendorInvoice} >Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            </div>
+                        </div>
+                    </Draggable>
+                </div>
+            </Modal>
         </div>
       </Modal>
     </div>

@@ -2367,9 +2367,8 @@ const changePassword = async (data, token) => {
 };
 
 const resetOldPassword = async (data, token) => {
-
   const response = await fetch(
-    `${env_URL_SERVER}reset`,
+    `${env_URL_SERVER}reset/${token}`,
     METHOD_POST_WITH_TOKEN(data, token)
   );
 

@@ -501,37 +501,49 @@ const ManageClientInvoice = () => {
   const validate = () => {
     var res = true;
     if (!formValues.client) {
-      setFormErrors((existing) => {
-        return { ...existing, client: "Enter Client Name" };
-      });
-      res = false;
+        setFormErrors((existing) => {
+            return { ...existing, client: "Enter Client Name" }
+        })
+        res = false;
     } else {
-      setFormErrors((existing) => {
-        return { ...existing, client: "" };
-      });
+        setFormErrors((existing) => {
+            return { ...existing, client: "" }
+        })
     }
     if (!formValues.invoiceDescription) {
-      setFormErrors((existing) => {
-        return { ...existing, invoiceDescription: "Enter Invoice Description" };
-      });
-      res = false;
+        
+        setFormErrors((existing) => {
+            return { ...existing, invoiceDescription: "Enter Invoice Description" }
+        })
+        res = false;
     } else {
-      setFormErrors((existing) => {
-        return { ...existing, invoiceDescription: "" };
-      });
+        setFormErrors((existing) => {
+            return { ...existing, invoiceDescription: "" }
+        })
     }
+    if (!formValues.invoiceDate){
+        setFormErrors((existing) => {
+            return { ...existing, invoiceDate: "Enter Invoice Date" }
+        })
+        res = false;
+    }else{
+        setFormErrors((existing) => {
+            return { ...existing, invoiceDate: "" }
+        })
+    }
+
     if (!formValues.order || formValues.order == "") {
-      setFormErrors((existing) => {
-        return { ...existing, order: "Select Order" };
-      });
-      res = false;
+        setFormErrors((existing) => {
+            return { ...existing, order: "Select Order" }
+        })
+        res = false;
     } else {
-      setFormErrors((existing) => {
-        return { ...existing, order: "" };
-      });
+        setFormErrors((existing) => {
+            return { ...existing, order: "" }
+        })
     }
     return res;
-  };
+}
   const [currClientInvoiceId, setCurrClientInvoiceId] = useState("");
   const handleDelete = (id) => {
     setCurrClientInvoiceId(id);
@@ -2044,7 +2056,7 @@ const ManageClientInvoice = () => {
                       />
                     </div>
                     <div className="">
-                      <div className="text-sm">Invoice Date</div>
+                      <div className="text-sm">Invoice Date <label className="text-red-500">*</label></div>
                       <input
                         className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                         type="date"
@@ -2052,6 +2064,9 @@ const ManageClientInvoice = () => {
                         value={formValues.invoiceDate}
                         onChange={handleChange}
                       />
+                       <div className="text-[10px] text-[#CD0000] absolute">
+                        {formErrors.invoiceDate}
+                      </div>
                     </div>
                   </div>
                 </div>

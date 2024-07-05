@@ -100,6 +100,17 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, s
                 return { ...existing, order: "" }
             })
         }
+        if (!formValues.invoiceDate || formValues.invoiceDate == "") {
+            setFormErrors((existing) => {
+                return { ...existing, invoiceDate: "Select Invoice Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, invoiceDate: "" }
+            })
+        }
+
         return res;
     }
     const handleEdit = async () => {
@@ -414,8 +425,12 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel, s
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="number" name="gst" value={formValues.gst} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Invoice Date</div>
+                                        <div className="text-sm">Invoice Date
+                                        <label className="text-red-500">*</label>
+                                        </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.invoiceDate}</div>
+
                                     </div>
                                 </div>
                             </div>}

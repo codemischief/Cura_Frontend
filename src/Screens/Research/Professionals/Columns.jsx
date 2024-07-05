@@ -121,7 +121,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     },
     {
       id: 6,
-      title: "Profession ID",
+      title: "Professional ID",
       field: "professionalid",
       sorting: true,
       align: "left",

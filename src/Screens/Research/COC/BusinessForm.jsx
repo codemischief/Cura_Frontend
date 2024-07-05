@@ -217,7 +217,7 @@ const BusinessForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Group name
+                                Group Type 
                               </label>
                               <span className="requiredError">*</span>
                             </div>
@@ -567,8 +567,8 @@ const BusinessForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               
                             </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
+                            <textarea
+                              className="inputFieldBorder inputFieldValue !h-[67px] focus-visible:outline-none"
                               type="text"
                               name="address"
                               value={formik.values.address}

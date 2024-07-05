@@ -354,7 +354,7 @@ const ProfessionalsForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
                           <div className="">
                             {/* <div className="text-[13px]">Email </div> */}
-                            <label className="inputFieldLabel">Profession ID</label>
+                            <label className="inputFieldLabel">Professional ID</label>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
