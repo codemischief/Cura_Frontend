@@ -343,7 +343,7 @@ const BusinessForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Contact Person 1
+                                Contact Designation 1
                               </label>
                              
                             </div>
@@ -519,7 +519,7 @@ const BusinessForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Contact Person 2
+                                Contact Designation 2
                               </label>
                               
                             </div>
