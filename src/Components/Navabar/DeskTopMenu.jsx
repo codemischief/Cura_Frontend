@@ -314,7 +314,12 @@ export default function MenuDesktop({ isOffset, isHome }) {
   let filteredMenu =
     user?.role_id === 1
       ? navMenuConfig
-      : navMenuConfig?.filter((item) => item.title !== "Admin");
+      : navMenuConfig?.filter((item) => {
+          return user?.allowedModules?.Reports &&
+            !user?.allowedModules?.Reports?.get
+            ? item.title !== "Reports" && item.title !== "Admin"
+            : item.title !== "Admin";
+        });
   return (
     <Stack
       width={"fit-content"}
