@@ -378,7 +378,7 @@ const ManageClientReceipt = () => {
         receivedBy: user.id,
         receiptMode: 5,
         client: "",
-        howReceived: null,
+        howReceived: 3,
         serviceAmount: null,
         reimbursementAmount: null,
         amountReceived: null,
