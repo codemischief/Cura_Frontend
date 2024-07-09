@@ -311,15 +311,39 @@ export default function MenuDesktop({ isOffset, isHome }) {
   const handleClose = () => {
     setOpen(null);
   };
-  let filteredMenu =
-    user?.role_id === 1
-      ? navMenuConfig
-      : navMenuConfig?.filter((item) => {
-          return user?.allowedModules?.Reports &&
-            !user?.allowedModules?.Reports?.get
-            ? item.title !== "Reports" && item.title !== "Admin"
-            : item.title !== "Admin";
-        });
+
+  function checkManageGetKey(obj) {
+    for (const key in user?.allowedModules) {
+      if (/\/manage/.test(key)) {
+        if (user?.allowedModules[key].get === true) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  const getMenu = () => {
+    if (user?.role_id === 1) return navMenuConfig;
+    return navMenuConfig?.filter((item) => {
+      if (item.title === "Admin") {
+        return false;
+      }
+
+      if (
+        user?.allowedModules?.Reports &&
+        !user?.allowedModules?.Reports?.get
+      ) {
+        if (item.title === "Reports") {
+          return false;
+        }
+      }
+      if (!checkManageGetKey()) {
+        if (item.title === "Manage") return false;
+      }
+      return true;
+    });
+  };
   return (
     <Stack
       width={"fit-content"}
@@ -329,7 +353,7 @@ export default function MenuDesktop({ isOffset, isHome }) {
       justifyContent={"center"}
       alignItems={"center"}
     >
-      {filteredMenu?.map((link) => (
+      {getMenu()?.map((link) => (
         <MenuDesktopItem
           key={link.title}
           item={link}
