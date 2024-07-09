@@ -4,18 +4,16 @@ import { toast } from "react-toastify";
 import { APIService } from "../services/API";
 let apiToken = null;
 
-
 export const setAccessToken = (apiTokenParam) => {
-  apiToken = null
+  apiToken = null;
   apiToken = apiTokenParam;
 };
 
 export const getToken = () => {
   if (apiToken) {
     return apiToken;
-  }
-  else {
-    return localStorage.getItem("accessToken")
+  } else {
+    return localStorage.getItem("accessToken");
   }
 };
 
@@ -40,7 +38,6 @@ const axiosInstance = axios.create({
   },
 });
 
-
 axiosInstance.interceptors.request.use(
   (config) => {
     const { headers } = config;
@@ -61,7 +58,6 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-
     return Promise.reject(error);
   }
 );
@@ -69,13 +65,13 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-(error) => {
+  (error) => {
     if (error.response.status === 498) {
       if (!toastShown) {
         toastShown = true;
-        setTimeout(() => (toastShown = false), 1000); 
+        setTimeout(() => (toastShown = false), 1000);
         localStorage.clear();
-        setAccessToken(null)
+        setAccessToken(null);
         redirectToLogin();
         toast.error("Unauthorized!");
       }
@@ -89,11 +85,23 @@ axiosInstance.interceptors.response.use(
         setTimeout(() => (toastShown = false), 1000);
         toast.error("Bad Request: The request was invalid.");
       }
-    } else if ( error.response.status === 404) {
+    } else if (error.response.status === 404) {
       if (!toastShown) {
         toastShown = true;
         setTimeout(() => (toastShown = false), 1000);
         toast.error("Not Found: The resource was not found.");
+      }
+    } else if (error.response.status === 409) {
+      if (!toastShown) {
+        toastShown = true;
+        setTimeout(() => (toastShown = false), 1000);
+        toast.error(
+          `${
+            error?.response?.data?.detail
+              ? error?.response?.data?.detail
+              : "The resource was not found."
+          }`
+        );
       }
     }
 
