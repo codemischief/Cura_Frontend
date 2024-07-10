@@ -20,7 +20,7 @@ const EditClientProperty = (props) => {
         fetchPropertyStatus();
         fetchCountryData();
         fetchStateData('5');
-         fetchExistingData();
+        fetchExistingData();
     },[])
     const [clientName,setClientName] = useState({
         label : "",
@@ -52,25 +52,24 @@ const EditClientProperty = (props) => {
     const [pageLoading,setPageLoading] = useState(false)
     const fetchExistingData = async () => {
         setPageLoading(true);
-        // in this we fetch the data of the existing
         const data = {
             "user_id" : user.id,
             "id" : props.clientId
         }
         const response = await APIService.getClientPropertyById(data);
-        const res = await response.json()
+        const res = await response.json();
         
+        const deepCopyData = JSON.parse(JSON.stringify(res.data));
         await fetchClientName(res.data.client_property.clientid);
-        setFormValues(res.data);
-        setInitialClientPropertyData({...res.data});
-        // setPageLoading(false);
+        setFormValues(deepCopyData);
+        setPropertyPhotos(deepCopyData);
+    
         setTimeout(() => {
-            setPageLoading(false)
-        },1000)
-        
+            setPageLoading(false);
+        }, 1000);
     }
     
-    const [initialClientPropertyData,setInitialClientPropertyData] = useState({});
+    const [intialProperty,setPropertyPhotos] = useState({});
     const initialValues = {
         "client_property": {
           "clientid": null,
@@ -222,30 +221,42 @@ const EditClientProperty = (props) => {
             setAllCity(result)
         }
     }
-    function helper1(updateArrayClientPhotos,insertArrayClientPhotos, deleteArrayClientPhotos,) {
+
+
+    function helper1(updateArrayClientPhotos,insertArrayClientPhotos, deleteArrayClientPhotos) {
         var size = formValues.client_property_photos.length
+        const initialPhotos = JSON.parse(JSON.stringify(intialProperty.client_property_photos));
         for(var i=0;i<size;i++) {
           const tempObj = formValues.client_property_photos[i]
+        
+          
           if(tempObj.hasOwnProperty('id')) {
-              // it has a property id
               var weNeed = {};
-              for(var j=0;j<initialClientPropertyData.client_property_photos.length;j++) {
-                   if(tempObj.id === initialClientPropertyData.client_property_photos[j].id) {
-                       weNeed = initialClientPropertyData.client_property_photos[j]
+              for(var j=0;j<initialPhotos.length;j++) {
+                 
+                   if(tempObj.id === initialPhotos[j].id) {
+                       weNeed = initialPhotos[j]
                    }
               }
+              
               const str1 = JSON.stringify(weNeed)
               const str2 = JSON.stringify(tempObj);
+              
               if(str1 !== str2) {
                 updateArrayClientPhotos.push(tempObj);
               }
           }else {
-                if((initialClientPropertyData.client_property_photos.photolink != null ||initialClientPropertyData.client_property_photos.photolink != "") &&  (initialClientPropertyData.client_property_photos.description != null ||initialClientPropertyData.client_property_photos.description != "") && (initialClientPropertyData.client_property_photos.phototakenwhen != null ||initialClientPropertyData.client_property_photos.phototakenwhen != "")) {
-                }else {
-                    insertArrayClientPhotos.push(tempObj);
-                }
+            
+            let flag = false;
+            Object.keys(formValues.client_property_photos[i]).forEach(key => {
+            if(formValues.client_property_photos[i][key] != null && formValues.client_property_photos[i][key] != "") {
+                flag = true
+            }
+            })
+            if(flag) insertArrayClientPhotos.push(tempObj);
                 
           }
+          
         }
     }
     const [formErrors, setFormErrors] = useState({});
@@ -357,8 +368,8 @@ const EditClientProperty = (props) => {
         const updateArrayClientPhotos = []
         const insertArrayClientPhotos = []
         const deleteArrayClientPhotos = []
+    
         helper1(updateArrayClientPhotos,insertArrayClientPhotos,deleteArrayClientPhotos)
-        
         
         
         const data = {
@@ -423,7 +434,7 @@ const EditClientProperty = (props) => {
 
             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                 <div className="mr-[410px] ml-[410px]">
-                    <div className="text-[16px]">Edit Client Property :{initialClientPropertyData?.client_property?.id} </div>
+                    <div className="text-[16px]">Edit Client Property :{intialProperty?.client_property?.id} </div>
                 </div>
                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                     <button onClick={() => {close()}}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
@@ -454,7 +465,8 @@ const EditClientProperty = (props) => {
             {selectedDialog == 3 && <EditPOADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues}/>}
             {selectedDialog == 4 && <EditOwnerDetails  formValues={formValues} setFormValues={setFormValues}/>}
             <div className="my-2 flex justify-center items-center gap-[10px]">
-                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
+                <button className='w-[100px] h-[35px] bg-[#004DD7] text-
+white rounded-md' onClick={handleEdit} >Save</button>
                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
             </div>
 
