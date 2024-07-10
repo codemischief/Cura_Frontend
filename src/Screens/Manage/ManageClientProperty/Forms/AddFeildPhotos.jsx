@@ -1,22 +1,24 @@
 import React from 'react'
 
 const AddFeildPhotos = ({index,formValues,setFormValues}) => {
+  
   const handlePhotoLinkChange = (e) => {
-        const arrayClone = [...formValues.client_property_photos];
-        arrayClone[index].photolink = e.target.value;
-        setFormValues({...formValues,client_property_photos : arrayClone})
-        
-  }
-  const handleDescriptionChange = (e) => {
-    const arrayClone = [...formValues.client_property_photos];
+    const arrayClone = JSON.parse(JSON.stringify(formValues.client_property_photos));
+    arrayClone[index].photolink = e.target.value;
+    setFormValues({...formValues, client_property_photos: arrayClone});
+}
+
+const handleDescriptionChange = (e) => {
+    const arrayClone = JSON.parse(JSON.stringify(formValues.client_property_photos));
     arrayClone[index].description = e.target.value;
-    setFormValues({...formValues,client_property_photos : arrayClone})
-  }
-  const handleTakenWhenChange = (e) => {
-    const arrayClone = [...formValues.client_property_photos];
+    setFormValues({...formValues, client_property_photos: arrayClone});
+}
+
+const handleTakenWhenChange = (e) => {
+    const arrayClone = JSON.parse(JSON.stringify(formValues.client_property_photos));
     arrayClone[index].phototakenwhen = e.target.value;
-    setFormValues({...formValues,client_property_photos : arrayClone})
-  }
+    setFormValues({...formValues, client_property_photos: arrayClone});
+}
   return (
     <div className="w-full h-[40px] flex border-[#CBCBCB] border-b-[1px] ">
       <div className="w-[7%] h-full p-3 text-[11px]" >
