@@ -794,14 +794,7 @@ const ManageClientInfo = () => {
         setShowAddConfirmation(true);
 
     }
-    [
-        {
 
-        },
-        {
-
-        }
-    ]
     const arrayHelper = (arr) => {
         const temp = []
         
@@ -820,6 +813,7 @@ const ManageClientInfo = () => {
         }
         return temp
     }
+    
     const addClientInfo = async () => {
         // setButtonLoading(true);
         
