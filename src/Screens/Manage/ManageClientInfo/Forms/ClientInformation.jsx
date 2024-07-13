@@ -9,9 +9,10 @@ import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
 import useAuth from '../../../../context/JwtContext';
 import OrderCustomSelectNative from '../../../../Components/common/select/OrderCustomSelectNative';
 import ClientPropertySelectNative from '../../../../Components/common/select/ClientPropertySelectNative';
-const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities ,formErrors , orderText, setOrderText}) => {
+import DropdownSearch from './DropdownSearch';
+const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities, formErrors, orderText, setOrderText }) => {
     const { user } = useAuth()
-    const [tenantOfProperty,setTenantOfProperty] = useState([]);
+    const [tenantOfProperty, setTenantOfProperty] = useState([]);
     const [Salutation, setSalutation] = useState([
         {
             id: 1,
@@ -30,16 +31,16 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
             name: "Master"
         },
         {
-            id : 5,
-            name : "Shri"
+            id: 5,
+            name: "Shri"
         },
         {
-            id : 6,
-            name : "Smt"
+            id: 6,
+            name: "Smt"
         },
         {
-            id : 7,
-            name : "MS"
+            id: 7,
+            name: "MS"
         }
 
     ]);
@@ -51,6 +52,9 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
     // const [state, setState] = useState([]);
     const [allState, setAllState] = useState(initialStates);
     const [source, setSource] = useState([]);
+    const [tenantOptions, setTenantOptions] = useState([]);
+    const [tenantLoading,setTenantLoading] = useState(false)
+
     // const [employeeName, setEmployeeName] = useState([]);
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -62,107 +66,192 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         })
     };
     const fetchStateData = async (id) => {
-        
+
         const data = { "user_id": user.id, "country_id": id };
         // const data = {"user_id":user.id,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        
+
         setAllState(result)
-        
+
     }
     const fetchCityData = async (id) => {
         const data = { "user_id": user.id, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        
+
         if (Array.isArray(result)) {
             setAllCity(result)
         }
     }
 
 
-  const [options,setOptions] = useState([]);
+    const [options, setOptions] = useState([]);
 
-function convertToIdNameObject(items) {
-    const idNameObject = {};
-    items.forEach((item) => {
-      idNameObject[item.id] = {
-        buildername : item.buildername,
-        propertyname : item.propertyname
-      }
-    });
-    return idNameObject;
-}
-
-  const getClientPropertyByClientId = async (id) => {
-    const data = {
-     "user_id" : user.id,
-     "client_id" : id
+    function convertToIdNameObject(items) {
+        const idNameObject = {};
+        items.forEach((item) => {
+            idNameObject[item.id] = {
+                buildername: item.buildername,
+                propertyname: item.propertyname
+            }
+        });
+        return idNameObject;
     }
 
-    const response = await APIService.getClientPropertyByClientId(data)
-    const res = await response.json()
-    
-    setTenantOfProperty(
-        convertToIdNameObject(res.data)
-    )
-    // setTenantOfProperty(res.data)
- }
+    const getClientPropertyByClientId = async (id) => {
+        const data = {
+            "user_id": user.id,
+            "client_id": id
+        }
 
-  const [selectedOption,setSelectedOption] = useState({
-    label : formValues.client_info.tenantofname  ,
-    value : null
-   });
-   const [query,setQuery] = useState('')
-   const handleClientNameChange = (e) => {
-       
-       
-      //  setFormValues({...formValues,client_property : {
-      //   ...formValues.client_property,
-      //   clientid : e.value
-      //  }})
-      setOrderText((prev) => 'Select Tenant Of Property')
-       const existing = {...formValues}
-       const temp = {...existing.client_info}
-       getClientPropertyByClientId(e.value)
-       temp.tenantof = e.value
-       temp.tenantofname = e.label 
-       temp.tenentofproperty = null
-       temp.tenentofpropertyname = 'Select Tenant Of Property'
-       existing.client_info = temp;
-       setFormValues(existing)
-       
-       setSelectedOption(e)
-   }
-   const loadOptions = async (e) => {
-      
-      if(e.length < 3) return ;
-      const data = {
-        "user_id" : user.id,
-        "pg_no" : 0,
-        "pg_size" : 0,
-        "search_key" : e
-      }
-      const response = await APIService.getClientAdminPaginated(data)
-      const res = await response.json()
-      const results = res.data.map(e => {
-        return {
-          label : e[1],
-          value : e[0]
+        const response = await APIService.getClientPropertyByClientId(data)
+        const res = await response.json()
+
+        setTenantOfProperty(
+            convertToIdNameObject(res.data)
+        )
+        if (!formValues?.client_info?.tenentofproperty) {
+            setFormValues(prevFormValues => ({
+                ...prevFormValues,
+                client_info: {
+                    ...prevFormValues.client_info,
+                    tenentofproperty: res.data[0]?.id || null
+                }
+            }));
         }
-      })
-      if(results === 'No Result Found') {
-        return []
-      }
-      return results
-   }
+        // setTenantOfProperty(res.data)
+    }
+
     useEffect(() => {
-        if(formValues.client_info.tenantof) {
-            getClientPropertyByClientId(formValues.client_info.tenantof)
+        console.log(formValues.client_info, "formValues.client_id.tenantOfProperty");
+    }, [formValues.client_info.tenentofproperty])
+
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [query, setQuery] = useState('')
+    const handleClientNameChange = (e) => {
+
+        //   setOrderText((prev) => 'Select Tenant Of Property')
+        //    const existing = {...formValues}
+        //    const temp = {...existing.client_info}
+        setSelectedOption(e)
+
+        getClientPropertyByClientId(e.value)
+        //    temp.tenantof = e.value
+        //    temp.tenantofname = e.label 
+        //    temp.tenentofproperty = null
+        //    temp.tenentofpropertyname = 'Select Tenant Of Property'
+        //    existing.client_info = temp;
+        //    setFormValues(existing)
+
+    }
+    //    const loadOptions = async (e) => {
+
+    //       if(e.length < 3) return ;
+    //       const data = {
+    //         "user_id" : user.id,
+    //         "pg_no" : 0,
+    //         "pg_size" : 0,
+    //         "search_key" : e
+    //       }
+    //       const response = await APIService.getClientAdminPaginated(data)
+    //       const res = await response.json()
+    //       const results = res.data.map(e => {
+    //         return {
+    //           label : e[1],
+    //           value : e[0]
+    //         }
+    //       })
+    //       if(results === 'No Result Found') {
+    //         return []
+    //       }
+    //       return results
+    //    }
+
+    // useEffect(() => {
+    //     if(formValues.client_info.tenantof) {
+    //         getClientPropertyByClientId(formValues.client_info.tenantof)
+    //     }
+    // }, [])
+
+
+    useEffect(() => {
+        setFormValues(prevFormValues => ({
+            ...prevFormValues,
+            client_info: {
+                ...prevFormValues.client_info,
+                tenantof: selectedOption?.value || null
+            }
+        }));
+        if (!selectedOption) {
+            setFormValues(prevFormValues => ({
+                ...prevFormValues,
+                client_info: {
+                    ...prevFormValues.client_info,
+                    tenentofproperty: null
+                }
+            }));
         }
-    }, [])
-    
+    }, [selectedOption])
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Backspace') {
+            setSelectedOption(null)
+
+        }
+    };
+
+
+
+    const fetchOptions = async (e) => {
+        if (!e) {
+            setSelectedOption(null)
+            setSelectedOption(null);
+            setTenantOptions([]);
+            setTenantOfProperty([])
+            setFormValues(prevFormValues => ({
+                ...prevFormValues,
+                client_info: {
+                    ...prevFormValues.client_info,
+                    tenantofproperty: null
+                }
+            }));
+
+        } else {
+            const data = {
+                user_id: user.id,
+                pg_no: 0,
+                pg_size: 0,
+                search_key: e,
+            };
+            try{
+                setTenantLoading(true)
+                const response = await APIService.getClientAdminPaginated(data);
+                const res = await response.json();
+                const results = res.data.map((e) => ({
+                    label: e[1],
+                    value: e[0],
+                }));
+                if (results === "No Result Found") {
+                    setSelectedOption(null)
+                    setSelectedOption(null);
+                    setTenantOptions([]);
+                    return [];
+                }
+                setTenantOptions(results);
+                setTenantLoading(false)
+
+                console.log(results, "results");
+            }catch(e){
+                setTenantLoading(false)
+                 
+            }
+           
+
+        }
+
+    };
+
     return (
         <div className="h-auto w-full">
             <div className="flex gap-10 justify-center items-center">
@@ -239,16 +328,16 @@ function convertToIdNameObject(items) {
                         }>
                             {/* <option >Select entity </option> */}
                             {allEntities && allEntities.map(item => {
-                                if(item[0] == formValues.client_info.entityid) {
+                                if (item[0] == formValues.client_info.entityid) {
                                     return <option key={item[0]} value={item[0]} selected>
-                                    {item[1]}
-                                </option>
-                                }else {
-                                  return  <option key={item[0]} value={item[0]}>
-                                    {item[1]}
-                                </option>
+                                        {item[1]}
+                                    </option>
+                                } else {
+                                    return <option key={item[0]} value={item[0]}>
+                                        {item[1]}
+                                    </option>
                                 }
-})}
+                            })}
                         </select>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
@@ -261,25 +350,25 @@ function convertToIdNameObject(items) {
                     </div>
                     <div className="">
                         <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
-                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" 
-                        value={formValues.client_info.country}
-                        name="country" onChange={
-                            (e) => {
-                                const existing = {...formValues};
-                                const temp = existing.client_info
-                                temp.country = e.target.value;
-                                temp.state = null
-                                temp.city = null
-                                existing.client_info = temp;
-                                setFormValues(existing)
-                               
-                                setAllCity([]);
-                                setAllState([])
-                                fetchStateData(e.target.value)
-                                
+                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+                            value={formValues.client_info.country}
+                            name="country" onChange={
+                                (e) => {
+                                    const existing = { ...formValues };
+                                    const temp = existing.client_info
+                                    temp.country = e.target.value;
+                                    temp.state = null
+                                    temp.city = null
+                                    existing.client_info = temp;
+                                    setFormValues(existing)
+
+                                    setAllCity([]);
+                                    setAllState([])
+                                    fetchStateData(e.target.value)
+
+                                }
                             }
-                        }
-                            // value={formValues.client_info.country}
+                        // value={formValues.client_info.country}
                         >
                             <option value="" hidden>Select Country</option>
                             {allCountry && allCountry.map(item => {
@@ -381,7 +470,7 @@ function convertToIdNameObject(items) {
                     </div>
                     <div className="">
                         <div className="text-[13px]">Tenant Of </div>
-                        <AsyncSelect
+                        {/* {/* <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
                                             loadOptions={loadOptions}
@@ -444,24 +533,29 @@ function convertToIdNameObject(items) {
                                                 }),
                                                 
                                             }}
-                                        />
-                        {/* <select className="text-[11px] px-3 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenantof" >
-                            <option > </option>
-                            
-                        </select> */}
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                       */}
+                        <DropdownSearch
+                            onSearch={fetchOptions}
+                            options={tenantOptions}
+                            defaultSearch={selectedOption ?? null}
+                            onSelect={handleClientNameChange}
+                            onKeyDown={handleKeyDown}
+                            setSelectedValue={setSelectedOption}
+                            loading={tenantLoading}
+
+                        />
                     </div>
 
                 </div>
                 <div className="space-y-3 py-2 mt-[5px] ">
-                <div className="">
+                    <div className="">
                         <div className="text-[12px]">Last Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="lastname" onChange={handleChange} value={formValues.client_info.lastname} />
                         <div className="text-[8px] text-[#CD0000] absolute">{formErrors.lastname}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">City <label className="text-red-500">*</label></div>
-                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.city}name="city" onChange={
+                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.city} name="city" onChange={
                             (e) => {
                                 setFormValues({
                                     ...formValues, client_info: {
@@ -471,7 +565,7 @@ function convertToIdNameObject(items) {
                                 })
                             }
                         }>
-                            
+
                             <option value="none" hidden> Select A City</option>
                             {allCity && allCity.map(item => (
                                 <option value={item.city}>
@@ -483,8 +577,9 @@ function convertToIdNameObject(items) {
                     </div>
                     <div className="">
                         <div className="text-[13px]">Area/Locality </div>
-                        <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.client_info.suburb} onChange={handleChange}/>
+                        <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.client_info.suburb} onChange={handleChange} />
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                       
                     </div>
                     <div className="">
                         <div className="text-[13px]">Home Phone </div>
@@ -504,7 +599,7 @@ function convertToIdNameObject(items) {
 
                     <div className="">
                         <div className="text-[13px]">Tenant Of Property</div>
-                        {}
+                        { }
                         {/* <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.tenentofproperty} name="city" onChange={(e) => {
                             setFormValues({
                                 ...formValues, client_info: {
@@ -521,38 +616,37 @@ function convertToIdNameObject(items) {
                                 </option>
                             ))}
                         </select> */}
-                        
                         <ClientPropertySelectNative
-                        data={Object.keys(tenantOfProperty)}
-                        value={tenantOfProperty?.[formValues.client_info.tenentofproperty]?.propertyname ? tenantOfProperty?.[formValues.client_info.tenentofproperty]?.propertyname:null}
-                        placeholder="Select Client Property"
-                        isSticky={true}
-                        headerText={{
-                            first : 'Property',
-                            second : 'Builder'
-                        }}
-                        renderData={(item) => {
-                            return (
-                              <MenuItem value={item} key={item} sx={{ width : '230px', gap : '5px', fontSize : '12px'}}>
-                                <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
-                                   {tenantOfProperty[item].propertyname}
-                                </p>
-                                <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
-                                  {tenantOfProperty[item].buildername}
-                                </p>
-                                
-                               
-                              </MenuItem>
-                            );
-                          }}
-                          onChange={(e) => {
-                            setFormValues({
-                                ...formValues, client_info: {
-                                    ...formValues.client_info,
-                                    tenentofproperty: e.target.value
-                                }
-                            })
-                           }}
+                            data={Object.keys(tenantOfProperty)}
+                            value={tenantOfProperty?.[formValues.client_info.tenentofproperty]?.propertyname ? tenantOfProperty?.[formValues.client_info.tenentofproperty]?.propertyname : null}
+                            placeholder="Select Client Property"
+                            isSticky={true}
+                            headerText={{
+                                first: 'Property',
+                                second: 'Builder'
+                            }}
+                            renderData={(item) => {
+                                return (
+                                    <MenuItem value={item} key={item} sx={{ width: '230px', gap: '5px', fontSize: '12px' }}>
+                                        <p className="w-[50%] " style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                            {tenantOfProperty[item].propertyname}
+                                        </p>
+                                        <p className='w-[50%]' style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'normal', margin: 0 }}>
+                                            {tenantOfProperty[item].buildername}
+                                        </p>
+
+
+                                    </MenuItem>
+                                );
+                            }}
+                            onChange={(e) => {
+                                setFormValues({
+                                    ...formValues, client_info: {
+                                        ...formValues.client_info,
+                                        tenentofproperty: e.target.value
+                                    }
+                                })
+                            }}
                         />
                         {/* <PropertyDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
                             setFormValues({
@@ -581,10 +675,10 @@ function convertToIdNameObject(items) {
                         </select> */}
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
-                    
+
                 </div>
             </div>
-            
+
             {/* <div className="mt-[10px] flex justify-center items-center font-semibold text-[14px]"><input
                         type="checkbox"
                         checked={formValues.client_info.includeinmailinglist}

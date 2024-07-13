@@ -350,10 +350,9 @@ const EditClientInfoModal = (props) => {
 
         }
     }
-    const [tenantofName, setTenantOfName] = useState({
-        label: "Select Client",
-        value: null
-    });
+
+    
+    const [tenantofName, setTenantOfName] = useState();
     const fetchTenantOfData = async (id) => {
         const data = {
             "user_id": user.id,

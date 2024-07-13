@@ -5,18 +5,22 @@ const DropdownSearch = ({
   options,
   placeholder,
   onChange,
-  defaultSearch = "",
+  defaultSearch = null,
   onSearch,
   onSelect,
+  onKeyDown,
+  name,
+  setSelectedValue,
+  loading
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(defaultSearch);
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const debouncedSearchTerm = useDebounce(searchTerm, 200);
   const ref = useRef();
 
   useEffect(() => {
     if (defaultSearch) {
-      setSearchTerm(defaultSearch);
+      setSearchTerm(defaultSearch.label);
     }
   }, [defaultSearch]);
 
@@ -30,30 +34,57 @@ const DropdownSearch = ({
 
   useEffect(() => {
     const closeDropdown = (e) => {
-      if (!ref.current.contains(e.target)) {
+      if (isOpen && ref.current && !ref.current?.contains(e.target)) {
         setIsOpen(false);
       }
     };
-    document.body.addEventListener("click", closeDropdown);
-    return () => document.body.removeEventListener("click", closeDropdown);
+    document.body.addEventListener("mousedown", closeDropdown);
+    document.addEventListener("touchstart", closeDropdown);
+    return () => {
+      document.removeEventListener("mousedown", closeDropdown);
+      document.removeEventListener("touchstart", closeDropdown);
+    }
   }, [isOpen]);
 
+
   useEffect(() => {
-    if (debouncedSearchTerm && debouncedSearchTerm.length >= 3) {
-      onSearch(debouncedSearchTerm);
+    if (!isOpen && !defaultSearch) {
+      if (options.length > 0) {
+        setSearchTerm(options[0].label)
+        setSelectedValue(options[0])
+        onSelect(options[0])
+      }
+      else {
+        setSearchTerm('')
+        setSelectedValue(null)
+      }
     }
+
+  }, [defaultSearch, isOpen])
+
+
+  useEffect(() => {
+    onSearch(debouncedSearchTerm);
   }, [debouncedSearchTerm]);
 
   return (
     <div className="dropdown-search relative">
+      <div className="w-full px-3  border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
       <input
         type="text"
-        placeholder={placeholder}
+        placeholder={"Select Tenant Of"}
         value={searchTerm}
         onChange={handleSearchChange}
         onClick={handleDropdownToggle}
-        className="w-full rounded-md px-3 py-2 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+        onKeyDown={onKeyDown}
+        // className="w-full rounded-md px-3 py-2 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
       />
+      {loading &&  (
+        <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+          <div className="loader border-4 border-t-4 border-gray-200 border-t-gray-500 rounded-full w-4 h-4 animate-spin"></div>
+        </div>
+      )}
+      </div>
       {isOpen && (
         <ul
           ref={ref}
@@ -67,7 +98,7 @@ const DropdownSearch = ({
                   onSelect(option);
                   setIsOpen(false);
                 }}
-                className="hover:bg-gray-100 px-3 py-2"
+                className="hover:bg-gray-100 px-3 py-2 cursor-pointer"
               >
                 {option.label}
               </li>
